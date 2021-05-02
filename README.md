@@ -30,7 +30,9 @@ Include ~/.dotfiles/.ssh/config
 
 i also use [`colorls`](https://github.com/athityakumar/colorls#installation) (requires `ruby`).
 ```shell
-$ cp -r ~/.dotfiles/.config/colorls ~/.config
+$ mkdir -p ~/.config/colorls
+$ ln -s ~/.dotfiles/.config/colorls/dark_colors.yaml ~/.config/colorls/dark_colors.yaml
+$ ln -s ~/.dotfiles/.config/colorls/files.yaml ~/.config/colorls/files.yaml
 
 # ~/.zshrc
 alias ls='colorls --sd'
