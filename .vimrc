@@ -14,6 +14,7 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'cespare/vim-toml'
 Plugin 'glepnir/oceanic-material'
+Plugin 'chrisbra/Colorizer'
 call vundle#end()
 filetype plugin indent on
 
@@ -24,6 +25,9 @@ let g:airline_theme='kolor'
 colo oceanic_material
 let g:gruvbox_contrast_light = 'hard'
 set background=dark
+
+" colorizer
+let g:colorizer_auto_filetype='css,html,yaml,toml'
 
 " fix python indentation
 aug python
