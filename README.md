@@ -18,7 +18,7 @@ $ git clone https://github.com/haykh/.dotfiles.git ~/
 ```
 
 `vim` uses [`vundle`](https://github.com/VundleVim/Vundle.vim#quick-start).
-```vimscript
+```shell
 # ~/.vimrc
 source ~/.dotfiles/.vimrc
 ```
