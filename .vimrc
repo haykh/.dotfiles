@@ -15,6 +15,7 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'cespare/vim-toml'
 Plugin 'glepnir/oceanic-material'
 Plugin 'chrisbra/Colorizer'
+Plugin 'junegunn/vim-easy-align'
 call vundle#end()
 filetype plugin indent on
 
@@ -59,4 +60,8 @@ highlight Normal ctermbg=NONE
 highlight nonText ctermbg=NONE
 
 let loaded_netrwPlugin = 1
+
+" experimental
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
 
