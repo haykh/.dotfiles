@@ -5,7 +5,7 @@ i am making this repo mostly for myself, to synchronize my workflow across diffe
 if you got questions -- add an issue. 
 
 ```shell
-$ git clone https://github.com/haykh/.dotfiles.git ~/
+$ git clone https://github.com/haykh/.dotfiles.git ~/.dotfiles
 ```
 
 `zsh` uses [`oh-my-zsh`](https://ohmyz.sh/) and [`p10k`](https://github.com/romkatv/powerlevel10k#oh-my-zsh).

@@ -7,7 +7,7 @@ call vundle#begin('~/.vim/bundle/plugins/')
 Plugin 'VundleVim/Vundle.vim'
 " git diff:
 Plugin 'airblade/vim-gitgutter'
-Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'thaerkh/vim-indentguides'
 " for commenting with \ + C + Spacebar:
 Plugin 'preservim/nerdcommenter'
 Plugin 'vim-airline/vim-airline'
@@ -36,8 +36,9 @@ aug python
 aug end
 
 " indentation guides
-let g:indent_guides_enable_on_vim_startup = 1
-let g:indent_guides_start_level = 2
+let g:indentguides_spacechar = '┆'
+let g:indentguides_tabchar = '|'
+let g:indentguides_toggleListMode = 0
 
 " vanilla vim flags
 syntax on
