@@ -8,6 +8,12 @@ if you got questions -- add an issue.
 $ git clone https://github.com/haykh/.dotfiles.git ~/.dotfiles
 ```
 
+linking `alacritty` conf file (requires `MesloLGS NF` font pack, included in `fonts/` dir).
+```shell
+$ mkdir -p ~/.config/alacritty
+$ ln -s ~/.dotfiles/.config/alacritty/alacritty.yml ~/.config/alacritty/alacritty.yml
+```
+
 `zsh` uses [`oh-my-zsh`](https://ohmyz.sh/) and [`p10k`](https://github.com/romkatv/powerlevel10k#oh-my-zsh).
 ```shell
 # ~/.zshrc
