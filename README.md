@@ -39,6 +39,7 @@ i also use [`colorls`](https://github.com/athityakumar/colorls#installation) (re
 $ mkdir -p ~/.config/colorls
 $ ln -s ~/.dotfiles/.config/colorls/dark_colors.yaml ~/.config/colorls/dark_colors.yaml
 $ ln -s ~/.dotfiles/.config/colorls/files.yaml ~/.config/colorls/files.yaml
+$ ln -s ~/.dotfiles/.config/colorls/folders.yaml ~/.config/colorls/folders.yaml
 
 # ~/.zshrc
 alias ls='colorls --sd'
