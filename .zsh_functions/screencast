@@ -1,0 +1,50 @@
+helpmenu () {
+  echo "start screen recording using ffmpeg at a specified screen region (hit q to stop recording)."
+  echo 
+  echo "usage: screencast [options]"
+  echo
+  echo "   -h, --help                 print this menu and quit"
+  echo "   -r, --framerate            specify framerate in fps [default: 30]"
+  echo "   -z, --zero                 specify upper left corner of the recording area in pixels [default: 0,0]"
+  echo "   -s, --size                 specify size of the recording area in pixels [default: 1920x1080]"
+  echo "   -o, --output               output file name [default: screen.mov]"
+  echo "   -c, --compression          specify video compression level [default: 1]"
+  echo
+}
+
+execute=true
+
+RATE=30
+OUTNAME='screen.mov'
+SIZE='1920x1080'
+ZERO='0,0'
+COMPRESSION=1
+while [ ! $# -eq 0 ]
+do
+  case "$1" in
+    --help | -h)
+      helpmenu
+      execute=false
+        ;;
+    --framerate | -r)
+      RATE="$2"
+        ;;
+    --output | -o)
+      OUTNAME="$2"
+        ;;
+    --size | -s)
+      SIZE="$2"
+        ;;
+    --zero | -z)
+      ZERO="$2"
+        ;;
+    --compression | -c)
+      COMPRESSION="$2"
+        ;;
+    esac
+  shift
+done
+
+if [ "$execute" = true ] ; then
+  ffmpeg -f x11grab -r $RATE -s $SIZE -i $DISPLAY+$ZERO -c:v libx264 -pix_fmt yuv420p -q:v $COMPRESSION -preset ultrafast $OUTNAME
+fi

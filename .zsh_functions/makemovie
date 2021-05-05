@@ -1,0 +1,58 @@
+helpmenu () {
+  echo "combine a series of png files into a movie using ffmpeg."
+  echo 
+  echo "usage: makemovie [options]"
+  echo
+  echo "   -h, --help                 print this menu and quit"
+  echo "   -r, --framerate            specify framerate in fps [default: 30]"
+  echo "   -i, --input                input png prefixes [default: step_]"
+  echo "   -o, --output               output file name [default: anim.mov]"
+  echo "   -c, --compression          specify video compression level [default: 1]"
+  echo "   -s, --start                starting number for pngs [default: 0]"
+  echo "   -n, --number               number of zeros to pad [default: 3]"
+  echo
+  echo "example: for a collection of pngs pic.0005.png, pic.0006.png ... use:"
+  echo "% makemovie -i pic. -n 4 -s 5"
+}
+
+execute=true
+
+RATE=10
+OUTNAME='anim.mov'
+FNAME='step_'
+START=0
+COMPRESSION=1
+NUMBER=3
+while [ ! $# -eq 0 ]
+do
+  case "$1" in
+    --help | -h)
+      helpmenu
+      execute=false
+        ;;
+    --framerate | -r)
+      RATE="$2"
+        ;;
+    --output | -o)
+      OUTNAME="$2"
+        ;;
+    --input | -i)
+      FNAME="$2"
+        ;;
+    --start | -s)
+      START="$2"
+        ;;
+    --compression | -c)
+      COMPRESSION="$2"
+        ;;
+    --number | -n)
+      NUMBER="$2"
+        ;;
+    esac
+  shift
+done
+
+if [ "$execute" = true ] ; then
+  ffmpeg -framerate $RATE -start_number $START -i $FNAME%0${NUMBER}d.png -c:v libx264 -crf $COMPRESSION -pix_fmt yuv420p $OUTNAME
+fi
+
