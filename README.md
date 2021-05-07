@@ -7,13 +7,13 @@ if you got questions -- add an issue.
 ```shell
 $ git clone https://github.com/haykh/.dotfiles.git ~/.dotfiles
 ```
-
+### `alacritty`
 linking `alacritty` conf file (requires `MesloLGS NF` font pack, included in `fonts/` dir).
 ```shell
-$ mkdir -p ~/.config/alacritty
-$ ln -s ~/.dotfiles/.config/alacritty/alacritty.yml ~/.config/alacritty/alacritty.yml
+$ ln -s ~/.dotfiles/.config/alacritty ~/.config
 ```
 
+### `zsh`
 `zsh` uses [`oh-my-zsh`](https://ohmyz.sh/) and [`p10k`](https://github.com/romkatv/powerlevel10k#oh-my-zsh).
 ```shell
 # ~/.zshrc
@@ -23,24 +23,29 @@ $ ln -s ~/.dotfiles/.config/alacritty/alacritty.yml ~/.config/alacritty/alacritt
 . ~/.dotfiles/.p10k.zsh
 ```
 
+### `vim`
 `vim` uses [`vundle`](https://github.com/VundleVim/Vundle.vim#quick-start).
 ```shell
 # ~/.vimrc
 source ~/.dotfiles/.vimrc
 ```
 
+### `ssh`
 ```shell
 # ~/.ssh/config
 Include ~/.dotfiles/.ssh/config
 ```
 
+### `colorls`
 i also use [`colorls`](https://github.com/athityakumar/colorls#installation) (requires `ruby`).
 ```shell
-$ mkdir -p ~/.config/colorls
-$ ln -s ~/.dotfiles/.config/colorls/dark_colors.yaml ~/.config/colorls/dark_colors.yaml
-$ ln -s ~/.dotfiles/.config/colorls/files.yaml ~/.config/colorls/files.yaml
-$ ln -s ~/.dotfiles/.config/colorls/folders.yaml ~/.config/colorls/folders.yaml
+$ ln -s ~/.dotfiles/.config/colorls ~/.config
 
 # ~/.zshrc
 alias ls='colorls --sd'
+```
+
+### `polybar`
+```shell
+$ ln -s ~/.dotfiles/.config/polybar ~/.config
 ```
