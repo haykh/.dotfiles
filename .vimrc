@@ -27,9 +27,6 @@ colo oceanic_material
 let g:gruvbox_contrast_light = 'hard'
 set background=dark
 
-" colorizer
-let g:colorizer_auto_filetype='css,html,yaml,toml'
-
 " fix python indentation
 aug python
   " ftype/python.vim overwrites this
@@ -64,4 +61,3 @@ let loaded_netrwPlugin = 1
 " experimental
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
-
