@@ -6,7 +6,7 @@ helpmenu () {
   echo "usage: screencast [options]"
   echo
   echo "   -h, --help                 print this menu and quit"
-  echo "   -d, --dry                  print this menu and quit"
+  echo "   -d, --dry                  print the command without running it" 
   echo "   -r, --framerate <FPS>      specify framerate in fps [default: 30]"
   echo "   -z, --zero <X:Y>           specify upper left corner of the recording area in pixels [default: 0:0]"
   echo "   -s, --size <SX:SY>         specify the size of the recording area in pixels [default: fullscreen]"
