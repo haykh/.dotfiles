@@ -15,6 +15,7 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'cespare/vim-toml'
 Plugin 'glepnir/oceanic-material'
 Plugin 'chrisbra/Colorizer'
+" auto align to character (experimental)
 Plugin 'junegunn/vim-easy-align'
 call vundle#end()
 filetype plugin indent on
@@ -42,6 +43,9 @@ let g:indentguides_toggleListMode = 0
 syntax on
 hi Error NONE
 au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g'\"" | endif
+set hlsearch
+set cursorline
+set cursorlineopt=number
 
 set tabstop=2
 set softtabstop=2
