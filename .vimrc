@@ -17,6 +17,8 @@ Plugin 'glepnir/oceanic-material'
 Plugin 'chrisbra/Colorizer'
 " auto align to character (experimental)
 Plugin 'junegunn/vim-easy-align'
+" tex syntax
+Plugin 'lervag/vimtex'
 call vundle#end()
 filetype plugin indent on
 
@@ -28,17 +30,6 @@ colo oceanic_material
 let g:gruvbox_contrast_light = 'hard'
 set background=dark
 
-" fix python indentation
-aug python
-  " ftype/python.vim overwrites this
-  au FileType python setlocal ts=2 sts=2 sw=2 expandtab
-aug end
-
-" indentation guides
-let g:indentguides_spacechar = '│'
-let g:indentguides_tabchar = '│'
-let g:indentguides_toggleListMode = 0
-
 " vanilla vim flags
 syntax on
 hi Error NONE
@@ -46,12 +37,26 @@ au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g'
 set hlsearch
 set cursorline
 set cursorlineopt=number
+set noswapfile
+set ignorecase
+set incsearch
+inoremap jk <ESC>
 
 set tabstop=2
 set softtabstop=2
 set shiftwidth=2
 set expandtab
 set number relativenumber
+" fix python indentation
+aug python
+  " ftype/python.vim overwrites this
+  au FileType python setlocal ts=2 sts=2 sw=2 expandtab
+aug end
+" indentation guides
+let g:indentguides_spacechar = '│'
+let g:indentguides_tabchar = '│'
+let g:indentguides_toggleListMode = 0
+
 " customize vertical separator
 set fillchars+=vert:│
 hi VertSplit ctermbg=NONE guibg=NONE
