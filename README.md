@@ -49,3 +49,8 @@ alias ls='colorls --sd'
 ```shell
 $ ln -s ~/.dotfiles/.config/polybar ~/.config
 ```
+
+### `latex`
+```shell
+$ ln -s ~/.dotfiles/.latexmkrc ~/.latexmkrc
+```
