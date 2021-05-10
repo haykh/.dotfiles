@@ -35,8 +35,8 @@ syntax on
 hi Error NONE
 au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g'\"" | endif
 set hlsearch
+highlight CursorLine cterm=NONE ctermbg=NONE ctermfg=NONE guibg=NONE guifg=NONE
 set cursorline
-set cursorlineopt=number
 set noswapfile
 set ignorecase
 set incsearch
@@ -69,6 +69,7 @@ let loaded_netrwPlugin = 1
 
 " vimtex
 let g:vimtex_quickfix_enabled = 0
+let g:vimtex_syntax_conceal_default = 0
 
 " experimental
 xmap ga <Plug>(EasyAlign)
