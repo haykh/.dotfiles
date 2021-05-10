@@ -67,6 +67,9 @@ highlight nonText ctermbg=NONE
 
 let loaded_netrwPlugin = 1
 
+" vimtex
+let g:vimtex_quickfix_enabled = 0
+
 " experimental
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
