@@ -41,6 +41,7 @@ set noswapfile
 set ignorecase
 set incsearch
 inoremap jk <ESC>
+set viminfo='20,<1000,s1000
 
 set tabstop=2
 set softtabstop=2
