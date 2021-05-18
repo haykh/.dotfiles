@@ -4,18 +4,18 @@ i am making this repo mostly for myself, to synchronize my workflow across diffe
 
 if you got questions -- add an issue. 
 
-```shell
-$ git clone https://github.com/haykh/.dotfiles.git ~/.dotfiles
+```sh
+git clone https://github.com/haykh/.dotfiles.git ~/.dotfiles
 ```
 ### `alacritty`
 linking `alacritty` conf file (requires `MesloLGS NF` font pack, included in `fonts/` dir).
-```shell
-$ ln -s ~/.dotfiles/.config/alacritty ~/.config
+```sh
+ln -s ~/.dotfiles/.config/alacritty ~/.config
 ```
 
 ### `zsh`
 `zsh` uses [`oh-my-zsh`](https://ohmyz.sh/) and [`p10k`](https://github.com/romkatv/powerlevel10k#oh-my-zsh).
-```shell
+```sh
 # ~/.zshrc
 . ~/.dotfiles/.zshrc
 
@@ -25,32 +25,32 @@ $ ln -s ~/.dotfiles/.config/alacritty ~/.config
 
 ### `vim`
 `vim` uses [`vundle`](https://github.com/VundleVim/Vundle.vim#quick-start).
-```shell
+```sh
 # ~/.vimrc
 source ~/.dotfiles/.vimrc
 ```
 
 ### `ssh`
-```shell
+```sh
 # ~/.ssh/config
 Include ~/.dotfiles/.ssh/config
 ```
 
 ### `colorls`
 i also use [`colorls`](https://github.com/athityakumar/colorls#installation) (requires `ruby`).
-```shell
-$ ln -s ~/.dotfiles/.config/colorls ~/.config
+```sh
+ln -s ~/.dotfiles/.config/colorls ~/.config
 
 # ~/.zshrc
 alias ls='colorls --sd'
 ```
 
 ### `polybar`
-```shell
-$ ln -s ~/.dotfiles/.config/polybar ~/.config
+```sh
+ln -s ~/.dotfiles/.config/polybar ~/.config
 ```
 
 ### `latex`
-```shell
-$ ln -s ~/.dotfiles/.latexmkrc ~/.latexmkrc
+```sh
+ln -s ~/.dotfiles/.latexmkrc ~/.latexmkrc
 ```

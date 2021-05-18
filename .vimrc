@@ -45,6 +45,12 @@ set noswapfile
 set ignorecase
 set incsearch
 inoremap jk <ESC>
+" save cursor position after insert mode
+let CursorColumnI = 0 "the cursor column position in INSERT
+autocmd InsertEnter * let CursorColumnI = col('.')
+autocmd CursorMovedI * let CursorColumnI = col('.')
+autocmd InsertLeave * if col('.') != CursorColumnI | call cursor(0, col('.')+1) | endif
+
 set viminfo='20,<1000,s1000
 set tabstop=2
 set softtabstop=2
