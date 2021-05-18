@@ -36,7 +36,18 @@ $ wget <URL_NODE_SOURCE>.tar.gz
 $ tar -xvf <NODE_SOURCE>.tar.gz
 $ cd <NODE_SOURCE>
 $ ./configure --prefix=<PATH_TO>/.local
-$ make -j <NCORES>
+$ make -j<NCORES>
+$ make install
+```
+
+## `vtk`
+
+```shell
+$ git clone https://gitlab.kitware.com/vtk/vtk.git
+$ cd vtk
+$ cmake -DCMAKE_INSTALL_PREFIX=<PATH_TO>/.local/ -B build .
+$ cd build
+$ make -j<NCORES>
 $ make install
 ```
 

@@ -5,32 +5,36 @@ set rtp+=~/.vim/bundle/Vundle.vim
 
 call vundle#begin('~/.vim/bundle/plugins/')
 Plugin 'VundleVim/Vundle.vim'
+
 " git diff:
 Plugin 'airblade/vim-gitgutter'
-Plugin 'thaerkh/vim-indentguides'
-" for commenting with \ + C + Spacebar:
-Plugin 'preservim/nerdcommenter'
+
+" looks
+Plugin 'glepnir/oceanic-material'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
+Plugin 'thaerkh/vim-indentguides'
+
+" extension specific highlighting & plugins
 Plugin 'cespare/vim-toml'
-Plugin 'glepnir/oceanic-material'
+Plugin 'tikhomirov/vim-glsl'
 Plugin 'chrisbra/Colorizer'
-" auto align to character (experimental)
-Plugin 'junegunn/vim-easy-align'
-" tex syntax
 Plugin 'lervag/vimtex'
+
+" shortcuts 
+Plugin 'junegunn/vim-easy-align'
+Plugin 'preservim/nerdcommenter'
+
 call vundle#end()
 filetype plugin indent on
 
-" powerline
+" airline
 let g:airline_powerline_fonts = 1
-" colorscheme
 let g:airline_theme='kolor'
-colo oceanic_material
-let g:gruvbox_contrast_light = 'hard'
-set background=dark
 
 " vanilla vim flags
+set background=dark
+colo oceanic_material
 syntax on
 hi Error NONE
 au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g'\"" | endif
@@ -42,17 +46,18 @@ set ignorecase
 set incsearch
 inoremap jk <ESC>
 set viminfo='20,<1000,s1000
-
 set tabstop=2
 set softtabstop=2
 set shiftwidth=2
 set expandtab
 set number relativenumber
+set backspace=indent,eol,start
 " fix python indentation
 aug python
   " ftype/python.vim overwrites this
   au FileType python setlocal ts=2 sts=2 sw=2 expandtab
 aug end
+
 " indentation guides
 let g:indentguides_spacechar = '│'
 let g:indentguides_tabchar = '│'
@@ -66,12 +71,12 @@ hi VertSplit ctermbg=NONE guibg=NONE
 highlight Normal ctermbg=NONE
 highlight nonText ctermbg=NONE
 
-let loaded_netrwPlugin = 1
-
 " vimtex
 let g:vimtex_quickfix_enabled = 0
 let g:vimtex_syntax_conceal_default = 0
 
-" experimental
+" alignment
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
+
+" experimental
