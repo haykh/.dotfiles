@@ -22,7 +22,7 @@ which pip
 pip install virtualenv
 pip install virtualenvwrapper 
 echo "export WORKON_HOME=~/<VENV_PATH>" >> ~/.zshrc
-echo "source "<PATH_TO>/.local/bin/virtualenvwrapper.sh" >> ~/.zshrc
+echo "source <PATH_TO>/.local/bin/virtualenvwrapper.sh" >> ~/.zshrc
 source ~/.zshrc
 mkvirtualenv <PYTHON_ENV>
 ```
