@@ -14,6 +14,7 @@ Plugin 'glepnir/oceanic-material'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'thaerkh/vim-indentguides'
+Plugin 'wfxr/minimap.vim'
 
 " extension specific highlighting & plugins
 Plugin 'cespare/vim-toml'
@@ -39,7 +40,8 @@ syntax on
 hi Error NONE
 au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g'\"" | endif
 set hlsearch
-highlight CursorLine cterm=NONE ctermbg=NONE ctermfg=NONE guibg=NONE guifg=NONE
+hi CursorLine cterm=NONE ctermbg=NONE ctermfg=NONE guibg=NONE guifg=NONE
+hi Directory ctermfg=Blue
 set cursorline
 set noswapfile
 set ignorecase
@@ -64,14 +66,22 @@ aug python
   au FileType python setlocal ts=2 sts=2 sw=2 expandtab
 aug end
 
+" customize vertical separator
+set fillchars+=vert:│
+hi VertSplit cterm=NONE ctermfg=238 ctermbg=NONE
+hi EndOfBuffer ctermfg=238
+
 " indentation guides
 let g:indentguides_spacechar = '│'
 let g:indentguides_tabchar = '│'
 let g:indentguides_toggleListMode = 0
 
-" customize vertical separator
-set fillchars+=vert:│
-hi VertSplit ctermbg=NONE guibg=NONE
+" minimap
+let g:minimap_auto_start = 1
+let g:minimap_highlight_range = 1
+let g:minimap_base_highlight = 'NonText' 
+let g:minimap_highlight = 'MoreMsg' 
+let g:minimap_width = 15
 
 " for background to be transparent to terminal
 highlight Normal ctermbg=NONE
