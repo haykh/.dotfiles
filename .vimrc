@@ -69,7 +69,9 @@ aug end
 " customize vertical separator
 set fillchars+=vert:│
 hi VertSplit cterm=NONE ctermfg=238 ctermbg=NONE
+" customize color highlightings
 hi EndOfBuffer ctermfg=238
+hi SignColumn ctermbg=NONE
 
 " indentation guides
 let g:indentguides_spacechar = '│'
