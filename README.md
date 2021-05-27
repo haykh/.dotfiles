@@ -45,6 +45,11 @@ ln -s ~/.dotfiles/.config/colorls ~/.config
 alias ls='colorls --sd'
 ```
 
+### `i3`
+```sh
+ln -s ~/.dotfiles/.config/i3/config ~/.config/i3/config
+```
+
 ### `polybar`
 ```sh
 ln -s ~/.dotfiles/.config/polybar ~/.config
