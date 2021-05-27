@@ -78,6 +78,10 @@ let g:indentguides_spacechar = '│'
 let g:indentguides_tabchar = '│'
 let g:indentguides_toggleListMode = 0
 
+" netrw
+let g:netrw_banner = 0
+let g:netrw_liststyle = 3
+
 " minimap
 let g:minimap_auto_start = 1
 let g:minimap_highlight_range = 1
