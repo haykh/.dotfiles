@@ -70,7 +70,7 @@ meson --buildtype=release . build
 meson configure -Dprefix=~/.local build
 ninja -C build
 ninja -C build install
-ln -s ~/.dotfiles/.config/picom/picom.conf ~/.config/picom.conf
+ln -s ~/.dotfiles/.config/picom/picom.conf ~/.config/picom/picom.conf
 ```
 
 ## work

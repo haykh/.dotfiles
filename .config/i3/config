@@ -210,7 +210,7 @@ bindcode Shift+78 exec --no-startup-id "$HOME/software/fa6258f3ff7b17747ee3/sp p
 bindsym $mod+t exec --no-startup-id tilix -e htop
 
 # papis
-bindsym $mod+Control+Return exec --no-startup-id "$HOME/anaconda3/bin/papis -s picktool rofi open"
+bindsym $mod+Control+Return exec --no-startup-id "papis -s picktool rofi open"
 
 # calculator
 bindsym $mod+Control+space exec --no-startup-id "rofi -show calc -modi calc -no-show-match -no-sort"
