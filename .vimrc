@@ -34,6 +34,7 @@ let g:airline_powerline_fonts = 1
 let g:airline_theme='kolor'
 
 " vanilla vim flags
+set viminfo='50,<1000,s100,h
 set background=dark
 colo oceanic_material
 syntax on
