@@ -47,6 +47,11 @@ source ~/.dotfiles/.vimrc
 Include ~/.dotfiles/.ssh/config
 ```
 
+### `rust`
+```sh
+curl https://sh.rustup.rs -sSf | sh
+```
+
 ## the looks
 
 ### `colorls`
