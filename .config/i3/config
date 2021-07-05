@@ -267,3 +267,5 @@ focus_follows_mouse no
 
 for_window [class="^.*"] border pixel 3
 client.focused #4c7899 #285577 #ffffff #2e9ef4 #4169E1
+
+exec_always --no-startup-id xrdb ~/.Xresources
