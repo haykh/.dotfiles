@@ -27,6 +27,14 @@ ln -s ~/.dotfiles/.config/alacritty ~/.config
 ```
 
 ### `vim`
+```shell
+git clone https://github.com/vim/vim
+cd vim
+./configure --prefix=<PATH_TO>/.local/ --with-features=huge --enable-multibyte --enable-cscope --enable-luainterp --enable-pythoninterp --enable-rubyinterp --enable-python3interp
+make -j <NCORES>
+make install
+```
+
 `vim` uses [`vundle`](https://github.com/VundleVim/Vundle.vim#quick-start).
 ```sh
 # ~/.vimrc
@@ -37,6 +45,11 @@ source ~/.dotfiles/.vimrc
 ```sh
 # ~/.ssh/config
 Include ~/.dotfiles/.ssh/config
+```
+
+### `rust`
+```sh
+curl https://sh.rustup.rs -sSf | sh
 ```
 
 ## the looks
