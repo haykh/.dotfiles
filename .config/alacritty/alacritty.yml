@@ -20,3 +20,9 @@ env:
 
 import:
   - ~/.dotfiles/.config/alacritty/dracula/dracula.yml
+
+window:
+  dimensions:
+    columns: 160
+    lines: 48
+

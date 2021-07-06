@@ -115,3 +115,5 @@ source $ZSH/oh-my-zsh.sh
 # zsh functions
 fpath+=~/.dotfiles/.zsh_functions
 autoload -U $fpath[-1]/*(.:t)
+
+source $(dirname $(gem which colorls))/tab_complete.sh
