@@ -13,7 +13,7 @@ font:
     style: Bold Italic
   size: 9
 
-background_opacity: 0.85
+background_opacity: 0.95
 
 env:
   TERM: xterm-256color
@@ -25,4 +25,4 @@ window:
   dimensions:
     columns: 160
     lines: 48
-
+  decorations: none
