@@ -13,8 +13,9 @@ git clone git@github.com:haykh/.dotfiles.git $HOME/.dotfiles
 ## build/install tools
 ```sh
 sudo apt update
-sudo apt install cargo apt-file ruby-full rbenv curl
-sudo apt install cmake pkg-config python3 python3-pip
+sudo apt install cargo cmake pkg-config apt-file ruby-full rbenv curl
+sudo apt install python3 python3-pip
+sudo apt install ffmpeg vlc
 sudo apt-file update
 curl https://sh.rustup.rs -sSf | sh
 mkdir -p $HOME/.local
@@ -70,6 +71,19 @@ echo ". $HOME/.dotfiles/.zshrc" >> $HOME/.zshrc
 touch $HOME/.p10k.zsh
 echo ". $HOME/.dotfiles/.p10k.zsh" >> $HOME/.p10k.zsh
 echo "export PATH=$PATH:$HOME/.cargo/bin" >> $HOME/.zshrc
+```
+
+### some zsh_functions
+
+```sh
+# add all, commit (with comment) and push to git
+gitall <COMMENT>
+# make a movie from a series of pngs (`-h` for help)
+makemovie -h
+# search a regex match recursively in the current directory
+srch <REGEX>
+# record screen with ffmpeg and save to file (`-h` for help)
+screencast -h
 ```
 
 ## colorls
