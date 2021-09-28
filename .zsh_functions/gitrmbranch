@@ -1,0 +1,7 @@
+if [ "$1" != "master" ]
+then
+  git branch -d "$1"
+  git push origin --delete "$1"
+else
+  echo "will not remove `master` :("
+fi
