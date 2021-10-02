@@ -68,6 +68,7 @@ sudo chsh -s `which zsh` $USER
 sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
 touch $HOME/.zshrc
 echo ". $HOME/.dotfiles/.zshrc" >> $HOME/.zshrc
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 touch $HOME/.p10k.zsh
 echo ". $HOME/.dotfiles/.p10k.zsh" >> $HOME/.p10k.zsh
 echo "export PATH=$PATH:$HOME/.cargo/bin" >> $HOME/.zshrc
