@@ -113,8 +113,3 @@ source $ZSH/oh-my-zsh.sh
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# zsh functions
-fpath+=~/.dotfiles/.zsh_functions
-autoload -U $fpath[-1]/*(.:t)
-
-source $(dirname $($(rbenv which gem) which colorls))/tab_complete.sh
