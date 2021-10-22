@@ -27,6 +27,8 @@ sudo chown -R $USER:$USER $HOME/.local
 sudo apt install ssh
 mkdir $HOME/.ssh
 mkdir $HOME/.ssh/sockets
+
+echo "Include ~/.dotfiles/.ssh/config" >> $HOME/.ssh/config
 ```
 
 ## turbovnc
