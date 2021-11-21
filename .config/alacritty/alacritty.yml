@@ -20,7 +20,7 @@ import:
   - ~/.dotfiles/.config/alacritty/dracula/dracula.yml
 
 window:
-  opacity: 1.0
+  opacity: 0.85
   dimensions:
     columns: 160
     lines: 48

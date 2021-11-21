@@ -21,6 +21,7 @@ Plugin 'cespare/vim-toml'
 Plugin 'tikhomirov/vim-glsl'
 Plugin 'chrisbra/Colorizer'
 Plugin 'lervag/vimtex'
+Plugin 'digitaltoad/vim-pug'
 
 " shortcuts 
 Plugin 'junegunn/vim-easy-align'
@@ -95,8 +96,8 @@ highlight Normal ctermbg=NONE
 highlight nonText ctermbg=NONE
 
 " vimtex
-let g:vimtex_quickfix_enabled = 0
-let g:vimtex_syntax_conceal_default = 0
+let g:vimtex_quickfix_mode = 0
+let g:vimtex_syntax_conceal_disable = 1
 
 " alignment
 xmap ga <Plug>(EasyAlign)
