@@ -13,7 +13,7 @@ git clone git@github.com:haykh/.dotfiles.git $HOME/.dotfiles
 ## build/install tools
 ```sh
 sudo apt update
-sudo apt install cargo cmake pkg-config apt-file ruby-full rbenv curl
+sudo apt install cmake pkg-config apt-file ruby-full rbenv curl
 sudo apt install python3 python3-pip
 sudo apt install ffmpeg vlc
 sudo apt-file update
