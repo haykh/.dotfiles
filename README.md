@@ -2,7 +2,7 @@
 
 i am making this repo mostly for myself, to synchronize my workflow across different machines and clusters. so this doc will have minimum of explanation `¯\_(ツ)_/¯`.
 
-there are also some building/installation instructions for some of the apps for ubuntu-based (ubuntu, pop!_os, mint) systems with `apt` package manager.
+there are also some building/installation instructions for some of the apps for ubuntu-based (`ubuntu`, `pop!_os`, `mint`) systems with `apt` package manager.
 
 if you got questions -- add an issue.
 

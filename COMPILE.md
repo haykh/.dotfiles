@@ -11,7 +11,7 @@ ln -s $HOME/.dotfiles/.config/picom/picom.conf $HOME/.config/picom/picom.conf
 
 
 ### `vim`
-```shell
+```sh
 git clone https://github.com/vim/vim
 cd vim
 ./configure --prefix=$HOME/.local/ --with-features=huge --enable-multibyte --enable-cscope --enable-luainterp --enable-pythoninterp --enable-rubyinterp --enable-python3interp
