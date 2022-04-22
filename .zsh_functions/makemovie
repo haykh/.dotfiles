@@ -10,12 +10,14 @@ helpmenu () {
   echo "   -c, --compression          specify video compression level [default: 1]"
   echo "   -s, --start                starting number for pngs [default: 0]"
   echo "   -n, --number               number of zeros to pad [default: 3]"
+  echo "   -d, --dry                  dry run, print the command but don't run it"
   echo
   echo "example: for a collection of pngs pic.0005.png, pic.0006.png ... use:"
   echo "% makemovie -i pic. -n 4 -s 5"
 }
 
 execute=true
+dry=false
 
 RATE=10
 OUTNAME='anim.mov'
@@ -29,6 +31,9 @@ do
     --help | -h)
       helpmenu
       execute=false
+        ;;
+    --dry | -d)
+      dry=true
         ;;
     --framerate | -r)
       RATE="$2"
@@ -52,7 +57,15 @@ do
   shift
 done
 
-if [ "$execute" = true ] ; then
-  ffmpeg -framerate $RATE -start_number $START -i $FNAME%0${NUMBER}d.png -c:v libx264 -crf $COMPRESSION -pix_fmt yuv420p $OUTNAME
-fi
+command() {
+  if [ "$dry" = true ] ; then
+    prefix=echo
+  else
+    prefix=
+  fi
+  $prefix ffmpeg -framerate $RATE -start_number $START -i $FNAME%0${NUMBER}d.png -c:v libx264 -crf $COMPRESSION -vf format=yuv420p $OUTNAME
+}
 
+if [ "$execute" = true ] ; then
+  command
+fi
