@@ -14,7 +14,6 @@ Plugin 'glepnir/oceanic-material'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'thaerkh/vim-indentguides'
-Plugin 'wfxr/minimap.vim'
 
 " extension specific highlighting & plugins
 Plugin 'cespare/vim-toml'
@@ -26,6 +25,9 @@ Plugin 'digitaltoad/vim-pug'
 " shortcuts 
 Plugin 'junegunn/vim-easy-align'
 Plugin 'preservim/nerdcommenter'
+
+" nvim specific
+Plugin 'voldikss/vim-floaterm'
 
 call vundle#end()
 filetype plugin indent on
@@ -62,11 +64,6 @@ set shiftwidth=2
 set expandtab
 set number relativenumber
 set backspace=indent,eol,start
-" fix python indentation
-aug python
-  " ftype/python.vim overwrites this
-  au FileType python setlocal ts=2 sts=2 sw=2 expandtab
-aug end
 
 " customize vertical separator
 set fillchars+=vert:│
@@ -83,6 +80,9 @@ let g:indentguides_toggleListMode = 0
 " netrw
 let g:netrw_banner = 0
 let g:netrw_liststyle = 3
+let g:netrw_browse_split = 2
+let g:netrw_altv = 1
+let g:netrw_winsize = 25
 
 " minimap
 let g:minimap_auto_start = 1
@@ -104,3 +104,16 @@ xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
 " experimental
+"tnoremap <M-h> <C-\><C-n><C-w>h
+"tnoremap <M-j> <C-\><C-n><C-w>j
+"tnoremap <M-k> <C-\><C-n><C-w>k
+"tnoremap <M-l> <C-\><C-n><C-w>l
+tnoremap <Leader>ff <C-\><C-n><C-w>w
+let g:floaterm_keymap_new = '<Leader>ft'
+let g:floaterm_keymap_kill = '<Leader>fq'
+let g:floaterm_keymap_hide = '<Leader>fh'
+let g:floaterm_keymap_show = '<Leader>fs'
+let g:floaterm_position = 'topright'
+let g:floaterm_height = 0.35
+let g:floaterm_width = 0.45
+"let g:floaterm_wintype = 'split'
