@@ -103,7 +103,7 @@ Download `.deb` package from [nvim](https://github.com/neovim/neovim/releases/ta
 sudo apt install ./nvim-linux64.deb
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-ln -s $HOME/.dotfiles/.config/nvim $HOME/.config
+ln -s $HOME/.dotfiles/.config/nvim $HOME/.config/nvim
 nvim +PlugInstall
 ```
 Useful links:
