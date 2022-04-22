@@ -15,7 +15,7 @@ git clone git@github.com:haykh/.dotfiles.git $HOME/.dotfiles
 sudo apt update
 sudo apt install cmake pkg-config apt-file ruby-full rbenv curl
 sudo apt install python3 python3-pip
-sudo apt install ffmpeg
+sudo apt install ffmpeg ripgrep fd-find
 sudo apt-file update
 curl https://sh.rustup.rs -sSf | sh
 mkdir -p $HOME/.local
@@ -106,6 +106,8 @@ sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.
 ln -s $HOME/.dotfiles/.config/nvim $HOME/.config
 nvim +PlugInstall
 ```
+Useful links:
+- clipboard on `wsl` [nvim faq](https://github.com/neovim/neovim/wiki/FAQ#how-to-use-the-windows-clipboard-from-wsl)
 
 ## python
 ```sh
