@@ -15,7 +15,7 @@ git clone git@github.com:haykh/.dotfiles.git $HOME/.dotfiles
 sudo apt update
 sudo apt install cmake pkg-config apt-file ruby-full rbenv curl
 sudo apt install python3 python3-pip
-sudo apt install ffmpeg vlc
+sudo apt install ffmpeg
 sudo apt-file update
 curl https://sh.rustup.rs -sSf | sh
 mkdir -p $HOME/.local
@@ -57,8 +57,8 @@ ln -s $HOME/.dotfiles/.config/alacritty $HOME/.config
 
 ## fonts
 ```sh
-mkdir $HOME/.local/share/fonts
-cp $HOME/.dotfiles/fonts/*.ttf $HOME/.local/share/fonts/
+mkdir $HOME/.fonts
+cp -r $HOME/.dotfiles/fonts/* $HOME/.fonts
 sudo apt install fonts-powerline
 fc-cache -rv
 ```
