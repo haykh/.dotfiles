@@ -1,8 +1,0 @@
-[papers]
-dir = /mnt/d/Dropbox/Library/papis/
-opentool = zathura
-
-[settings]
-default-library = papers
-editor = vi
-
