@@ -97,14 +97,14 @@ ln -s $HOME/.dotfiles/.config/colorls $HOME/.config
 echo "alias ls='colorls --sd'" >> $HOME/.zshrc
 ```
 
-## vim
+## nvim
+Download `.deb` package from [nvim](https://github.com/neovim/neovim/releases/tag/v0.7.0).
 ```sh
-sudo apt install vim
-cargo install --locked code-minimap
-git clone https://github.com/VundleVim/Vundle.vim.git $HOME/.vim/bundle/Vundle.vim
-touch $HOME/.vimrc
-echo "source $HOME/.dotfiles/.vimrc" >> $HOME/.vimrc
-vim +PluginInstall +qall
+sudo apt install ./nvim-linux64.deb
+sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+ln -s $HOME/.dotfiles/.config/nvim $HOME/.config
+nvim +PlugInstall
 ```
 
 ## python
