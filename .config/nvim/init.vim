@@ -112,12 +112,18 @@ let g:floaterm_width = 0.45
 "let g:floaterm_wintype = 'split'
 
 lua require('telescope').setup{}
-lua require("telescope").load_extension("emoji")
+lua require('telescope').load_extension('emoji')
+lua << EOF
+require("telescope-emoji").setup({
+  action = function(emoji)
+  vim.fn.setreg("", emoji.value)
+  print([[Press p or "*p to paste this emoji]] .. emoji.value)
+  end,
+})
+EOF
+
 nnoremap <leader>tf <cmd>Telescope find_files<cr>
 nnoremap <leader>tg <cmd>Telescope live_grep<cr>
 nnoremap <leader>tb <cmd>Telescope buffers<cr>
 nnoremap <leader>th <cmd>Telescope help_tags<cr>
 nnoremap <leader>te <cmd>Telescope emoji<cr>
-
-" @wsl-specific
-set clipboard=unnamedplus
