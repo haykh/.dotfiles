@@ -112,7 +112,7 @@ lua require('telescope').load_extension('emoji')
 lua << EOF
 require("telescope-emoji").setup({
   action = function(emoji)
-  vim.fn.setreg("*", emoji.value)
+  vim.fn.setreg("", emoji.value)
   print([[Press p or "*p to paste this emoji]] .. emoji.value)
   end,
 })
