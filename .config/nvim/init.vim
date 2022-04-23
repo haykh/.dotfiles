@@ -20,6 +20,9 @@ Plug 'preservim/nerdcommenter'
 " latex
 Plug 'lervag/vimtex'
 
+" copilot @nvim
+Plug 'github/copilot.vim'
+
 " terminal @nvim
 Plug 'voldikss/vim-floaterm'
 
@@ -98,6 +101,7 @@ let g:vimtex_syntax_conceal_disable = 1
 
 " floaterm
 tnoremap <Leader>ff <C-\><C-n><C-w>w
+tnoremap <Leader>fn <C-\><C-n>
 let g:floaterm_keymap_new = '<Leader>ft'
 let g:floaterm_keymap_kill = '<Leader>fq'
 let g:floaterm_keymap_hide = '<Leader>fh'
