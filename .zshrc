@@ -114,3 +114,5 @@ source $ZSH/oh-my-zsh.sh
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 fpath+=~/.dotfiles/.zsh_functions
 autoload -U $fpath[-1]/*(.:t)
+
+alias vimconfig="vi $HOME/.config/nvim/init.vim"
