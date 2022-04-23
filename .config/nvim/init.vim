@@ -97,7 +97,7 @@ let g:vimtex_quickfix_mode = 0
 let g:vimtex_syntax_conceal_disable = 1
 
 " floaterm
-nnoremap <Leader>ff <C-\><C-n><C-w>w
+tnoremap <Leader>ff <C-\><C-n><C-w>w
 let g:floaterm_keymap_new = '<Leader>ft'
 let g:floaterm_keymap_kill = '<Leader>fq'
 let g:floaterm_keymap_hide = '<Leader>fh'
