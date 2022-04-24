@@ -111,8 +111,17 @@ source $ZSH/oh-my-zsh.sh
 # zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-fpath+=~/.dotfiles/.zsh_functions
+[[ ! -f $HOME/.p10k.zsh ]] || source $HOME/.p10k.zsh
+
+# -------------------------------
+# custom:
+# -------------------------------
+zstyle ':completion:*:default' list-colors "ow=30;44"
+
+fpath+=$HOME/.dotfiles/.zsh_functions
 autoload -U $fpath[-1]/*(.:t)
+export EDITOR=nvim
+
+source $(dirname $(gem which colorls))/tab_complete.sh
 
 alias vimconfig="vi $HOME/.config/nvim/init.vim"
