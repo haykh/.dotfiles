@@ -122,6 +122,7 @@ fpath+=$HOME/.dotfiles/.zsh_functions
 autoload -U $fpath[-1]/*(.:t)
 export EDITOR=nvim
 
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 source $(dirname $(gem which colorls))/tab_complete.sh
 
 alias vimconfig="vi $HOME/.config/nvim/init.vim"
