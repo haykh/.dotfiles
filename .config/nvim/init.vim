@@ -1,6 +1,7 @@
 call plug#begin()
-" git diff
+" git
 Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
 
 " filesystem
 Plug 'preservim/nerdtree'
@@ -39,6 +40,7 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'xiyaowong/telescope-emoji.nvim'
 Plug 'nvim-telescope/telescope-file-browser.nvim'
+Plug 'olacin/telescope-gitmoji.nvim'
 
 " search/replace @nvim
 Plug 'kyazdani42/nvim-web-devicons'
@@ -50,10 +52,11 @@ filetype  indent on
 let g:plug_window = 'vert bo new'
 
 " loading telescope + plugins @nvim
-lua require("telescope").setup({})
-lua require("telescope").load_extension("emoji")
-lua require("telescope").load_extension("file_browser")
 lua << EOF
+require("telescope")
+require("telescope").load_extension("emoji")
+require("telescope").load_extension("file_browser")
+require('telescope').load_extension("gitmoji")
 require("telescope-emoji").setup({
   action = function(emoji)
   vim.fn.setreg("", emoji.value)
@@ -166,6 +169,7 @@ nnoremap <leader>tg <cmd>Telescope live_grep<cr>
 nnoremap <leader>tr <cmd>Telescope registers<cr>
 nnoremap <leader>th <cmd>Telescope man_pages<cr>
 nnoremap <leader>te <cmd>Telescope emoji<cr>
+nnoremap <leader>gm <cmd>Telescope gitmoji<cr>
 
 " search/replace @nvim
 lua << EOF
