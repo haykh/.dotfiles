@@ -1,51 +1,51 @@
 call plug#begin()
-" git
-Plug 'airblade/vim-gitgutter'
-Plug 'tpope/vim-fugitive'
+  " git
+  Plug 'airblade/vim-gitgutter'
+  Plug 'tpope/vim-fugitive'
 
-" filesystem
-Plug 'preservim/nerdtree'
-Plug 'ryanoasis/vim-devicons'
+  " filesystem
+  Plug 'preservim/nerdtree'
+  Plug 'ryanoasis/vim-devicons'
 
-" looks
-Plug 'glepnir/oceanic-material'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+  " looks
+  Plug 'glepnir/oceanic-material'
+  Plug 'vim-airline/vim-airline'
+  Plug 'vim-airline/vim-airline-themes'
 
-" language specific
-Plug 'cespare/vim-toml'
-Plug 'tikhomirov/vim-glsl'
-Plug 'digitaltoad/vim-pug'
-Plug 'bfrg/vim-cpp-modern'
-Plug 'lervag/vimtex'
+  " language specific
+  Plug 'cespare/vim-toml'
+  Plug 'tikhomirov/vim-glsl'
+  Plug 'digitaltoad/vim-pug'
+  Plug 'bfrg/vim-cpp-modern'
+  Plug 'lervag/vimtex'
 
-" highlighting/formatting
-Plug 'thaerkh/vim-indentguides'
-Plug 'chrisbra/Colorizer'
-Plug 'luochen1990/rainbow'
-Plug 'preservim/nerdcommenter'
+  " highlighting/formatting
+  Plug 'thaerkh/vim-indentguides'
+  Plug 'chrisbra/Colorizer'
+  Plug 'luochen1990/rainbow'
+  Plug 'preservim/nerdcommenter'
 
-" formatting @nvim
-Plug 'mhartington/formatter.nvim'
+  " formatting @nvim
+  Plug 'mhartington/formatter.nvim'
 
-" copilot @nvim
-Plug 'github/copilot.vim'
+  " copilot @nvim
+  Plug 'github/copilot.vim'
 
-" terminal @nvim
-Plug 'voldikss/vim-floaterm'
+  " terminal @nvim
+  Plug 'voldikss/vim-floaterm'
 
-" telescope + extensions @nvim
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
-Plug 'xiyaowong/telescope-emoji.nvim'
-Plug 'nvim-telescope/telescope-file-browser.nvim'
-Plug 'olacin/telescope-gitmoji.nvim'
+  " telescope + extensions @nvim
+  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+  Plug 'nvim-lua/plenary.nvim'
+  Plug 'nvim-telescope/telescope.nvim'
+  Plug 'xiyaowong/telescope-emoji.nvim'
+  Plug 'nvim-telescope/telescope-file-browser.nvim'
+  Plug 'olacin/telescope-gitmoji.nvim'
 
-" search/replace @nvim
-Plug 'kyazdani42/nvim-web-devicons'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'windwp/nvim-spectre'
+  " search/replace @nvim
+  Plug 'kyazdani42/nvim-web-devicons'
+  Plug 'nvim-lua/plenary.nvim'
+  Plug 'windwp/nvim-spectre'
 call plug#end()
 filetype  indent on
 
@@ -53,16 +53,27 @@ let g:plug_window = 'vert bo new'
 
 " loading telescope + plugins @nvim
 lua << EOF
-require("telescope")
+require('telescope').setup {
+  extensions = {
+    file_browser = {
+      theme = "ivy",
+      hidden = true,
+     	grouped = true,
+      sorting_strategy = 'ascending',
+      display_stat = false,
+      respect_gitignore = true,
+    }
+  }
+}
+
+require("telescope-emoji").setup {
+  action = function(emoji)
+    vim.fn.setreg("", emoji.value)
+  end,
+}
 require("telescope").load_extension("emoji")
 require("telescope").load_extension("file_browser")
 require('telescope').load_extension("gitmoji")
-require("telescope-emoji").setup({
-  action = function(emoji)
-  vim.fn.setreg("", emoji.value)
-  print([[Press p or "*p to paste this emoji]] .. emoji.value)
-  end,
-})
 EOF
 
 " vanilla vim flags
@@ -97,7 +108,7 @@ au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
 let g:markdown_fenced_languages = ['html', 'python', 'ruby', 'vim', 'cpp', 'c', 'go', 'sh', 'css', 'javascript']
 set conceallevel=0
 
-"" for background to be transparent to terminal
+" for background to be transparent to terminal
 highlight Normal ctermbg=NONE
 highlight nonText ctermbg=NONE
 
@@ -162,13 +173,12 @@ let g:floaterm_keymap_toggle = '<Leader>fs'
 let g:floaterm_position = 'topright'
 let g:floaterm_height = 0.35
 let g:floaterm_width = 0.45
-"let g:floaterm_wintype = 'split'
 
 nnoremap <leader>tf <cmd>Telescope file_browser<cr>
 nnoremap <leader>tg <cmd>Telescope live_grep<cr>
 nnoremap <leader>tr <cmd>Telescope registers<cr>
 nnoremap <leader>th <cmd>Telescope man_pages<cr>
-nnoremap <leader>te <cmd>Telescope emoji<cr>
+nnoremap <leader>te <cmd>Telescope emoji theme=ivy<cr>
 nnoremap <leader>gm <cmd>Telescope gitmoji<cr>
 
 " search/replace @nvim
