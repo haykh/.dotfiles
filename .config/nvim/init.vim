@@ -51,8 +51,8 @@ filetype  indent on
 
 let g:plug_window = 'vert bo new'
 
-" loading telescope + plugins @nvim
 lua << EOF
+-- loading telescope + extensions @nvim
 require('telescope').setup {
   extensions = {
     file_browser = {
@@ -74,50 +74,12 @@ require("telescope-emoji").setup {
 require("telescope").load_extension("emoji")
 require("telescope").load_extension("file_browser")
 require('telescope').load_extension("gitmoji")
+
+-- search/replace @nvim
+require('spectre').setup({
+  live_update = true,
+})
 EOF
-
-" vanilla vim flags
-colo oceanic_material
-syntax on
-hi Error NONE
-hi CursorLine cterm=NONE ctermbg=NONE ctermfg=NONE guibg=NONE guifg=NONE
-hi Directory ctermfg=Blue
-inoremap jk <ESC>
-" save cursor position after insert mode
-autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g'\"" | endif
-autocmd InsertEnter * let CursorColumnI = col('.')
-autocmd CursorMovedI * let CursorColumnI = col('.')
-autocmd InsertLeave * if col('.') != CursorColumnI | call cursor(0, col('.')+1) | endif
-"let CursorColumnI = 0 "the cursor column position in INSERT
-
-set noswapfile
-set ignorecase
-set incsearch
-set hlsearch
-set background=dark
-set viminfo='20,<1000,s1000
-set tabstop=2
-set softtabstop=2
-set shiftwidth=2
-set expandtab
-set number relativenumber
-set backspace=indent,eol,start
-
-" markdown highlighting
-au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
-let g:markdown_fenced_languages = ['html', 'python', 'ruby', 'vim', 'cpp', 'c', 'go', 'sh', 'css', 'javascript']
-set conceallevel=0
-
-" for background to be transparent to terminal
-highlight Normal ctermbg=NONE
-highlight nonText ctermbg=NONE
-
-" customize vertical separator
-set fillchars+=vert:│
-hi VertSplit cterm=NONE ctermfg=238 ctermbg=NONE
-" customize color highlightings
-hi EndOfBuffer ctermfg=238
-hi SignColumn ctermbg=NONE
 
 " clang-format
 lua << EOF
@@ -174,6 +136,7 @@ let g:floaterm_position = 'topright'
 let g:floaterm_height = 0.35
 let g:floaterm_width = 0.45
 
+" telescope + extensions
 nnoremap <leader>tf <cmd>Telescope file_browser<cr>
 nnoremap <leader>tg <cmd>Telescope live_grep<cr>
 nnoremap <leader>tr <cmd>Telescope registers<cr>
@@ -182,9 +145,50 @@ nnoremap <leader>te <cmd>Telescope emoji theme=ivy<cr>
 nnoremap <leader>gm <cmd>Telescope gitmoji<cr>
 
 " search/replace @nvim
-lua << EOF
-require('spectre').setup({
-  live_update = true,
-})
-EOF
 nnoremap <leader>S <cmd>lua require('spectre').open()<CR>
+
+"------------------------------------------------------------------------------
+"------ vanilla vim flags -----------------------------------------------------
+"------------------------------------------------------------------------------
+colo oceanic_material
+syntax on
+hi Error NONE
+hi CursorLine cterm=NONE ctermbg=NONE ctermfg=NONE guibg=NONE guifg=NONE
+hi Directory ctermfg=Blue
+inoremap jk <ESC>
+" save cursor position after insert mode
+autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g'\"" | endif
+autocmd InsertEnter * let CursorColumnI = col('.')
+autocmd CursorMovedI * let CursorColumnI = col('.')
+autocmd InsertLeave * if col('.') != CursorColumnI | call cursor(0, col('.')+1) | endif
+"let CursorColumnI = 0 "the cursor column position in INSERT
+
+set noswapfile
+set ignorecase
+set incsearch
+set hlsearch
+set background=dark
+set viminfo='20,<1000,s1000
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
+set expandtab
+set number relativenumber
+set backspace=indent,eol,start
+
+" markdown highlighting
+au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
+let g:markdown_fenced_languages = ['html', 'python', 'ruby', 'vim', 'cpp', 'c', 'go', 'sh', 'css', 'javascript']
+set conceallevel=0
+
+" for background to be transparent to terminal
+highlight Normal ctermbg=NONE
+highlight nonText ctermbg=NONE
+
+" customize vertical separator
+set fillchars+=vert:│
+hi VertSplit cterm=NONE ctermfg=238 ctermbg=NONE
+" customize color highlightings
+hi EndOfBuffer ctermfg=238
+hi SignColumn ctermbg=NONE
+
