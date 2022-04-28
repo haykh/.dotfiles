@@ -1,0 +1,4 @@
+pip freeze > req.txt
+sed -i 's/==/>=/' req.txt
+pip install --upgrade -r req.txt
+rm req.txt
