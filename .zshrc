@@ -125,4 +125,5 @@ export EDITOR=nvim
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 source $(dirname $(gem which colorls))/tab_complete.sh
 
+. "$HOME/.cargo/env"
 alias vimconfig="vi $HOME/.config/nvim/init.vim"
