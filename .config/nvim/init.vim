@@ -129,6 +129,8 @@ let g:vimtex_syntax_conceal_disable = 1
 " floaterm
 tnoremap <Leader>ff <C-\><C-n><C-w>w
 tnoremap <Leader>fn <C-\><C-n>
+tnoremap <Leader>f+ <cmd>FloatermUpdate --height=0.95<cr>
+tnoremap <Leader>f- <cmd>FloatermUpdate --height=g:floaterm_height<cr>
 let g:floaterm_keymap_new = '<Leader>ft'
 let g:floaterm_keymap_kill = '<Leader>fq'
 let g:floaterm_keymap_toggle = '<Leader>fs'
@@ -191,4 +193,3 @@ hi VertSplit cterm=NONE ctermfg=238 ctermbg=NONE
 " customize color highlightings
 hi EndOfBuffer ctermfg=238
 hi SignColumn ctermbg=NONE
-
