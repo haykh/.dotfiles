@@ -1,99 +1,108 @@
 call plug#begin()
-  " git
-  Plug 'airblade/vim-gitgutter'
-  Plug 'tpope/vim-fugitive'
+" git
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
 
-  " filesystem
-  Plug 'preservim/nerdtree'
-  Plug 'ryanoasis/vim-devicons'
+" filesystem
+Plug 'preservim/nerdtree'
+Plug 'ryanoasis/vim-devicons'
 
-  " looks
-  Plug 'glepnir/oceanic-material'
-  Plug 'vim-airline/vim-airline'
-  Plug 'vim-airline/vim-airline-themes'
+" looks
+Plug 'glepnir/oceanic-material'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
-  " language specific
-  Plug 'cespare/vim-toml'
-  Plug 'tikhomirov/vim-glsl'
-  Plug 'digitaltoad/vim-pug'
-  Plug 'bfrg/vim-cpp-modern'
-  Plug 'lervag/vimtex'
+" language specific
+Plug 'cespare/vim-toml'
+Plug 'tikhomirov/vim-glsl'
+Plug 'digitaltoad/vim-pug'
+Plug 'bfrg/vim-cpp-modern'
+Plug 'lervag/vimtex'
 
-  " highlighting/formatting
-  Plug 'thaerkh/vim-indentguides'
-  Plug 'chrisbra/Colorizer'
-  Plug 'luochen1990/rainbow'
-  Plug 'preservim/nerdcommenter'
+" highlighting/formatting
+"Plug 'thaerkh/vim-indentguides'
+Plug 'tpope/vim-surround'
+Plug 'Yggdroot/indentLine'
+Plug 'chrisbra/Colorizer'
+Plug 'luochen1990/rainbow'
+Plug 'preservim/nerdcommenter'
 
-  " formatting @nvim
-  Plug 'mhartington/formatter.nvim'
+" formatting @nvim
+Plug 'mhartington/formatter.nvim'
 
-  " copilot @nvim
-  Plug 'github/copilot.vim'
+" copilot @nvim
+Plug 'github/copilot.vim'
 
-  " terminal @nvim
-  Plug 'voldikss/vim-floaterm'
+" terminal @nvim
+Plug 'voldikss/vim-floaterm'
 
-  " telescope + extensions @nvim
-  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-  Plug 'nvim-lua/plenary.nvim'
-  Plug 'nvim-telescope/telescope.nvim'
-  Plug 'xiyaowong/telescope-emoji.nvim'
-  Plug 'nvim-telescope/telescope-file-browser.nvim'
-  Plug 'olacin/telescope-gitmoji.nvim'
+" telescope + extensions @nvim
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'xiyaowong/telescope-emoji.nvim'
+Plug 'nvim-telescope/telescope-file-browser.nvim'
+Plug 'olacin/telescope-gitmoji.nvim'
 
-  " search/replace @nvim
-  Plug 'kyazdani42/nvim-web-devicons'
-  Plug 'nvim-lua/plenary.nvim'
-  Plug 'windwp/nvim-spectre'
+" search/replace @nvim
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'windwp/nvim-spectre'
+
 call plug#end()
-filetype  indent on
+filetype indent on
 
 let g:plug_window = 'vert bo new'
 
 lua << EOF
 -- loading telescope + extensions @nvim
-require('telescope').setup {
-  extensions = {
-    file_browser = {
-      theme = "ivy",
-      hidden = true,
-     	grouped = true,
-      sorting_strategy = 'ascending',
-      display_stat = false,
-      respect_gitignore = true,
+require('telescope').setup({
+extensions = {
+  file_browser = {
+    theme = "ivy",
+    hidden = true,
+    grouped = true,
+    sorting_strategy = 'ascending',
+    display_stat = false,
+    respect_gitignore = true,
     }
   }
-}
+})
 
-require("telescope-emoji").setup {
-  action = function(emoji)
-    vim.fn.setreg("", emoji.value)
-  end,
-}
+require("telescope-emoji").setup({
+action = function(emoji)
+vim.fn.setreg("", emoji.value)
+end,
+})
 require("telescope").load_extension("emoji")
 require("telescope").load_extension("file_browser")
 require('telescope').load_extension("gitmoji")
 
 -- search/replace @nvim
 require('spectre').setup({
-  live_update = true,
+live_update = true,
 })
-EOF
 
-" clang-format
-lua << EOF
+-- treesitter @nvim
+require("nvim-treesitter/configs").setup({
+ensure_installed = { "c", "lua", "rust" },
+highlight = {
+  enable = true
+  }
+})
+
+-- clang-format @nvim
 require('formatter').setup({
-  filetype = {
-    cpp = {
-       function()
-          return {
-            exe = "clang-format",
-            args = {"--assume-filename", vim.api.nvim_buf_get_name(0)},
-            stdin = true,
-            cwd = vim.fn.expand('%:p:h')
-          }
-        end
+filetype = {
+  cpp = {
+    function()
+    return {
+      exe = "clang-format",
+      args = {"--assume-filename", vim.api.nvim_buf_get_name(0)},
+      stdin = true,
+      cwd = vim.fn.expand('%:p:h')
+      }
+    end
     },
   }
 })
@@ -105,15 +114,12 @@ augroup END
 ]], true)
 EOF
 
+" indent-guides
+let g:indentLine_char = '│'
+
 " NERDTree
 let NERDTreeShowHidden=1
 nnoremap <leader>nt <cmd>NERDTreeToggle<cr>
-
-" indentation guides
-let g:indentguides_spacechar = '│'
-let g:indentguides_tabchar = '│'
-let g:indentguides_toggleListMode = 0
-let g:indentguides_ignorelist = ['markdown']
 
 " airline
 let g:airline_powerline_fonts = 1
@@ -158,17 +164,10 @@ hi Error NONE
 hi CursorLine cterm=NONE ctermbg=NONE ctermfg=NONE guibg=NONE guifg=NONE
 hi Directory ctermfg=Blue
 inoremap jk <ESC>
-" save cursor position after insert mode
-autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g'\"" | endif
-autocmd InsertEnter * let CursorColumnI = col('.')
-autocmd CursorMovedI * let CursorColumnI = col('.')
-autocmd InsertLeave * if col('.') != CursorColumnI | call cursor(0, col('.')+1) | endif
-"let CursorColumnI = 0 "the cursor column position in INSERT
 
 set noswapfile
 set ignorecase
 set incsearch
-set hlsearch
 set background=dark
 set viminfo='20,<1000,s1000
 set tabstop=2
@@ -176,20 +175,36 @@ set softtabstop=2
 set shiftwidth=2
 set expandtab
 set number relativenumber
-set backspace=indent,eol,start
 
 " markdown highlighting
 au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
 let g:markdown_fenced_languages = ['html', 'python', 'ruby', 'vim', 'cpp', 'c', 'go', 'sh', 'css', 'javascript']
 set conceallevel=0
+" save cursor position after exit
+autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g'\"" | endif
+autocmd InsertEnter * let CursorColumnI = col('.')
+autocmd CursorMovedI * let CursorColumnI = col('.')
+autocmd InsertLeave * if col('.') != CursorColumnI | call cursor(0, col('.')+1) | endif
 
 " for background to be transparent to terminal
 highlight Normal ctermbg=NONE
 highlight nonText ctermbg=NONE
 
-" customize vertical separator
-set fillchars+=vert:│
-hi VertSplit cterm=NONE ctermfg=238 ctermbg=NONE
 " customize color highlightings
+hi VertSplit cterm=NONE ctermfg=238 ctermbg=NONE
 hi EndOfBuffer ctermfg=238
 hi SignColumn ctermbg=NONE
+
+" html indent on `=`
+let g:html_indent_script1 = "inc"
+let g:html_indent_style1 = "inc"
+let g:html_indent_inctags = "html,body,head,tbody"
+
+" legacy
+"" customize vertical separator
+"set fillchars+=vert:│
+"" ???
+"set backspace=indent,eol,start
+"" ???
+"set hlsearch
+"let CursorColumnI = 0 "the cursor column position in INSERT
