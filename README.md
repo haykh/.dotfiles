@@ -64,6 +64,7 @@ fc-cache -rv
 ```
 
 ## zsh + oh-my-zsh + p10k
+download [`chroma`](https://github.com/alecthomas/chroma/releases) binary and move to `$HOME/.local/bin`.
 ```sh
 sudo apt install zsh
 sudo chsh -s `which zsh` $USER
@@ -89,12 +90,10 @@ srch <REGEX>
 screencast -h
 ```
 
-## colorls
+## exa
+
 ```sh
-rbenv rehash
-sudo gem install colorls
-ln -s $HOME/.dotfiles/.config/colorls $HOME/.config
-echo "alias ls='colorls --sd'" >> $HOME/.zshrc
+cargo install exa
 ```
 
 ## nvim

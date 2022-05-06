@@ -20,7 +20,7 @@ Plug 'bfrg/vim-cpp-modern'
 Plug 'lervag/vimtex'
 
 " highlighting/formatting
-"Plug 'thaerkh/vim-indentguides'
+Plug 'tpope/vim-markdown'
 Plug 'tpope/vim-surround'
 Plug 'Yggdroot/indentLine'
 Plug 'chrisbra/Colorizer'
@@ -44,15 +44,10 @@ Plug 'xiyaowong/telescope-emoji.nvim'
 Plug 'nvim-telescope/telescope-file-browser.nvim'
 Plug 'olacin/telescope-gitmoji.nvim'
 
-" search/replace @nvim
-Plug 'kyazdani42/nvim-web-devicons'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'windwp/nvim-spectre'
-
 call plug#end()
 filetype indent on
 
-let g:plug_window = 'vert bo new'
+let g:plug_window='vert bo new'
 
 lua << EOF
 -- loading telescope + extensions @nvim
@@ -77,11 +72,6 @@ end,
 require("telescope").load_extension("emoji")
 require("telescope").load_extension("file_browser")
 require('telescope').load_extension("gitmoji")
-
--- search/replace @nvim
-require('spectre').setup({
-live_update = true,
-})
 
 -- treesitter @nvim
 require("nvim-treesitter/configs").setup({
@@ -113,6 +103,15 @@ augroup FormatAutogroup
 augroup END
 ]], true)
 EOF
+
+" colorizer
+" auto launch:
+"autocmd FileType * : ColorHighlight
+let g:colorizer_auto_filetype='css,html'
+
+" oceanic
+let g:oceanic_material_allow_bold=1
+let g:oceanic_material_transparent_background=1
 
 " indent-guides
 let g:indentLine_char = '│'
@@ -152,9 +151,6 @@ nnoremap <leader>th <cmd>Telescope man_pages<cr>
 nnoremap <leader>te <cmd>Telescope emoji theme=ivy<cr>
 nnoremap <leader>gm <cmd>Telescope gitmoji<cr>
 
-" search/replace @nvim
-nnoremap <leader>S <cmd>lua require('spectre').open()<CR>
-
 "------------------------------------------------------------------------------
 "------ vanilla vim flags -----------------------------------------------------
 "------------------------------------------------------------------------------
@@ -175,10 +171,13 @@ set softtabstop=2
 set shiftwidth=2
 set expandtab
 set number relativenumber
+"set termguicolors
 
 " markdown highlighting
 au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
 let g:markdown_fenced_languages = ['html', 'python', 'ruby', 'vim', 'cpp', 'c', 'go', 'sh', 'css', 'javascript']
+let g:markdown_syntax_conceal = 0
+let g:markdown_minlines = 100
 set conceallevel=0
 " save cursor position after exit
 autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g'\"" | endif
