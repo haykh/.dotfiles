@@ -18,6 +18,10 @@ Plug 'tikhomirov/vim-glsl'
 Plug 'digitaltoad/vim-pug'
 Plug 'bfrg/vim-cpp-modern'
 Plug 'lervag/vimtex'
+Plug 'posva/vim-vue'
+
+" auto-completion
+Plug 'mattn/emmet-vim'
 
 " highlighting/formatting
 Plug 'tpope/vim-markdown'
@@ -106,8 +110,11 @@ EOF
 
 " colorizer
 " auto launch:
-"autocmd FileType * : ColorHighlight
-let g:colorizer_auto_filetype='css,html'
+let g:colorizer_auto_filetype='css,html,vue'
+
+" emmet-vim
+"let g:user_emmet_leader_key='<Leader>'
+let g:user_emmet_expandabbr_key = '<S-Tab>'
 
 " oceanic
 let g:oceanic_material_allow_bold=1
