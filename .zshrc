@@ -15,7 +15,7 @@ plugins=(git colorize colored-man-pages extract)
 source $ZSH/oh-my-zsh.sh
 
 # -------------------------------
-# custom:
+# Custom:
 # -------------------------------
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f $HOME/.p10k.zsh ]] || source $HOME/.p10k.zsh
@@ -36,6 +36,7 @@ ZSH_COLORIZE_TOOL=chroma
 ZSH_COLORIZE_CHROMA_FORMATTER=terminal16m
 
 alias vimconfig="vi $HOME/.config/nvim/init.vim"
-alias cat='ccat'
+alias cat='bat -pp'
+alias less='vim -R'
 alias ls='exa -a --icons --git --sort=type'
 alias ll='exa -a --long --icons --header --git --sort=type --time-style=long-iso'
