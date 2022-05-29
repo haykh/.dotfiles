@@ -161,7 +161,7 @@ nnoremap <leader>gm <cmd>Telescope gitmoji<cr>
 "------------------------------------------------------------------------------
 "------ vanilla vim flags -----------------------------------------------------
 "------------------------------------------------------------------------------
-colo oceanic_material
+!silent colo oceanic_material
 syntax on
 hi Error NONE
 hi CursorLine cterm=NONE ctermbg=NONE ctermfg=NONE guibg=NONE guifg=NONE
