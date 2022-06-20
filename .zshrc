@@ -36,7 +36,7 @@ ZSH_COLORIZE_TOOL=chroma
 ZSH_COLORIZE_CHROMA_FORMATTER=terminal16m
 
 alias vimconfig="vi $HOME/.config/nvim/init.vim"
-alias cat='bat -pp'
+alias cat='batcat -pp'
 alias less='vim -R'
 alias ls='exa -a --icons --git --sort=type'
 alias ll='exa -a --long --icons --header --git --sort=type --time-style=long-iso'
