@@ -98,12 +98,21 @@ filetype = {
       }
     end
     },
+  python = {
+    function()
+    return {
+      exe = "autopep8",
+      args = { "-" },
+      stdin = 1,
+      }
+    end
+    },
   }
 })
 vim.api.nvim_exec([[
 augroup FormatAutogroup
   autocmd!
-  autocmd BufWritePost *.cpp,*.c,*.hpp,*.h FormatWrite
+  autocmd BufWritePost *.cpp,*.c,*.hpp,*.h,*.py FormatWrite
 augroup END
 ]], true)
 EOF
@@ -141,12 +150,14 @@ let g:vimtex_syntax_conceal_disable = 1
 " floaterm
 tnoremap <Leader>ff <C-\><C-n><C-w>w
 tnoremap <Leader>fn <C-\><C-n>
-tnoremap <Leader>f+ <cmd>FloatermUpdate --height=0.95<cr>
+tnoremap <Leader>f= <cmd>FloatermUpdate --height=0.95<cr>
 tnoremap <Leader>f- <cmd>FloatermUpdate --height=g:floaterm_height<cr>
+tnoremap <Leader>f+ <cmd>FloatermUpdate --width=0.95<cr>
+tnoremap <Leader>f_ <cmd>FloatermUpdate --width=g:floaterm_width<cr>
 let g:floaterm_keymap_new = '<Leader>ft'
 let g:floaterm_keymap_kill = '<Leader>fq'
 let g:floaterm_keymap_toggle = '<Leader>fs'
-let g:floaterm_position = 'topright'
+let g:floaterm_position = 'bottomright'
 let g:floaterm_height = 0.35
 let g:floaterm_width = 0.45
 
