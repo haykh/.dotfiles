@@ -55,6 +55,7 @@ let g:plug_window='vert bo new'
 
 lua << EOF
 -- loading telescope + extensions @nvim
+
 require('telescope').setup({
 extensions = {
   file_browser = {
@@ -64,14 +65,13 @@ extensions = {
     sorting_strategy = 'ascending',
     display_stat = false,
     respect_gitignore = true,
+    },
+  emoji = {
+    action = function(emoji)
+      vim.fn.setreg("", emoji.value)
+    end,
     }
   }
-})
-
-require("telescope-emoji").setup({
-action = function(emoji)
-vim.fn.setreg("", emoji.value)
-end,
 })
 require("telescope").load_extension("emoji")
 require("telescope").load_extension("file_browser")
