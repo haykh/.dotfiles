@@ -57,13 +57,19 @@ do
   shift
 done
 
+if [ $NUMBER -eq 0 ]; then
+  ZEROPAD=""
+else
+  ZEROPAD="0${NUMBER}"
+fi
+
 command() {
   if [ "$dry" = true ] ; then
     prefix=echo
   else
     prefix=
   fi
-  $prefix ffmpeg -framerate $RATE -start_number $START -i $FNAME%0${NUMBER}d.png -c:v libx264 -crf $COMPRESSION -vf format=yuv420p $OUTNAME
+  $prefix ffmpeg -framerate $RATE -start_number $START -i $FNAME%${ZEROPAD}d.png -c:v libx264 -crf $COMPRESSION -vf "'format=yuv420p,pad=ceil(iw/2)*2:ceil(ih/2)*2'" $OUTNAME
 }
 
 if [ "$execute" = true ] ; then
