@@ -68,7 +68,7 @@ function command() {
   else
     prefix=
   fi
-  $prefix ffmpeg -nostdin -framerate $RATE -start_number $START $NONCONSECUTIVE -i $FNAME%${ZEROPAD}d.png -c:v libx264 -crf $COMPRESSION -filter_complex '"[0:v]format=yuv420p,pad=ceil(iw/2)*2:ceil(ih/2)*2"' $OUTNAME
+  $prefix ffmpeg -nostdin -framerate $RATE -start_number $START $NONCONSECUTIVE -i $FNAME%${ZEROPAD}d.png -c:v libx264 -crf $COMPRESSION -filter_complex "[0:v]format=yuv420p,pad=ceil(iw/2)*2:ceil(ih/2)*2" $OUTNAME
 }
 
 if [ "$execute" = true ] ; then
