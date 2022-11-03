@@ -10,7 +10,7 @@ export ZSH="$HOME/.oh-my-zsh"
 
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
-plugins=(git colorize colored-man-pages extract docker docker-compose)
+plugins=(git colorize colored-man-pages extract docker docker-compose zsh-syntax-highlighting zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -28,7 +28,6 @@ autoload -U $fpath[-1]/*(.:t)
 export EDITOR=nvim
 
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
-. "$HOME/.cargo/env"
 
 autoload compinit -Uz && compinit
 
@@ -36,9 +35,9 @@ ZSH_COLORIZE_TOOL=chroma
 ZSH_COLORIZE_CHROMA_FORMATTER=terminal16m
 
 alias vimconfig="vi $HOME/.config/nvim/init.vim"
-alias cat='batcat -pp'
+alias cat='bat -pp --theme=TwoDark'
 alias less='vim -R'
-alias ls='exa -a --icons --git --sort=type'
-alias ll='exa -a --long --icons --header --git --sort=type --time-style=long-iso'
+alias ls='EXA_ICON_SPACING=2 exa -a --icons --git --sort=type'
+alias ll='EXA_ICON_SPACING=2 exa -a --long --icons --header --git --sort=type --time-style=long-iso'
 alias vim='nvim'
 alias vi='nvim'
