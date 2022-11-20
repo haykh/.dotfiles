@@ -75,7 +75,8 @@ function install_virtualenv_if_not_exists() {
 function init_ssh() {
   mkdir -p $HOME/.ssh
   mkdir -p $HOME/.ssh/sockets
-  include="Include \$HOME/.dotfiles/.ssh/config"
+  eval "$(ssh-agent -s)"
+  include="Include ~/.dotfiles/.ssh/config"
   if [ ! -e $HOME/.ssh/config ]; then
     touch $HOME/.ssh/config
   fi
@@ -84,8 +85,14 @@ function init_ssh() {
     echo "$include" >> $HOME/.ssh/config
   fi
   
-  if [ ! -e $HOME/.ssh/id_ed25519 ]; then
-    ssh-keygen -t ed25519 -C "haykh.mfs+github@gmail.com"
+  if [ ! -e $HOME/.ssh/id_git]; then
+    ssh-keygen -t ed25519 -C "git" -f $HOME/.ssh/id_git
+    ssh-add $HOME/.ssh/id_git
+  fi
+
+  if [ ! -e $HOME/.ssh/id_$arch\_ssh]; then
+    ssh-keygen -C "mac-ssh" -f $HOME/.ssh/id_$arch\_ssh
+    ssh-add $HOME/.ssh/id_$arch\_ssh
   fi
 }
 
