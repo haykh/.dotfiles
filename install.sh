@@ -195,6 +195,7 @@ if [ "$arch" = "mac" ]; then
   command "5.8 installing node@16" "brew_install_if_not_exists node@16"
   command "5.9 installing gitmoji-cli" "npm i -g gitmoji-cli"
   command "5.10 installing gpg" "brew_install_if_not_exists gnupg"
+  command "5.11 installing qview" "brew_install_if_not_exists qview"
 
   command "6. installing iterm2" "install_mac_iterm2"
 
@@ -209,6 +210,7 @@ if [ "$arch" = "mac" ]; then
   command "7.9 installing scroll-reverser" "brew_install_if_not_exists scroll-reverser --cask"
   command "7.10 installing AltTab" "brew_install_if_not_exists alt-tab --cask"
   command "7.11 installing VScode" "brew_install_if_not_exists visual-studio-code --cask"
+  command "7.12 installing mpv" "brew_install_if_not_exists mpv --cask"
   rm -rf build
 elif [ "$arch" = "linux" ]; then
   echo "two"
