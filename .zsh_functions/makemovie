@@ -1,15 +1,16 @@
 helpmenu () {
-  echo "combine a series of png files into a movie using ffmpeg."
+  echo "combine a series of image files into a movie using ffmpeg."
   echo 
   echo "usage: makemovie [options]"
   echo
   echo "   -h, --help                 print this menu and quit"
   echo "   -r, --framerate            specify framerate in fps [default: 30]"
-  echo "   -i, --input                input png prefixes [default: step_]"
+  echo "   -i, --input                input image prefixes [default: step_]"
   echo "   -o, --output               output file name [default: anim.mov]"
   echo "   -c, --compression          specify video compression level [default: 1]"
-  echo "   -s, --start                starting number for pngs [default: 0]"
+  echo "   -s, --start                starting number for images [default: 0]"
   echo "   -n, --number               number of zeros to pad [default: 3]"
+  echo "   -x, --extension            image extension [default: png]"
   echo "   -d, --dry                  dry run, print the command but don't run it"
   echo
   echo "example #1: for a collection of pngs pic.0005.png, pic.0006.png ... use:"
@@ -25,6 +26,7 @@ FNAME='step_'
 START=0
 COMPRESSION=1
 NUMBER=3
+EXTENSION='png'
 while [ ! $# -eq 0 ]
 do
   case "$1" in
@@ -53,6 +55,9 @@ do
     --number | -n)
       NUMBER="$2"
         ;;
+    --extension | -x)
+      EXTENSION="$2"
+        ;;
     esac
   shift
 done
@@ -68,7 +73,7 @@ function command() {
   else
     prefix=
   fi
-  $prefix ffmpeg -nostdin -framerate $RATE -start_number $START $NONCONSECUTIVE -i $FNAME%${ZEROPAD}d.png -c:v libx264 -crf $COMPRESSION -filter_complex "[0:v]format=yuv420p,pad=ceil(iw/2)*2:ceil(ih/2)*2" $OUTNAME
+  $prefix ffmpeg -nostdin -framerate $RATE -start_number $START $NONCONSECUTIVE -i $FNAME%${ZEROPAD}d.$EXTENSION -c:v libx264 -crf $COMPRESSION -filter_complex "[0:v]format=yuv420p,pad=ceil(iw/2)*2:ceil(ih/2)*2" $OUTNAME
 }
 
 if [ "$execute" = true ] ; then

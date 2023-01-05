@@ -35,7 +35,11 @@ ZSH_COLORIZE_TOOL=chroma
 ZSH_COLORIZE_CHROMA_FORMATTER=terminal16m
 
 alias vimconfig="vi $HOME/.config/nvim/init.vim"
-alias cat='bat -pp --theme=TwoDark'
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+  alias cat='batcat -pp --theme=TwoDark'
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+  alias cat='bat -pp --theme=TwoDark'
+fi
 alias less='vim -R'
 alias ls='EXA_ICON_SPACING=2 exa -a --icons --git --sort=type'
 alias ll='EXA_ICON_SPACING=2 exa -a --long --icons --header --git --sort=type --time-style=long-iso'
