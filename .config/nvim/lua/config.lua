@@ -51,11 +51,20 @@ filetype = {
       }
     end
     },
+  fortran = {
+    function()
+    return {
+      exe = "fprettify",
+      args = { "-i 2", "-w 4", "--whitespace-assignment true", "--enable-decl --whitespace-decl true", "--whitespace-relational true", "--whitespace-logical true", "--whitespace-plusminus true", "--whitespace-multdiv true", "--whitespace-print true", "--whitespace-type true", "--whitespace-intrinsics true", "--enable-replacements", "-l 1000" },
+      stdin = 1,
+      }
+    end
+    },
   }
 })
 vim.api.nvim_exec([[
 augroup FormatAutogroup
   autocmd!
-  autocmd BufWritePost *.cpp,*.c,*.hpp,*.h,*.py FormatWrite
+  autocmd BufWritePost *.cpp,*.c,*.hpp,*.h,*.py,*.F90,*.F08,*.F FormatWrite
 augroup END
 ]], true)
