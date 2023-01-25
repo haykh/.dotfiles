@@ -155,9 +155,6 @@ let g:html_indent_script1 = "inc"
 let g:html_indent_style1 = "inc"
 let g:html_indent_inctags = "html,body,head,tbody"
 
-" custom nodejs version for copilot
-let $PATH = '/opt/homebrew/Cellar/node@16/16.18.0/bin:' . $PATH
-
 " legacy
 "" customize vertical separator
 "set fillchars+=vert:│

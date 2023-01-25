@@ -28,18 +28,18 @@ subarch=$2
 
 function init_zsh() {
   if [ ! -d $HOME/.oh-my-zsh/ ]; then
-    sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
-    rm -f $HOME/.zshrc
-    touch $HOME/.zshrc
-    echo ". $HOME/.dotfiles/.zshrc" >> $HOME/.zshrc
-    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-    touch $HOME/.p10k.zsh
-    echo ". $HOME/.dotfiles/.p10k.zsh" >> $HOME/.p10k.zsh
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
   else
     echo "oh-my-zsh already installed"
   fi
+  rm -f $HOME/.zshrc
+  touch $HOME/.zshrc
+  echo ". $HOME/.dotfiles/.zshrc" >> $HOME/.zshrc
+  git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+  touch $HOME/.p10k.zsh
+  echo ". $HOME/.dotfiles/.p10k.zsh" >> $HOME/.p10k.zsh
 }
 
 function init_gitconfig() {
@@ -85,12 +85,12 @@ function init_ssh() {
     echo "$include" >> $HOME/.ssh/config
   fi
   
-  if [ ! -e $HOME/.ssh/id_git]; then
+  if [ ! -e $HOME/.ssh/id_git ]; then
     ssh-keygen -t ed25519 -C "git" -f $HOME/.ssh/id_git
     ssh-add $HOME/.ssh/id_git
   fi
 
-  if [ ! -e $HOME/.ssh/id_$arch\_ssh]; then
+  if [ ! -e $HOME/.ssh/id_$arch\_ssh ]; then
     ssh-keygen -C "mac-ssh" -f $HOME/.ssh/id_$arch\_ssh
     ssh-add $HOME/.ssh/id_$arch\_ssh
   fi
@@ -184,6 +184,7 @@ if [ "$arch" = "mac" ]; then
 
   command "4. installing homebrew" "install_mac_brew"
 
+  command "5.0 installing wget" "brew_install_if_not_exists wget"
   command "5.1 installing nvim" "brew_install_if_not_exists neovim"
   init_nvimconfig
   command "5.2 installing exa" "brew_install_if_not_exists exa"
@@ -192,7 +193,8 @@ if [ "$arch" = "mac" ]; then
   command "5.5 installing bitwarden-cli" "brew_install_if_not_exists bitwarden-cli"
   command "5.6 installing gcc" "brew_install_if_not_exists gcc"
   command "5.7 installing node" "brew_install_if_not_exists node"
-  command "5.8 installing node@16" "brew_install_if_not_exists node@16"
+  # DEPRECATED: node16 not required anymore
+  #command "5.8 installing node@16" "brew_install_if_not_exists node@16"
   command "5.9 installing gitmoji-cli" "npm i -g gitmoji-cli"
   command "5.10 installing gpg" "brew_install_if_not_exists gnupg"
   command "5.11 installing qview" "brew_install_if_not_exists qview"
@@ -211,6 +213,7 @@ if [ "$arch" = "mac" ]; then
   command "7.10 installing AltTab" "brew_install_if_not_exists alt-tab --cask"
   command "7.11 installing VScode" "brew_install_if_not_exists visual-studio-code --cask"
   command "7.12 installing mpv" "brew_install_if_not_exists mpv --cask"
+  command "7.13 installing mos" "brew_install_if_not_exists mos --cask"
   rm -rf build
 elif [ "$arch" = "linux" ]; then
   echo "two"
