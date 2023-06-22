@@ -98,6 +98,7 @@ let g:floaterm_keymap_toggle = '<Leader>fs'
 let g:floaterm_position = 'bottomright'
 let g:floaterm_height = 0.35
 let g:floaterm_width = 0.45
+let g:floaterm_shell = 'zsh'
 
 " telescope + extensions
 nnoremap <leader>tf <cmd>Telescope file_browser<cr>
