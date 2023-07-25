@@ -8,8 +8,7 @@ Plug 'preservim/nerdtree'
 Plug 'ryanoasis/vim-devicons'
 
 " looks
-Plug 'glepnir/oceanic-material'
-Plug 'projekt0n/github-nvim-theme'
+Plug 'sonph/onehalf', { 'rtp': 'vim' }
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
@@ -52,32 +51,33 @@ Plug 'olacin/telescope-gitmoji.nvim'
 call plug#end()
 filetype indent on
 
+set noswapfile
+set ignorecase
+set incsearch
+set viminfo='20,<1000,s1000
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
+set expandtab
+set number relativenumber
+
 let g:plug_window='vert bo new'
 
 lua require('config')
 
+source colo.vim
+source key.vim
+source wsl.vim
+
 " colorizer
 " auto launch:
 let g:colorizer_auto_filetype='css,html,vue'
-
-" emmet-vim
-"let g:user_emmet_leader_key='<Leader>'
-let g:user_emmet_expandabbr_key = '<S-Tab>'
-
-" oceanic
-let g:oceanic_material_allow_bold=1
-let g:oceanic_material_transparent_background=1
 
 " indent-guides
 let g:indentLine_char = '│'
 
 " NERDTree
 let NERDTreeShowHidden=1
-nnoremap <leader>nt <cmd>NERDTreeToggle<cr>
-
-" airline
-let g:airline_powerline_fonts = 1
-let g:airline_theme='supernova'
 
 " rainbow
 let g:rainbow_active = 1
@@ -87,49 +87,10 @@ let g:vimtex_quickfix_mode = 0
 let g:vimtex_syntax_conceal_disable = 1
 
 " floaterm
-tnoremap <Leader>ff <C-\><C-n><C-w>w
-tnoremap <Leader>fn <C-\><C-n>
-tnoremap <Leader>f= <cmd>FloatermUpdate --height=0.95<cr>
-tnoremap <Leader>f- <cmd>FloatermUpdate --height=g:floaterm_height<cr>
-tnoremap <Leader>f+ <cmd>FloatermUpdate --width=0.95<cr>
-tnoremap <Leader>f_ <cmd>FloatermUpdate --width=g:floaterm_width<cr>
-let g:floaterm_keymap_new = '<Leader>ft'
-let g:floaterm_keymap_kill = '<Leader>fq'
-let g:floaterm_keymap_toggle = '<Leader>fs'
 let g:floaterm_position = 'bottomright'
 let g:floaterm_height = 0.35
 let g:floaterm_width = 0.45
 let g:floaterm_shell = 'zsh'
-
-" telescope + extensions
-nnoremap <leader>tf <cmd>Telescope file_browser<cr>
-nnoremap <leader>tg <cmd>Telescope live_grep<cr>
-nnoremap <leader>tr <cmd>Telescope registers<cr>
-nnoremap <leader>th <cmd>Telescope man_pages<cr>
-nnoremap <leader>te <cmd>Telescope emoji theme=ivy<cr>
-nnoremap <leader>gm <cmd>Telescope gitmoji<cr>
-
-"------------------------------------------------------------------------------
-"------ vanilla vim flags -----------------------------------------------------
-"------------------------------------------------------------------------------
-silent! colo oceanic_material
-syntax on
-hi Error NONE
-hi CursorLine cterm=NONE ctermbg=NONE ctermfg=NONE guibg=NONE guifg=NONE
-hi Directory ctermfg=Blue
-inoremap jk <ESC>
-
-set noswapfile
-set ignorecase
-set incsearch
-set background=dark
-set viminfo='20,<1000,s1000
-set tabstop=2
-set softtabstop=2
-set shiftwidth=2
-set expandtab
-set number relativenumber
-set termguicolors
 
 " markdown highlighting
 au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
@@ -143,47 +104,10 @@ autocmd InsertEnter * let CursorColumnI = col('.')
 autocmd CursorMovedI * let CursorColumnI = col('.')
 autocmd InsertLeave * if col('.') != CursorColumnI | call cursor(0, col('.')+1) | endif
 
-" for background to be transparent to terminal
-highlight Normal ctermbg=NONE
-highlight nonText ctermbg=NONE
-
-" customize color highlightings
-hi VertSplit cterm=NONE ctermfg=238 ctermbg=NONE
-hi EndOfBuffer ctermfg=238
-hi SignColumn ctermbg=NONE
-
 " html indent on `=`
 let g:html_indent_script1 = "inc"
 let g:html_indent_style1 = "inc"
 let g:html_indent_inctags = "html,body,head,tbody"
-
-fun! InWSL()
-  let uname = substitute(system('uname'),'\n','','')
-  if uname == 'Linux'
-    let lines = readfile("/proc/version")
-    if lines[0] =~ "Microsoft"
-      return 1
-    endif
-  endif
-  return 0
-endfun
-
-" WSL yank support
-if InWSL()
-  set clipboard+=unnamedplus
-  let g:clipboard = {
-            \   'name': 'win32yank-wsl',
-            \   'copy': {
-            \      '+': 'win32yank.exe -i --crlf',
-            \      '*': 'win32yank.exe -i --crlf',
-            \    },
-            \   'paste': {
-            \      '+': 'win32yank.exe -o --lf',
-            \      '*': 'win32yank.exe -o --lf',
-            \   },
-            \   'cache_enabled': 0,
-            \ }
-endif
 
 " legacy
 "" customize vertical separator
