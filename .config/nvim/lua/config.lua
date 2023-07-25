@@ -45,7 +45,7 @@ filetype = {
     function()
     return {
       exe = "black",
-      args = { "-" },
+      args = {"-"},
       stdin = 1,
       }
     end
