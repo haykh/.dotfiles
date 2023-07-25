@@ -27,6 +27,10 @@ arch=$1
 subarch=$2
 
 function init_zsh() {
+  if [ "$arch" = "linux" ]; then
+    sudo apt install zsh
+    chsh -s $(which zsh)
+  fi
   if [ ! -d $HOME/.oh-my-zsh/ ]; then
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
   else
@@ -48,8 +52,8 @@ function init_gitconfig() {
   fi
   if ! grep -q "[user]" $HOME/.gitconfig; then
     echo "[user]" >> $HOME/.gitconfig
-    echo "  name = haykh" >> $HOME/.gitconfig
-    echo "  email = haykh.mfs+github@gmail.com" >> $HOME/.gitconfig
+    echo "  name = hayk" >> $HOME/.gitconfig
+    echo "  email = haykh.astro@gmail.com" >> $HOME/.gitconfig
   fi
 }
 
@@ -91,7 +95,7 @@ function init_ssh() {
   fi
 
   if [ ! -e $HOME/.ssh/id_$arch\_ssh ]; then
-    ssh-keygen -C "mac-ssh" -f $HOME/.ssh/id_$arch\_ssh
+    ssh-keygen -C "${arch}-ssh" -f $HOME/.ssh/id_$arch\_ssh
     ssh-add $HOME/.ssh/id_$arch\_ssh
   fi
 }
@@ -217,8 +221,10 @@ if [ "$arch" = "mac" ]; then
   rm -rf build
 elif [ "$arch" = "linux" ]; then
   echo "two"
-  # init_gitconfig
-  # sudo apt install neovim
+  command "0.1 initialize ssh" "init_ssh"
+  command "0.2 initialize gitconfig" "init_gitconfig"
+  
+  command "1.0 installing zsh" "init_zsh"
 else
   echo "unknown configuration"
   usage

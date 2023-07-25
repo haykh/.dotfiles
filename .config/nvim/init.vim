@@ -9,6 +9,7 @@ Plug 'ryanoasis/vim-devicons'
 
 " looks
 Plug 'glepnir/oceanic-material'
+Plug 'projekt0n/github-nvim-theme'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
@@ -154,6 +155,34 @@ hi SignColumn ctermbg=NONE
 let g:html_indent_script1 = "inc"
 let g:html_indent_style1 = "inc"
 let g:html_indent_inctags = "html,body,head,tbody"
+
+fun! InWSL()
+  let uname = substitute(system('uname'),'\n','','')
+  if uname == 'Linux'
+    let lines = readfile("/proc/version")
+    if lines[0] =~ "Microsoft"
+      return 1
+    endif
+  endif
+  return 0
+endfun
+
+" WSL yank support
+if InWSL()
+  set clipboard+=unnamedplus
+  let g:clipboard = {
+            \   'name': 'win32yank-wsl',
+            \   'copy': {
+            \      '+': 'win32yank.exe -i --crlf',
+            \      '*': 'win32yank.exe -i --crlf',
+            \    },
+            \   'paste': {
+            \      '+': 'win32yank.exe -o --lf',
+            \      '*': 'win32yank.exe -o --lf',
+            \   },
+            \   'cache_enabled': 0,
+            \ }
+endif
 
 " legacy
 "" customize vertical separator

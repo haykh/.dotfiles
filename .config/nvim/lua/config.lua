@@ -1,5 +1,4 @@
 -- loading telescope + extensions @nvim
-
 require('telescope').setup({
 extensions = {
   file_browser = {
@@ -62,6 +61,7 @@ filetype = {
     },
   }
 })
+
 vim.api.nvim_exec([[
 augroup FormatAutogroup
   autocmd!
