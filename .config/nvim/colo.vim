@@ -7,6 +7,7 @@ let g:airline_powerline_fonts = 1
 let g:airline_theme='onehalfdark'
 
 syntax on
+
 hi Error NONE
 hi CursorLine cterm=NONE ctermbg=NONE ctermfg=NONE guibg=NONE guifg=NONE
 hi Directory ctermfg=Blue
@@ -22,4 +23,5 @@ hi LineNr ctermfg=NONE guibg=NONE
 let g:gitgutter_set_sign_backgrounds = 1
 
 " floaterm
-hi FloatermBorder guibg=NONE guifg=NONE
+hi FloatermBorder ctermbg=BLACK
+

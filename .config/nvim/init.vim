@@ -65,9 +65,9 @@ let g:plug_window='vert bo new'
 
 lua require('config')
 
-source colo.vim
-source key.vim
-source wsl.vim
+runtime key.vim
+runtime wsl.vim
+runtime colo.vim
 
 " colorizer
 " auto launch:
