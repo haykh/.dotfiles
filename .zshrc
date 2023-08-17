@@ -40,8 +40,8 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
 elif [[ "$OSTYPE" == "darwin"* ]]; then
   alias cat='bat -pp --theme=TwoDark'
 fi
-alias less='vim -R'
-alias ls='EXA_ICON_SPACING=2 exa -a --icons --git --sort=type'
-alias ll='EXA_ICON_SPACING=2 exa -a --long --icons --header --git --sort=type --time-style=long-iso'
+alias ls='EXA_ICON_SPACING=1 exa -a --icons --git --sort=type'
+alias ll='EXA_ICON_SPACING=1 exa -a --long --icons --header --git --sort=type --time-style=long-iso'
 alias vim='nvim'
 alias vi='nvim'
+alias less='vim -R'

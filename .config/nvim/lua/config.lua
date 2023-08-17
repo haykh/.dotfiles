@@ -59,12 +59,21 @@ filetype = {
       }
     end
     },
+  go = {
+    function()
+    return {
+      exe = "gofmt",
+      args = { "-e", vim.api.nvim_buf_get_name(0)},
+      stdin = true
+      }
+    end
+  }
   }
 })
 
 vim.api.nvim_exec([[
 augroup FormatAutogroup
   autocmd!
-  autocmd BufWritePost *.cpp,*.c,*.hpp,*.h,*.py,*.F90,*.F08,*.F FormatWrite
+  autocmd BufWritePost *.cpp,*.c,*.hpp,*.h,*.py,*.F90,*.F08,*.F,*.go FormatWrite
 augroup END
 ]], true)

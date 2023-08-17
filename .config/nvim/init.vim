@@ -109,6 +109,8 @@ let g:html_indent_script1 = "inc"
 let g:html_indent_style1 = "inc"
 let g:html_indent_inctags = "html,body,head,tbody"
 
+autocmd FileType go setlocal tabstop=4 shiftwidth=4 noexpandtab
+
 " legacy
 "" customize vertical separator
 "set fillchars+=vert:│
