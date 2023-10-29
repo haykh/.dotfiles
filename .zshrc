@@ -17,7 +17,6 @@ source $ZSH/oh-my-zsh.sh
 # -------------------------------
 # Custom:
 # -------------------------------
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f $HOME/.p10k.zsh ]] || source $HOME/.p10k.zsh
 
 zstyle ':completion:*:default' list-colors "ow=30;44"
@@ -25,14 +24,12 @@ zstyle ':completion:*:default' list-colors "ow=30;44"
 fpath+=$HOME/.dotfiles/.zsh_functions
 autoload -U $fpath[-1]/*(.:t)
 
-export EDITOR=nvim
-
-if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
-
 autoload compinit -Uz && compinit
 
 ZSH_COLORIZE_TOOL=chroma
 ZSH_COLORIZE_CHROMA_FORMATTER=terminal16m
+
+export EDITOR=nvim
 
 alias vimconfig="vi $HOME/.config/nvim/init.vim"
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
@@ -40,8 +37,8 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
 elif [[ "$OSTYPE" == "darwin"* ]]; then
   alias cat='bat -pp --theme=TwoDark'
 fi
-alias ls='EXA_ICON_SPACING=1 exa -a --icons --git --sort=type'
-alias ll='EXA_ICON_SPACING=1 exa -a --long --icons --header --git --sort=type --time-style=long-iso'
+alias ls='EXA_ICON_SPACING=1 exa -a --icons --sort=type'
+alias ll='EXA_ICON_SPACING=1 exa -a --long --icons --header --sort=type --time-style=long-iso'
 alias vim='nvim'
 alias vi='nvim'
 alias less='vim -R'
