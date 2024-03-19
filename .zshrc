@@ -33,7 +33,11 @@ export EDITOR=nvim
 
 alias vimconfig="vi $HOME/.config/nvim/init.vim"
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-  alias cat='batcat -pp --theme=TwoDark'
+  if [ -f "/etc/arch-release" ]; then
+    alias cat='bat -pp --theme=TwoDark'
+  else
+    alias cat='batcat -pp --theme=TwoDark'
+  fi
 elif [[ "$OSTYPE" == "darwin"* ]]; then
   alias cat='bat -pp --theme=TwoDark'
 fi
