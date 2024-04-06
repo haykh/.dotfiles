@@ -71,7 +71,7 @@ runtime colo.vim
 
 " colorizer
 " auto launch:
-let g:colorizer_auto_filetype='css,html,vue'
+let g:colorizer_auto_filetype='css,html,vue,less'
 
 " indent-guides
 let g:indentLine_char = '│'
