@@ -20,16 +20,33 @@ require("telescope").load_extension("emoji")
 require("telescope").load_extension("file_browser")
 require('telescope').load_extension("gitmoji")
 
--- treesitter @nvim
-require("nvim-treesitter/configs").setup({
-ensure_installed = { "c", "lua", "rust" },
-highlight = {
-  enable = true
-  }
-})
+-- lspconfig @nvim
+require'lspconfig'.clangd.setup {
+  cmd = {
+    "clangd",
+    "--offset-encoding=utf-16",
+  },
+}
 
--- clang-format @nvim
-require('formatter').setup({
+-- treesitter @nvim
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = { "c", "cpp", "cmake", "glsl", "make",
+                       "python", "lua", 
+                       "rust", "fortran", 
+                       "go", "gomod", 
+                       "javascript", "css", "html", 
+                       "json", "yaml", "toml", 
+                       "bash", "comment",
+                       "markdown", "markdown_inline",
+                     },
+  highlight = { 
+    enable = true,
+    disable = {'vimdoc'},
+  },
+}
+
+-- format @nvim
+require'formatter'.setup {
 filetype = {
   cpp = {
     function()
@@ -68,12 +85,12 @@ filetype = {
       }
     end
   }
-  }
-})
+  },
+}
 
 vim.api.nvim_exec([[
 augroup FormatAutogroup
   autocmd!
-  autocmd BufWritePost *.cpp,*.c,*.hpp,*.h,*.py,*.F90,*.F08,*.F,*.go FormatWrite
+  autocmd BufWritePost *.rs,*.cpp,*.c,*.hpp,*.h,*.py,*.F90,*.F08,*.F,*.go FormatWrite
 augroup END
 ]], true)

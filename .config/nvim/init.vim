@@ -8,17 +8,21 @@ Plug 'preservim/nerdtree'
 Plug 'ryanoasis/vim-devicons'
 
 " looks
-Plug 'sonph/onehalf', { 'rtp': 'vim' }
+Plug 'projekt0n/github-nvim-theme'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+
+" lsp
+Plug 'neovim/nvim-lspconfig'
+
+" cmake
+Plug 'Civitasv/cmake-tools.nvim'
 
 " language specific
 Plug 'cespare/vim-toml'
 Plug 'tikhomirov/vim-glsl'
 Plug 'digitaltoad/vim-pug'
-Plug 'bfrg/vim-cpp-modern'
 Plug 'lervag/vimtex'
-Plug 'posva/vim-vue'
 
 " auto-completion
 Plug 'mattn/emmet-vim'
@@ -41,12 +45,17 @@ Plug 'github/copilot.vim'
 Plug 'voldikss/vim-floaterm'
 
 " telescope + extensions @nvim
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'},
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'xiyaowong/telescope-emoji.nvim'
 Plug 'nvim-telescope/telescope-file-browser.nvim'
 Plug 'olacin/telescope-gitmoji.nvim'
+
+" tabs
+Plug 'nvim-tree/nvim-web-devicons'
+Plug 'lewis6991/gitsigns.nvim'
+Plug 'romgrk/barbar.nvim'
 
 call plug#end()
 filetype indent on
@@ -64,6 +73,7 @@ set number relativenumber
 let g:plug_window='vert bo new'
 
 lua require('config')
+lua require('cmake')
 
 runtime key.vim
 runtime wsl.vim
@@ -88,8 +98,8 @@ let g:vimtex_syntax_conceal_disable = 1
 
 " floaterm
 let g:floaterm_position = 'bottomright'
-let g:floaterm_height = 0.35
-let g:floaterm_width = 0.45
+let g:floaterm_height = 1.00
+let g:floaterm_width = 0.35
 let g:floaterm_shell = 'zsh'
 
 " markdown highlighting
@@ -98,6 +108,7 @@ let g:markdown_fenced_languages = ['html', 'python', 'ruby', 'vim', 'cpp', 'c', 
 let g:markdown_syntax_conceal = 0
 let g:markdown_minlines = 100
 set conceallevel=0
+let g:indentLine_fileTypeExclude = ['json','markdown']
 " save cursor position after exit
 autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g'\"" | endif
 autocmd InsertEnter * let CursorColumnI = col('.')
