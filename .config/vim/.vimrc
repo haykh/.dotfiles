@@ -12,12 +12,6 @@ Plug 'projekt0n/github-nvim-theme'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
-" lsp
-Plug 'neovim/nvim-lspconfig'
-
-" cmake
-Plug 'Civitasv/cmake-tools.nvim'
-
 " language specific
 Plug 'cespare/vim-toml'
 Plug 'tikhomirov/vim-glsl'
@@ -35,28 +29,6 @@ Plug 'chrisbra/Colorizer'
 Plug 'luochen1990/rainbow'
 Plug 'preservim/nerdcommenter'
 
-" formatting @nvim
-Plug 'mhartington/formatter.nvim'
-
-" copilot @nvim
-Plug 'github/copilot.vim'
-
-" terminal @nvim
-Plug 'voldikss/vim-floaterm'
-
-" telescope + extensions @nvim
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'},
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
-Plug 'xiyaowong/telescope-emoji.nvim'
-Plug 'nvim-telescope/telescope-file-browser.nvim'
-Plug 'olacin/telescope-gitmoji.nvim'
-
-" tabs
-Plug 'nvim-tree/nvim-web-devicons'
-Plug 'lewis6991/gitsigns.nvim'
-Plug 'romgrk/barbar.nvim'
-
 call plug#end()
 filetype indent on
 
@@ -71,9 +43,6 @@ set expandtab
 set number relativenumber
 
 let g:plug_window='vert bo new'
-
-lua require('config')
-lua require('cmake')
 
 runtime key.vim
 runtime wsl.vim
@@ -121,12 +90,3 @@ let g:html_indent_style1 = "inc"
 let g:html_indent_inctags = "html,body,head,tbody"
 
 autocmd FileType go setlocal tabstop=4 shiftwidth=4 noexpandtab
-
-" legacy
-"" customize vertical separator
-"set fillchars+=vert:│
-"" ???
-"set backspace=indent,eol,start
-"" ???
-"set hlsearch
-"let CursorColumnI = 0 "the cursor column position in INSERT
