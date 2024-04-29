@@ -23,6 +23,7 @@ zstyle ':completion:*:default' list-colors "ow=30;44"
 
 fpath+=$HOME/.dotfiles/.zsh_functions
 autoload -U $fpath[-1]/*(.:t)
+fpath+=$HOME/.zfunc
 
 autoload compinit -Uz && compinit
 

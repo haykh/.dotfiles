@@ -1,10 +1,10 @@
-colo onehalfdark
+colo github_dark_default
 set background=dark
 set termguicolors
 
 " airline
 let g:airline_powerline_fonts = 1
-let g:airline_theme='onehalfdark'
+let g:airline_theme='github_dark_default'
 
 syntax on
 
@@ -24,4 +24,3 @@ let g:gitgutter_set_sign_backgrounds = 1
 
 " floaterm
 hi FloatermBorder ctermbg=BLACK
-
