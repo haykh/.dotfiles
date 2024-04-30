@@ -133,6 +133,9 @@ function Helper()
     }, {
         key = "<Leader>l",
         action = "nohlsearch"
+    }, {
+        key = "<Leader>qq",
+        action = "stop lsp"
     }}
     local quit_msg = "[`q` to close]"
 

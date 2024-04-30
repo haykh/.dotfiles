@@ -75,13 +75,18 @@ return {'github/copilot.vim', 'vim-airline/vim-airline', {
     init = function()
         vim.g.loaded_netrw = 1
         vim.g.loaded_netrwPlugin = 1
+        -- set nvim-tree.filters.git_ignored
     end,
     config = function()
         vim.api.nvim_set_keymap('n', '<Leader><Leader>', '<Cmd>NvimTreeToggle<CR>', {
             noremap = true,
             silent = true
         })
-        require('nvim-tree').setup({})
+        require('nvim-tree').setup({
+          filters = {
+            git_ignored = false,
+          }
+        })
     end
 }, {
     'romgrk/barbar.nvim',
@@ -286,6 +291,10 @@ return {'github/copilot.vim', 'vim-airline/vim-airline', {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
     config = function()
+        vim.api.nvim_set_keymap('n', '<Leader>qq', '<Cmd>LspStop<CR>', {
+            noremap = true,
+            silent = true
+        })
         require("nvim-treesitter.configs").setup({
             ensure_installed = {"c", "cpp", "cmake", "glsl", "make", "python", "lua", "rust", "fortran", "go", "gomod",
                                 "javascript", "css", "html", "json", "yaml", "toml", "bash", "comment", "markdown",
