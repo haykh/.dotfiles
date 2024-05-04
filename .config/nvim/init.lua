@@ -136,6 +136,9 @@ function Helper()
     }, {
         key = "<Leader>qq",
         action = "stop lsp"
+    }, {
+        key = "<C-[a|x]>",
+        action = "increment/decrement number"
     }}
     local quit_msg = "[`q` to close]"
 
