@@ -1,0 +1,31 @@
+#%Module1.0
+##
+## LLVM 17.0.6 Modulefile
+##
+
+proc ModulesHelp { } {
+    global version prefix
+
+    puts stderr "This module loads LLVM 17.0.6 compilers environment, built with GCC"
+    puts stderr "\nVersion $version\n"
+}
+
+module-whatis "Name: LLVM 17.0.6"
+module-whatis "Version: 17.0.6"
+module-whatis "Category: compiler"
+module-whatis "Description: LLVM compiler infrastructure"
+module-whatis "URL: http://llvm.org/"
+
+# for Tcl script use only
+set version 17.0.6
+set prefix $env(HOME)/opt/llvm/clang+llvm-17.0.6-x86_64-linux-gnu-ubuntu-22.04
+
+prepend-path PATH $prefix/bin
+prepend-path MANPATH $prefix/share/man
+prepend-path LD_LIBRARY_PATH $prefix/lib
+prepend-path CMAKE_PREFIX_PATH $prefix
+
+setenv CC $prefix/bin/clang
+setenv CXX $prefix/bin/clang++
+
+conflict gcc llvm

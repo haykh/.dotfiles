@@ -1,0 +1,31 @@
+#%Module1.0
+##
+## LLVM 13.0.1 Modulefile
+##
+
+proc ModulesHelp { } {
+    global version prefix
+
+    puts stderr "This module loads LLVM 13.0.1 compilers environment, built with GCC"
+    puts stderr "\nVersion $version\n"
+}
+
+module-whatis "Name: LLVM 13.0.1"
+module-whatis "Version: 13.0.1"
+module-whatis "Category: compiler"
+module-whatis "Description: LLVM compiler infrastructure"
+module-whatis "URL: http://llvm.org/"
+
+# for Tcl script use only
+set version 13.0.1
+set prefix $env(HOME)/opt/llvm/clang+llvm-$version-x86_64-linux-gnu-ubuntu-18.04
+
+prepend-path PATH $prefix/bin
+prepend-path MANPATH $prefix/share/man
+prepend-path LD_LIBRARY_PATH $prefix/lib
+prepend-path CMAKE_PREFIX_PATH $prefix
+
+setenv CC $prefix/bin/clang
+setenv CXX $prefix/bin/clang++
+
+conflict gcc llvm
