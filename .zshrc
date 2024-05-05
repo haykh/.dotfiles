@@ -47,3 +47,12 @@ alias ll='EXA_ICON_SPACING=1 exa -a --long --icons --header --sort=type --time-s
 alias vim='nvim'
 alias vi='nvim'
 alias less='vim -R'
+
+function howto() {
+  gh copilot suggest $1
+}
+function whatis() {
+  gh copilot explain $1
+}
+
+alias code="code --profile=hayk"
