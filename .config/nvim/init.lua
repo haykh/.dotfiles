@@ -81,6 +81,12 @@ vim.api.nvim_create_autocmd('BufReadPost', {
         end
     end
 })
+vim.api.nvim_create_autocmd({'BufNew','BufRead'}, {
+    pattern = '*.asm',
+    callback = function()
+        vim.bo.filetype = 'nasm'
+    end
+})
 
 -- for WSL only
 local function InWSL()

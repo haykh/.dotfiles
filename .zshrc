@@ -10,7 +10,7 @@ export ZSH="$HOME/.oh-my-zsh"
 
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
-plugins=(git colorize colored-man-pages extract zsh-syntax-highlighting zsh-autosuggestions docker docker-compose)
+plugins=(git colorize colored-man-pages exercism extract zsh-syntax-highlighting zsh-autosuggestions docker docker-compose)
 
 source $ZSH/oh-my-zsh.sh
 
