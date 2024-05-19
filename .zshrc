@@ -51,7 +51,7 @@ alias less='vim -R'
 function howto() {
   gh copilot suggest $1
 }
-function whatis() {
+function wtf() {
   gh copilot explain $1
 }
 

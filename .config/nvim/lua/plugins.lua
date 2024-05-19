@@ -260,32 +260,33 @@ return {'github/copilot.vim', 'vim-airline/vim-airline', {
   },
   lazy = false
 }, { -- lsp 
-'neovim/nvim-lspconfig',
-config = function()
-  vim.api.nvim_set_keymap('n', '<Leader>ld', '<Cmd>Telescope lsp_definitions<CR>', {
-    noremap = true,
-    silent = true
-  })
-  vim.api.nvim_set_keymap('n', '<Leader>lt', '<Cmd>Telescope lsp_type_definitions<CR>', {
-    noremap = true,
-    silent = true
-  })
-  vim.api.nvim_set_keymap('n', '<Leader>li', '<Cmd>Telescope lsp_implementations<CR>', {
-    noremap = true,
-    silent = true
-  })
-  vim.api.nvim_set_keymap('n', '<Leader>ls', '<Cmd>Telescope lsp_document_symbols<CR>', {
-    noremap = true,
-    silent = true
-  })
-  vim.api.nvim_set_keymap('n', '<Leader>lr', '<Cmd>Telescope lsp_references<CR>', {
-    noremap = true,
-    silent = true
-  })
-  require("lspconfig").clangd.setup {
-    cmd = {"clangd", "--offset-encoding=utf-16"}
-  }
-end
+  'neovim/nvim-lspconfig',
+  config = function()
+    vim.api.nvim_set_keymap('n', '<Leader>ld', '<Cmd>Telescope lsp_definitions<CR>', {
+      noremap = true,
+      silent = true
+    })
+    vim.api.nvim_set_keymap('n', '<Leader>lt', '<Cmd>Telescope lsp_type_definitions<CR>', {
+      noremap = true,
+      silent = true
+    })
+    vim.api.nvim_set_keymap('n', '<Leader>li', '<Cmd>Telescope lsp_implementations<CR>', {
+      noremap = true,
+      silent = true
+    })
+    vim.api.nvim_set_keymap('n', '<Leader>ls', '<Cmd>Telescope lsp_document_symbols<CR>', {
+      noremap = true,
+      silent = true
+    })
+    vim.api.nvim_set_keymap('n', '<Leader>lr', '<Cmd>Telescope lsp_references<CR>', {
+      noremap = true,
+      silent = true
+    })
+    require("lspconfig").clangd.setup {
+      cmd = {"clangd", "--offset-encoding=utf-16"}
+    }
+    require("lspconfig").gopls.setup {}
+  end
 }, {
   -- treesitter lsp
   "nvim-treesitter/nvim-treesitter",

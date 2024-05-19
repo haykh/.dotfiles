@@ -1,5 +1,6 @@
 import = [
 "~/.config/alacritty/github_dark_high_contrast.toml", 
+# "~/.config/alacritty/github_light.toml", 
 ]
 
 [env]

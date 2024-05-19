@@ -119,7 +119,7 @@ end
 
 function Helper()
     local keymap = {{
-        key = "H/M/L",
+        key = "[H|M|L]",
         action = "move cursor to top/middle/bottom"
     }, {
         key = "z[b|z|t]",
@@ -145,6 +145,9 @@ function Helper()
     }, {
         key = "<C-[a|x]>",
         action = "increment/decrement number"
+    }, {
+        key = "?g",
+        action = "show keymap for nvimtree"
     }}
     local quit_msg = "[`q` to close]"
 
