@@ -1,11 +1,7 @@
 export ZSH="$HOME/.oh-my-zsh"
 export DOTFILES="$HOME/.dotfiles"
 
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
-ZSH_THEME="powerlevel10k/powerlevel10k"
+ZSH_THEME=""
 
 plugins=(
   git 
@@ -140,3 +136,7 @@ if command -v code &> /dev/null; then
 fi
 
 # Theme . . . . . . . . . . . 
+if command -v starship &> /dev/null; then
+  eval "$(starship init zsh)"
+  export STARSHIP_CONFIG=$DOTFILES/.config/starship.toml
+fi
