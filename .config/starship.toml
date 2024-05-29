@@ -33,7 +33,7 @@ format = "[$branch]($style)"
 style = "bright-green"
 
 [git_status]
-format = ' [ \[$all_status\]]($style)'
+format = ' [ $all_status]($style)'
 style = "bright-yellow"
 stashed = "≡"
 ahead = '⇡${count}'
