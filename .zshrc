@@ -64,6 +64,7 @@ if [ -d "/home/linuxbrew/.linuxbrew" ]; then
   # modules
   if [ -d "$HOMEBREW_PREFIX/opt/modules" ]; then
     source $HOMEBREW_PREFIX/opt/modules/init/zsh
+    module config color always
     if [ -d "$HOME/.modules" ]; then
       module use --append $HOME/.modules
     fi
