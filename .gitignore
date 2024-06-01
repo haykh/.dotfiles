@@ -3,3 +3,5 @@
 *:Zone.Identifier
 build
 lazy-lock.json
+
+__pycache__

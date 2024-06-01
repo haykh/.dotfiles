@@ -89,13 +89,17 @@ fi
 
 # Aliases . . . . . . . . . . .
 
-# if nvim exists
 if command -v nvim &> /dev/null; then
   export EDITOR=nvim
   alias vimconfig="vi $HOME/.config/nvim/init.vim"
   alias vim='nvim'
   alias vi='nvim'
   alias less='vim -R'
+fi
+
+if command -v ranger &> /dev/null; then
+  export RANGER_LOAD_DEFAULT_RC=false
+  alias rr='ranger'
 fi
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
