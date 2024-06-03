@@ -131,7 +131,7 @@ style = 'white'
 disabled = false
 format = '[\[ $time \]]($style) '
 time_format = '%a %-e %h %-I:%M%P'
-utc_time_offset = '-4'
+utc_time_offset = '-5'
 use_12hr = true
 style = 'dimmed white'
 
@@ -162,4 +162,10 @@ style = 'bold yellow'
 threshold = 75
 discharging_symbol = '󰂁 '
 charging_symbol = '󰢞 '
+style = 'bold green'
+
+[[battery.display]]
+threshold = 100
+discharging_symbol = '󰁹 '
+charging_symbol = '󰂅 '
 style = 'bold green'
