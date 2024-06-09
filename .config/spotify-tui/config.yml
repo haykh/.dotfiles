@@ -13,4 +13,3 @@ theme:
   selected: Green # a) selected pane border, b) hovered item in list, & c) track title in player
   text: "255, 255, 255" # text in panes
   header: White # header text in panes (e.g. 'Title', 'Artist', etc.)
-
