@@ -1,0 +1,85 @@
+DEF_output=screen.mov
+
+helpmenu () {
+  echo "start screen recording using ffmpeg at a specified screen region (hit q to stop recording)."
+  echo 
+  echo "usage: screencast [options]"
+  echo
+  echo "   -h, --help                 print this menu and quit"
+  echo "   -d, --dry                  print the command without running it" 
+  echo "   -r, --framerate <FPS>      specify framerate in fps [default: 30]"
+  echo "   -z, --zero <X:Y>           specify upper left corner of the recording area in pixels [default: 0:0]"
+  echo "   -s, --size <SX:SY>         specify the size of the recording area in pixels [default: fullscreen]"
+  echo "   -o, --output <MOVIE.mov>   output file name [default: "$DEF_output"]"
+  echo "   -c, --compression <INT>    specify video compression level [default: 0]"
+  echo
+}
+
+execute=true
+crop=false
+dry=false
+
+RATE=30
+OUTNAME=$DEF_output
+ZERO='0:0'
+COMPRESSION=0
+while [ ! $# -eq 0 ]
+do
+  case "$1" in
+    --help | -h)
+      helpmenu
+      execute=false
+        ;;
+    --dry | -d)
+      dry=true
+        ;;
+    --framerate | -r)
+      RATE="$2"
+        ;;
+    --output | -o)
+      OUTNAME="$2"
+        ;;
+    --size | -s)
+      SIZE="$2"
+      crop=true
+        ;;
+    --zero | -z)
+      ZERO="$2"
+        ;;
+    --compression | -c)
+      COMPRESSION="$2"
+        ;;
+    esac
+  shift
+done
+
+unameOut="$(uname -s)"
+case "${unameOut}" in
+  Linux*)     machine=Linux;;
+  Darwin*)    machine=Mac;;
+  *)          machine="UNKNOWN:${unameOut}"
+esac
+if [ "$machine" = "Mac" ]; then
+  source=avfoundation
+  input="1:0"
+else
+  source=x11grab
+  input=$DISPLAY
+fi
+
+command() {
+  if [ "$dry" = true ] ; then
+    prefix=echo
+  else
+    prefix=
+  fi
+  if [ "$crop" = true ] ; then
+    $prefix ffmpeg -f $source -r $RATE -i $input -c:v libx264 -filter:v crop=$SIZE:$ZERO -pix_fmt yuv420p -q:v $COMPRESSION -preset ultrafast $OUTNAME
+  else
+    $prefix ffmpeg -f $source -r $RATE -i $input -c:v libx264 -pix_fmt yuv420p -q:v $COMPRESSION -preset ultrafast $OUTNAME
+  fi
+}
+
+if [ "$execute" = true ] ; then
+  command
+fi

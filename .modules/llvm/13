@@ -1,0 +1,30 @@
+#%Module1.0
+##
+## LLVM 13 Modulefile
+##
+
+proc ModulesHelp { } {
+    global version prefix
+
+    puts stderr "This module loads LLVM 13 compilers environment"
+    puts stderr "\nVersion $version\n"
+}
+
+module-whatis "Name: LLVM 13"
+module-whatis "Version: 13"
+module-whatis "Category: compiler"
+module-whatis "Description: LLVM compiler infrastructure"
+module-whatis "URL: http://llvm.org/"
+
+set version 13
+set prefix /home/linuxbrew/.linuxbrew/opt/llvm@13
+
+prepend-path PATH               $prefix/bin
+prepend-path MANPATH            $prefix/share/man
+prepend-path LD_LIBRARY_PATH    $prefix/lib
+prepend-path CMAKE_PREFIX_PATH  $prefix
+
+setenv CC                       $prefix/bin/clang
+setenv CXX                      $prefix/bin/clang++
+
+conflict gcc llvm
