@@ -77,9 +77,10 @@ if [ -d "$HOME/.spicetify" ]; then
 fi
 
 # kitty
-if [ -d "$LOCAL/kitty.app/bin" ]; then
-  export PATH=$PATH:$LOCAL/kitty.app/bin
+if command -v kitty &> /dev/null; then
   alias icat="kitten icat"
+else
+  export TERM=xterm-256color
 fi
 
 # fzf

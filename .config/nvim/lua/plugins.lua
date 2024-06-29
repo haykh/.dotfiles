@@ -53,7 +53,13 @@ return {'github/copilot.vim', 'vim-airline/vim-airline', {
             args = {"-e", vim.api.nvim_buf_get_name(0)},
             stdin = true
           }
-        end}
+        end},
+        rust = {function()
+          return {
+            exe = "rustfmt",
+            stdin = true
+          }
+        end},
       }
     })
   end
@@ -286,6 +292,8 @@ return {'github/copilot.vim', 'vim-airline/vim-airline', {
       cmd = {"clangd", "--offset-encoding=utf-16"}
     }
     require("lspconfig").gopls.setup {}
+    require("lspconfig").pyright.setup {}
+    require("lspconfig").rust_analyzer.setup {}
   end
 }, {
   -- treesitter lsp
