@@ -52,6 +52,12 @@ ln -s $HOME/.dotfiles/.config/spotify-tui/config.yml $HOME/.config/spotify-tui/c
 ln -s $HOME/.dotfiles/.config/.nbrc $HOME/.nbrc
 nb remote set git@github.com:haykh/nb.git
 
+git clone https://github.com/alexanderjeurissen/ranger_devicons.git $HOME/.dotfiles/.config/ranger/plugins/ranger_devicons
+
+git clone https://github.com/z-shell/zsh-eza ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-eza
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+
 source $HOME/.zshrc
 cd $DOTFILES/fonts && sh ./install.sh && fc-cache -rv
 ```

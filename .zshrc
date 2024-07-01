@@ -7,24 +7,24 @@ plugins=(
   git 
   colorize 
   colored-man-pages 
-  exercism 
   extract 
   zsh-syntax-highlighting 
   zsh-autosuggestions 
+  nvm
   docker 
   docker-compose
 )
 
-source $ZSH/oh-my-zsh.sh
-
-# Custom . . . . . . . . . . . . . 
+# Functions . . . . . . . . . . .
 zstyle ':completion:*:default' list-colors "ow=30;44"
 
 fpath+=$DOTFILES/.zsh_functions
 autoload -U $fpath[-1]/*(.:t)
 fpath+=$HOME/.zfunc
-
+fpath+=$HOME/.zsh/functions
 autoload compinit -Uz && compinit
+
+source $ZSH/oh-my-zsh.sh
 
 # Paths . . . . . . . . . . . . . 
 export LOCAL=$HOME/.local

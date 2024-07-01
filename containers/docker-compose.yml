@@ -1,0 +1,18 @@
+services:
+  cuda-dev:
+    image: morninbru/dev:cuda
+    container_name: cuda_dev
+    build:
+      context: .
+      dockerfile: Dockerfile.cuda
+      args:
+        USER: $USER
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    stdin_open: true
+    tty: true
+    volumes:
+      - type: bind
+        source: .
+        target: /home/$USER/workspace

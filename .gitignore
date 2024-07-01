@@ -3,5 +3,6 @@
 *:Zone.Identifier
 build
 lazy-lock.json
+.config/ranger/plugins
 
 __pycache__
