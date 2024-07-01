@@ -1,0 +1,66 @@
+# syntax = devthefuture/dockerfile-x
+FROM nvidia/cuda:12.5.0-devel-ubuntu22.04
+
+ARG DEBIAN_FRONTEND=noninteractive
+ENV DISPLAY=host.docker.internal:0.0
+
+ENV CUDA_HOME=/usr/local/cuda
+ENV PATH=/usr/local/cuda/bin:$PATH
+
+# upgrade
+RUN apt-get update && apt-get upgrade -y
+
+# basic packages
+RUN apt-get update && \
+    apt-get install -y sudo locales bc gpg ssh bat ripgrep ffmpeg \
+                       zsh git wget curl software-properties-common \
+                       build-essential pkg-config libhdf5-dev hdf5-tools
+
+INCLUDE depends/cmake.Dockerfile
+INCLUDE depends/llvm.Dockerfile
+INCLUDE depends/eza.Dockerfile
+INCLUDE depends/nvim.Dockerfile
+INCLUDE depends/python.Dockerfile
+INCLUDE depends/fzf.Dockerfile
+INCLUDE depends/adios2.Dockerfile
+
+INCLUDE depends/aptclean.Dockerfile
+
+RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+    locale-gen
+ENV LC_ALL=en_US.UTF-8 
+ENV LANG=en_US.UTF-8  
+ENV LANGUAGE=en_US:en
+
+# user
+ARG USER=ntt
+RUN useradd -ms /usr/bin/zsh $USER && \
+    usermod -aG sudo $USER && \
+    echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
+USER $USER
+ARG HOME=/home/$USER
+WORKDIR $HOME
+
+# python venv
+RUN python -m venv $HOME/venv && \
+    $HOME/venv/bin/pip install --upgrade pip && \
+    $HOME/venv/bin/pip install black numpy myplotlib nt2py jupyterlab ipykernel && \
+    rm -rf $HOME/.cache/pip
+
+# shell customization
+RUN curl -sS https://starship.rs/install.sh | sudo sh -s -- --yes && \
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && \
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting && \
+    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions && \
+    mkdir -p $HOME/.config && \
+    git clone https://github.com/haykh/.dotfiles/ $HOME/.dotfiles && \
+    rm .zshrc && echo ". $HOME/.dotfiles/.zshrc" >> $HOME/.zshrc && \
+    ln -s $HOME/.dotfiles/.config/nvim $HOME/.config/nvim && \
+    sed -i '/exercism/d' $HOME/.dotfiles/.zshrc && \
+    sed -i '/# ssh/,/#/d' $HOME/.dotfiles/.zshrc && \
+    echo "source $HOME/venv/bin/activate" >> $HOME/.zshrc && \
+    /usr/bin/nvim --headless "+Lazy! sync" +qa
+
+
+ENTRYPOINT ["/usr/bin/zsh", "-l"]

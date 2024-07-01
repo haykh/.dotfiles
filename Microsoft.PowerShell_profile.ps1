@@ -1,13 +1,17 @@
-oh-my-posh init pwsh --config 'https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/onehalf.minimal.omp.json' | Invoke-Expression
+Invoke-Expression (&starship init powershell)
+$ENV:STARSHIP_CONFIG = "$HOME\.dotfiles\.config\starship.toml"
+
 Set-PSReadLineOption -EditMode Vi
 Set-PSReadLineKeyHandler -Chord ctrl+w -Function BackwardDeleteWord
+
+Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r'
 
 # aliases
 Set-Alias -Name vi -Value nvim
 function which($name) {
   Get-Command $name | Select-Object -ExpandProperty Definition
 }
-$env:Path += ';D:\Software\eza\'
+$ENV:Path += ';C:\Users\hayk\software\eza\'
 function eza {
   eza.exe --color=always --icons=always -a $args
 }
