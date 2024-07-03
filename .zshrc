@@ -8,7 +8,6 @@ plugins=(
   colorize 
   colored-man-pages 
   extract 
-  zsh-eza
   zsh-syntax-highlighting 
   zsh-autosuggestions 
   nvm
@@ -120,10 +119,11 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
   fi
 fi
 
-# if command -v eza &> /dev/null; then
-#   alias ls='EXA_ICON_SPACING=1 eza -a --icons --sort=type'
-#   alias ll='EXA_ICON_SPACING=1 eza -a --long --icons --header --sort=type --time-style=long-iso'
-# fi
+if command -v eza &> /dev/null; then
+  alias ls='EXA_ICON_SPACING=1 eza -a --icons --sort=type'
+  alias ll='EXA_ICON_SPACING=1 eza -a --long --icons --header --sort=type --time-style=long-iso'
+  alias lt='EXA_ICON_SPACING=1 eza -a --icons --sort=type --tree --level 2 --icons --color'
+fi
 
 if command -v gh &> /dev/null; then
   function howto() {
