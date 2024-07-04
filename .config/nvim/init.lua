@@ -65,6 +65,7 @@ vim.g.floaterm_keymap_toggle = "<Leader>fs"
 
 -- Enable filetype indent
 vim.cmd("filetype indent on")
+vim.filetype.add({ extension = { npx = 'python' } })
 
 -- Insert mode mapping
 vim.api.nvim_set_keymap("i", "jk", "<ESC>", {
