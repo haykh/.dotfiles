@@ -36,6 +36,8 @@ i am making this repo mostly for myself, to synchronize my workflow across diffe
 
 ### linking `rc` files on `linux`
 ```sh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+rm -f $HOME/.zshrc
 echo ". $HOME/.dotfiles/.zshrc" >> $HOME/.zshrc
 
 mkdir -p $HOME/.ssh
@@ -47,6 +49,7 @@ ln -s $HOME/.dotfiles/.config/kitty $HOME/.config/kitty
 ln -s $HOME/.dotfiles/.config/ranger $HOME/.config/ranger
 ln -s $HOME/.dotfiles/.config/mpv $HOME/.config/mpv
 ln -s $HOME/.dotfiles/.config/sioyek $HOME/.config/sioyek
+mkdir -p $HOME/.config/spotify-tui
 ln -s $HOME/.dotfiles/.config/spotify-tui/config.yml $HOME/.config/spotify-tui/config.yml
 
 ln -s $HOME/.dotfiles/.config/.nbrc $HOME/.nbrc
