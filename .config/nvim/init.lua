@@ -1,13 +1,13 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
-	vim.fn.system({
-		"git",
-		"clone",
-		"--filter=blob:none",
-		"https://github.com/folke/lazy.nvim.git",
-		"--branch=stable",
-		lazypath,
-	})
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable",
+    lazypath,
+  })
 end
 vim.opt.rtp:prepend(lazypath)
 
@@ -69,7 +69,7 @@ vim.filetype.add({ extension = { npx = 'python' } })
 
 -- Insert mode mapping
 vim.api.nvim_set_keymap("i", "jk", "<ESC>", {
-	noremap = true,
+  noremap = true,
 })
 
 -- Set options
@@ -84,161 +84,161 @@ vim.wo.relativenumber = true
 
 -- Autocommands
 vim.api.nvim_create_autocmd("BufReadPost", {
-	once = true,
-	callback = function()
-		if vim.fn.line("'\"") > 0 and vim.fn.line("'\"") <= vim.fn.line("$") then
-			vim.cmd("normal g'\"zz")
-		end
-	end,
+  once = true,
+  callback = function()
+    if vim.fn.line("'\"") > 0 and vim.fn.line("'\"") <= vim.fn.line("$") then
+      vim.cmd("normal g'\"zz")
+    end
+  end,
 })
 vim.api.nvim_create_autocmd({ "BufNew", "BufRead" }, {
-	pattern = "*.asm",
-	callback = function()
-		vim.bo.filetype = "nasm"
-	end,
+  pattern = "*.asm",
+  callback = function()
+    vim.bo.filetype = "nasm"
+  end,
 })
 
 -- for WSL only
 local function InWSL()
-	local uname = vim.fn.system("uname"):gsub("\n", "")
-	if uname == "Linux" then
-		local lines = vim.fn.readfile("/proc/version")
-		if string.find(lines[1], "Microsoft") then
-			return true
-		end
-	end
-	return false
+  local uname = vim.fn.system("uname"):gsub("\n", "")
+  if uname == "Linux" then
+    local lines = vim.fn.readfile("/proc/version")
+    if string.find(lines[1], "Microsoft") then
+      return true
+    end
+  end
+  return false
 end
 
 -- WSL yank support
 if InWSL() then
-	vim.o.clipboard = vim.o.clipboard .. "unnamedplus"
-	vim.g.clipboard = {
-		name = "WslClipboard",
-		copy = {
-			["+"] = "clip.exe",
-			["*"] = "clip.exe",
-		},
-		paste = {
-			["+"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
-			["*"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
-		},
-		cache_enabled = 0,
-	}
+  vim.o.clipboard = vim.o.clipboard .. "unnamedplus"
+  vim.g.clipboard = {
+    name = "WslClipboard",
+    copy = {
+      ["+"] = "clip.exe",
+      ["*"] = "clip.exe",
+    },
+    paste = {
+      ["+"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+      ["*"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+    },
+    cache_enabled = 0,
+  }
 end
 
 function Helper()
-	local keymap = {
-		{
-			key = "[H|M|L]",
-			action = "move cursor to top/middle/bottom",
-		},
-		{
-			key = "z[b|z|t]",
-			action = "raise/center/lower view on cursor",
-		},
-		{
-			key = "<C-[e|y]>",
-			action = "scroll one line up/down",
-		},
-		{
-			key = "<C-[o|i]>",
-			action = "prev/next jump",
-		},
-		{
-			key = "<Leader>l[d|t|i]",
-			action = "lsp definition/type/implementation",
-		},
-		{
-			key = "<Leader>t[f|g|h]",
-			action = "file browser/live grep/man pages",
-		},
-		{
-			key = "<Leader>l",
-			action = "nohlsearch",
-		},
-		{
-			key = "<Leader>q[q|s]",
-			action = "stop/start lsp",
-		},
-		{
-			key = "<C-[a|x]>",
-			action = "increment/decrement number",
-		},
-		{
-			key = "?g",
-			action = "show keymap for nvimtree",
-		},
-	}
-	local quit_msg = "[`q` to close]"
+  local keymap = {
+    {
+      key = "[H|M|L]",
+      action = "move cursor to top/middle/bottom",
+    },
+    {
+      key = "z[b|z|t]",
+      action = "raise/center/lower view on cursor",
+    },
+    {
+      key = "<C-[e|y]>",
+      action = "scroll one line up/down",
+    },
+    {
+      key = "<C-[o|i]>",
+      action = "prev/next jump",
+    },
+    {
+      key = "<Leader>l[d|t|i]",
+      action = "lsp definition/type/implementation",
+    },
+    {
+      key = "<Leader>t[f|g|h]",
+      action = "file browser/live grep/man pages",
+    },
+    {
+      key = "<Leader>l",
+      action = "nohlsearch",
+    },
+    {
+      key = "<Leader>q[q|s]",
+      action = "stop/start lsp",
+    },
+    {
+      key = "<C-[a|x]>",
+      action = "increment/decrement number",
+    },
+    {
+      key = "?g",
+      action = "show keymap for nvimtree",
+    },
+  }
+  local quit_msg = "[`q` to close]"
 
-	-- Define the size of the floating window
-	local width = 80
-	local height = #keymap + 4
-	local sep_col = 30
+  -- Define the size of the floating window
+  local width = 80
+  local height = #keymap + 4
+  local sep_col = 30
 
-	-- Create the scratch buffer displayed in the floating window
-	local buf = vim.api.nvim_create_buf(false, true)
+  -- Create the scratch buffer displayed in the floating window
+  local buf = vim.api.nvim_create_buf(false, true)
 
-	-- create the lines to draw a box
-	local top = "╔" .. string.rep("═", width - 2) .. "╗"
-	local mid = "║" .. string.rep(" ", width - 2) .. "║"
-	-- local bottom = '╚' .. string.rep('═', width - 2) .. '╝'
-	local bottom = "╚" .. string.rep("═", width - 2 - #quit_msg) .. quit_msg .. "╝"
-	local lines = { top }
-	for _ = 1, height - 2 do
-		table.insert(lines, mid)
-	end
-	table.insert(lines, bottom)
-	-- set the box in the buffer
-	vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+  -- create the lines to draw a box
+  local top = "╔" .. string.rep("═", width - 2) .. "╗"
+  local mid = "║" .. string.rep(" ", width - 2) .. "║"
+  -- local bottom = '╚' .. string.rep('═', width - 2) .. '╝'
+  local bottom = "╚" .. string.rep("═", width - 2 - #quit_msg) .. quit_msg .. "╝"
+  local lines = { top }
+  for _ = 1, height - 2 do
+    table.insert(lines, mid)
+  end
+  table.insert(lines, bottom)
+  -- set the box in the buffer
+  vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
 
-	local offset = 1
-	for i = 1, #keymap do
-		local key = keymap[i].key
-		local action = keymap[i].action
-		-- Now you can use `key` and `action` in the order you specified
-		local current_row = 1 + offset
-		offset = offset + 1
-		vim.api.nvim_buf_set_text(buf, current_row, sep_col - #key, current_row, sep_col, { key })
-		vim.api.nvim_buf_set_text(buf, current_row, sep_col + 1, current_row, sep_col + 2, { ":" })
-		vim.api.nvim_buf_set_text(buf, current_row, sep_col + 3, current_row, sep_col + 3 + #action, { action })
-	end
+  local offset = 1
+  for i = 1, #keymap do
+    local key = keymap[i].key
+    local action = keymap[i].action
+    -- Now you can use `key` and `action` in the order you specified
+    local current_row = 1 + offset
+    offset = offset + 1
+    vim.api.nvim_buf_set_text(buf, current_row, sep_col - #key, current_row, sep_col, { key })
+    vim.api.nvim_buf_set_text(buf, current_row, sep_col + 1, current_row, sep_col + 2, { ":" })
+    vim.api.nvim_buf_set_text(buf, current_row, sep_col + 3, current_row, sep_col + 3 + #action, { action })
+  end
 
-	-- Set mappings in the buffer to close the window easily
-	local closingKeys = { "q", "<Leader>/" }
-	for _, closingKey in ipairs(closingKeys) do
-		vim.api.nvim_buf_set_keymap(buf, "n", closingKey, "<Cmd>close<CR>", {
-			silent = true,
-			nowait = true,
-			noremap = true,
-		})
-	end
+  -- Set mappings in the buffer to close the window easily
+  local closingKeys = { "q", "<Leader>/" }
+  for _, closingKey in ipairs(closingKeys) do
+    vim.api.nvim_buf_set_keymap(buf, "n", closingKey, "<Cmd>close<CR>", {
+      silent = true,
+      nowait = true,
+      noremap = true,
+    })
+  end
 
-	-- Create the floating window
-	local ui = vim.api.nvim_list_uis()[1]
-	local opts = {
-		relative = "editor",
-		width = width,
-		height = height,
-		col = (ui.width / 2) - (width / 2),
-		row = (ui.height / 2) - (height / 2),
-		anchor = "NW",
-		style = "minimal",
-	}
-	local win = vim.api.nvim_open_win(buf, true, opts)
+  -- Create the floating window
+  local ui = vim.api.nvim_list_uis()[1]
+  local opts = {
+    relative = "editor",
+    width = width,
+    height = height,
+    col = (ui.width / 2) - (width / 2),
+    row = (ui.height / 2) - (height / 2),
+    anchor = "NW",
+    style = "minimal",
+  }
+  local win = vim.api.nvim_open_win(buf, true, opts)
 
-	-- Change highlighting
-	vim.api.nvim_win_set_option(win, "winhl", "Normal:ErrorFloat")
+  -- Change highlighting
+  vim.api.nvim_win_set_option(win, "winhl", "Normal:ErrorFloat")
 end
 
 vim.api.nvim_set_keymap("n", "<Leader>/", "<Cmd>lua Helper()<CR>", {
-	noremap = true,
+  noremap = true,
 })
 
 -- neovide
 if vim.g.neovide then
-	vim.o.guifont = "MonaspiceKr Nerd Font:h12"
-	vim.g.neovide_transparency = 0.9
-	vim.g.neovide_cursor_animation_length = 0.05
+  vim.o.guifont = "MonaspiceKr Nerd Font:h12"
+  vim.g.neovide_transparency = 0.9
+  vim.g.neovide_cursor_animation_length = 0.05
 end
