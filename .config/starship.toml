@@ -133,7 +133,7 @@ style = 'white'
 disabled = false
 format = '[\[ $time \]]($style) '
 time_format = '%a %-e %h %-I:%M%P'
-utc_time_offset = '-5'
+utc_time_offset = '-4'
 use_12hr = true
 style = 'dimmed white'
 
