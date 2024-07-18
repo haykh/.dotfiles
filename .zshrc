@@ -46,11 +46,6 @@ if command -v go &> /dev/null; then
   export PATH=$GOPATH/bin:$PATH
 fi
 
-# rust
-if command -v cargo &> /dev/null; then
-  . "$HOME/.cargo/env"
-fi
-
 # nvm
 if [ -d "$HOME/.nvm" ]; then
   export NVM_DIR="$HOME/.nvm"
