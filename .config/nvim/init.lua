@@ -14,13 +14,13 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader = "\\"
 vim.g.maplocalleader = "\\"
 
+-- Enable true colors
+vim.o.termguicolors = true
+
 require("lazy").setup("plugins")
 
 -- Set background
 vim.o.background = "dark"
-
--- Enable true colors
-vim.o.termguicolors = true
 
 -- Enable syntax highlighting
 vim.cmd("syntax on")

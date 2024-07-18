@@ -12,10 +12,21 @@ return {
   "cespare/vim-toml",
   "tikhomirov/vim-glsl",
   {
-    -- colorizer
-    "chrisbra/Colorizer",
+    "norcalli/nvim-colorizer.lua",
     config = function()
-      vim.g.colorizer_auto_filetype = "python,css,html,vue,markdown,scss,less,javascript"
+      require("colorizer").setup({
+        "python",
+        css = {
+          css = true;
+        },
+        "html",
+        "vue",
+        "jsonc",
+        "markdown",
+        "scss",
+        "less",
+        "javascript",
+      })
     end,
   },
   {
@@ -385,7 +396,9 @@ return {
         silent = true,
       })
       vim.filetype.add({
-        pattern = { [".*/hypr/.*%.conf"] = "hyprlang" },
+        pattern = { 
+          [".*/hypr/.*%.conf"] = "hyprlang",  
+        },
       })
       require("nvim-treesitter.configs").setup({
         ensure_installed = {
@@ -514,21 +527,6 @@ return {
     "echasnovski/mini.nvim",
     version = false,
     config = function()
-      local animate = require("mini.animate")
-      animate.setup({
-        scroll = {
-          timing = animate.gen_timing.quadratic({ duration = 50, unit = "total" }),
-        },
-        cursor = {
-          timing = animate.gen_timing.quadratic({ duration = 50, unit = "total" }),
-        },
-        open = {
-          enable = false,
-        },
-        close = {
-          enable = false,
-        },
-      })
       require("mini.indentscope").setup({
         options = {
           try_as_border = true,

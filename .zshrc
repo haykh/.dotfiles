@@ -137,6 +137,14 @@ if command -v code &> /dev/null; then
   alias code="code --profile=hayk"
 fi
 
+if command -v waybar &> /dev/null; then
+  alias resetwaybar="killall waybar & hyprctl dispatch exec waybar"
+fi
+
+if command -v bw &> /dev/null; then
+  alias bw='BITWARDENCLI_APPDATA_DIR=$HOME/.bw/ NODE_OPTIONS="--no-deprecation" bw'
+fi
+
 # Theme . . . . . . . . . . . 
 if command -v starship &> /dev/null; then
   eval "$(starship init zsh)"
