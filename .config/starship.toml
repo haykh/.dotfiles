@@ -12,8 +12,6 @@ $cmd_duration\
 $username\
 $hostname\
 $os\
-$time\
-$battery\
 $line_break\
 $character\
 """
