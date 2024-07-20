@@ -1,16 +1,14 @@
 return {
   "github/copilot.vim",
-  "vim-airline/vim-airline",
   {
-    "vim-airline/vim-airline-themes",
+    'nvim-lualine/lualine.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
-      vim.g.airline_powerline_fonts = 1
-      vim.g.airline_theme = "github_dark_default"
+      require("lualine").setup()
     end,
   },
   "tpope/vim-markdown",
-  "cespare/vim-toml",
-  "tikhomirov/vim-glsl",
+  -- "cespare/vim-toml",
   {
     "norcalli/nvim-colorizer.lua",
     config = function()
@@ -20,6 +18,7 @@ return {
           css = true;
         },
         "html",
+        "toml",
         "vue",
         "jsonc",
         "markdown",
@@ -131,7 +130,6 @@ return {
       vim.cmd("colo github_dark_default")
     end,
   },
-  "nvim-tree/nvim-web-devicons",
   "tpope/vim-surround",
   {
     "lewis6991/gitsigns.nvim",
@@ -275,6 +273,7 @@ return {
   {
     -- search highlighter
     "kevinhwang91/nvim-hlslens",
+    dependencies = { "petertriho/nvim-scrollbar" },
     config = function()
       local kopts = {
         noremap = true,
@@ -520,9 +519,18 @@ return {
       })
     end,
   },
-  "olacin/telescope-gitmoji.nvim",
-  "xiyaowong/telescope-emoji.nvim",
-  "nvim-telescope/telescope-file-browser.nvim",
+  { 
+    "olacin/telescope-gitmoji.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim" },
+  },
+  {
+    "xiyaowong/telescope-emoji.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim" },
+  },
+  {
+    "nvim-telescope/telescope-file-browser.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim" },
+  },
   {
     "echasnovski/mini.nvim",
     version = false,

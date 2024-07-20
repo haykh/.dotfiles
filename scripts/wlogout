@@ -1,2 +1,2 @@
-#!/bin/sh
+#!/usr/bin/env sh
 wlogout -T 500 -B 500 -L 450 -R 450 -c 50 -r 25 -s --protocol layer-shell

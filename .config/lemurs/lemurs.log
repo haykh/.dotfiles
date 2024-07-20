@@ -1,0 +1,9 @@
+[2024-07-18T23:54:30Z INFO  lemurs] Main lemurs logger is running
+[2024-07-18T23:54:30Z INFO  lemurs] UI booted up
+[2024-07-18T23:54:30Z INFO  lemurs::info_caching] Attempting to get a cached information from '/var/cache/lemurs'
+[2024-07-18T23:54:30Z INFO  lemurs::info_caching] Read cache file and found environment 'hypr' and username 'hayk'
+[2024-07-18T23:54:30Z INFO  lemurs::ui] Loading username 'hayk' from cache
+[2024-07-18T23:54:30Z INFO  lemurs::ui] Loading environment 'hypr' from cache
+[2024-07-18T23:54:32Z INFO  lemurs::ui] Pressed escape in preview mode to exit the application
+[2024-07-18T23:54:32Z INFO  lemurs] Reset terminal environment
+[2024-07-18T23:54:32Z INFO  lemurs] Lemurs is booting down

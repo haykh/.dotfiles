@@ -130,6 +130,10 @@ end
 function Helper()
   local keymap = {
     {
+      key = "viwp",
+      action = "replace word with yanked text",
+    },
+    {
       key = "[H|M|L]",
       action = "move cursor to top/middle/bottom",
     },

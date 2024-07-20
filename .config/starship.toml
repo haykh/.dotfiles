@@ -68,50 +68,50 @@ format = "[$symbol]($style) "
 style = "bold blue"
 disabled = false
 
-  [os.symbols]
-  Alpaquita = " "
-  Alpine = " "
-  AlmaLinux = " "
-  Amazon = " "
-  Android = " "
-  Arch = " "
-  Artix = " "
-  CentOS = " "
-  Debian = " "
-  DragonFly = " "
-  Emscripten = " "
-  EndeavourOS = " "
-  Fedora = " "
-  FreeBSD = " "
-  Garuda = "󰛓 "
-  Gentoo = " "
-  HardenedBSD = "󰞌 "
-  Illumos = "󰈸 "
-  Kali = " "
-  Linux = " "
-  Mabox = " "
-  Macos = " "
-  Manjaro = " "
-  Mariner = " "
-  MidnightBSD = " "
-  Mint = " "
-  NetBSD = " "
-  NixOS = " "
-  OpenBSD = "󰈺 "
-  openSUSE = " "
-  OracleLinux = "󰌷 "
-  Pop = " "
-  Raspbian = " "
-  Redhat = " "
-  RedHatEnterprise = " "
-  RockyLinux = " "
-  Redox = "󰀘 "
-  Solus = "󰠳 "
-  SUSE = " "
-  Ubuntu = " "
-  Unknown = " "
-  Void = " "
-  Windows = "󰍲 "
+[os.symbols]
+Alpaquita = " "
+Alpine = " "
+AlmaLinux = " "
+Amazon = " "
+Android = " "
+Arch = " "
+Artix = " "
+CentOS = " "
+Debian = " "
+DragonFly = " "
+Emscripten = " "
+EndeavourOS = " "
+Fedora = " "
+FreeBSD = " "
+Garuda = "󰛓 "
+Gentoo = " "
+HardenedBSD = "󰞌 "
+Illumos = "󰈸 "
+Kali = " "
+Linux = " "
+Mabox = " "
+Macos = " "
+Manjaro = " "
+Mariner = " "
+MidnightBSD = " "
+Mint = " "
+NetBSD = " "
+NixOS = " "
+OpenBSD = "󰈺 "
+openSUSE = " "
+OracleLinux = "󰌷 "
+Pop = " "
+Raspbian = " "
+Redhat = " "
+RedHatEnterprise = " "
+RockyLinux = " "
+Redox = "󰀘 "
+Solus = "󰠳 "
+SUSE = " "
+Ubuntu = " "
+Unknown = " "
+Void = " "
+Windows = "󰍲 "
 
 [username]
 show_always = true
@@ -141,32 +141,32 @@ discharging_symbol = '󰁹 '
 charging_symbol = '󰂅 '
 unknown_symbol = '󰂅 '
 
-  [[battery.display]]
-    threshold = 10
-    discharging_symbol = '󰁻 '
-    charging_symbol = '󰢜 '
-    style = 'bold red'
+[[battery.display]]
+threshold = 10
+discharging_symbol = '󰁻 '
+charging_symbol = '󰢜 '
+style = 'bold red'
 
-  [[battery.display]]
-    threshold = 30
-    discharging_symbol = '󰁼 '
-    charging_symbol = '󰢝 '
-    style = 'bold yellow'
+[[battery.display]]
+threshold = 30
+discharging_symbol = '󰁼 '
+charging_symbol = '󰢝 '
+style = 'bold yellow'
 
-  [[battery.display]]
-    threshold = 50
-    discharging_symbol = '󰁽 '
-    charging_symbol = '󰢝 '
-    style = 'bold yellow'
+[[battery.display]]
+threshold = 50
+discharging_symbol = '󰁽 '
+charging_symbol = '󰢝 '
+style = 'bold yellow'
 
-  [[battery.display]]
-    threshold = 75
-    discharging_symbol = '󰂁 '
-    charging_symbol = '󰢞 '
-    style = 'bold green'
+[[battery.display]]
+threshold = 75
+discharging_symbol = '󰂁 '
+charging_symbol = '󰢞 '
+style = 'bold green'
 
-  [[battery.display]]
-    threshold = 100
-    discharging_symbol = '󰁹 '
-    charging_symbol = '󰂅 '
-    style = 'bold green'
+[[battery.display]]
+threshold = 100
+discharging_symbol = '󰁹 '
+charging_symbol = '󰂅 '
+style = 'bold green'

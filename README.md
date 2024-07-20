@@ -37,6 +37,8 @@ i am making this repo mostly for myself, to synchronize my workflow across diffe
 ### linking `rc` files on `linux`
 ```sh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 rm -f $HOME/.zshrc
 echo ". $HOME/.dotfiles/.zshrc" >> $HOME/.zshrc
 
@@ -56,9 +58,6 @@ ln -s $HOME/.dotfiles/.config/.nbrc $HOME/.nbrc
 nb remote set git@github.com:haykh/nb.git
 
 git clone https://github.com/alexanderjeurissen/ranger_devicons.git $HOME/.dotfiles/.config/ranger/plugins/ranger_devicons
-
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 
 source $HOME/.zshrc
 cd $DOTFILES/fonts && sh ./install.sh && fc-cache -rv
