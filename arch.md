@@ -58,6 +58,16 @@ sudo pacman -S bluez bluez-utils bluetuith
 sudo pacman -S hyprland wayland hyprpaper hyprlock
 ln -s $HOME/.dotfiles/.config/hypr/ $HOME/.config/hypr
 
+# gtk theme
+sudo pacman -S sassc gnome-themes-extra gtk-engine-murrine nwg-look
+yay -S awf-gtk4 awf-gtk3
+cd $HOME/.dotfiles/.themes/Orchis
+./install.sh -c dark -s standard -i arch --round 5px --tweaks primary -t purple
+wget https://github.com/EliverLara/candy-icons/archive/refs/heads/master.zip
+unzip master.zip -c $HOME/.local/share/icons/
+# and change gtk & icon themes
+nwg-look
+
 # desktop manager
 sudo pacman -S lemurs
 sudo systemctl disable display-manager.service
@@ -77,12 +87,8 @@ ln -s $HOME/.dotfiles/scripts/wlprop $HOME/.local/bin/wlprop
 sudo pacman -S waybar
 ln -s $HOME/.dotfiles/.config/waybar/ $HOME/.config/waybar
 
-# weather parsing
-go install github.com/ericchiang/pup@latest
-
 # thunar
 sudo pacman -S thunar
-# @TODO
 
 # spotify
 sudo pacman -S spotifyd playerctl
@@ -99,10 +105,14 @@ systemctl enable --user spotifyd.service --now
 systemctl enable --user playerctld.service --now
 # configure spotify-tui: `spt`
 
+# python
+sudo pacman -S python python-virtualenv python-pipx
+
 # extra
 sudo pacman -S w3m usbutils
 yay -S sioyek-git
 ln -s $HOME/.dotfiles/.config/sioyek/ $HOME/.config/sioyek
+
 ```
 
 TODO:

@@ -9,7 +9,6 @@ if [[ "$1" == "--update" ]]; then
     echo "" > /tmp/player_seek
     exit 1
   fi
-  echo $active_player > /tmp/player_active
 
   if [[ "$2" == "metadata" ]]; then
     qdbus org.mpris.MediaPlayer2.${active_player} /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Metadata > /tmp/player_metadata
@@ -28,6 +27,14 @@ if [[ "$1" == "--update" ]]; then
     qdbus org.mpris.MediaPlayer2.${active_player} /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlaybackStatus > /tmp/player_status 2> /tmp/player_status
   fi
   exit 0
+elif [[ "$1" == "--check" ]]; then
+  player=$(cat /tmp/player_active)
+  metadata=$(cat /tmp/player_metadata)
+  if [ -z "$player" ] || [ -z "$metadata" ]; then
+    exit 1
+  else
+    exit 0
+  fi
 else
   interpret_time() {
     min=$(echo "$1 / 60 / 1000000" | bc)

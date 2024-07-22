@@ -3,6 +3,7 @@
 *:Zone.Identifier
 build
 lazy-lock.json
+lazyvim.json
 .config/ranger/plugins
 .config/btop/btop.log
 

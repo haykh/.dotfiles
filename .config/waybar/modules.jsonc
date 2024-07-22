@@ -228,7 +228,8 @@
   },
   "custom/player": {
     "interval": 1,
-    "exec": "sh $HOME/.config/waybar/scripts/player.sh --read",
+    "exec": "sh $HOME/.config/waybar/scripts/player.sh --read", 
+    "exec-if": "sh $HOME/.config/waybar/scripts/player.sh --check",
     "format": "{}",
     "return-type": "json",
     "tooltip": true,

@@ -134,7 +134,11 @@ if command -v fastfetch &> /dev/null; then
 fi
 
 if command -v code &> /dev/null; then
-  alias code="code --profile=hayk"
+  if [ -z "$WAYLAND_DISPLAY" ]; then
+    alias code="code --enable-features=UseOzonePlatform --ozone-platform=wayland --profile=hayk"
+  else
+    alias code="code --profile=hayk"
+  fi
 fi
 
 if command -v waybar &> /dev/null; then
