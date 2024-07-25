@@ -1,78 +1,91 @@
 #!/bin/sh
 
-if [[ "$1" == "--update" ]]; then
+# metadata about the status of the player is stored in /tmp/player_* and is read when render is called
+
+interpret_time() {
+  min=$(echo "$1 / 60 / 1000000" | bc)
+  sec=$(echo "$1 / 1000000 % 60" | bc)
+  printf "%02d:%02d" "$min" "$sec"
+}
+
+roll() {
+  len=${#1}
+  tolen=$2
+  if [ $len -le $tolen ]; then
+    echo $1
+  else
+    delta=$(($len - $tolen))
+    if [ $(($delta % 2)) -eq 0 ]; then
+      delta=$(($delta + 1))
+    fi
+    lcrop=$((($(date +%s) % $delta - $delta / 2) * 2))
+    lcrop=${lcrop#-}
+    rcrop=$(($delta - $lcrop))
+    if [ $lcrop -gt 0 ]; then
+      lfill="…"
+    else
+      lfill=""
+    fi
+    if [ $rcrop -le 1 ]; then
+      rfill=""
+      rcrop=$len
+    else
+      rfill="…"
+      rcrop=$((-$rcrop))
+    fi
+    echo $lfill${1:$lcrop:$rcrop}$rfill
+  fi
+}
+
+trim() {
+  read -r var
+  echo "$var" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'
+}
+
+update_metadata() {
   active_player=$(playerctl -l | head -n 1)
   if [ -z "$active_player" ]; then
     echo "" > /tmp/player_active
     echo "" > /tmp/player_metadata
     echo "" > /tmp/player_status
     echo "" > /tmp/player_seek
-    exit 1
   fi
+  echo $active_player > /tmp/player_active
 
-  if [[ "$2" == "metadata" ]]; then
-    qdbus org.mpris.MediaPlayer2.${active_player} /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Metadata > /tmp/player_metadata
-    can_seek=$(qdbus org.mpris.MediaPlayer2.${active_player} /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.CanSeek)
-    if [ "$can_seek" = "true" ]; then
-      length=$(cat /tmp/player_metadata | grep -oP 'length: \K.*$')
-      length=$(interpret_time "$length")
-      position=$(qdbus org.mpris.MediaPlayer2.${active_player} /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Position)
-      position=$(interpret_time "$position")
-      seek="$position / $length"
-    else
-      seek=""
-    fi
-    echo $seek > /tmp/player_seek
-  else 
-    qdbus org.mpris.MediaPlayer2.${active_player} /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlaybackStatus > /tmp/player_status 2> /tmp/player_status
+  metadata=$(playerctl metadata)
+  if [[ "$metadata" != "" ]]; then
+    echo "$metadata" > /tmp/player_metadata
   fi
-  exit 0
-elif [[ "$1" == "--check" ]]; then
+  can_seek=$(qdbus org.mpris.MediaPlayer2.${active_player} /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.CanSeek)
+  if [ "$can_seek" = "true" ]; then
+    length=$(echo "$metadata" | grep -oP 'length\K.*$' | tr -d ' ')
+    length=$(interpret_time "$length")
+    position=$(qdbus org.mpris.MediaPlayer2.${active_player} /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Position)
+    position=$(interpret_time "$position")
+    seek="$position / $length"
+  else
+    seek=""
+  fi
+  echo $seek > /tmp/player_seek
+
+  status=$(qdbus org.mpris.MediaPlayer2.${active_player} /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlaybackStatus) 
+  if [[ "$status" != "" ]]; then
+    echo $status > /tmp/player_status
+  fi
+}
+
+check_if_active() {
   player=$(cat /tmp/player_active)
   metadata=$(cat /tmp/player_metadata)
   if [ -z "$player" ] || [ -z "$metadata" ]; then
-    exit 1
+    echo 1
   else
-    exit 0
+    echo 0
   fi
-else
-  interpret_time() {
-    min=$(echo "$1 / 60 / 1000000" | bc)
-    sec=$(echo "$1 / 1000000 % 60" | bc)
-    printf "%02d:%02d" "$min" "$sec"
-  }
-  roll() {
-    len=${#1}
-    tolen=$2
-    if [ $len -le $tolen ]; then
-      echo $1
-      return
-    else
-      delta=$(($len - $tolen))
-      if [ $(($delta % 2)) -eq 0 ]; then
-        delta=$(($delta + 1))
-      fi
-      lcrop=$((($(date +%s) % $delta - $delta / 2) * 2))
-      lcrop=${lcrop#-}
-      rcrop=$(($delta - $lcrop))
-      if [ $lcrop -gt 0 ]; then
-        lfill="…"
-      else
-        lfill=""
-      fi
-      if [ $rcrop -le 1 ]; then
-        rfill=""
-        rcrop=$len
-      else
-        rfill="…"
-        rcrop=$((-$rcrop))
-      fi
-      echo $lfill${1:$lcrop:$rcrop}$rfill
-    fi
-  }
+}
 
+render() {
   active_player=$(cat /tmp/player_active)
-
   if [ -z "$active_player" ]; then
     exit 1
   else
@@ -80,9 +93,9 @@ else
     status=$(cat /tmp/player_status)
     seek=$(cat /tmp/player_seek)
 
-    title=$(echo "$metadata" | grep -oP 'title: \K.*$')
-    artist=$(echo "$metadata" | grep -oP 'artist: \K.*$')
-    album=$(echo "$metadata" | grep -oP 'album: \K.*$')
+    title=$(echo "$metadata" | grep -oP 'title\K.*$' | trim)
+    artist=$(echo "$metadata" | grep -oP 'artist\K.*$' | trim)
+    album=$(echo "$metadata" | grep -oP 'album\K.*$' | trim)
 
     title=$(echo "$title" | sed 's/\[.*\]//')
 
@@ -124,5 +137,16 @@ else
           # class: $CLASS
         }'
   fi
-  exit 0
+}
+
+update_metadata
+
+if [[ "$1" == "--check" ]]; then
+  exit $(check_if_active)
+elif [[ "$1" == "--play-pause" ]]; then
+  playerctl play-pause
+elif [[ "$1" == "--next" ]]; then
+  playerctl next
+else
+  render
 fi

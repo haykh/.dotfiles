@@ -14,8 +14,6 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	spec = {
 		{ "LazyVim/LazyVim", import = "lazyvim.plugins" },
-		{ import = "lazyvim.plugins.extras.coding.copilot" },
-		{ import = "lazyvim.plugins.extras.coding.copilot-chat" },
 		{ import = "plugins" },
 	},
 	change_detection = {

@@ -1,5 +1,7 @@
 vim.api.nvim_create_autocmd("Filetype", {
 	pattern = {
+		"bash",
+		"sh",
 		"css",
 		"scss",
 		"sass",
@@ -14,6 +16,7 @@ vim.api.nvim_create_autocmd("Filetype", {
 		"toml",
 		"lua",
 		"typescript",
+		"rasi",
 	},
 	command = "CccHighlighterEnable",
 })

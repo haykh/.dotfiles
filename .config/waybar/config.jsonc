@@ -16,8 +16,6 @@
   "modules-right": [
     "privacy",
     "custom/player",
-    "custom/player#metadataupdater",
-    "custom/player#statusupdater",
     "group/controls",
     "custom/weather",
     "clock",

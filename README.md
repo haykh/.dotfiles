@@ -22,8 +22,6 @@ i am making this repo mostly for myself, to synchronize my workflow across diffe
     - [`ranger`](https://github.com/ranger/ranger)
 - media/readers:
     - [`mpv`](https://mpv.io/)
-    - [`spotifyd`](https://spotifyd.rs/)
-    - [`spotify-tui`](https://github.com/Rigellute/spotify-tui)
     - [`sioyek`](https://github.com/ahrm/sioyek)
 - other:
     - [`nvm`](https://github.com/nvm-sh/nvm)
@@ -51,8 +49,6 @@ ln -s $HOME/.dotfiles/.config/kitty $HOME/.config/kitty
 ln -s $HOME/.dotfiles/.config/ranger $HOME/.config/ranger
 ln -s $HOME/.dotfiles/.config/mpv $HOME/.config/mpv
 ln -s $HOME/.dotfiles/.config/sioyek $HOME/.config/sioyek
-mkdir -p $HOME/.config/spotify-tui
-ln -s $HOME/.dotfiles/.config/spotify-tui/config.yml $HOME/.config/spotify-tui/config.yml
 
 ln -s $HOME/.dotfiles/.config/.nbrc $HOME/.nbrc
 nb remote set git@github.com:haykh/nb.git

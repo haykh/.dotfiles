@@ -120,6 +120,10 @@ if command -v eza &> /dev/null; then
   alias lt='EXA_ICON_SPACING=1 eza -a --icons --sort=type --tree --level 2 --icons --color'
 fi
 
+if [ -d "$HOME/.cargo" ]; then
+  export PATH=$HOME/.cargo/bin:$PATH
+fi
+
 if command -v gh &> /dev/null; then
   function howto() {
     gh copilot suggest $1
@@ -131,14 +135,6 @@ fi
 
 if command -v fastfetch &> /dev/null; then
   alias ff='fastfetch'
-fi
-
-if command -v code &> /dev/null; then
-  if [ -z "$WAYLAND_DISPLAY" ]; then
-    alias code="code --enable-features=UseOzonePlatform --ozone-platform=wayland --profile=hayk"
-  else
-    alias code="code --profile=hayk"
-  fi
 fi
 
 if command -v waybar &> /dev/null; then

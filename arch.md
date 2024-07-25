@@ -55,7 +55,8 @@ sudo nvim /etc/conf.d/wireless-regdom
 sudo pacman -S bluez bluez-utils bluetuith
 
 # compositor and display server
-sudo pacman -S hyprland wayland hyprpaper hyprlock
+sudo pacman -S hyprland wayland hyprpaper hyprlock 
+yay -S hyprpicker
 ln -s $HOME/.dotfiles/.config/hypr/ $HOME/.config/hypr
 
 # gtk theme
@@ -91,28 +92,24 @@ ln -s $HOME/.dotfiles/.config/waybar/ $HOME/.config/waybar
 sudo pacman -S thunar
 
 # spotify
-sudo pacman -S spotifyd playerctl
-yay -S spotify-tui
-# configure spotifyd by creating `$HOME/.config/spotifyd/spotifyd.conf`:
-# [global]
-# username = ""
-# password = ""
+sudo pacman -S playerctl spotify-launcher
 mkdir -p $HOME/.config/systemd/user/
-cp $HOME/.dotfiles/.config/systemd/spotifyd.service $HOME/.config/systemd/user/
 cp $HOME/.dotfiles/.config/systemd/playerctld.service $HOME/.config/systemd/user/
 systemctl daemon-reload
-systemctl enable --user spotifyd.service --now
 systemctl enable --user playerctld.service --now
-# configure spotify-tui: `spt`
+curl -fsSL https://raw.githubusercontent.com/spicetify/cli/main/install.sh | sh
 
 # python
 sudo pacman -S python python-virtualenv python-pipx
 
 # extra
-sudo pacman -S w3m usbutils
+sudo pacman -S w3m usbutils imv
 yay -S sioyek-git
 ln -s $HOME/.dotfiles/.config/sioyek/ $HOME/.config/sioyek
+ln -s $HOME/.dotfiles/.config/imv/ ~/.config/imv
 
+# vscode
+ln -s $HOME/.dotfiles/.config/code-flags.conf ~/.config
 ```
 
 TODO:

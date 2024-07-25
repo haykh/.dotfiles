@@ -228,22 +228,13 @@
   },
   "custom/player": {
     "interval": 1,
-    "exec": "sh $HOME/.config/waybar/scripts/player.sh --read", 
+    "exec": "sh $HOME/.config/waybar/scripts/player.sh --render", 
     "exec-if": "sh $HOME/.config/waybar/scripts/player.sh --check",
     "format": "{}",
     "return-type": "json",
     "tooltip": true,
-    "on-click": "$HOME/.dotfiles/scripts/controls/media --play-pause",
-  },
-  "custom/player#metadataupdater": {
-    "interval": 5,
-    "exec": "sh $HOME/.config/waybar/scripts/player.sh --update metadata",
-    "format": "",
-  },
-  "custom/player#statusupdater": {
-    "interval": 1,
-    "exec": "sh $HOME/.config/waybar/scripts/player.sh --update status",
-    "format": "",
+    "on-click": "sh $HOME/.config/waybar/scripts/player.sh --play-pause",
+    "on-click-right": "sh $HOME/.config/waybar/scripts/player.sh --next",
   },
   "backlight": {
     "min-length": 1,
@@ -277,7 +268,7 @@
     },
     "scroll-step": 5.0,
     "on-click": "$HOME/.dotfiles/scripts/controls/volume --toggle",
-    "on-click-right": "hyprctl dispatch -- exec \"[floating; size 40% 50%]\" kitty -- pulsemixer",
+    "on-click-right": "hyprctl dispatch -- exec \"[floating; size 40% 30%; move 55% 3% + 40, animation slide top]\" kitty -- pulsemixer",
     "on-scroll-up": "$HOME/.dotfiles/scripts/controls/volume --dec",
     "on-scroll-down": "$HOME/.dotfiles/scripts/controls/volume --inc",
     "tooltip-format": "{icon}  {desc} {volume}%",
@@ -292,7 +283,7 @@
     "tooltip-format-connected": "{device_enumerate}",
     "tooltip-format-enumerate-connected": "  {device_alias} 󰂄 {device_battery_percentage}%",
     "tooltip": true,
-    "on-click": "hyprctl dispatch -- exec \"[floating; size 40% 50%]\" kitty -- bluetuith",
+    "on-click": "hyprctl dispatch -- exec \"[floating; size 30% 30%; move 67% 3% + 40, animation slide top]\" kitty -- bluetuith",
   },
   "network": {
     "interval": 2,
@@ -314,8 +305,7 @@
     "format": "{}",
     "format-en": "<big>🇺🇸</big>",
     "format-ru": "<big>🇷🇺</big>",
-    "keyboard-name": "framework-laptop-16-keyboard-module---ansi-keyboard",
-    "on-click": "hyprctl switchxkblayout framework-laptop-16-keyboard-module---ansi-keyboard next"
+    "on-click": "hyprctl switchxkblayout $(hyprctl devices -j | jq -r '.keyboards | map(select(.main == true)) | .[].name') next"
   },
   "group/controls": {
     "modules": [
