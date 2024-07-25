@@ -53,6 +53,8 @@ sudo ectool chargecontrol normal 2 85
 ```sh
 sudo pacman -S power-profiles-daemon
 sudo systemctl enable power-profiles-daemon.service
+
+sudo pacman -S wev
 ```
 
 ## sound, bluetooth, wireless
@@ -118,12 +120,21 @@ ln -s $HOME/.dotfiles/.config/waybar/ $HOME/.config/waybar
 ```sh
 sudo pacman -S thunar
 
-sudo pacman -S playerctl spotify-launcher
+sudo pacman -S playerctl
 mkdir -p $HOME/.config/systemd/user/
 cp $HOME/.dotfiles/.config/systemd/playerctld.service $HOME/.config/systemd/user/
 systemctl daemon-reload
 systemctl enable --user playerctld.service --now
+
+yay -S spotify
+ln -s $HOME/.dotfiles/.config/spotify-flags.conf $HOME/.config/spotify-flags.conf
+
 curl -fsSL https://raw.githubusercontent.com/spicetify/cli/main/install.sh | sh
+spicetify backup apply
+cd $HOME/.themes
+git clone --depth=1 https://github.com/spicetify/spicetify-themes.git /tmp/spicetify-themes
+cd /tmp/spicetify-themes
+cp -r * $HOME/.config/spicetify/Themes
 
 # extra
 sudo pacman -S w3m usbutils imv mpv
