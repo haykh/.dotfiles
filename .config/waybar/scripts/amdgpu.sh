@@ -6,7 +6,7 @@
 #  percentage: GPU activity percentage,
 #  tooltip: GPU name | GFX version + processes using GPU VRAM,
 # }
-# 
+#
 # implemented separately for integrated and discrete GPUs
 #
 # usage:
@@ -16,19 +16,19 @@ processes=$(amdgpu_top -i $1 --single -p | grep "ctx" | awk '{ printf "%5d : %s\
 
 if [ $1 -eq 0 ]; then
   # discrete GPU
-  amdgpu_top -i $1 --single -d --json | \
+  amdgpu_top -i $1 --single -d --json |
     jq -c --arg ITEM "$processes" \
-    '{
+      '{
       text: (.[0].gpu_metrics.temperature_hotspot), 
       percentage: (.[0].gpu_activity.GFX.value), 
       tooltip: (.[0].DeviceName + " | " + .[0]."ASIC Name" + "\n\n" + $ITEM),
     }'
 else
   # integrated GPU
-  amdgpu_top -i $1 --single -d --json | \
+  amdgpu_top -i $1 --single -d --json |
     jq -c --arg ITEM "$processes" \
-    '{
-      text: (.[0].gpu_metrics.temperature_soc / 100 | round), 
+      '{
+      text: (.[0].gpu_metrics.temperature_soc | round), 
       percentage: (.[0].gpu_activity.GFX.value), 
       tooltip: (.[0].DeviceName + " | " + .[0]."ASIC Name" + "\n\n" + $ITEM),
     }'

@@ -182,7 +182,7 @@
   "custom/weather": {
     "interval": 30,
     "min-length": 6,
-    "exec": "sh $HOME/.config/waybar/scripts/weather-v2.sh",
+    "exec": "sh $HOME/.config/waybar/scripts/weather.sh",
     "format": "{}",
     "format-alt": "{alt}",
     "return-type": "json",
