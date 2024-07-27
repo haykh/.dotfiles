@@ -361,37 +361,25 @@
     "tooltip": true,
     "tooltip-format": "Left Click: Rofi Menu\nMiddle Click: Wallpaper Menu\nRight Click: Waybar Layout Menu",
   },
-  // This is a custom cava visualizer
-  "custom/cava_mviz": {
-    "exec": "~/.config/hypr/scripts/WaybarCava.sh",
-    "format": "{}"
-  },
-  "custom/power": {
-    "format": "⏻ ",
-    "on-click": "~/.config/hypr/scripts/Wlogout.sh",
-    "on-click-right": "~/.config/hypr/scripts/ChangeBlur.sh",
-    "tooltip": true,
-    "tooltip-format": "Left Click: Logout Menu\nRight Click: Change Blur",
-  },
-  "custom/swaync": {
-    "tooltip": true,
-    "tooltip-format": "Left Click: Launch Notification Center\nRight Click: Do not Disturb",
-    "format": "{icon} {}",
+  "custom/notification": {
+    "tooltip": false,
+    "min-length": 2,
+    "format": "{icon}",
     "format-icons": {
-      "notification": "<span foreground='red'><sup></sup></span>",
+      "notification": "<span foreground='#d95d5d' font=\"20px\"><sup></sup></span>",
       "none": "",
-      "dnd-notification": "<span foreground='red'><sup></sup></span>",
+      "dnd-notification": "<span foreground='#d95d5d' font=\"20px\"><sup></sup></span>",
       "dnd-none": "",
-      "inhibited-notification": "<span foreground='red'><sup></sup></span>",
+      "inhibited-notification": "<span foreground='#d95d5d' font=\"20px\"><sup></sup></span>",
       "inhibited-none": "",
-      "dnd-inhibited-notification": "<span foreground='red'><sup></sup></span>",
+      "dnd-inhibited-notification": "<span foreground='#d95d5d' font=\"20px\"><sup></sup></span>",
       "dnd-inhibited-none": ""
     },
     "return-type": "json",
     "exec-if": "which swaync-client",
     "exec": "swaync-client -swb",
-    "on-click": "sleep 0.1 && swaync-client -t -sw",
+    "on-click": "swaync-client -t -sw",
     "on-click-right": "swaync-client -d -sw",
-    "escape": true,
+    "escape": true
   },
 }

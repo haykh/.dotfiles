@@ -2,12 +2,21 @@
 
 weather=$(curl -s "wttr.in/?m&format=j1")
 short=$(curl -s "wttr.in/?m&format=\{\"wind\":\"%w\"\}\n")
-# for debugging purposes
+
+# # for debugging purposes
 # place=/home/hayk/.config/waybar/scripts
+# # if file does not exist
+# if [ ! -f $place/wttr.json ]; then
+#   curl -s "wttr.in/?m&format=j1" > $place/wttr.json
+#   curl -s "wttr.in/?m&format=\{\"wind\":\"%w\"\}\n" > $place/wttr.short.json
+# fi
 # weather=$(cat $place/wttr.json)
 # short=$(cat $place/wttr.short.json)
 
-(echo $weather ; echo $short) | jq -c '
+(
+  echo $weather
+  echo $short
+) | jq -c '
 def uvcolor(v): 
   if v < 3 then "#7fccff" 
   elif v < 5 then "#a2dcfb" 
@@ -198,9 +207,10 @@ def geticon(t; c; r; h; w):
   class: "wttr",
   tooltip: (
     .location + 
-      "\t\t<span font=\"15px\">~" + (.status | ascii_downcase) + "~</span>" +
+      (22 - (.status | length)) * " " +
+      "<span font=\"15px\">~" + (.status | ascii_downcase) + "~</span>" +
     "\n<span font=\"50px\">" + .tempC + "°</span>" + 
-      " (" + .feelslikeC + "°C)" +
+      "(" + .feelslikeC + "°C)" +
       "\t\t<span font=\"60px\">" + 
         .statusicon + 
         "</span>" +

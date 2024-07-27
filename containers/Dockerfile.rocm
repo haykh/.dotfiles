@@ -1,0 +1,22 @@
+# syntax = devthefuture/dockerfile-x
+
+FROM rocm/rocm-terminal:latest
+
+ENV PATH=/opt/rocm/bin:$PATH
+
+RUN sudo apt-get update && sudo apt-get upgrade -y zsh
+
+INCLUDE Dockerfile.common
+
+# additional ROCm packages
+RUN sudo git clone -b release/rocm-rel-6.1.1.1 https://github.com/ROCm/rocThrust.git /opt/rocthrust-src && \
+    sudo git clone -b release/rocm-rel-6.1.00.36 https://github.com/ROCm/rocPRIM.git /opt/rocprim-src && \
+    cd /opt/rocthrust-src && sudo ./install --install && \
+    cd /opt/rocprim-src && sudo ./install --install && \
+    sudo rm -rf /opt/rocthrust-src /opt/rocprim-src
+
+ENV CMAKE_PREFIX_PATH=/opt/rocm 
+ENV CC=hipcc 
+ENV CXX=hipcc
+
+ENTRYPOINT ["/usr/bin/zsh", "-l"]

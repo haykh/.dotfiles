@@ -7,7 +7,7 @@ configuration {
 * {
   font: "MonaspiceKr Nerd Font 12";
   foreground: #f5f8f2;
-  bg: #282a3632;
+  bg: #282a3640;
   transparent: #00000000;
   active-background: #2D5CAD66;
   urgent-background: #ff5555;

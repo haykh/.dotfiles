@@ -1,25 +1,70 @@
 services:
-  cuda-dev:
-    image: morninbru/dev:cuda
-    container_name: cuda_dev
-    build:
-      context: .
-      dockerfile: Dockerfile.cuda
-      args:
-        USER: $USER
-        CUDA_VERSION: "12.5.0"
-        UBUNTU_VERSION: "22.04"
-        CMAKE_VERSION: "3.30.0"
-        LLVM_VERSION: "17"
-        FZF_VERSION: "0.53.0"
-        NVIM_VERSION: "0.10.0"
-        PYTHON_VERSION: "3.12"
-    runtime: nvidia
-    environment:
-      - NVIDIA_VISIBLE_DEVICES=all
+  # cuda-dev:
+  #   image: morninbru/dev:cuda
+  #   container_name: cuda_dev
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.cuda
+  #     args:
+  #       USER: $USER
+  #       CUDA_VERSION: "12.5.0"
+  #       UBUNTU_VERSION: "22.04"
+  #       CMAKE_VERSION: "3.30.0"
+  #       LLVM_VERSION: "17"
+  #       FZF_VERSION: "0.53.0"
+  #       NVIM_VERSION: "0.10.0"
+  #       PYTHON_VERSION: "3.12"
+  #   runtime: nvidia
+  #   environment:
+  #     - NVIDIA_VISIBLE_DEVICES=all
+  #   stdin_open: true
+  #   tty: true
+  #   volumes:
+  #     - type: bind
+  #       source: /home/$USER/Documents/Codes/entity
+  #       target: /home/$USER/workspace
+  # rocm-dev:
+  #   image: morninbru/dev:rocm
+  #   container_name: rocm_dev
+  #   ipc: host
+  #   network_mode: "host"
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.rocm
+  #     args:
+  #       USER: $USER
+  #       USER_ID: $UID
+  #       GROUP_ID: $GID
+  #       UBUNTU_VERSION: "22.04"
+  #       CMAKE_VERSION: "3.30.0"
+  #       LLVM_VERSION: "17"
+  #       FZF_VERSION: "0.53.0"
+  #       NVIM_VERSION: "0.10.0"
+  #       PYTHON_VERSION: "3.12"
+  #   devices:
+  #     - /dev/kfd:/dev/kfd
+  #     - /dev/dri:/dev/dri
+  #   security_opt:
+  #     - seccomp:unconfined
+  #   stdin_open: true
+  #   tty: true
+  #   ports:
+  #     - "8080:8080"
+  #   volumes:
+  #     - type: bind
+  #       source: /home/hayk/Documents/Codes/entity
+  #       target: /home/$USER/workspace
+  rocm-devtest:
+    image: rocm/rocm-terminal
+    container_name: rocm_devtest
+    group_add:
+      - video
+    devices:
+      - /dev/kfd
+      - /dev/dri
+    security_opt:
+      - seccomp:unconfined
     stdin_open: true
     tty: true
     volumes:
-      - type: bind
-        source: .
-        target: /home/$USER/workspace
+      - /home/hayk/Documents/Codes/entity:/home/workspace

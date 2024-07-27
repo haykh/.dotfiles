@@ -8,12 +8,13 @@
   min-height: 0;
 }
 
+@define-color bar-bg rgba(19, 29, 43, 0.095);
 @define-color default-bg rgba(19, 29, 43, 0.25);
 @define-color default-fg white;
 @define-color default-border rgba(156,185,221,0.2);
 
 @define-color widget-bg rgba(19, 29, 43, 0.1);
-@define-color tooltip-bg #131D2B;
+@define-color tooltip-bg rgba(19, 29, 43, 0.5);
 @define-color tooltip-fg #9cb9dd;
 @define-color inactive-workspace-fg #9cb9dd;
 @define-color power-saver-fg #5DDA5F;
@@ -21,7 +22,7 @@
 @define-color performance-fg #d95d5d;
 
 window#waybar {
-  background-color: transparent;
+  background-color: @bar-bg;
 }
 
 tooltip {
@@ -41,7 +42,8 @@ box#stats,
 #custom-player,
 box#controls,
 #custom-weather,
-#clock {
+#clock,
+#custom-notification {
   background-color: @widget-bg;
   border: 1px solid @default-border;
   padding: 0px 10px;
@@ -99,4 +101,8 @@ box .module {
 #custom-disk, 
 #battery {
   border: none;
+}
+
+#custom-notification {
+  padding-right: 12px;
 }

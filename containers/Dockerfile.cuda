@@ -1,141 +1,14 @@
+# syntax = devthefuture/dockerfile-x
+
 ARG CUDA_VERSION
 ARG UBUNTU_VERSION
 
 FROM nvidia/cuda:${CUDA_VERSION}-devel-ubuntu${UBUNTU_VERSION}
 
-ARG DEBIAN_FRONTEND=noninteractive
-ARG CMAKE_VERSION
-ARG LLVM_VERSION
-ARG FZF_VERSION
-ARG NVIM_VERSION
-ARG PYTHON_VERSION
-
-ARG USER=ntt
-ARG HOME=/home/$USER
-
 ENV DISPLAY=host.docker.internal:0.0
 ENV CUDA_HOME=/usr/local/cuda
 ENV PATH=/usr/local/cuda/bin:$PATH
 
-# upgrade
-RUN apt-get update && apt-get upgrade -y
-
-# basic packages
-RUN apt-get update && \
-    apt-get install -y sudo locales bc gpg ssh bat ripgrep ffmpeg \
-                       zsh git wget curl software-properties-common \
-                       build-essential pkg-config libhdf5-dev hdf5-tools
-
-# cmake
-RUN wget "https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-linux-x86_64.tar.gz" -P /opt && \
-    tar xvf /opt/cmake-${CMAKE_VERSION}-linux-x86_64.tar.gz -C /opt && \
-    rm /opt/cmake-${CMAKE_VERSION}-linux-x86_64.tar.gz
-ENV PATH=/opt/cmake-${CMAKE_VERSION}-linux-x86_64/bin:$PATH
-
-# llvm
-RUN wget https://apt.llvm.org/llvm.sh && \
-    chmod +x llvm.sh && \
-    ./llvm.sh ${LLVM_VERSION} && \
-    apt-get update && \
-    apt-get install -y clang-format-${LLVM_VERSION} && \
-    ln -s $(which clang-format-${LLVM_VERSION}) /usr/bin/clang-format && \
-    ln -s $(which clangd-${LLVM_VERSION}) /usr/bin/clangd
-
-# eza
-RUN mkdir -p /etc/apt/keyrings && \
-    wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | \
-              gpg --dearmor -o /etc/apt/keyrings/gierens.gpg && \
-    echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | \
-                tee /etc/apt/sources.list.d/gierens.list && \
-    chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list && \
-    apt-get update && apt-get install -y eza
-
-# fzf
-RUN wget https://github.com/junegunn/fzf/releases/download/${FZF_VERSION}/fzf-${FZF_VERSION}-linux_amd64.tar.gz && \
-    tar xvf fzf-${FZF_VERSION}-linux_amd64.tar.gz -C /usr/bin && \
-    rm fzf-${FZF_VERSION}-linux_amd64.tar.gz
-
-# nvim
-RUN wget https://github.com/neovim/neovim/releases/download/v${NVIM_VERSION}/nvim-linux64.tar.gz && \
-    tar xvf nvim-linux64.tar.gz -C /opt && \
-    rm nvim-linux64.tar.gz && \
-    ln -s /opt/nvim-linux64/bin/nvim /usr/bin/nvim && \
-    ln -s /opt/nvim-linux64/bin/nvim /usr/bin/vim && \
-    ln -s /opt/nvim-linux64/bin/nvim /usr/bin/vi
-
-# python
-RUN add-apt-repository ppa:deadsnakes/ppa && \
-    apt-get update && apt-get install -y python${PYTHON_VERSION}-dev python${PYTHON_VERSION}-venv && \
-    ln -s $(which python${PYTHON_VERSION}) /usr/bin/python
-
-# adios2
-RUN git clone https://github.com/ornladios/ADIOS2.git /opt/adios2-src && \
-    cd /opt/adios2-src && \
-    cmake -B build \
-      -D CMAKE_CXX_STANDARD=17 \
-      -D CMAKE_CXX_EXTENSIONS=OFF \
-      -D CMAKE_POSITION_INDEPENDENT_CODE=TRUE \
-      -D BUILD_SHARED_LIBS=ON \
-      -D ADIOS2_USE_HDF5=ON \
-      -D ADIOS2_USE_Python=OFF \
-      -D ADIOS2_USE_Fortran=OFF \
-      -D ADIOS2_USE_ZeroMQ=OFF \
-      -D BUILD_TESTING=OFF \
-      -D ADIOS2_BUILD_EXAMPLES=OFF \
-      -D ADIOS2_USE_MPI=OFF \
-      -D ADIOS2_HAVE_HDF5_VOL=OFF \
-      -D CMAKE_INSTALL_PREFIX=/opt/adios2 && \
-    cmake --build build -j && \
-    cmake --install build && \
-    rm -rf /opt/adios2-src
-ENV PATH=/opt/adios2/bin:$PATH
-ENV ADIOS2_DIR=/opt/adios2
-
-# cleanup
-RUN apt-get clean && \
-    apt-get autoclean && \
-    apt-get autoremove -y && \
-    rm -rf /var/lib/cache/* && \
-    rm -rf /var/lib/log/* && \
-    rm -rf /var/lib/apt/lists/* && \
-    rm -rf /tmp/*
-
-# locale
-RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
-    locale-gen
-ENV LC_ALL=en_US.UTF-8 
-ENV LANG=en_US.UTF-8  
-ENV LANGUAGE=en_US:en
-
-# user
-RUN useradd -ms /usr/bin/zsh $USER && \
-    usermod -aG sudo $USER && \
-    echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-
-RUN chown -R $USER:$USER $HOME
-
-USER $USER
-WORKDIR $HOME
-
-# python venv
-RUN python -m venv $HOME/venv && \
-    $HOME/venv/bin/pip install --upgrade pip && \
-    $HOME/venv/bin/pip install black numpy myplotlib nt2py jupyterlab ipykernel && \
-    rm -rf $HOME/.cache/pip
-
-# shell customization
-RUN curl -sS https://starship.rs/install.sh | sudo sh -s -- --yes && \
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && \
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting && \
-    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions && \
-    mkdir -p $HOME/.config && \
-    git clone https://github.com/haykh/.dotfiles/ $HOME/.dotfiles && \
-    rm .zshrc && echo ". $HOME/.dotfiles/.zshrc" >> $HOME/.zshrc && \
-    ln -s $HOME/.dotfiles/.config/nvim $HOME/.config/nvim && \
-    sed -i '/exercism/d' $HOME/.dotfiles/.zshrc && \
-    sed -i '/# ssh/,/#/d' $HOME/.dotfiles/.zshrc && \
-    echo "source $HOME/venv/bin/activate" >> $HOME/.zshrc && \
-    echo "cd $HOME/.dotfiles/ && git pull > /dev/null && cd $HOME" >> $HOME/.zshrc && \
-    /usr/bin/nvim --headless "+Lazy! sync" +qa
+INCLUDE Dockerfile.common
 
 ENTRYPOINT ["/usr/bin/zsh", "-l"]
