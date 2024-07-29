@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-TREE=$(hyprctl clients -j | jq -r '.[] | select(.hidden==false and .mapped==true)')
+TREE=$(hyprctl clients -j | jq -r --arg ACTIVE_W $(hyprctl monitors -j | jq '.[0].activeWorkspace.id') '.[] | select(.hidden==false and .mapped==true and .workspace.id==($ACTIVE_W | tonumber))')
 SELECTION=$(echo $TREE | jq -r '"\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])"' | slurp -r)
 
 X=$(echo $SELECTION | awk -F'[, x]' '{print $1}')

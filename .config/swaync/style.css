@@ -13,10 +13,6 @@
 @define-color text-color-disabled #9cb9dd;
 @define-color bg-selected #5d9fd9;
 
-* {
-  font-family: "MonaspiceKr Nerd Font", "JetBrainsMono Nerd Font", "monospace";
-}
-
 .notification-row {
   outline: none;
 }
@@ -113,15 +109,14 @@
 }
 
 .notification-row .notification-background .notification .notification-default-action .notification-content .app-icon {
-  /* Notification app icon (only visible when the primary image is set) */
   -gtk-icon-effect: none;
-  -gtk-icon-shadow: 0 1px 4px black;
+  -gtk-icon-shadow: none;
   margin: 6px;
 }
 
 .notification-row .notification-background .notification .notification-default-action .notification-content .text-box .summary {
   /* Notification summary/title */
-  font-size: 16px;
+  font-size: 15px;
   font-weight: bold;
   background: transparent;
   color: @text-color;
@@ -130,7 +125,7 @@
 
 .notification-row .notification-background .notification .notification-default-action .notification-content .text-box .time {
   /* Notification time-ago */
-  font-size: 16px;
+  font-size: 15px;
   font-weight: bold;
   background: transparent;
   color: @text-color;
@@ -140,7 +135,7 @@
 
 .notification-row .notification-background .notification .notification-default-action .notification-content .text-box .body {
   /* Notification body */
-  font-size: 15px;
+  font-size: 12px;
   font-weight: normal;
   background: transparent;
   color: @text-color;
@@ -282,7 +277,7 @@
 }
 
 .control-center .control-center-list .notification {
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.7), 0 2px 6px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: none;
 }
 
 .control-center .control-center-list .notification .notification-default-action,
@@ -313,7 +308,7 @@
 .widget-title {
   color: @text-color;
   margin: 8px;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
 }
 
 .widget-title > button {
@@ -376,7 +371,7 @@
   margin: 16px 20px;
   background-color: @mpris-album-art-overlay;
   border-radius: 12px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.75);
+  box-shadow: none;
 }
 
 .widget-mpris .widget-mpris-player button:hover {
@@ -386,7 +381,7 @@
 
 .widget-mpris .widget-mpris-player .widget-mpris-album-art {
   border-radius: 12px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.75);
+  box-shadow: none;
 }
 
 .widget-mpris .widget-mpris-player .widget-mpris-title {

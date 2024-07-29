@@ -5,10 +5,22 @@ ARG UBUNTU_VERSION
 
 FROM nvidia/cuda:${CUDA_VERSION}-devel-ubuntu${UBUNTU_VERSION}
 
-ENV DISPLAY=host.docker.internal:0.0
+ARG DEBIAN_FRONTEND=noninteractive
+ARG USER=cuda-usr
+
+USER root
+
+# common packages:
+#   - utils (sudo, bc, gpgp, ssh, eza, fzf, nvim, ...)
+#   - hdf5 & adios2
+#   - cmake
+#   - llvm
+#   - python
+INCLUDE Dockerfile.common
+
+INCLUDE Dockerfile.user
+
 ENV CUDA_HOME=/usr/local/cuda
 ENV PATH=/usr/local/cuda/bin:$PATH
-
-INCLUDE Dockerfile.common
 
 ENTRYPOINT ["/usr/bin/zsh", "-l"]

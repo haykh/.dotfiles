@@ -72,7 +72,6 @@ sudo nvim /etc/conf.d/wireless-regdom
 sudo pacman -S bluez bluez-utils bluetuith
 ```
 
-
 # visuals
 
 ## compositor, display server, desktop portal, etc.
@@ -80,6 +79,8 @@ sudo pacman -S bluez bluez-utils bluetuith
 sudo pacman -S hyprland wayland hyprpaper hyprlock xdg-desktop-portal-hyprland xdg-desktop-portal-gtk
 yay -S hyprpicker
 ln -s $HOME/.dotfiles/.config/hypr/ $HOME/.config/hypr
+sudo pacman -S mako
+ln -s $HOME/.dotfiles/.config/mako/ $HOME/.config/mako
 ```
 
 ## gtk theme
@@ -118,6 +119,8 @@ ln -s $HOME/.dotfiles/.config/waybar/ $HOME/.config/waybar
 # utils
 
 ```sh
+ln -s $HOME/.dotfiles/.config/electron-flags.conf $HOME/.config/electron-flags.conf
+
 sudo pacman -S thunar
 
 sudo pacman -S playerctl

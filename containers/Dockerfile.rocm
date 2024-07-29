@@ -1,22 +1,45 @@
 # syntax = devthefuture/dockerfile-x
 
-FROM rocm/rocm-terminal:latest
+ARG UBUNTU_VERSION
 
-ENV PATH=/opt/rocm/bin:$PATH
+FROM ubuntu:${UBUNTU_VERSION}
 
-RUN sudo apt-get update && sudo apt-get upgrade -y zsh
+ARG DEBIAN_FRONTEND=noninteractive
+ARG ROCM_VERSION
+ARG AMDGPU_VERSION
+ARG USER=rocm-usr
 
+RUN apt-get update && apt-get upgrade -y && \
+    apt-get install -y --no-install-recommends ca-certificates curl gnupg && \
+    curl -sL http://repo.radeon.com/rocm/rocm.gpg.key | apt-key add - && \
+    sh -c "echo deb [arch=amd64] http://repo.radeon.com/rocm/apt/${ROCM_VERSION}/ focal main > /etc/apt/sources.list.d/rocm.list" && \
+    sh -c "echo deb [arch=amd64] https://repo.radeon.com/amdgpu/${AMDGPU_VERSION}/ubuntu focal main > /etc/apt/sources.list.d/amdgpu.list" && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends libelf1 libnuma-dev build-essential kmod rocm-dev
+
+# common packages:
+#   - utils (sudo, bc, gpgp, ssh, eza, fzf, nvim, ...)
+#   - hdf5 & adios2
+#   - cmake
+#   - llvm
+#   - python
 INCLUDE Dockerfile.common
 
-# additional ROCm packages
-RUN sudo git clone -b release/rocm-rel-6.1.1.1 https://github.com/ROCm/rocThrust.git /opt/rocthrust-src && \
-    sudo git clone -b release/rocm-rel-6.1.00.36 https://github.com/ROCm/rocPRIM.git /opt/rocprim-src && \
-    cd /opt/rocthrust-src && sudo ./install --install && \
-    cd /opt/rocprim-src && sudo ./install --install && \
-    sudo rm -rf /opt/rocthrust-src /opt/rocprim-src
+RUN git clone -b release/rocm-rel-6.1.1.1 https://github.com/ROCm/rocThrust.git /opt/rocthrust-src && \
+    git clone -b release/rocm-rel-6.1.00.36 https://github.com/ROCm/rocPRIM.git /opt/rocprim-src && \
+    cd /opt/rocthrust-src && ./install --install && \
+    cd /opt/rocprim-src && ./install --install && \
+    rm -rf /opt/rocthrust-src /opt/rocprim-src
 
-ENV CMAKE_PREFIX_PATH=/opt/rocm 
-ENV CC=hipcc 
-ENV CXX=hipcc
+INCLUDE Dockerfile.user
+
+ENV PATH "${PATH}:/opt/rocm/bin"
+ENV CMAKE_PREFIX_PATH /opt/rocm 
+ENV CC hipcc 
+ENV CXX hipcc
+
+ENV ROCR_VISIBLE_DEVICES 0 
+ENV HIP_VISIBLE_DEVICES 0 
+ENV HSA_OVERRIDE_GFX_VERSION 11.0.0
 
 ENTRYPOINT ["/usr/bin/zsh", "-l"]

@@ -19,6 +19,5 @@
     "group/controls",
     "custom/weather",
     "clock",
-    "custom/notification",
   ],
 }

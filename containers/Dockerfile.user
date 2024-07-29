@@ -1,0 +1,29 @@
+COPY sudo-nopasswd /etc/sudoers.d/sudo-nopasswd
+RUN useradd --create-home -G sudo,video --shell /usr/bin/zsh $USER
+USER $USER
+ARG HOME=/home/$USER
+WORKDIR /home/$USER
+
+# python venv
+RUN python -m venv $HOME/venv && \
+    $HOME/venv/bin/pip install --upgrade pip && \
+    $HOME/venv/bin/pip install black numpy myplotlib nt2py jupyterlab ipykernel && \
+    rm -rf $HOME/.cache/pip
+
+# shell customization
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
+    $HOME/.cargo/bin/cargo install starship && \
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && \
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting && \
+    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions && \
+    mkdir -p $HOME/.config && \
+    git clone https://github.com/haykh/.dotfiles/ $HOME/.dotfiles && \
+    rm -f .zshrc && echo ". $HOME/.dotfiles/.zshrc" >> $HOME/.zshrc && \
+    ln -s $HOME/.dotfiles/.config/nvim $HOME/.config/nvim && \
+    sed -i '/exercism/d' $HOME/.dotfiles/.zshrc && \
+    sed -i '/# ssh/,/#/d' $HOME/.dotfiles/.zshrc && \
+    echo "source $HOME/venv/bin/activate" >> $HOME/.zshrc && \
+    echo "cd $HOME/.dotfiles/ && git pull > /dev/null && cd $HOME" >> $HOME/.zshrc && \
+    /usr/bin/nvim --headless "+Lazy! sync" +qa && \
+    echo "bindkey \"^[[1;3C\" forward-word" >> $HOME/.zshrc && \
+    echo "bindkey \"^[[1;3D\" backward-word" >> $HOME/.zshrc

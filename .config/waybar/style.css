@@ -42,8 +42,7 @@ box#stats,
 #custom-player,
 box#controls,
 #custom-weather,
-#clock,
-#custom-notification {
+#clock {
   background-color: @widget-bg;
   border: 1px solid @default-border;
   padding: 0px 10px;
@@ -101,8 +100,4 @@ box .module {
 #custom-disk, 
 #battery {
   border: none;
-}
-
-#custom-notification {
-  padding-right: 12px;
 }

@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 
-# player=$(dbus-send --session --dest=org.freedesktop.DBus --type=method_call --print-reply /org/freedesktop/DBus org.freedesktop.DBus.ListNames | grep org.mpris.MediaPlayer2.spot | awk -F '"' '{print $2}')
 player=org.mpris.MediaPlayer2.playerctld
-
-# metadata=$(dbus-send --print-reply --session --dest=$player /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:"org.mpris.MediaPlayer2.Player" string:"Metadata")
 
 if [[ "$1" == "--play-pause" ]]; then
   qdbus $player /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause
@@ -12,4 +9,3 @@ elif [[ "$1" == "--next" ]]; then
 elif [[ "$1" == "--prev" ]]; then
   qdbus $player /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous
 fi
-

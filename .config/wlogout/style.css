@@ -12,11 +12,11 @@ button {
   border-width: 1px;
   border-color: #9cb9dd;
   transition: background-color 0.2s, border-color 0.2s;
-  padding: 40px 0px;
+  padding: 25px 0px;
 }
 
 button * {
-  font-size: 2rem;
+  font-size: 30px;
   font-family: "MonaspiceKr Nerd Font";
 }
 

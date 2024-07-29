@@ -59,6 +59,8 @@ if [ -d "/home/linuxbrew/.linuxbrew" ]; then
   # modules
   if [ -d "$HOMEBREW_PREFIX/opt/modules" ]; then
     source $HOMEBREW_PREFIX/opt/modules/init/zsh
+    moddir=$(module path dot | sed 's/\/dot//g')
+    module unuse "${moddir}"
     module config color always
     if [ -d "$HOME/.modules" ]; then
       module use --append $HOME/.modules
@@ -142,7 +144,9 @@ if command -v waybar &> /dev/null; then
 fi
 
 if command -v bw &> /dev/null; then
-  alias bw='BITWARDENCLI_APPDATA_DIR=$HOME/.bw/ NODE_OPTIONS="--no-deprecation" bw'
+  if command -v pass &> /dev/null; then
+    alias bw='BW_SESSION=$(pass bw_session) BITWARDENCLI_APPDATA_DIR=$HOME/.bw/ NODE_OPTIONS="--no-deprecation" bw'
+  fi
 fi
 
 # Theme . . . . . . . . . . . 
