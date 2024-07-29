@@ -293,7 +293,7 @@
     "format": "{}",
     "format-en": "<big>🇺🇸</big>",
     "format-ru": "<big>🇷🇺</big>",
-    "on-click": "hyprctl switchxkblayout $(hyprctl devices -j | jq -r '.keyboards | map(select(.main == true)) | .[].name') next"
+    "on-click": "sh $HOME/.config/waybar/scripts/kblayout.sh",
   },
   "group/controls": {
     "modules": [

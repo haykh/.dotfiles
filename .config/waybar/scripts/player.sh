@@ -99,14 +99,22 @@ render() {
 
     title=$(echo "$title" | sed 's/\[.*\]//')
 
+    if [[ $(hyprctl monitors -j | jq '.[0].name') != *"eDP"* ]]; then
+      title_width=19
+      artist_width=17
+    else
+      title_width=15
+      artist_width=13
+    fi
+
     if [[ $active_player == *"firefox"* ]]; then
-      player_icon="󰈹"
+      player_icon="<span color='#FF9530'>󰈹</span>"
     elif [[ $active_player == *"mpv"* ]]; then
-      player_icon=""
+      player_icon="<span color='#53205A'></span>"
     elif [[ $active_player == *"spotify"* ]]; then
-      player_icon=""
+      player_icon="<span color='#1CD762'></span>"
     elif [[ $active_player == *"vlc"* ]]; then
-      player_icon="󰕼"
+      player_icon="<span color='#FF8800'>󰕼</span>"
     else
       player_icon=""
     fi
@@ -120,7 +128,7 @@ render() {
     text=$(echo \
       "<tt><big>"$player_icon"</big></tt>"\
       "<span font=\"6px\">"$status_icon"</span> " \
-      $(roll "$title" 15) "|" $(roll "$artist" 13))
+      $(roll "$title" $title_width) "|" $(roll "$artist" $artist_width))
 
     if [ -z "$album" ]; then
       tooltip_album=""

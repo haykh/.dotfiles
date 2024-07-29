@@ -14,6 +14,7 @@ vim.api.nvim_create_autocmd("Filetype", {
 		"json",
 		"yaml",
 		"toml",
+		"dosini",
 		"lua",
 		"typescript",
 		"rasi",

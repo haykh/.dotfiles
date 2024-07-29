@@ -38,6 +38,7 @@ return {
 					[".*/waybar/config"] = "jsonc",
 					[".*/kitty/.*.conf"] = "bash",
 					[".*/hypr/.*%.conf"] = "hyprlang",
+					[".*/mako/config"] = "dosini",
 				},
 			})
 			require("nvim-treesitter.configs").setup(opts)
