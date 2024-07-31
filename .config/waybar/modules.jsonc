@@ -226,6 +226,7 @@
     "tooltip": true,
     "on-click": "sh $HOME/.config/waybar/scripts/player.sh --play-pause",
     "on-click-right": "sh $HOME/.config/waybar/scripts/player.sh --next",
+    "on-click-middle": "pgrep spotify && hyprctl dispatch togglespecialworkspace ws_spotify || spotify &",
   },
   "backlight": {
     "min-length": 1,

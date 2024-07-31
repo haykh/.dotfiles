@@ -140,7 +140,17 @@ if command -v fastfetch &> /dev/null; then
 fi
 
 if command -v waybar &> /dev/null; then
-  alias resetwaybar="killall waybar & hyprctl dispatch exec waybar"
+  if command -v hyprctl &> /dev/null; then
+    alias resetwaybar="killall waybar & hyprctl dispatch exec waybar"
+  fi
+fi
+
+if command -v hyprctl &> /dev/null; then
+  if command -v thunar &> /dev/null; then
+    function ofd() {
+      hyprctl dispatch -- exec thunar -- $(pwd)
+    }
+  fi
 fi
 
 if command -v bw &> /dev/null; then

@@ -17,7 +17,10 @@ notify() {
   else
     icon="🇷🇺"
   fi
-  notify-send -c layout -u low -h string:x-canonical-private-synchronous:sys-notify "$icon $layout"
+  notify-send \
+    -c kblayout -u low \
+    -h string:x-canonical-private-synchronous:sys-notify \
+    "$icon $layout"
 }
 
 if [[ $1 == "--show" ]]; then

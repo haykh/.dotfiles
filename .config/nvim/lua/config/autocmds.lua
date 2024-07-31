@@ -2,6 +2,7 @@ vim.api.nvim_create_autocmd("Filetype", {
 	pattern = {
 		"bash",
 		"sh",
+		"cfg",
 		"css",
 		"scss",
 		"sass",

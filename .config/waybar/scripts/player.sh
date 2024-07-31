@@ -127,7 +127,7 @@ render() {
 
     text=$(echo \
       "<tt><big>"$player_icon"</big></tt>"\
-      "<span font=\"6px\">"$status_icon"</span> " \
+      "<big><sub>"$status_icon"</sub></big>"\
       $(roll "$title" $title_width) "|" $(roll "$artist" $artist_width))
 
     if [ -z "$album" ]; then

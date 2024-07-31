@@ -22,8 +22,19 @@
 @define-color balanced-fg #5d9fd9;
 @define-color performance-fg #d95d5d;
 
+
+/* @keyframes gradient_anim { */
+/*     0%{background-position:19% 0%} */
+/*     50%{background-position:82% 100%} */
+/*     100%{background-position:19% 0%} */
+/* } */
+
+
 window#waybar {
   background-color: @bar-bg;
+  /* animation: gradient_anim 2s ease infinite; */
+  /* background: linear-gradient(rgba(134,35,2,1) 1000%, rgba(191,61,4,1) 750%, rgba(244,101,24,1) 500%, rgba(247,160,80,1) 250%, rgba(252,213,90,1) 0%); */
+  /* background: linear-gradient(90deg, rgba(13,251,203,0.25) 0%, rgba(251,214,88,0.25) 25%, rgba(233,54,60,0.25) 50%, rgba(38,92,126,0.25) 75%, rgba(69,178,69,0.25) 100%); */
 }
 
 tooltip {

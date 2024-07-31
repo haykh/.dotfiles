@@ -9,8 +9,9 @@ notify() {
   fi
   if [[ $(pamixer $MODE--get-mute) == "true" ]]; then
     notify-send \
+      -c ${device}-volume \
       -h string:x-canonical-private-synchronous:sys-notify \
-      -u low "$device  󰖁"
+      -u low "volume" "$device  󰖁"
   else
     level=$(pamixer $MODE--get-volume)
     idx=$(echo $level \* ${#icons[@]} / 100 | bc)
@@ -18,9 +19,10 @@ notify() {
       idx=$((${#icons[@]} - 1))
     fi
     notify-send \
+      -c ${device}-volume \
       -h string:x-canonical-private-synchronous:sys-notify \
       -h int:value:$level \
-      -u low "$device ${icons[$idx]}"
+      -u low "volume" "$device ${icons[$idx]}"
   fi
 }
 
@@ -45,4 +47,3 @@ elif [[ "$2" == "--dec" ]]; then
 else
   exit 1
 fi
-

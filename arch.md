@@ -79,8 +79,8 @@ sudo pacman -S bluez bluez-utils bluetuith
 sudo pacman -S hyprland wayland hyprpaper hyprlock xdg-desktop-portal-hyprland xdg-desktop-portal-gtk
 yay -S hyprpicker
 ln -s $HOME/.dotfiles/.config/hypr/ $HOME/.config/hypr
-sudo pacman -S mako
-ln -s $HOME/.dotfiles/.config/mako/ $HOME/.config/mako
+sudo pacman -S dunst
+ln -s $HOME/.dotfiles/.config/dunst/ $HOME/.config/dunst
 ```
 
 ## gtk theme
@@ -141,8 +141,6 @@ cp -r * $HOME/.config/spicetify/Themes
 
 # extra
 sudo pacman -S w3m usbutils imv mpv
-yay -S sioyek-git
-ln -s $HOME/.dotfiles/.config/sioyek/ $HOME/.config/sioyek
 ln -s $HOME/.dotfiles/.config/imv/ ~/.config/imv
 ln -s $HOME/.dotfiles/.config/mpv/ ~/.config/mpv
 
@@ -172,8 +170,8 @@ TODO:
   - [x] media
   - [x] groups
 - [x] thunar
-- [ ] rofi
+- [x] rofi
 - [x] power management: https://wiki.archlinux.org/title/Power_management/Suspend_and_hibernate#Changing_suspend_method
 - [ ] plugins
-- [ ] notifications
-- [ ] brightness & volume indicators
+- [x] notifications
+- [x] brightness & volume indicators

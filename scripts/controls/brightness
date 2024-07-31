@@ -8,7 +8,9 @@ notify() {
   if [[ idx -ge ${#icons[@]} ]]; then
     idx=$((${#icons[@]} - 1))
   fi
-  notify-send -h string:x-canonical-private-synchronous:sys-notify \
+  notify-send \
+    -c brightness \
+    -h string:x-canonical-private-synchronous:sys-notify \
     -h int:value:$pcent \
     -u low "brightness" "${icons[$idx]}  $pcent%"
 }
