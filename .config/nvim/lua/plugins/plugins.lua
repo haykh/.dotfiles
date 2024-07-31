@@ -54,10 +54,20 @@ return {
 				"<cmd>BufferLinePick<cr>",
 				desc = "pick buffer",
 			},
+			{
+				"<leader>bD",
+				"<Cmd>BufferLineGroupClose ungrouped<CR>",
+				desc = "delete non-pinned buffers",
+			},
 		},
 		opts = {
 			options = {
 				always_show_bufferline = true,
+				groups = {
+					items = {
+						require("bufferline.groups").builtin.pinned:with({ icon = "" }),
+					},
+				},
 			},
 		},
 	},

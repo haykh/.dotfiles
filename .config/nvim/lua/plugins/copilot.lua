@@ -17,7 +17,7 @@ return {
 					accept_line = "<s-tab>",
 					next = "<m-]>",
 					prev = "<m-[>",
-					dismiss = "<s-t>",
+					dismiss = "<s-tab>",
 				},
 			},
 		},

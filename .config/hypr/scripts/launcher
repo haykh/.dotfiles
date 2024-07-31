@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+# launchers for special apps in special workspaces
+
+if [[ "$1" == "--kitty" ]]; then
+  if [[ -z $(hyprctl workspaces | grep ws_kitty) ]]; then
+    hyprctl dispatch -- exec "[workspace special:ws_kitty; float; size 50% 50%; move 25% 50]" -- kitty
+  else
+    hyprctl dispatch togglespecialworkspace ws_kitty
+  fi
+elif [[ "$1" == "--spotify" ]]; then
+  pgrep spotify && hyprctl dispatch togglespecialworkspace ws_spotify || spotify &
+elif [[ "$1" == "--jabref" ]]; then
+  pgrep JabRef && hyprctl dispatch togglespecialworkspace ws_jabref || $HOME/.local/jabref.app/bin/JabRef &
+elif [[ "$1" == "--slack" ]]; then
+  pgrep slack && hyprctl dispatch togglespecialworkspace ws_slack ||
+    /usr/bin/slack \
+      --disable-gpu-compositing \
+      --enable-features=UseOzonePlatform \
+      --ozone-platform=wayland \
+      --enable-features=WebRTCPipeWireCapturer \
+      --enable-features=WaylandWindowDecorations \
+      --disable-features=WaylandFractionalScaleV1 &
+fi

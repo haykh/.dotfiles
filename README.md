@@ -22,7 +22,7 @@ i am making this repo mostly for myself, to synchronize my workflow across diffe
     - [`ranger`](https://github.com/ranger/ranger)
 - media/readers:
     - [`mpv`](https://mpv.io/)
-    - [`sioyek`](https://github.com/ahrm/sioyek)
+    - [`zathura`](https://pwmt.org/projects/zathura/)
 - other:
     - [`nvm`](https://github.com/nvm-sh/nvm)
     - [`nb`](https://github.com/xwmx/nb)
