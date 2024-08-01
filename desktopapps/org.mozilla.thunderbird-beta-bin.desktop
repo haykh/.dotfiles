@@ -1,0 +1,21 @@
+[Desktop Entry]
+Name=Thunderbird (beta)
+Exec=env DICPATH=/usr/share/hunspell /opt/thunderbird-beta/thunderbird %u
+Terminal=false
+Type=Application
+Icon=~/.local/share/icons/candy-icons/apps/scalable/thunderbird.svg
+Categories=Network;Email;
+MimeType=message/rfc822;x-scheme-handler/mailto;application/x-xpinstall;
+StartupNotify=true
+Actions=ComposeMessage;OpenAddressBook;
+StartupWMClass=thunderbird-beta
+
+[Desktop Action ComposeMessage]
+Name=Write new message
+Exec=env DICPATH=/usr/share/hunspell /opt/thunderbird-beta/thunderbird -compose
+StartupWMClass=thunderbird-beta
+
+[Desktop Action OpenAddressBook]
+Name=Open address book
+Exec=env DICPATH=/usr/share/hunspell /opt/thunderbird-beta/thunderbird -addressbook
+StartupWMClass=thunderbird-beta

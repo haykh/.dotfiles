@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Proton VPN
+Exec=protonvpn-app
+Terminal=false
+Type=Application
+Icon=~/.local/share/icons/candy-icons/apps/scalable/protonvpn-logo.svg
+StartupWMClass=protonvpn-app
+Comment=Proton VPN GUI client
+Categories=Network;

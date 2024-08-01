@@ -14,7 +14,7 @@
 @define-color default-fg white;
 @define-color default-border rgba(156,185,221,0.2);
 
-@define-color widget-bg rgba(19, 29, 43, 0.1);
+@define-color widget-bg rgba(19, 29, 43, 0.3);
 @define-color tooltip-bg rgba(19, 29, 43, 0.5);
 @define-color tooltip-fg #9cb9dd;
 @define-color inactive-workspace-fg #9cb9dd;
@@ -22,19 +22,9 @@
 @define-color balanced-fg #5d9fd9;
 @define-color performance-fg #d95d5d;
 
-
-/* @keyframes gradient_anim { */
-/*     0%{background-position:19% 0%} */
-/*     50%{background-position:82% 100%} */
-/*     100%{background-position:19% 0%} */
-/* } */
-
-
 window#waybar {
   background-color: @bar-bg;
-  /* animation: gradient_anim 2s ease infinite; */
-  /* background: linear-gradient(rgba(134,35,2,1) 1000%, rgba(191,61,4,1) 750%, rgba(244,101,24,1) 500%, rgba(247,160,80,1) 250%, rgba(252,213,90,1) 0%); */
-  /* background: linear-gradient(90deg, rgba(13,251,203,0.25) 0%, rgba(251,214,88,0.25) 25%, rgba(233,54,60,0.25) 50%, rgba(38,92,126,0.25) 75%, rgba(69,178,69,0.25) 100%); */
+  border-bottom: 1px solid @default-border;
 }
 
 tooltip {
@@ -58,11 +48,15 @@ box#controls,
   background-color: @widget-bg;
   border: 1px solid @default-border;
   padding: 0px 10px;
-  border-radius: 20px;
   margin: 5px 5px;
 }
 
 /* Left ....................... */
+box#battery,
+box#stats {
+  border-radius: 20px 8px 20px 8px;
+}
+
 #power-profiles-daemon {
   padding-left: 2px;
 }
@@ -84,6 +78,10 @@ box#controls,
 }
 
 /* Center ..................... */
+#workspaces {
+  border-radius: 8px 8px 20px 20px;
+}
+
 #workspaces button {
   background: transparent;
   color: @inactive-workspace-fg;
@@ -95,6 +93,14 @@ box#controls,
 }
 
 /* Right ...................... */
+#privacy-item,
+#custom-player,
+box#controls,
+#custom-weather,
+#clock {
+  border-radius: 8px 20px 8px 20px;
+}
+
 #privacy-item {
   padding-left: 20px;
   padding-right: 20px;
@@ -113,3 +119,12 @@ box .module {
 #battery {
   border: none;
 }
+
+/* @keyframes gradient_anim { */
+/*     0%{background-position:19% 0%} */
+/*     50%{background-position:82% 100%} */
+/*     100%{background-position:19% 0%} */
+/* } */
+/* animation: gradient_anim 2s ease infinite; */
+/* background: linear-gradient(rgba(134,35,2,1) 1000%, rgba(191,61,4,1) 750%, rgba(244,101,24,1) 500%, rgba(247,160,80,1) 250%, rgba(252,213,90,1) 0%); */
+/* background: linear-gradient(90deg, rgba(13,251,203,0.25) 0%, rgba(251,214,88,0.25) 25%, rgba(233,54,60,0.25) 50%, rgba(38,92,126,0.25) 75%, rgba(69,178,69,0.25) 100%); */

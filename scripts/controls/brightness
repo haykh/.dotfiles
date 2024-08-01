@@ -12,7 +12,7 @@ notify() {
     -c brightness \
     -h string:x-canonical-private-synchronous:sys-notify \
     -h int:value:$pcent \
-    -u low "brightness" "${icons[$idx]}  $pcent%"
+    -u low "${icons[$idx]} brightness" "$pcent%"
 }
 
 if [[ "$1" == "--inc" ]]; then

@@ -11,7 +11,7 @@ notify() {
     notify-send \
       -c ${device}-volume \
       -h string:x-canonical-private-synchronous:sys-notify \
-      -u low "volume" "$device  󰖁"
+      -u low "$device muted" "󰖁"
   else
     level=$(pamixer $MODE--get-volume)
     idx=$(echo $level \* ${#icons[@]} / 100 | bc)
@@ -22,7 +22,7 @@ notify() {
       -c ${device}-volume \
       -h string:x-canonical-private-synchronous:sys-notify \
       -h int:value:$level \
-      -u low "volume" "$device ${icons[$idx]}"
+      -u low "$device ${icons[$idx]}" "$level%"
   fi
 }
 

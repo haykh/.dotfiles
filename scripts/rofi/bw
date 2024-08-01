@@ -95,7 +95,7 @@ bw_search() {
     (jq -r '.[].login.username' <<<$items) | tr -d '\n' | wl-copy
     (jq -r '.[].login.password' <<<$items) | tr -d '\n' | wl-copy -p
     notify \
-      $(jq -r '.[].name' <<<$items) \
+      "$(jq -r '.[].name' <<<$items)" \
       "$(jq -r '"usr: " + .[].login.username' <<<$items)\n  password: \{clipboard\}"
   else
     local idx=$(
@@ -114,7 +114,7 @@ bw_search() {
     (jq -r ".[$idx].login.username" <<<$items) | tr -d '\n' | wl-copy
     (jq -r ".[$idx].login.password" <<<$items) | tr -d '\n' | wl-copy -p
     notify \
-      $(jq -r ".[$idx]"' | .name' <<<$items) \
+      "$(jq -r ".[$idx]"' | .name' <<<$items)" \
       "$(jq -r ".[$idx]"' | "  usr: " + .login.username' <<<$items)\n  password: \{clipboard\}"
   fi
 }

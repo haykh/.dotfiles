@@ -148,6 +148,9 @@ wget https://github.com/Alex313031/thorium/releases/download/.../thorium-browser
 unzip thorium-browser_124.0.6367.218_AVX2.zip -d .
 mv thorium $HOME/.local/thorium.app
 ln -s $HOME/.dotfiles/.config/chrome-flags.conf ~/.config
+
+# desktop apps
+ln -s $HOME/.dotfiles/desktopapps/* $HOME/.local/share/applications/
 ```
 
 # dev

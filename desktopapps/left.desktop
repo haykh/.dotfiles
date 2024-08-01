@@ -1,0 +1,7 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Terminal=false
+Exec=~/.local/left.app/Left
+Name=Left
+Icon=~/.local/left.app/resources/app/icon.icns
