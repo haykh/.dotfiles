@@ -27,6 +27,7 @@ notify() {
   fi
   not_daemon \
     -a kblayout-control -u low \
+    -i "EMPTY" \
     -h string:x-canonical-private-synchronous:sys-notify \
     "$icon $layout"
 }

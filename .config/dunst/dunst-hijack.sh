@@ -3,14 +3,14 @@
 if [ "$1" == "Slack" ]; then
   ACTION=$(
     dunstify \
-      -u "$5" -a "Slack" -i "Slack" \
+      -u "$5" -a "Slack" -i "slack" \
       -A "default,Open" \
       "$2" "$3"
   )
 
   case "$ACTION" in
   "default")
-    hyprctl dispatch exec $HOME/.config/hypr/scripts/launcher -- --slack
+    hyprctl dispatch exec $HOME/.dotfiles/scripts/hypr/launcher -- --slack
     ;;
   esac
 elif [ "$1" == "Spotify" ]; then
@@ -31,7 +31,7 @@ elif [ "$1" == "Spotify" ]; then
 
   case "$ACTION" in
   "default")
-    hyprctl dispatch exec $HOME/.config/hypr/scripts/launcher -- --spotify
+    hyprctl dispatch exec $HOME/.dotfiles/scripts/hypr/launcher -- --spotify
     ;;
   esac
 fi

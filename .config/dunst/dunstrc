@@ -73,11 +73,11 @@
   show_indicators = yes
 
   enable_recursive_icon_lookup = true
-  icon_theme = "candy-icons"
+  icon_theme = "BeautySolar"
   icon_position = left
   min_icon_size = 32
   max_icon_size = 128
-  icon_path = /home/hayk/.config/share/icons/candy-icons/apps/scalable/
+  icon_path = /home/hayk/.config/share/icons/BeautySolar
 
   sticky_history = yes
   history_length = 20
@@ -120,6 +120,8 @@
   format = ""
   script = /home/hayk/.config/dunst/dunst-hijack.sh
   history_ignore = yes
+  min_icon_size = 64
+  max_icon_size = 64
 
 [spotify]
   appname = "Spotify"
@@ -129,7 +131,7 @@
 
 [thunderbird]
   desktop_entry = "Thunderbird"
-  new_icon = /home/hayk/.local/share/icons/candy-icons/apps/scalable/thunderbird.svg
+  new_icon = /home/hayk/.config/share/icons/BeautySolar/apps/scalable/thunderbird.svg
 
 [kblayout]
   appname = "kblayout-control"
@@ -138,18 +140,24 @@
 
 [speaker-volume]
   appname = "speaker-volume-control"
-  new_icon = /home/hayk/.local/share/icons/candy-icons/apps/scalable/gnome-settings-sound.svg
+  new_icon = /home/hayk/.local/share/icons/BeautySolar/apps/scalable/mx-sound.svg
   history_ignore = yes
+  min_icon_size = 32
+  max_icon_size = 32
 
 [mic-volume]
   appname = "mic-volume-control"
-  new_icon = /home/hayk/.local/share/icons/candy-icons/apps/scalable/gnome-sound-recorder.svg
+  new_icon = /home/hayk/.local/share/icons/BeautySolar/apps/scalable/gnome-sound-recorder.svg
   history_ignore = yes
+  min_icon_size = 32
+  max_icon_size = 32
 
 [brightness]
   appname = "brightness-control"
-  new_icon = /home/hayk/.local/share/icons/candy-icons/apps/scalable/org.xfce.settings.display.svg
+  new_icon = /home/hayk/.local/share/icons/BeautySolar/apps/scalable/brightness-systray.svg
   history_ignore = yes
+  min_icon_size = 32
+  max_icon_size = 32
 
 # Every section that isn't one of the above is interpreted as a rules to
 # override settings for certain messages.
