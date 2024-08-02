@@ -2,6 +2,6 @@
 Encoding=UTF-8
 Type=Application
 Terminal=false
-Exec=~/.local/jabref.app/bin/JabRef
+Exec=/home/hayk/.local/jabref.app/bin/JabRef
 Name=JabRef
 Icon=~/.local/share/icons/candy-icons/apps/scalable/JabRef.svg

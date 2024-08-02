@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+not_daemon() {
+  if command -v dunstify &>/dev/null; then
+    dunstify "$@"
+  else
+    notify-send "$@"
+  fi
+}
+
 notify() {
   icons=("" "" "" "" "" "" "" "" "" "" "" "" "" "" "󰃠")
   value=$(brightnessctl g)
@@ -8,8 +16,8 @@ notify() {
   if [[ idx -ge ${#icons[@]} ]]; then
     idx=$((${#icons[@]} - 1))
   fi
-  notify-send \
-    -c brightness \
+  not_daemon \
+    -a brightness-control \
     -h string:x-canonical-private-synchronous:sys-notify \
     -h int:value:$pcent \
     -u low "${icons[$idx]} brightness" "$pcent%"

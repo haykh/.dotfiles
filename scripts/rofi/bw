@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+TMP_DIR=$HOME/.config/tmp
+
 theme_str() {
   printf "
     entry { 
@@ -11,12 +13,20 @@ theme_str() {
   " "$1"
 }
 
+not_daemon() {
+  if command -v dunstify &>/dev/null; then
+    dunstify "$@"
+  else
+    notify-send "$@"
+  fi
+}
+
 notify() {
-  notify-send -u normal -i bitwarden "$1" "$2"
+  not_daemon -u normal -i bitwarden "$1" "$2"
 }
 
 alert() {
-  notify-send -u critical -i bitwarden "$1" "$2"
+  not_daemon -u critical -i bitwarden "$1" "$2"
 }
 
 function bw_command() {
@@ -40,7 +50,7 @@ or change the default session name above"
 
 bw_search() {
   if ! command -v $(node_path)node &>/dev/null; then
-    if [ ! -f /tmp/rofi_bw_node ]; then
+    if [ ! -f $TMP_DIR/rofi_bw_node ]; then
       local node_path=$(
         rofi -dmenu \
           -p "" \
@@ -51,10 +61,10 @@ bw_search() {
         alert "rofi bw" "wrong path provided"
         exit 1
       fi
-      echo $node_path >/tmp/rofi_bw_node
-      notify "rofi bw" "node path saved to /tmp/rofi_bw_node"
+      echo $node_path >$TMP_DIR/rofi_bw_node
+      notify "rofi bw" "node path saved to $TMP_DIR/rofi_bw_node"
     else
-      node_path=$(cat /tmp/rofi_bw_node)
+      node_path=$(cat $TMP_DIR/rofi_bw_node)
     fi
   fi
 
@@ -63,11 +73,11 @@ bw_search() {
     exit 1
   fi
 
-  if [ ! -f /tmp/rofi_bw_session_name ]; then
-    echo "bw_session2" >/tmp/rofi_bw_session_name
+  if [ ! -f $TMP_DIR/rofi_bw_session_name ]; then
+    echo "bw_session" >$TMP_DIR/rofi_bw_session_name
   fi
 
-  local bw_session_name=$(cat /tmp/rofi_bw_session_name)
+  local bw_session_name=$(cat /$TMP_DIR/rofi_bw_session_name)
 
   if ! pass ls | grep -q $bw_session_name; then
     local new_session_name=$(
@@ -80,9 +90,9 @@ bw_search() {
     if [ -z "$new_session_name" ]; then
       exit 1
     fi
-    echo $new_session_name >/tmp/rofi_bw_session_name
+    echo $new_session_name >$TMP_DIR/rofi_bw_session_name
     bw_session_name=$new_session_name
-    notify "rofi bw" "name of bw session in pass has been saved to /tmp/rofi_bw_session_name"
+    notify "rofi bw" "name of bw session in pass has been saved to $TMP_DIR/rofi_bw_session_name"
   fi
 
   local prompt=$(rofi -p "" -dmenu -no-fixed-num-lines -theme-str "$(theme_str "search bitwarden")")
@@ -108,7 +118,7 @@ bw_search() {
       exit 1
     fi
     if [[ $idx -ge $nitems ]]; then
-      notify-send -u critical "bitwarden" "invalid index"
+      alert "bitwarden" "invalid index"
       exit 1
     fi
     (jq -r ".[$idx].login.username" <<<$items) | tr -d '\n' | wl-copy

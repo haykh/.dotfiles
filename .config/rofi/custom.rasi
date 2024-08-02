@@ -1,0 +1,185 @@
+* {
+  font: "MonaspiceKr Nerd Font 12";
+  background-color: transparent;
+  text-color:       white;
+  bg: #282a3688;
+  fg: #f5f8f2;
+  dimmed-fg: #81a3deff;
+  active-bg: #2D5CAD88;
+  border: #9cb9dd33;
+  accent: #d95d5d;
+
+  text-color: @fg;
+}
+
+window {
+  background-color: @bg;
+  border-radius: 20px;
+  border: 1px solid;
+  border-color: @border;
+}
+
+mainbox {
+  spacing: 0px;
+  border-radius: 20px;
+  padding: 1em;
+  children: [ inputbar, message, listview ];
+}
+
+// .... inputbar .... //
+inputbar {
+  margin: 0px 0px 0em 0em;
+  spacing: 0.4em;
+  children: [ textbox-prompt, entry ];
+}
+
+textbox-prompt {
+  expand: false;
+  str: "λ";
+  color: @accent;
+}
+
+entry {
+  placeholder: "run";
+  placeholder-color: white/30%;
+}
+
+// .... message .... //
+message {
+  padding: 0.5em;
+  margin: 0.5em 0 0 0;
+  border: 0 0 0 2px solid;
+  border-color: @border;
+}
+
+// .... listview .... //
+listview {
+  margin: 0.5em 0 0 0;
+  fixed-columns: true;
+  columns: 6;
+  lines: 4;
+  spacing: 1em;
+  dynamic: true;
+  flow: horizontal;
+  scrollbar: true;
+  scrollbar-width: 20px;
+}
+
+scrollbar {
+  background-color: @bg;
+  handle-color: @border;
+}
+
+// .... listview elements .... //
+element {
+  background: transparent;
+  children: [ element-icon, element-text ];
+  padding: 1em 0;
+  orientation: vertical;
+}
+
+element-text, element-icon {
+  font: "Cantarell 12";
+  horizontal-align: 0.5;
+}
+
+element, element-text, element-icon, button {
+  cursor: pointer;
+}
+
+element-icon {
+  size: 3.5em;
+}
+
+element-text {
+  color: @dimmed-fg;
+  highlight: white;
+}
+
+element selected {
+  background-color: @active-bg;
+  border: 1px solid;
+  border-radius: 20px;
+  border-color: @border;
+}
+
+// listview, inputbar, message {
+//   padding: 0.5em;  
+//   border-color: lightgreen;
+//   border: 5px;
+//   border-radius: 10px;
+//   background-color: black/70%;
+//
+//   columns: 4;
+//   lines:   4;
+// }
+// listview {
+//   border:       0px 5px 5px 5px;
+//   border-radius: 0px 0px 10px 10px;
+// }
+//
+//
+// // element {
+// //     border:  0;
+// //     padding:      10px;
+// //     // font:         "Mono 8";
+// //     orientation: vertical;
+// // }
+// element-icon {
+//   size: 6em;
+// }
+//
+// element  selected {
+//   border-color: lightgreen;
+//   border:       5px;
+//   border-radius: 10px;
+//   background-color: lightgreen/20%;
+// }
+//
+// wrapper-mode-switcher {
+//     orientation: horizontal;
+//
+//     expand:     false;
+//     spacing:    0;
+//     children: [ icon-ms-ic1, mode-switcher, icon-ms-ic2 ];
+// }
+// icon-ms-ic1 {
+//     filename: "go-previous";
+//     action: "kb-mode-previous";
+// }
+// icon-ms-ic2 {
+//     filename: "go-next";
+//     action: "kb-mode-next";
+// }
+// icon-ms-ic1,icon-ms-ic2 {
+//     size: 16;
+//     vertical-align: 0.8;
+//     expand:        false;
+//     border:       0px 0px 5px ;
+//     border-color: lightgreen;
+// }
+//
+// mode-switcher {
+//     border:  0px;
+//     spacing: 0px;
+//     expand: true;
+// }
+// button {
+//     text-color: white;
+//     border:       0px 0px 5px ;
+//     border-color: lightgreen;
+//     border-radius:    10px 10px 0 0;
+//     background-image: linear-gradient(to bottom, darkgreen/50%, black/70%);
+//     horizontal-align: 0.5;
+// }
+// button selected.normal {
+//     text-color: white;
+//     margin: 0px;
+//     padding: 0px;
+//
+//     border:       5px 5px 0px ;
+//     border-color: lightgreen;
+//     border-radius:    10px 10px 0 0;
+//     background-image: linear-gradient(to bottom, darkgreen, black/70%);
+// }
+//

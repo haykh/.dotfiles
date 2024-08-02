@@ -1,5 +1,13 @@
 #!/bin/bash
 
+not_daemon() {
+  if command -v dunstify &>/dev/null; then
+    dunstify "$@"
+  else
+    notify-send "$@"
+  fi
+}
+
 notify() {
   icons=("" "" "󰕾" "")
   if [[ $MODE == "--default-source " ]]; then
@@ -8,18 +16,19 @@ notify() {
     device="speaker"
   fi
   if [[ $(pamixer $MODE--get-mute) == "true" ]]; then
-    notify-send \
-      -c ${device}-volume \
+    not_daemon \
+      -a "${device}-volume-control" \
       -h string:x-canonical-private-synchronous:sys-notify \
-      -u low "$device muted" "󰖁"
+      -h int:value:0 \
+      -u low "$device 󰖁" "muted"
   else
     level=$(pamixer $MODE--get-volume)
     idx=$(echo $level \* ${#icons[@]} / 100 | bc)
     if [[ idx -ge ${#icons[@]} ]]; then
       idx=$((${#icons[@]} - 1))
     fi
-    notify-send \
-      -c ${device}-volume \
+    not_daemon \
+      -a "${device}-volume-control" \
       -h string:x-canonical-private-synchronous:sys-notify \
       -h int:value:$level \
       -u low "$device ${icons[$idx]}" "$level%"
@@ -41,9 +50,18 @@ if [[ "$2" == "--toggle" ]]; then
     pamixer $MODE-m && notify
   fi
 elif [[ "$2" == "--inc" ]]; then
+  if [[ $(pamixer $MODE--get-mute) == "true" ]]; then
+    pamixer $MODE-u
+  fi
   pamixer $MODE-i $3 && notify
 elif [[ "$2" == "--dec" ]]; then
+  if [[ $(pamixer $MODE--get-mute) == "true" ]] && [[ $(pamixer $MODE--get-volume) != "0" ]]; then
+    pamixer $MODE-u
+  fi
   pamixer $MODE-d $3 && notify
+  if [[ $(pamixer $MODE--get-volume) == "0" ]]; then
+    pamixer $MODE-m
+  fi
 else
   exit 1
 fi

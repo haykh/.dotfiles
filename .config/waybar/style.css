@@ -39,7 +39,6 @@ tooltip * {
 /* Common ..................... */
 box#battery,
 box#stats,
-#workspaces,
 #privacy-item,
 #custom-player,
 box#controls,
@@ -79,17 +78,35 @@ box#stats {
 
 /* Center ..................... */
 #workspaces {
-  border-radius: 8px 8px 20px 20px;
+  margin: 5px 5px;
+  border: none;
 }
 
 #workspaces button {
   background: transparent;
+  border: 1px solid @default-border;
+  padding: 0px 18px 0px 14px;
+  background-color: @widget-bg;
   color: @inactive-workspace-fg;
 }
 
 #workspaces button.active,
 #workspaces button:hover {
   color: @default-fg;
+  background-color: @tooltip-bg;
+}
+
+#workspaces button:not(:last-child) {
+  border-right: none;
+}
+#workspaces button:first-child {
+  border-radius: 16px 0px 0px 16px;
+}
+#workspaces button:last-child {
+  border-radius: 0px 16px 16px 0px;
+}
+#workspaces button:first-child:last-child {
+  border-radius: 16px;
 }
 
 /* Right ...................... */

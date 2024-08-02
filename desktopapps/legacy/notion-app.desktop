@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Notion
-Exec=/opt/Notion/notion-app %U
+Exec=env GDK_BACKEND=x11 /opt/Notion/notion-app %U
 Terminal=false
 Type=Application
 Icon=~/.local/share/icons/candy-icons/apps/scalable/notion-desktop.svg

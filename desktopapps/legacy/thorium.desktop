@@ -2,6 +2,6 @@
 Encoding=UTF-8
 Type=Application
 Terminal=false
-Exec=~/.local/thorium.app/thorium
+Exec=/home/hayk/.local/thorium.app/thorium
 Name=thorium browser
 Icon=~/.local/share/icons/candy-icons/apps/scalable/thorium-browser.svg

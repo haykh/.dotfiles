@@ -1,0 +1,17 @@
+[Desktop Entry]
+Name=VSCodium
+Exec=@exe@ %F
+Icon=vscodium
+Comment=Code Editing. Redefined.
+Type=Application
+StartupNotify=false
+StartupWMClass=codium-url-handler
+Categories=Utility;Development;IDE;
+MimeType=text/plain;inode/directory;
+Actions=new-empty-window;
+Keywords=vscode;
+
+[Desktop Action new-empty-window]
+Name=New Empty Window
+Exec=@exe@ --new-window %F
+Icon=vscodium

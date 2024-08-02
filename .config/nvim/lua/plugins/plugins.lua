@@ -47,6 +47,14 @@ return {
 		},
 	},
 	{
+		"folke/ts-comments.nvim",
+		opts = {
+			lang = {
+				rasi = "// %s",
+			},
+		},
+	},
+	{
 		"akinsho/bufferline.nvim",
 		keys = {
 			{

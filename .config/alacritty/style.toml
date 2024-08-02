@@ -1,0 +1,56 @@
+# Colors (iTerm 2 default theme)
+
+# Default colors
+[colors.primary]
+background = '#101421'
+foreground = '#fffbf6'
+
+# Normal colors
+[colors.normal]
+black   = '#2e2e2e'
+red     = '#eb4129'
+green   = '#abe047'
+yellow  = '#f6c744'
+blue    = '#47a0f3'
+magenta = '#7b5cb0'
+cyan    = '#64dbed'
+white   = '#e5e9f0'
+
+# Bright colors
+[colors.bright]
+black   = '#565656'
+red     = '#ec5357'
+green   = '#c0e17d'
+yellow  = '#f9da6a'
+blue    = '#49a4f8'
+magenta = '#a47de9'
+cyan    = '#99faf2'
+white   = '#ffffff'
+# # Colors (Ayu Dark)
+#
+# # Default colors
+# [colors.primary]
+# background = '#0A0E14'
+# foreground = '#B3B1AD'
+#
+# # Normal colors
+# [colors.normal]
+# black   = '#01060E'
+# red     = '#EA6C73'
+# green   = '#91B362'
+# yellow  = '#F9AF4F'
+# blue    = '#53BDFA'
+# magenta = '#FAE994'
+# cyan    = '#90E1C6'
+# white   = '#C7C7C7'
+#
+# # Bright colors
+# [colors.bright]
+# black   = '#686868'
+# red     = '#F07178'
+# green   = '#C2D94C'
+# yellow  = '#FFB454'
+# blue    = '#59C2FF'
+# magenta = '#FFEE99'
+# cyan    = '#95E6CB'
+# white   = '#FFFFFF'

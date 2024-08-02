@@ -1,0 +1,15 @@
+[Desktop Entry]
+Name=Font Manager
+Exec=@exe@ %u
+Icon=@icon@
+Type=Application
+Version=1.0
+Comment=Preview, Compare and Manage Fonts
+GenericName=Font Manager
+DBusActivatable=true
+Terminal=false
+MimeType=font/ttf;font/ttc;font/otf;font/sfnt;application/x-font-ttf;application/x-font-otf;application/vnd.ms-opentype;
+Categories=Utility;GTK;GNOME;
+Keywords=Graphics;Viewer;GNOME;GTK;Publishing;
+StartupNotify=true
+X-GNOME-UsesNotifications=true

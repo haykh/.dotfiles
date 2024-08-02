@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+if [[ "$1" == "off" ]]; then
+  # check to ensure more than one monitor is connected
+  if [[ $(hyprctl monitors -j | jq '. | length') -gt 1 ]]; then
+    hyprctl keyword monitor "eDP-2, disable"
+  fi
+elif [[ "$1" == "on" ]]; then
+  hyprctl keyword monitor "eDP-2, highrr, auto, 1.25"
+fi

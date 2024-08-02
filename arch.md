@@ -162,8 +162,18 @@ sudo pacman -S neovim
 sudo pacman -S python python-virtualenv python-pipx
 
 # vscode
-yay -S visual-studio-code-bin 
-ln -s $HOME/.dotfiles/.config/code-flags.conf ~/.config
+yay -S vscodium-bin-marketplace
+```
+
+# firefox
+https://github.com/Naezr/ShyFox
+```sh
+# about:config
+shyfox.remove.window.controls = true
+shyfox.disable.floating.search = true
+shyfox.enable.ext.mono.context.icons = true
+shyfox.enable.ext.mono.toolbar.icons = true
+shyfox.enable.context.menu.icons = true
 ```
 
 TODO:

@@ -159,6 +159,10 @@ if command -v bw &> /dev/null; then
   fi
 fi
 
+if command -v codium &> /dev/null; then
+  alias code='codium --enable-features=UseOzonePlatform,WaylandWindowDecorations --ozone-platform=wayland'
+fi
+
 # Theme . . . . . . . . . . . 
 if command -v starship &> /dev/null; then
   eval "$(starship init zsh)"

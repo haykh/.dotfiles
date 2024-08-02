@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Left
+Exec=@exe@
+Icon=@icon@
+Type=Application
+Encoding=UTF-8
+Terminal=false

@@ -1,5 +1,13 @@
 #!/bin/sh
 
+not_daemon() {
+  if command -v dunstify &>/dev/null; then
+    dunstify "$@"
+  else
+    notify-send "$@"
+  fi
+}
+
 switch() {
   hyprctl switchxkblayout $(
     hyprctl devices -j |
@@ -17,8 +25,8 @@ notify() {
   else
     icon="🇷🇺"
   fi
-  notify-send \
-    -c kblayout -u low \
+  not_daemon \
+    -a kblayout-control -u low \
     -h string:x-canonical-private-synchronous:sys-notify \
     "$icon $layout"
 }

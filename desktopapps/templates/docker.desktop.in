@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Docker Desktop
+Exec=@exe@
+Icon=@icon@
+Comment=Docker Desktop for Linux
+Type=Application
+Keywords=container;docker;
+Categories=Development;

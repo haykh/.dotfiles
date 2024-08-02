@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=FreeCAD
+Exec=@exe@ %F
+Icon=@icon@
+Type=Application
+Comment=Feature based Parametric Modeler
+Terminal=false
+Categories=Graphics;Science;Education;Engineering;
+StartupNotify=true
+MimeType=application/x-extension-fcstd;model/obj;model/iges;image/vnd.dwg;image/vnd.dxf;model/vnd.collada+xml;application/iges;model/iges;model/step;model/step+zip;model/stl;application/vnd.shp;model/vrml;
