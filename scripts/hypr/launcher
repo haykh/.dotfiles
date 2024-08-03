@@ -10,8 +10,6 @@ if [[ "$1" == "--kitty" ]]; then
   fi
 elif [[ "$1" == "--spotify" ]]; then
   pgrep spotify && hyprctl dispatch togglespecialworkspace ws_spotify || spotify &
-elif [[ "$1" == "--jabref" ]]; then
-  pgrep JabRef && hyprctl dispatch togglespecialworkspace ws_jabref || $HOME/.local/jabref.app/bin/JabRef &
 elif [[ "$1" == "--slack" ]]; then
   pgrep slack && hyprctl dispatch togglespecialworkspace ws_slack ||
     /usr/bin/slack \
@@ -21,4 +19,10 @@ elif [[ "$1" == "--slack" ]]; then
       --enable-features=WebRTCPipeWireCapturer \
       --enable-features=WaylandWindowDecorations \
       --disable-features=WaylandFractionalScaleV1 &
+elif [[ "$1" == "--thunderbird" ]]; then
+  if [[ -z $(hyprctl workspaces | grep ws_mail) ]]; then
+    hyprctl dispatch -- exec "[workspace special:ws_mail; float; size 50% 50%; center]" -- thunderbird-beta
+  else
+    hyprctl dispatch togglespecialworkspace ws_mail
+  fi
 fi

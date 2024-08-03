@@ -120,8 +120,8 @@
   format = ""
   script = /home/hayk/.config/dunst/dunst-hijack.sh
   history_ignore = yes
-  min_icon_size = 64
-  max_icon_size = 64
+  min_icon_size = 48
+  max_icon_size = 48
 
 [spotify]
   appname = "Spotify"
@@ -131,7 +131,10 @@
 
 [thunderbird]
   desktop_entry = "Thunderbird"
-  new_icon = /home/hayk/.config/share/icons/BeautySolar/apps/scalable/thunderbird.svg
+  format = ""
+  script = /home/hayk/.config/dunst/dunst-hijack.sh
+  min_icon_size = 48
+  max_icon_size = 48
 
 [bw-notifications]
   icon = "bitwarden"
