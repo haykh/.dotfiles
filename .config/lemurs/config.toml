@@ -87,7 +87,7 @@ show_background = true
 
 [background.style]
 # Allow to set the default background color for the login shell
-color = "#1A2632"
+color = "dark gray"
 # Settings for the background block's borders
 show_border = false
 border_color = "white"
@@ -122,7 +122,7 @@ entries = []
 [[power_controls.base_entries]]
 hint = "shutdown"
 # The color and modifiers of the hint in the top-left corner
-hint_color = "dark gray"
+hint_color = "gray"
 hint_modifiers = ""
 # The key used to shutdown. Possibilities are F1 to F12.
 key = "F1"
@@ -134,7 +134,7 @@ cmd = "systemctl poweroff -l"
 # The text in the top-left to display how to reboot.
 hint = "reboot"
 # The color and modifiers of the hint in the top-left corner
-hint_color = "dark gray"
+hint_color = "gray"
 hint_modifiers = ""
 # The key used to reboot. Possibilities are F1 to F12.
 key = "F2"
@@ -174,7 +174,7 @@ switcher_visibility = "F12"
 # if switcher_visiblity is set to "visible" or "hidden".
 toggle_hint = "switcher %key%"
 # The color and modifiers of the hint in the top-left corner
-toggle_hint_color = "dark gray"
+toggle_hint_color = "gray"
 toggle_hint_modifiers = ""
 
 # Show an option for the TTY shell when logging in as one of the environments. 
@@ -186,11 +186,11 @@ remember = true
 # Enables showing the movers
 show_movers = true
 # Mover's color and modifiers whilst the selector is unfocused
-mover_color = "#2A3439" 
+mover_color = "gray" 
 mover_modifiers = ""
 
 # Mover's color and modifiers whilst the selector is focused
-mover_color_focused = "#9cb9dd"
+mover_color_focused = "light red"
 mover_modifiers_focused = "bold" 
 
 # The characters used to display the movers. Suggestions are:
@@ -209,7 +209,7 @@ mover_margin = 1
 show_neighbours = true
 
 # Neighbours' color and modifiers whilst the selector is unfocused
-neighbour_color = "#2A3439"
+neighbour_color = "gray"
 neighbour_modifiers = ""
 
 # Neighbours' color and modifiers whilst the selector is focused
@@ -220,11 +220,11 @@ neighbour_modifiers_focused = ""
 neighbour_margin = 1
 
 # Selected's color and modifiers whilst the selector is unfocused
-selected_color = "#DE3163"
+selected_color = "red"
 selected_modifiers = "underlined"
 
 # Selected's color and modifiers whilst the selector is focused
-selected_color_focused = "#9cb9dd"
+selected_color_focused = "light red"
 selected_modifiers_focused = "bold"
 
 # The length of the name of the desktop environment which is displayed.
@@ -253,13 +253,13 @@ show_border = true
 use_max_width = true
 max_width = 48
 
-title_color = "#2A3439"
-content_color = "#DE3163"
-border_color = "#2A3439"
+title_color = "gray"
+content_color = "red"
+border_color = "gray"
 
-title_color_focused = "#9cb9dd"
-content_color_focused = "#9cb9dd"
-border_color_focused = "#9cb9dd"
+title_color_focused = "white"
+content_color_focused = "light red"
+border_color_focused = "white"
 
 [password_field]
 # Note: Only one character is accepted.
@@ -272,13 +272,13 @@ show_border = true
 use_max_width = true
 max_width = 48
 
-title_color = "#2A3439"
-content_color = "#2A3439"
-border_color = "#2A3439"
+title_color = "gray"
+content_color = "red"
+border_color = "gray"
 
-title_color_focused = "#9cb9dd"
-content_color_focused = "#9cb9dd"
-border_color_focused = "#9cb9dd"
+title_color_focused = "white"
+content_color_focused = "light red"
+border_color_focused = "white"
 
 [x11]
 # Where to log to for the XServer.

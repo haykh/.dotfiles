@@ -12,4 +12,7 @@ elif [[ "$1" == "--calc" ]]; then
 elif [[ "$1" == "--bw" ]]; then
   killall rofi ||
     $HOME/.dotfiles/scripts/rofi/bw
+elif [[ "$1" == "--pyfia" ]]; then
+  killall rofi ||
+    $HOME/.dotfiles/scripts/rofi/pyfia/launch.sh
 fi

@@ -103,5 +103,12 @@
     "ICON": "freecad",
     "FNAME": "org.freecad.FreeCAD",
     "SCRIPT": "."
+  },
+  {
+    "IN": "rnote",
+    "EXE": "env GSK_RENDERER=gl rnote",
+    "ICON": "com.github.flxzt.rnote",
+    "FNAME": "com.github.flxzt.rnote",
+    "SCRIPT": "."
   }
 ]

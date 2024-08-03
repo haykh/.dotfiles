@@ -203,7 +203,7 @@
       "class<nm-connection-editor>": "",
       "class<Thorium-browser>": "<span color='#639BF6'></span>",
       "class<org.telegram.desktop>": "<span color='#5EB5F7'></span>",
-      "class<Alacritty>": "",
+      "class<Alacritty>": "",
       "class<Docker Desktop>": "<span color='#1D63ED'></span>",
       "class<.*ONLYOFFICE.*>": "",
       "class<.*thunderbird.*>": "<span color='#1787E9'></span>",
@@ -211,7 +211,11 @@
       "class<[VS]*[c|C]odium.*>": "<span color='#22A7F2'></span>",
       "class<.*xournalpp.*>": "",
       "class<.*JabRefGUI.*>": "<span color='#bf94f1'>󰯂</span>",
+      "class<.*rnote>": "",
     },
+    "persistent-workspaces": {
+      "1": [],
+    }
   },
   // .............................................................................
   // Right

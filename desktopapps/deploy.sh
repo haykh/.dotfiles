@@ -24,10 +24,10 @@ fi
 for file in $APP_DIR/bak/*; do
   if [[ $file != *.bak ]]; then
     mv "$file" "$file.bak"
-  fi  
+  fi
 done
 
-for ((i=0; i<NITEMS; i++)); do
+for ((i = 0; i < NITEMS; i++)); do
   template="${IN[$i]}"
   exe="${EXE[$i]}"
   icon="${ICON[$i]}"
@@ -36,17 +36,21 @@ for ((i=0; i<NITEMS; i++)); do
 
   if [[ $script != "." ]]; then
     mkdir -p $APP_DIR/launchers
-    printf "#!/usr/bin/env bash\n$script\n"  > $APP_DIR/launchers/$template.sh
+    printf "#!/usr/bin/env bash\n$script\n" >$APP_DIR/launchers/$template.sh
     chmod +x $APP_DIR/launchers/$template.sh
     exe="$APP_DIR/launchers/$template.sh"
   fi
+
+  # replace "$HOME" with actual value of $HOME in exe and icon
+  exe=$(echo "$exe" | sed "s|\$HOME|$HOME|g")
+  icon=$(echo "$icon" | sed "s|\$HOME|$HOME|g")
 
   if [[ " ${ignorelist[@]} " =~ " $template " ]]; then
     continue
   fi
 
-  cat templates/"$template".desktop.in | 
-    sed "s/@exe@/$(printf '%s\n' "$exe" | sed 's/[\/&]/\\&/g')/g" | 
-    sed "s/@icon@/$(printf '%s\n' "$icon" | sed 's/[\/&]/\\&/g')/g" > $output.desktop
+  cat templates/"$template".desktop.in |
+    sed "s/@exe@/$(printf '%s\n' "$exe" | sed 's/[\/&]/\\&/g')/g" |
+    sed "s/@icon@/$(printf '%s\n' "$icon" | sed 's/[\/&]/\\&/g')/g" >$output.desktop
   mv $output.desktop $APP_DIR/
 done

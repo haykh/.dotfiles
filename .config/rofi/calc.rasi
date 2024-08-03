@@ -2,6 +2,11 @@ window {
   width: 30%;
 }
 
+textbox-prompt {
+  str: "󰿈";
+  color: #D49A74;
+}
+
 element {
   children: [ element-text ];
   padding: 0;
@@ -25,9 +30,7 @@ listview {
   margin: 0.5em 0 0 0;
   columns: 1;
   lines: 4;
-  dynamic: true;
   cycle: false;
   scrollbar: false;
-  scrollbar-width: 20px;
   dynamic: false;
 }

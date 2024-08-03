@@ -1,0 +1,50 @@
+mainbox {
+  children: [ listview, inputbar, message ];
+}
+
+textbox-prompt {
+  str: " ";
+  color: #3774A9;
+}
+
+window {
+  width: 30%;
+}
+
+element {
+  children: [ element-text ];
+  padding: 0;
+}
+
+element-text {
+  font: "MonaspiceKr Nerd Font 12";
+  horizontal-align: 0;
+}
+
+element selected {
+  background-color: transparent;
+  border: none;
+}
+
+element-text {
+  highlight: none;
+}
+
+element-text.active {
+  color: #69d95d;
+}
+
+element-text.urgent {
+  color: #d95d5d;
+}
+
+listview {
+  margin: 0 0 0.5em 0;
+  spacing: 0;
+  columns: 1;
+  lines: 20;
+  dynamic: true;
+  cycle: false;
+  scrollbar: true;
+  scrollbar-width: 20px;
+}

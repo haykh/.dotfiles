@@ -7,8 +7,9 @@ theme_str() {
     entry { 
       placeholder: \"%s\";
     }
-    inputbar {
-      children: [prompt, textbox-prompt-colon, entry];
+    textbox-prompt {
+      str: \" \";
+      color: #175DDC;
     }
   " "$1"
 }
