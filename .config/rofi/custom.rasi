@@ -78,8 +78,12 @@ element {
   orientation: vertical;
 }
 
-element-text, element-icon {
+element-text {
   font: "Cantarell 12";
+}
+
+element-text,
+element-icon  {
   horizontal-align: 0.5;
 }
 
