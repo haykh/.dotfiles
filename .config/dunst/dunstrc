@@ -133,6 +133,12 @@
   desktop_entry = "Thunderbird"
   new_icon = /home/hayk/.config/share/icons/BeautySolar/apps/scalable/thunderbird.svg
 
+[bw-notifications]
+  icon = "bitwarden"
+  min_icon_size = 48
+  max_icon_size = 48
+  history_ignore = yes
+
 [kblayout]
   appname = "kblayout-control"
   alignment = center

@@ -7,10 +7,7 @@ theme_str() {
     entry { 
       placeholder: \"%s\";
     }
-    textbox-prompt {
-      str: \" \";
-      color: #175DDC;
-    }
+    @import \"~/.config/rofi/bw.rasi\"
   " "$1"
 }
 
@@ -83,7 +80,7 @@ bw_search() {
   if ! pass ls | grep -q $bw_session_name; then
     local new_session_name=$(
       rofi -dmenu \
-        -p "" \
+        -i -p "" \
         -mesg "$(PASS_NOT_FOUND_MSG $bw_session_name)" \
         -theme-str "$(theme_str "session name")" -no-fixed-num-lines
     )
@@ -96,7 +93,7 @@ bw_search() {
     notify "rofi bw" "name of bw session in pass has been saved to $TMP_DIR/rofi_bw_session_name"
   fi
 
-  local prompt=$(rofi -p "" -dmenu -no-fixed-num-lines -theme-str "$(theme_str "search bitwarden")")
+  local prompt=$(rofi -i -p "" -dmenu -no-fixed-num-lines -theme-str "$(theme_str "search bitwarden")")
   if [ -z "$prompt" ]; then
     exit 1
   fi
@@ -107,12 +104,12 @@ bw_search() {
     (jq -r '.[].login.password' <<<$items) | tr -d '\n' | wl-copy -p
     notify \
       "$(jq -r '.[].name' <<<$items)" \
-      "$(jq -r '"usr: " + .[].login.username' <<<$items)\n  password: \{clipboard\}"
+      "$(jq -r '"  usr: " + .[].login.username' <<<$items)\n  password: \{clipboard\}"
   else
     local idx=$(
       echo $items |
         jq -r 'to_entries | .[] | .value.name + " -- " + .value.login.username' |
-        rofi -p "" -dmenu -no-fixed-num-lines \
+        rofi -i -p "" -dmenu -no-fixed-num-lines \
           -format i -theme-str "$(theme_str "pick the entry")"
     )
     if [ -z "$idx" ]; then

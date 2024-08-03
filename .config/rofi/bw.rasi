@@ -1,0 +1,38 @@
+window {
+  width: 30%;
+}
+
+textbox-prompt {
+  str: " ";
+  color: #175DDC;
+}
+
+element {
+  children: [ element-text ];
+  padding: 0;
+}
+
+element-text {
+  font: "MonaspiceKr Nerd Font 12";
+  horizontal-align: 0;
+}
+
+element selected {
+  background-color: transparent;
+  border: none;
+}
+
+element-text selected {
+  text-transform: underline white;
+}
+
+listview {
+  margin: 0.5em 0 0 0;
+  columns: 1;
+  lines: 10;
+  spacing: 0.25em;
+  // cycle: false;
+  // scrollbar: true;
+  // dynamic: false;
+}
+

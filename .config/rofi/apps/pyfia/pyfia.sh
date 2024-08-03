@@ -1,25 +1,24 @@
 #!/usr/bin/env bash
 
-MAXWAIT=1000
+MAXWAIT=100
 
 if [ -z "$1" ]; then
-  histfile=$HOME/.local/share/rofi/pyfia_$(date +%H-%M-%S_%F).log
-  echo "INFO:histfile is $histfile" >>$LOG_FILE
+  echo "INFO:HST_FILE is $HST_FILE" >>$LOG_FILE
   echo "INFO:CMD_FILE is $CMD_FILE" >>$LOG_FILE
   echo "INFO:OUT_FILE is $OUT_FILE" >>$LOG_FILE
   echo "INFO:ERR_FILE is $ERR_FILE" >>$LOG_FILE
 
-  echo "" >$histfile
+  echo "" >$HST_FILE
   echo -en "\0prompt\x1fwrite python\n"
-  echo -en "\0data\x1f$histfile\n"
+  echo -en "\0data\x1f$HST_FILE\n"
 else
-  # get histfile name
-  histfile=$ROFI_DATA
-  # pass histfile name forward
-  echo -en "\0data\x1f$histfile\n"
+  # get HST_FILE name
+  HST_FILE=$ROFI_DATA
+  # pass HST_FILE name forward
+  echo -en "\0data\x1f$HST_FILE\n"
 
   # write input to the log file
-  echo "> $1" >>$histfile
+  echo "> $1" >>$HST_FILE
 
   # send command to python
   echo -n "$1" >>$CMD_FILE
@@ -39,13 +38,13 @@ else
   done
   # write output to the log file
   if [[ "$out" != "None"* ]] && [[ "$out" != "" ]]; then
-    echo "< $out" >>$histfile
+    echo "< $out" >>$HST_FILE
     echo -en "\0message\x1fOUT: $out\n"
   fi
   # send error to rofi
   if [[ "$err" != "" ]]; then
     echo "ERROR: $err" >>$LOG_FILE
-    echo "E $err" >>$histfile
+    echo "E $err" >>$HST_FILE
     echo -en "\0message\x1fERR: $err\n"
   fi
   # clear output and error files
@@ -53,7 +52,7 @@ else
   echo -n "" >$ERR_FILE
 
   # read all entries of the log file
-  cat "$histfile" | while IFS= read -r line; do
+  cat "$HST_FILE" | while IFS= read -r line; do
     # pass lines to rofi
     if [[ "$line" == ">"* ]]; then
       # input line
