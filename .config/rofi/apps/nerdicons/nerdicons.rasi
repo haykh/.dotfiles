@@ -8,7 +8,7 @@ textbox-prompt {
 }
 
 entry {
-  placeholder: "search nerdicons";
+  placeholder: "nerdicons";
 }
 
 listview {

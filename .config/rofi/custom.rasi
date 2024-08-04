@@ -1,7 +1,6 @@
 * {
   font: "MonaspiceKr Nerd Font 12";
   background-color: transparent;
-  text-color:       white;
   bg: #282a3688;
   fg: #f5f8f2;
   dimmed-fg: #81a3deff;

@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 
 TMP_DIR=$HOME/.config/tmp
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 theme_str() {
   printf "
     entry { 
       placeholder: \"%s\";
     }
-    @import \"~/.config/rofi/bw.rasi\"
+    @import \"$SCRIPT_DIR/bw.rasi\"
   " "$1"
 }
 

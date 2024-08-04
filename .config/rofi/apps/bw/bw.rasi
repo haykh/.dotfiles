@@ -31,8 +31,5 @@ listview {
   columns: 1;
   lines: 10;
   spacing: 0.25em;
-  // cycle: false;
-  // scrollbar: true;
-  // dynamic: false;
 }
 

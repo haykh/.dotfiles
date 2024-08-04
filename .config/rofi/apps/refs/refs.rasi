@@ -1,0 +1,47 @@
+textbox-prompt {
+  str: " ";
+  color: #74d495;
+}
+
+entry {
+  placeholder: "refs";
+}
+
+listview {
+  margin: 0.5em 0 0 0;
+  columns: 1;
+  lines: 12;
+  spacing: 0.0em;
+  dynamic: true;
+  flow: horizontal;
+  scrollbar: true;
+  scrollbar-width: 20px;
+
+}
+
+element {
+  children: [ element-icon, element-text ];
+  padding: 0;
+  orientation: horizontal;
+}
+
+element-icon {
+  size: 1.2em;
+  padding: 0.1em 0.2em 0.1em 0.5em;
+}
+
+element-text {
+  color: #d1dfef;
+  padding: 0.1em 0.0em 0.0em 0.0em;
+}
+
+element-icon, 
+element-text {
+  horizontal-align: 0;
+}
+
+element selected {
+  border-radius: 5;
+  active-bg: #2D5CAD33;
+  border: 0;
+}

@@ -7,6 +7,7 @@ return {
 				cpp = { "clang-format" },
 				python = { "black" },
 				fortran = { "fprettify" },
+				awk = { "awk" },
 			},
 			formatters = {
 				injected = { options = { ignore_errors = true } },

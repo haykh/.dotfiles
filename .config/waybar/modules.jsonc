@@ -276,7 +276,7 @@
         "Easy Effects Sink"
       ],
     },
-    "on-click": "hyprctl dispatch -- exec \"[floating; size 30% 20%; move 55% 3% + 40, animation slide top]\" pavucontrol",
+    "on-click": "hyprctl dispatch -- exec \"[floating; size 30% 20%; move 55% 3% + 40; animation slide top]\" pavucontrol",
     "on-click-right": "$HOME/.dotfiles/scripts/controls/volume --speaker --toggle",
     "on-scroll-up": "$HOME/.dotfiles/scripts/controls/volume --speaker --dec 5",
     "on-scroll-down": "$HOME/.dotfiles/scripts/controls/volume --speaker --inc 5",

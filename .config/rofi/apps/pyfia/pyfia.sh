@@ -30,7 +30,7 @@ HST_FILE=$HST_FILE \
   -no-show-match -no-fixed-num-lines -no-show-icons -no-sort \
   -scroll-method 1 \
   -kb-accept-entry '' -kb-accept-custom 'Return' \
-  -theme-str '@import "~/.config/rofi/pyfia.rasi"' >$OUT_FILE 2>$ERR_FILE
+  -theme-str "@import \"$SCRIPT_DIR/pyfia.rasi\"" >$OUT_FILE 2>$ERR_FILE
 
 # cleanup
 kill $(pgrep -f engine.py) && echo "INFO:killed python engine" >>$LOG_FILE
