@@ -8,13 +8,14 @@ return {
 				python = { "black" },
 				fortran = { "fprettify" },
 				awk = { "awk" },
+				javascript = { "prettierd" },
 			},
 			formatters = {
 				injected = { options = { ignore_errors = true } },
 				fprettify = {
           -- stylua: ignore
 					prepend_args = {
-						"-i", "2", 
+						"-i", "2",
             "-w", "4",
 						"--whitespace-assignment", "true",
 						"--enable-decl",

@@ -67,6 +67,16 @@ return {
 				"<Cmd>BufferLineGroupClose ungrouped<CR>",
 				desc = "delete non-pinned buffers",
 			},
+			{
+				"[B",
+				"<cmd>BufferLineMovePrev<cr>",
+				desc = "move buffer to the left",
+			},
+			{
+				"]B",
+				"<cmd>BufferLineMoveNext<cr>",
+				desc = "move buffer to the right",
+			},
 		},
 		opts = {
 			options = {
