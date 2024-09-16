@@ -21,6 +21,7 @@
   :exclusive false
   :stacking "fg"
   (box
+    :class "calendar-popup"
     :orientation "h"
     :valign "fill"
     :halign "fill"

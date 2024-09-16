@@ -14,7 +14,7 @@ eww() {
   nwrk=$(tail -n1 /tmp/hypr-nworkspaces)
   active=$(tail -n1 /tmp/hypr-active-workspace)
   windows=$(tail -n1 /tmp/hypr-windows)
-  literal="(box :space-evenly true "
+  literal="(box :space-evenly false "
   for i in $(seq 1 $nwrk); do
     literal+="(eventbox :cursor \"pointer\" :onclick \"hyprctl dispatch workspace $i\" "
     literal+="(box :class \"workspace "

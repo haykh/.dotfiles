@@ -21,27 +21,44 @@ else
       "$col-fg: \(.theme.fg);\n" + 
       "$col-fg-dim: \(.theme."fg-dim");\n" + 
       "$col-accent: \(.theme.accent);\n" + 
-      "$col-accent-alt: \(.theme."accent-alt");\n" + 
+      "$col-accent-alt: \(.theme."accent-alt");\n\n" + 
       "$col-heat-0: \(.temperature[0]);\n" + 
       "$col-heat-1: \(.temperature[1]);\n" + 
       "$col-heat-2: \(.temperature[2]);\n" + 
       "$col-heat-3: \(.temperature[3]);\n" + 
       "$col-heat-4: \(.temperature[4]);\n" + 
-      "$col-heat-5: \(.temperature[5]);\n" + 
+      "$col-heat-5: \(.temperature[5]);\n\n" + 
       "$col-battery-1: \(.charge[0]);\n" + 
       "$col-battery-2: \(.charge[1]);\n" + 
       "$col-battery-3: \(.charge[2]);\n" + 
       "$col-battery-4: \(.charge[3]);\n" + 
       "$col-battery-5: \(.charge[4]);\n" + 
-      "$col-battery-6: \(.charge[5]);\n" + 
+      "$col-battery-6: \(.charge[5]);\n\n" + 
       "$col-performance: \(.sequential[2]);\n" + 
       "$col-balanced: \(.sequential[1]);\n" + 
-      "$col-power-saver: \(.sequential[0]);\n" + 
+      "$col-power-saver: \(.sequential[0]);\n\n" + 
       "$col-device-disconnected: \(.status.disabled);\n" + 
-      "$col-device-off: \(.status.inactive);\n"
+      "$col-device-off: \(.status.inactive);\n\n" +
+      "$col-humidity-1: \(.humidity[0]);\n" +
+      "$col-humidity-2: \(.humidity[1]);\n" +
+      "$col-humidity-3: \(.humidity[2]);\n" +
+      "$col-humidity-4: \(.humidity[3]);\n" +
+      "$col-humidity-5: \(.humidity[4]);\n" +
+      "$col-humidity-6: \(.humidity[5]);\n" +
+      "$col-humidity-7: \(.humidity[6]);\n\n" +
+      "$col-pressure-1: \(.diverging[0]);\n" +
+      "$col-pressure-2: \(.diverging[1]);\n" +
+      "$col-pressure-3: \(.diverging[2]);\n" +
+      "$col-pressure-4: \(.diverging[3]);\n" +
+      "$col-pressure-5: \(.diverging[4]);\n\n" +
+      "$col-uvindex-1: \(.temperature[0]);\n" +
+      "$col-uvindex-2: \(.temperature[1]);\n" +
+      "$col-uvindex-3: \(.temperature[2]);\n" +
+      "$col-uvindex-4: \(.temperature[3]);\n" +
+      "$col-uvindex-5: \(.temperature[4]);\n" +
+      "$col-uvindex-6: \(.temperature[5]);\n"
       )
     )' $MASTERCFG >$ewwfile
-
 fi
 
 # generate rofi config

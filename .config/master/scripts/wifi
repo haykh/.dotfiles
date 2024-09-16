@@ -8,6 +8,7 @@ help() {
   echo "  --open: open wifi settings"
   echo "  --info: json with wifi info"
   echo "  --usage: wifi usage info for tooltip"
+  echo "  --address: local and global ip address"
 }
 
 if [ $# -ne 1 ]; then
@@ -112,7 +113,16 @@ elif [[ $1 == "--usage" ]]; then
   echo $rx_bytes_now >$TMPDIR/rx_bytes
   echo $tx_bytes_now >$TMPDIR/tx_bytes
 
-  echo $DOWNLOAD_ICON $(bytes_to_human_readable "${rx_bytes_diff}") $UPLOAD_ICON $(bytes_to_human_readable "${tx_bytes_diff}")
+  printf "%s %s %s\n%s %s %s" $DOWNLOAD_ICON $(bytes_to_human_readable "${rx_bytes_diff}") $UPLOAD_ICON $(bytes_to_human_readable "${tx_bytes_diff}")
+
+elif [[ $1 == "--address" ]]; then
+
+  GLOBAL_ICON=$(jq -rc '.icons.wifi.global' $MASTERCFG)
+  LOCAL_ICON=$(jq -rc '.icons.wifi.local' $MASTERCFG)
+
+  glob_ip=$(curl ifconfig.me)
+  loc_ip=$(ip a show $(jq -r '.hardware.wifi.device_id' $MASTERCFG) | grep "inet " | awk '{ print $2 }' | cut -d '/' -f 1)
+  printf "%s %s\n%s %s" $LOCAL_ICON $loc_ip $GLOBAL_ICON $glob_ip
 
 else
 

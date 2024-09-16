@@ -1,6 +1,9 @@
 @import 'style.scss';
 
 // font sizes
+$fs-GG: 55px;
+$fs-gg: 40px;
+$fs-bg: 25px;
 $fs-hg: 20px;
 $fs-lg: 16px;
 $fs-md: 14px;
@@ -209,6 +212,12 @@ tooltip {
     }
   }
 
+  .wifi {
+    & .ip {
+      font-size: 50px;
+    }
+  }
+
   progressbar trough {
     border-bottom: 1px solid $col-border;
     min-height: $nonzero;
@@ -220,16 +229,17 @@ tooltip {
 }
 
 // popups
-.calendar, .weather {
+.calendar-popup, .weather-popup {
   font-family: $font-main;
 
-  padding: $bar-padding-y $bar-padding-x;
   background-color: $col-bg-alt;
   border: 1px solid $col-border;
   border-radius: 0px 0px $bar-border-rad $bar-border-rad;
 }
 
-.calendar {
+.calendar-popup {
+  padding: $bar-padding-y $bar-padding-x;
+
   .highlight {
     color: $col-accent-alt;
   }
@@ -241,5 +251,143 @@ tooltip {
   & :selected {
     border-radius: 5px;
     background: $col-accent-alt;
+  }
+}
+
+.weather-popup {
+  padding: calc(2.5 * $bar-padding-y) calc(1.5 * $bar-padding-x);
+  padding-right: calc($bar-padding-x);
+
+  .temperature :first-child {
+    font-size: $fs-gg;
+    margin-top: calc(3 * $bar-padding-y);
+  }
+
+  .right :nth-child(2) {
+    font-size: calc($fs-GG * 1.5);
+    margin-top: calc(-2.5 * $bar-padding-y);
+    margin-bottom: 0;
+  }
+
+  .right :nth-child(3) {
+    font-size: $fs-hg;
+    margin-top: calc(-2.5 * $bar-padding-y);
+  }
+
+  .extra {
+    margin: calc(3 * $bar-padding-y) 0px;
+
+    & label {
+      font-size: $fs-hg;
+    }
+
+    & > :first-child {
+      margin-right: calc(5 * $bar-padding-x);
+    }
+
+    .humidity-1 {
+      color: $col-humidity-1;
+    }
+
+    .humidity-2 {
+      color: $col-humidity-2;
+    }
+
+    .humidity-3 {
+      color: $col-humidity-3;
+    }
+
+    .humidity-4 {
+      color: $col-humidity-4;
+    }
+
+    .humidity-5 {
+      color: $col-humidity-5;
+    }
+
+    .humidity-6 {
+      color: $col-humidity-6;
+    }
+
+    .humidity-7 {
+      color: $col-humidity-7;
+    }
+
+    .pressure-1 {
+      color: $col-pressure-1;
+    }
+
+    .pressure-2 {
+      color: $col-pressure-2;
+    }
+
+    .pressure-3 {
+      color: $col-pressure-3;
+    }
+
+    .pressure-4 {
+      color: $col-pressure-4;
+    }
+
+    .pressure-5 {
+      color: $col-pressure-5;
+    }
+
+    .uvindex-1 {
+      color: $col-uvindex-1;
+    }
+
+    .uvindex-2 {
+      color: $col-uvindex-2;
+    }
+
+    .uvindex-3 {
+      color: $col-uvindex-3;
+    }
+
+    .uvindex-4 {
+      color: $col-uvindex-4;
+    }
+
+    .uvindex-5 {
+      color: $col-uvindex-5;
+    }
+
+    .uvindex-6 {
+      color: $col-uvindex-6;
+    }
+  }
+
+  .forecast {
+    * {
+      font-size: $fs-sm;
+    }
+    margin: calc(2 * $bar-padding-y) calc($bar-padding-x);
+
+    .forecast-item {
+      background-color: $col-bg;
+      padding: calc(2 * $bar-padding-y) calc(1.5 * $bar-padding-x);
+      padding-top: calc(1 * $bar-padding-y);
+      border-top: 2px dotted $col-fg-dim;
+      border-bottom: 2px dotted $col-fg-dim;
+      border-radius: calc(0.5 * $bar-border-rad);
+
+      &:first-child {
+        margin-right: calc(2 * $bar-padding-x);
+      }
+
+      & > :nth-child(2) {
+        margin-top: -5px;
+      }
+
+      .forecast-icon {
+        font-size: $fs-bg;
+        margin-right: calc(2 * $bar-padding-x);
+      }
+
+      .forecast-temp {
+        font-size: $fs-md;
+      }
+    }
   }
 }

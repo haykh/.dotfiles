@@ -63,6 +63,7 @@ help() {
   echo "    (1) --open : open the wifi manager"
   echo "    (1) --info : returns a json with {state, ssid, icon}"
   echo "    (1) --usage : returns download/upload usage in *B/s"
+  echo "    (1) --address : returns local and global ip address"
   echo ""
   echo "  > amdgpu (1) (2)"
   echo "    (1) [ 0 | 1 ] : select the gpu to display (0: dedicated, 1: integrated)"

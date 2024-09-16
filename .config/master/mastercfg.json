@@ -19,6 +19,41 @@
       "thunar": "",
       "generic": ""
     },
+    "weather": {
+      "sunrise": "",
+      "sunset": "",
+      "uv": "󱟿",
+      "wind": "󰖝",
+      "humidity": "",
+      "pressure": "",
+      "night": "",
+      "night-cloudy": "",
+      "night-cloudy-windy": "",
+      "night-rainy": "",
+      "night-rainy-windy": "",
+      "dawn": "",
+      "dusk": "",
+      "duskdawn-cloudy": "",
+      "duskdawn-cloudy-windy": "",
+      "duskdawn-rainy": "",
+      "duskdawn-rainy-windy": "",
+      "day": "",
+      "day-hot": "",
+      "day-windy": "",
+      "day-cloudy": "",
+      "day-cloudy-windy": "",
+      "day-rainy": "",
+      "day-rainy-windy": "",
+      "rain": "󰖗",
+      "snow": "󰼶",
+      "snowy-rain": "󰙿",
+      "forecast-rain": "",
+      "forecast-snow": "󰼶",
+      "forecast-snowy-rain": "󰙿",
+      "forecast-heavy-rain": "",
+      "forecast-cloudy": "",
+      "forecast-clear": ""
+    },
     "hardware": {
       "cpu": "",
       "ram": ""
@@ -41,7 +76,9 @@
       "disconnected": "󰤯",
       "poweroff": "󰤭",
       "download": "󰞒",
-      "upload": "󰞕"
+      "upload": "󰞕",
+      "global": "",
+      "local": ""
     },
     "volume": {
       "muted": "",
@@ -96,6 +133,22 @@
       "#5dda5f",
       "#5d9fd9",
       "#d95d5d"
+    ],
+    "humidity": [
+      "#f79e53",
+      "#edb383",
+      "#e1cbbb",
+      "#d7dee8",
+      "#a3a8f0",
+      "#6f73f8",
+      "#4345ff"
+    ],
+    "diverging": [
+      "#43b1ff", 
+      "#68b8f5",
+      "#cfdbeb",
+      "#e76e76",
+      "#f75353"
     ]
   }
 }

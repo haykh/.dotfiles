@@ -58,6 +58,7 @@
   `scripts/run.sh amdgpu 1 --procs`
 )
 
+; constants
 (defpoll cpuIcon
   :interval "5000s"
   :initial "x"

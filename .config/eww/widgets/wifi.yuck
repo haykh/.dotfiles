@@ -14,10 +14,17 @@
   `
   `scripts/run.sh wifi --info`
 )
+
 (defpoll networkUsage
   :interval "2s"
   :initial ""
   `scripts/run.sh wifi --usage`
+)
+
+(defpoll networkAddress
+  :interval "5s"
+  :initial ""
+  `scripts/run.sh wifi --address`
 )
 
 (defwidget wifi []
@@ -27,22 +34,34 @@
     :onclick "scripts/run.sh wifi --open"
     :onrightclick "scripts/run.sh wifi --power-toggle"
     :cursor "pointer"
-    (box 
-      :space-evenly false
-      :orientation "h"
-      :class "wifi ${ replace(jq(wifiInfo, '.state'), '"', '') }"
-      :tooltip networkUsage
-      (revealer 
-        :visible { replace(jq(wifiInfo, '.state'), '"', '') != "power-off" && replace(jq(wifiInfo, '.ssid'), '"', '') != "" }
-        :transition "slideright"
-        :reveal wifiReveal
-        :duration "350ms"
-        :class "ssid"
-        { replace(jq(wifiInfo, '.ssid'), '"', '') }
+    (tooltip
+      (box 
+        :orientation "v"
+        (label
+          :xalign 0
+          :markup networkAddress
+        )
+        (label
+          :xalign 0
+          :text networkUsage
+        )
       )
-      (label 
-        :class "statusicon" 
-        :text { replace(jq(wifiInfo, '.icon'), '"', '') }
+      (box 
+        :space-evenly false
+        :orientation "h"
+        :class "wifi ${ replace(jq(wifiInfo, '.state'), '"', '') }"
+        (revealer 
+          :visible { replace(jq(wifiInfo, '.state'), '"', '') != "power-off" && replace(jq(wifiInfo, '.ssid'), '"', '') != "" }
+          :transition "slideright"
+          :reveal wifiReveal
+          :duration "350ms"
+          :class "ssid"
+          { replace(jq(wifiInfo, '.ssid'), '"', '') }
+        )
+        (label 
+          :class "statusicon" 
+          :text { replace(jq(wifiInfo, '.icon'), '"', '') }
+        )
       )
     )
   )
