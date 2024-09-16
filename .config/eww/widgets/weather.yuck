@@ -1,0 +1,99 @@
+(defwidget weather []
+  (box
+    :class "weather-ind"
+    (eventbox 
+      :cursor "pointer"
+      :onclick `./launch.sh weather`
+      "weather"
+    )
+  )
+)
+
+(defwindow weather
+  :geometry 
+    (geometry 
+      :x "1050px" 
+      :y "0"
+      :width "325px"
+      :height "400px")
+  :monitor 0
+  :exclusive false
+  :stacking "fg"
+  (box
+    :class "weather"
+    :orientation "v"
+    (box
+      :class "basic"
+      :orientation "h"
+      (box 
+        :class "left"
+        :orientation "v"
+        (label 
+          :text "Location"
+        )
+        (box 
+          :class "temperature"
+          :orientation "h"
+          (label 
+            :text "Temperature"
+          )
+          (label 
+            :text "Feels like"
+          )
+        )
+        (label 
+          :text "Sunrise"
+        )
+        (label 
+          :text "Sunset"
+        )
+      )
+      (box 
+        :class "right"
+        :orientation "v"
+        (label 
+          :text "Condition"
+        )
+        (label 
+          :text "Condition-icon"
+        )
+        (label 
+          :text "Precipitation"
+        )
+      )
+    )
+    (box
+      :class "extra"
+      :orientation "h"
+      (box
+        :orientation "v"
+        (label 
+          :text "UV"
+        )
+        (label 
+          :text "Wind"
+        )
+      )
+      (box
+        :orientation "v"
+        (label 
+          :text "Humidity"
+        )
+        (label 
+          :text "Pressure"
+        )
+      )
+    )
+    (box
+      :class "forecast"
+      :orientation "h"
+      (label 
+        :text "Forecast 1"
+      )
+      (label 
+        :text "Forecast 2"
+      )
+    )
+  )
+)
+

@@ -1,10 +1,30 @@
 #!/usr/bin/env bash
 
+source $(dirname $0)/common.sh
+
+help() {
+  echo "Usage: monitor [on|off]"
+  echo "  on: switch laptop display on"
+  echo "  off: switch laptop display off"
+}
+
+laptop_display=$(jq -rc '.hardware.monitors.laptop' $MASTERCFG)
+
 if [[ "$1" == "off" ]]; then
+
   # check to ensure more than one monitor is connected
   if [[ $(hyprctl monitors -j | jq '. | length') -gt 1 ]]; then
     hyprctl keyword monitor "eDP-2, disable"
   fi
+
 elif [[ "$1" == "on" ]]; then
+
   hyprctl keyword monitor "eDP-2, highrr, auto, 1.25"
+
+else
+
+  echo "Invalid argument"
+  help
+  exit 1
+
 fi

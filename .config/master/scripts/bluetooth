@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+
+source $(dirname $0)/common.sh
+
+help() {
+  echo "Usage: $0 [args]"
+  echo "  --power-toggle: toggle bluetooth power"
+  echo "  --open: open bluetooth control"
+  echo "  --info: get bluetooth info"
+}
+
+if [[ $1 == "--power-toggle" ]]; then
+
+  if [[ $(bluetoothctl -- show | grep -oP 'Powered: \K.*') == "yes" ]]; then
+    bluetoothctl power off
+  else
+    bluetoothctl power on
+  fi
+
+elif [[ $1 == "--open" ]]; then
+
+  hyprctl dispatch exec "[floating; size 50% 40%; move 40% 60; animation slide top]" alacritty -- -e bluetui
+
+elif [[ $1 == "--info" ]]; then
+
+  CONNECTED_ICON=$(jq -rc '.icons.bluetooth.connected' $MASTERCFG)
+  DISCONNECTED_ICON=$(jq -rc '.icons.bluetooth.disconnected' $MASTERCFG)
+  POWEROFF_ICON=$(jq -rc '.icons.bluetooth.poweroff' $MASTERCFG)
+
+  power_on=$(bluetoothctl show | grep Powered | cut -d ':' -f 2)
+
+  if [ $power_on == "yes" ]; then
+    devices=$(bluetoothctl devices | cut -f2 -d' ' |
+      while read uuid; do
+        if [ $(bluetoothctl info $uuid | grep -e "Connected" | cut -d ':' -f 2) == "yes" ]; then
+          bluetoothctl info $uuid
+        fi
+      done |
+      grep -e "Name" | cut -d ':' -f 2)
+    if [ -z "$devices" ]; then
+      icon=$DISCONNECTED_ICON
+      state="disconnected"
+    else
+      icon=$CONNECTED_ICON
+      state="connected"
+    fi
+  else
+    devices=""
+    icon=$POWEROFF_ICON
+    state="power-off"
+  fi
+
+  echo '{"state": "'$state'", "devices": "'$devices'", "icon": "'$icon'"}'
+
+else
+
+  echo "Invalid argument"
+  help
+  exit 1
+
+fi

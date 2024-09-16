@@ -1,0 +1,101 @@
+{
+  "hardware": {
+    "monitors": {
+      "laptop": "eDP-2"
+    },
+    "battery": {
+      "label": "BAT1",
+      "maxpcent": 85
+    },
+    "wifi": {
+      "device_id": "wlp4s0"
+    }
+  },
+  "icons": {
+    "apps": {
+      "thorium-browser": "",
+      "firefox": "",
+      "kitty": "󰄛",
+      "thunar": "",
+      "generic": ""
+    },
+    "hardware": {
+      "cpu": "",
+      "ram": ""
+    },
+    "battery": {
+      "discharging": "󰁹",
+      "charging": "󰂄",
+      "full": "",
+      "performance": "",
+      "balanced": "",
+      "power-saver": ""
+    },
+    "bluetooth": {
+      "connected": "󰂰",
+      "disconnected": "󰂯",
+      "poweroff": "󰂲"
+    },
+    "wifi": {
+      "connected": "󰤨",
+      "disconnected": "󰤯",
+      "poweroff": "󰤭",
+      "download": "󰞒",
+      "upload": "󰞕"
+    },
+    "volume": {
+      "muted": "",
+      "low": "",
+      "medium": "",
+      "high": "",
+      "headphones": "󱡏"
+    },
+    "brightness": [
+      "", "", "", "", 
+      "", "", "", "", 
+      "", "", "", "", 
+      "", "", "󰃠"
+    ]
+  },
+  "fonts": {
+    "main": "MonaspiceKr Nerd Font",
+    "alt": "MonaspiceRn Nerd Font"
+  },
+  "colors": {
+    "theme": {
+      "bg": "#0f0f17",
+      "bg-alt": "#171923",
+      "fg": "#ffffff",
+      "fg-dim": "#b1b1ba",
+      "fg-dim-alt": "#8e818e",
+      "border": "#2e2e5c",
+      "accent": "#e486af",
+      "accent-alt": "#6978e1"
+    },
+    "status": {
+      "inactive": "#606aa1",
+      "disabled": "#a1a1a1"
+    },
+    "temperature": [
+      "#47b6ff",
+      "#96d9fd",
+      "#e9f9cc",
+      "#f9b848",
+      "#f7743a",
+      "#f42a2a"
+    ], 
+    "charge": [
+      "#ef6161", 
+      "#efbc5d", 
+      "#efe95d", 
+      "#baef5d", 
+      "#81ef5f", 
+      "#30de6a"
+    ],
+    "sequential": [
+      "#5dda5f",
+      "#5d9fd9",
+      "#d95d5d"
+    ]
+  }
+}

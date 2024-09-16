@@ -1,0 +1,28 @@
+; daemons
+(deflisten wrk_daemon 
+  :initial "" 
+  `./scripts/run.sh workspaces --listen`
+)
+
+(deflisten wrk_widgets
+  :initial ""
+  `rm -f /tmp/hypr-eww-workspaces && \
+    ./scripts/run.sh workspaces --eww && \
+    tail -F /tmp/hypr-eww-workspaces`
+)
+
+(defwidget workspaces []
+  (eventbox
+    :class "workspaces"
+    :timeout "1000ms"
+    :onscroll `./scripts/run.sh workspaces \
+      $(
+        if [[ {} == 'up' ]]; then 
+          echo '--next'; 
+        else 
+          echo '--prev'; 
+        fi
+      )`
+    (literal :content { wrk_widgets + wrk_daemon })
+  )
+)

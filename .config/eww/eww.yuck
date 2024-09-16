@@ -1,0 +1,76 @@
+(include "./widgets/time.yuck")
+(include "./widgets/bluetooth.yuck")
+(include "./widgets/wifi.yuck")
+(include "./widgets/hardware.yuck")
+(include "./widgets/battery.yuck")
+(include "./widgets/volume.yuck")
+(include "./widgets/brightness.yuck")
+(include "./widgets/workspaces.yuck")
+(include "./widgets/weather.yuck")
+
+(defwidget right []
+  (box 
+    :orientation "h"
+    :space-evenly false
+    :halign "end"
+    :class "rightbar"
+    (brightness)
+    (volume)
+    (bluetooth) 
+    (wifi)
+    (box
+      :space-evenly false
+      :class "hardware"
+      (gpu0)
+      (gpu1)
+      (ram)
+      (cpu)
+    )
+    (battery)
+  )
+)
+
+(defwidget center []
+  (box
+    :orientation "h"
+    :space-evenly false
+    :halign "center"
+    :class "centerbar"
+    (time)
+    (weather)
+  )
+)
+
+(defwidget left []
+  (box
+    :orientation "h"
+    :space-evenly false
+    :halign "start"
+    :class "leftbar"
+    (workspaces)
+  )
+)
+
+(defwidget bar []
+  (box 
+    :orientation "h"
+    :class "bar"
+    (left)
+    (center)
+    (right)
+  )
+)
+
+(defwindow mainbar [screen width]
+  :monitor screen
+  :geometry (geometry 
+    :x "0%"
+    :y "5px"
+    :width width
+    :height "40px"
+    :anchor "top center"
+  )
+  :stacking "fg"
+  :exclusive true
+  (bar)
+)

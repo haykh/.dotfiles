@@ -28,13 +28,6 @@
     "SCRIPT": "."
   },
   {
-    "IN": "left",
-    "EXE": "$HOME/.local/left.app/Left",
-    "ICON": "text-editor",
-    "FNAME": "left",
-    "SCRIPT": "."
-  },
-  {
     "IN": "notion",
     "EXE": "env GDK_BACKEND=x11 /opt/Notion/notion-app",
     "ICON": "com.notepadqq.Notepadqq",
@@ -43,7 +36,7 @@
   },
   {
     "IN": "thorium",
-    "EXE": "$HOME/.local/thorium.app/thorium",
+    "EXE": "$HOME/.local/thorium.app/thorium --ozone-platform-hint=auto",
     "ICON": "thorium",
     "FNAME": "thorium",
     "SCRIPT": "."
@@ -53,13 +46,6 @@
     "EXE": "protonvpn-app",
     "ICON": "protonvpn-logo",
     "FNAME": "protonvpn",
-    "SCRIPT": "."
-  },
-  {
-    "IN": "thunderbird",
-    "EXE": "env DICPATH=/usr/share/hunspell /opt/thunderbird-beta/thunderbird",
-    "ICON": "thunderbird",
-    "FNAME": "org.mozilla.thunderbird-beta-bin",
     "SCRIPT": "."
   },
   {
@@ -77,18 +63,11 @@
     "SCRIPT": "."
   },
   {
-    "IN": "ghostwriter",
-    "EXE": "",
-    "ICON": "ghostwriter",
-    "FNAME": "org.kde.ghostwriter",
-    "SCRIPT": "ghostwriter > /dev/null 2>&1 &"
-  },
-  {
     "IN": "codium",
-    "EXE": "/usr/bin/codium --enable-features=UseOzonePlatform,WaylandWindowDecorations --ozone-platform=wayland",
+    "EXE": "",
     "ICON": "vscodium",
     "FNAME": "codium-wayland",
-    "SCRIPT": "."
+    "SCRIPT": "SSH_AUTH_SOCK=$(cat /tmp/ssh_auth_sock) /usr/bin/codium --enable-features=UseOzonePlatform,WaylandWindowDecorations --ozone-platform=wayland &"
   },
   {
     "IN": "vrrtest",

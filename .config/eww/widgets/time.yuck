@@ -1,0 +1,30 @@
+(defwidget time []
+  (box 
+    :class "time"
+    (eventbox 
+      :onclick `./launch.sh calendar`
+      :cursor "pointer"
+      { formattime(EWW_TIME, "%-I:%M %P ⋮ %a %-d %b") }
+    )
+  )
+)
+
+(defwindow calendar
+  :geometry 
+    (geometry 
+      :anchor "top center"
+      :x "0" 
+      :y "0"
+      :width "325px"
+      :height "100px")
+  :monitor 0
+  :exclusive false
+  :stacking "fg"
+  (box
+    :orientation "h"
+    :valign "fill"
+    :halign "fill"
+    (calendar)
+  )
+)
+

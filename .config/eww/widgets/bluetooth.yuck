@@ -1,0 +1,31 @@
+(include "./widgets/templates.yuck")
+
+; pollers
+(defpoll bluetoothInfo 
+  :interval "2s"
+  :initial `
+    {
+      "state": "unknown", 
+      "icon": "unknown", 
+      "devices": "unknown"
+    }
+  `
+  `scripts/run.sh bluetooth --info`
+)
+
+(defwidget bluetooth []
+  (eventbox 
+    :onclick "scripts/run.sh bluetooth --open"
+    :onrightclick "scripts/run.sh bluetooth --power-toggle"
+    :cursor "pointer"
+    (box 
+      :orientation "h"
+      :class "bluetooth ${ replace(jq(bluetoothInfo, '.state'), '"', '') }" 
+      :tooltip { replace(jq(bluetoothInfo, '.devices'), '"', '') }
+      (label 
+        :class "statusicon" 
+        :text { replace(jq(bluetoothInfo, '.icon'), '"', '') }
+      )
+    )
+  )
+)

@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+help() {
+  echo "Usage: $0 [args]"
+  echo "  --procs: returns the top 10 processes by cpu usage"
+}
+
+if [[ $1 == "--procs" ]]; then
+
+  ps -eo pcpu,cmd |
+    grep -v '\[' |
+    awk '
+      NR>2 { 
+        mem[$2]+=$1 
+      } END {
+        for(k in mem) 
+          print k " " mem[k]
+      };' |
+    sort -rgk 2 |
+    head -n 10 |
+    awk '{ printf "%5.1f : %s\n", $2, $1 };' |
+    awk 'NR==1{ printf "%5s   %s\n%s\n", "CPU%", "PROCESS", $0 } NR>1{ printf "%s\n", $0 }'
+
+else
+
+  echo "Invalid argument"
+  help
+  exit 1
+
+fi

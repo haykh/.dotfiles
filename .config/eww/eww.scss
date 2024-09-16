@@ -1,0 +1,245 @@
+@import 'style.scss';
+
+// font sizes
+$fs-hg: 20px;
+$fs-lg: 16px;
+$fs-md: 14px;
+$fs-sm: 12px;
+$fs-xs: 10px;
+
+// dimensions
+$nonzero: 1px;
+$bar-padding-x: 8px;
+$bar-padding-y: 4px;
+$bar-border-rad: 12px;
+
+$widget-width: 25px;
+
+$indicator-margin-x: 15px;
+$hist-width: 8px;
+
+*{
+	all: unset;
+  font-size: $fs-md;
+}
+
+tooltip {
+  &.background {
+    background-color: $col-bg-alt;
+    border: 1px solid $col-border;
+    border-radius: 0px 0px $bar-border-rad $bar-border-rad;
+  }
+
+  label {
+    font-family: $font-main;
+    margin: $bar-padding-y $bar-padding-x;
+  }
+}
+
+.bar {
+  background-color: $col-bg;
+  border-radius: $bar-border-rad;
+  padding: $bar-padding-y $bar-padding-x;
+	font-family: $font-main;
+
+  // left
+  .workspaces {
+    .workspace {
+      margin: 0px calc(0.5 * $bar-padding-x);
+      margin-top: calc(1.5 * $bar-padding-y);
+      &.current {
+        font-weight: bold;
+        color: $col-accent;
+      }
+    }
+  }
+
+  // center
+  .time {
+    font-family: $font-alt;
+  }
+
+  .time, .weather-ind {
+    margin: 0px calc(0.5 * $bar-padding-x);
+  }
+
+  // right
+  .hardware {
+    border-left: 1px solid $col-border;
+    border-right: 1px solid $col-border;
+    padding: $bar-padding-y calc(1.5 * $bar-padding-x);
+    margin-right: calc(0.7 * $indicator-margin-x);
+
+    .indicator {
+      margin-right: $indicator-margin-x;
+    }
+
+    .cpu {
+      margin-right: calc(-1 * $bar-padding-x);
+    }
+    .cpus {
+      margin-right: $indicator-margin-x;
+    }
+
+    .hw-ind {
+      .icon {
+        font-size: $fs-xs;
+        margin-right: $indicator-margin-x;
+      }
+    }
+
+    .cpu-usage0 trough progress {
+      background-color: $col-heat-0;
+    }
+    .cpu-usage1 trough progress {
+      background-color: $col-heat-1;
+    }
+    .cpu-usage2 trough progress {
+      background-color: $col-heat-2;
+    }
+    .cpu-usage3 trough progress {
+      background-color: $col-heat-3;
+    }
+    .cpu-usage4 trough progress {
+      background-color: $col-heat-4;
+    }
+    .cpu-usage5 trough progress {
+      background-color: $col-heat-5;
+    }
+  }
+
+  .battery {
+    margin-right: calc(0.12 * $indicator-margin-x);
+
+    .icon {
+      min-width: $widget-width;
+      margin: 0 calc(0.12 * $indicator-margin-x);
+
+      .statusicon {
+        font-size: $fs-sm;
+      }
+
+      &.Full {
+        .statusicon {
+          font-size: $fs-xs;
+          padding-top: 2px;
+        }
+      }
+
+      &.charge-lt10 {
+        color: $col-battery-1;
+      }
+      &.charge-lt25 {
+        color: $col-battery-2;
+      }
+      &.charge-lt50 {
+        color: $col-battery-3;
+      }
+      &.charge-lt70 {
+        color: $col-battery-4;
+      }
+      &.charge-lt90 {
+        color: $col-battery-5;
+      }
+      &.charge-full {
+        color: $col-battery-6;
+      }
+    }
+
+    .mode {
+      min-width: $widget-width;
+      font-size: $fs-md;
+      margin-right: calc(0.4 * $indicator-margin-x);
+      padding-right: calc(0.8 * $bar-padding-x);
+      border-radius: $bar-border-rad;
+
+      &.performance {
+        color: $col-performance;
+        padding-right: calc(0.2 * $bar-padding-x);
+        padding-right: calc(0.4 * $bar-padding-x);
+        &.hover {
+          background-color: $col-performance;
+        }
+      }
+      &.balanced {
+        color: $col-balanced;
+        padding-right: calc($bar-padding-x);
+        &.hover {
+          background-color: $col-balanced;
+        }
+      }
+      &.power-saver {
+        color: $col-power-saver;
+        &.hover {
+          background-color: $col-power-saver;
+        }
+      }
+      &.hover {
+        color: $col-bg-alt;
+      }
+    }
+  }
+
+  .wifi .ssid {
+    padding: 0px calc($bar-padding-x * 1.2) 0px 0px;
+  }
+
+  .bluetooth {
+    margin-right: calc(1.0 * $indicator-margin-x);
+  }
+
+  .wifi, .volume, .brightness {
+    margin-right: calc(1.6 * $indicator-margin-x);
+  }
+
+  .volume {
+    &.muted {
+      color: $col-device-disconnected;
+    }
+  }
+
+  .wifi, .bluetooth {
+
+    &.power-off {
+      color: $col-device-off;
+    }
+
+    &.disconnected {
+      color: $col-device-disconnected;
+    }
+  }
+
+  progressbar trough {
+    border-bottom: 1px solid $col-border;
+    min-height: $nonzero;
+    min-width: $hist-width;
+    progress {
+      background-color: $col-accent;
+    }
+  }
+}
+
+// popups
+.calendar, .weather {
+  font-family: $font-main;
+
+  padding: $bar-padding-y $bar-padding-x;
+  background-color: $col-bg-alt;
+  border: 1px solid $col-border;
+  border-radius: 0px 0px $bar-border-rad $bar-border-rad;
+}
+
+.calendar {
+  .highlight {
+    color: $col-accent-alt;
+  }
+
+  .header {
+    color: $col-fg-dim;
+  }
+
+  & :selected {
+    border-radius: 5px;
+    background: $col-accent-alt;
+  }
+}

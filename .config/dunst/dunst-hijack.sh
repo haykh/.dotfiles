@@ -13,10 +13,10 @@ if [ "$1" == "Slack" ]; then
     hyprctl dispatch exec $HOME/.dotfiles/scripts/hypr/launcher -- --slack
     ;;
   esac
-elif [ "$1" == "Thunderbird Beta" ]; then
+elif [ "$1" == "Betterbird" ]; then
   ACTION=$(
     dunstify \
-      -u "$5" -a "Thunderbird" -i "thunderbird" \
+      -u "$5" -a "Betterbird" -i "email" \
       -t 10000 \
       -A "default,Open" \
       "$2" "$3"

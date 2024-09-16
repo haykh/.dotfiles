@@ -1,0 +1,33 @@
+; listeners
+(deflisten speakerVolumeLevel 
+  :initial 0
+  `rm -f /tmp/speaker-volume-level && scripts/run.sh volume --speaker --inc 0 --nonotify && tail -F /tmp/speaker-volume-level`
+)
+
+(deflisten speakerVolumeMuted 
+  :initial "muted"
+  `rm -f /tmp/speaker-volume-muted && scripts/run.sh volume --speaker --inc 0 --nonotify && tail -F /tmp/speaker-volume-muted`
+)
+
+(deflisten speakerVolumeIcon 
+  :initial ""
+  `rm -f /tmp/speaker-volume-icon && scripts/run.sh volume --speaker --inc 0 --nonotify && tail -F /tmp/speaker-volume-icon`
+)
+
+(defwidget volume []
+  (eventbox 
+    :onclick "scripts/run.sh volume --speaker --open"
+    :onrightclick "scripts/run.sh volume --speaker --toggle"
+    :onscroll "scripts/run.sh volume --speaker $(if [[ {} == 'up' ]]; then echo '--inc 2'; else echo '--dec 2'; fi)"
+    :cursor "pointer"
+    (box 
+      :orientation "h"
+      :class "volume ${ speakerVolumeMuted }" 
+      :tooltip "${ speakerVolumeLevel }%"
+      (label 
+        :class "statusicon" 
+        :text speakerVolumeIcon
+      )
+    )
+  )
+)

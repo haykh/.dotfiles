@@ -1,0 +1,43 @@
+window {
+  width: 8%;
+}
+
+textbox-prompt {
+  str: "󰖂 ";
+  color: #d2518c;
+}
+
+entry {
+  placeholder: "vpn";
+}
+
+listview {
+  margin: 0.5em 0 0 0;
+  columns: 1;
+  lines: 10;
+  spacing: 0.0em;
+  dynamic: true;
+  flow: horizontal;
+  scrollbar: false;
+}
+
+element {
+  children: [ element-text ];
+  padding: 0.2em 0.5em;
+  orientation: horizontal;
+}
+
+element-text {
+  color: #d1dfef;
+  padding: 0.2em 0.0em 0.2em 0.0em;
+}
+
+element-text {
+  horizontal-align: 0;
+}
+
+element selected {
+  border-radius: 5;
+  active-bg: #2D5CAD33;
+  border: 0;
+}

@@ -2,11 +2,14 @@
 # vim: ft=cfg
 
 [global]
+  background = "#0f0f17"
+  foreground = "#ffffff"
+  highlight = "#6978e1"
+  font = MonaspiceKr Nerd Font, JetBrainsMono Nerd Font 11
+  corner_radius = 15
+
   monitor = 0
   follow = none
-
-  background = "#131d2b60"
-  foreground = "#ffffff"
 
   width = (300,500)
   height = 300
@@ -14,12 +17,10 @@
   offset = 15x15
   scale = 0
 
-  corner_radius = 30
-  corners = top-right,bottom-left
+  corners = bottom-left,top-left
 
   frame_width = 1
   notification_limit = 20
-  highlight = "#bd3fd8"
 
   progress_bar = true
   progress_bar_height = 10
@@ -43,7 +44,6 @@
 
   sort = yes
 
-  font = MonaspiceKr Nerd Font, JetBrainsMono Nerd Font 11
   line_height = 0
   markup = full
 
@@ -129,8 +129,8 @@
   script = /home/hayk/.config/dunst/dunst-hijack.sh
   history_ignore = yes
 
-[thunderbird]
-  desktop_entry = "Thunderbird"
+[betterbird]
+  desktop_entry = "Betterbird"
   format = ""
   script = /home/hayk/.config/dunst/dunst-hijack.sh
   min_icon_size = 48

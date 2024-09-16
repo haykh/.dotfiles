@@ -1,0 +1,157 @@
+(include "./widgets/templates.yuck")
+
+; constants
+(defvar cpus "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]")
+(defvar cpuReveal false)
+
+; indicator states
+(defvar ramShowGB true)
+(defvar ramShowTooltip false)
+(defvar cpuShowT true)
+(defvar cpuShowTooltip false)
+(defvar gpu0ShowT true)
+(defvar gpu0ShowTooltip false)
+(defvar gpu1ShowT true)
+(defvar gpu1ShowTooltip false)
+
+; pollers
+(defpoll ramProc 
+  :interval "5s"
+  :run-while { ramShowTooltip }
+  `scripts/run.sh ram --procs`
+)
+(defpoll cpuProc 
+  :interval "5s"
+  :run-while { cpuShowTooltip }
+  `scripts/run.sh cpu --procs`
+)
+(defpoll gpu0Awake 
+  :interval "5s"
+  `scripts/run.sh amdgpu 0 --isawake`
+)
+(defpoll gpu0Info 
+  :interval "5s"
+  :initial ""
+  :run-while { gpu0Awake == 1 }
+  `scripts/run.sh amdgpu 0 --info`
+)
+(defpoll gpu0Proc 
+  :interval "5s"
+  :initial ""
+  :run-while { gpu0Awake == 1 && gpu0ShowTooltip }
+  `scripts/run.sh amdgpu 0 --procs`
+)
+(defpoll gpu1Awake 
+  :interval "5s"
+  `scripts/run.sh amdgpu 1 --isawake`
+)
+(defpoll gpu1Info 
+  :interval "5s"
+  :initial ""
+  :run-while { gpu1Awake == 1 }
+  `scripts/run.sh amdgpu 1 --info`
+)
+(defpoll gpu1Proc 
+  :interval "5s"
+  :initial ""
+  :run-while { gpu1Awake == 1 && gpu1ShowTooltip }
+  `scripts/run.sh amdgpu 1 --procs`
+)
+
+(defpoll cpuIcon
+  :interval "5000s"
+  :initial "x"
+  :run-while false
+  `jq -r '.icons.hardware.cpu' ~/.config/master/mastercfg.json`
+)
+
+(defpoll ramIcon
+  :interval "5000s"
+  :initial "x"
+  :run-while false
+  `jq -r '.icons.hardware.ram' ~/.config/master/mastercfg.json`
+)
+
+
+; indicator widgets
+(defwidget ram []
+  (hwindicator
+    :class "ram"
+    :show true
+    :icon ramIcon
+    :toggle ramShowGB
+    :toggle_str "ramShowGB"
+    :text1 "${ round(EWW_RAM["used_mem"] / (1024 * 1024 * 1024), 1) }GB" 
+    :text2 "${ round(EWW_RAM["used_mem_perc"], 0) }%" 
+    :tooltip ramProc
+    :showtooltip ramShowTooltip
+    :showtooltip_str "ramShowTooltip"
+  )
+)
+
+(defwidget cpu []
+  (eventbox 
+    :onhover "${ EWW_CMD } update cpuReveal=true"
+    :onhoverlost "${ EWW_CMD } update cpuReveal=false"
+    (box
+      :space-evenly false
+      (revealer 
+        :transition "slideleft"
+        :reveal cpuReveal
+        :duration "350ms"
+        (box
+          :class "cpus"
+          :space-evenly false
+          (for cpu in cpus
+            (progress
+              :class "cpu-usage${ jq(EWW_CPU, '.cores | (.[${ cpu }].usage / 20 | round)') }"
+              :value "${ jq(EWW_CPU, '.cores | .[${ cpu }].usage') }"
+              :orientation "v"
+              :flipped true
+            )
+          )
+        )
+      )
+      (hwindicator
+        :class "cpu"
+        :show true
+        :icon cpuIcon
+        :toggle cpuShowT
+        :toggle_str "cpuShowT"
+        :text1 "${ jq(EWW_TEMPS, '. as $temp | [range(1, 8) | . as $i | $temp[("ACPITZ_TEMP" + ($i + 1 | tostring))] | tonumber | round] | max') }°C"
+        :text2 "${ jq(EWW_CPU, '.cores | map(.usage | tonumber) | add / length | round') }%"
+        :tooltip cpuProc
+        :showtooltip cpuShowTooltip
+        :showtooltip_str "cpuShowTooltip"
+      )
+    )
+  )
+)
+
+(defwidget gpu0 []
+  (hwindicator
+    :class "gpu"
+    :show { gpu0Awake == 1 }
+    :toggle gpu0ShowT
+    :toggle_str "gpu0ShowT"
+    :text1 { gpu0Info != "" ? "${ jq(gpu0Info, '.temp') }°C" : "" }
+    :text2 { gpu0Info != "" ? "${ jq(gpu0Info, '.percentage') }%" : "" }
+    :tooltip gpu0Proc
+    :showtooltip gpu0ShowTooltip
+    :showtooltip_str "gpu0ShowTooltip"
+  )
+)
+
+(defwidget gpu1 []
+  (hwindicator
+    :class "gpu"
+    :show { gpu1Awake == 1 }
+    :toggle gpu1ShowT
+    :toggle_str "gpu1ShowT"
+    :text1 { gpu1Info != "" ? "${ jq(gpu1Info, '.temp') }°C" : "" }
+    :text2 { gpu1Info != "" ? "${ jq(gpu1Info, '.percentage') }%" : "" }
+    :tooltip gpu1Proc
+    :showtooltip gpu1ShowTooltip
+    :showtooltip_str "gpu1ShowTooltip"
+  )
+)

@@ -9,6 +9,7 @@ return {
 				fortran = { "fprettify" },
 				awk = { "awk" },
 				javascript = { "prettierd" },
+				typescript = { "prettierd" },
 			},
 			formatters = {
 				injected = { options = { ignore_errors = true } },

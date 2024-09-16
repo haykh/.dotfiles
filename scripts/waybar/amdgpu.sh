@@ -28,7 +28,7 @@ else
   amdgpu_top -i $1 --single -d --json |
     jq -c --arg ITEM "$processes" \
       '{
-      text: (.[0].gpu_metrics.temperature_soc | round), 
+      text: (.[0].gpu_metrics.temperature_soc / 100 | round), 
       percentage: (.[0].gpu_activity.GFX.value), 
       tooltip: (.[0].DeviceName + " | " + .[0]."ASIC Name" + "\n\n" + $ITEM),
     }'

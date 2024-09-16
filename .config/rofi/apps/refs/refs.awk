@@ -61,6 +61,7 @@ BEGIN {
 		gsub(/\{\\\x27u\}/, "\303\272", value)
 		gsub(/\{\\\x27n\}/, "\305\204", value)
 		gsub(/\{\\v{z}\}/, "\305\272", value)
+		gsub(/\{\\v{s}\}/, "\305\241", value)
 		gsub(/\{\\\x27A\}/, "\303\201", value)
 		gsub(/\{\\\x27E\}/, "\303\211", value)
 		gsub(/\{\\\x27I\}/, "\303\215", value)

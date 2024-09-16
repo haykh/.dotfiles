@@ -101,6 +101,9 @@ return {
 		"HiPhish/rainbow-delimiters.nvim",
 	},
 	{
+		"elkowar/yuck.vim",
+	},
+	{
 		"petertriho/nvim-scrollbar",
 		lazy = false,
 		opts = {

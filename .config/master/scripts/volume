@@ -1,0 +1,147 @@
+#!/usr/bin/env bash
+
+source $(dirname $0)/common.sh
+
+help() {
+  echo "Usage: $0 [ --speaker | --mix ] [args]"
+  echo "  --speaker: control speaker volume"
+  echo "  --mic: control microphone volume"
+  echo "  --toggle: toggle mute/unmute"
+  echo "  --inc <n>: increase volume by n%"
+  echo "  --dec <n>: decrease volume by n%"
+  echo "  --get: get current volume"
+  echo "  --open: open pulsemixer"
+  echo "  --nonotify: don't show notifications (optional)"
+}
+
+if [[ "$#" -gt 1 ]] && [[ "${@: -1}" == "--nonotify" ]]; then
+  nonotify=true
+else
+  nonotify=false
+fi
+
+not_daemon() {
+  if [[ $nonotify == true ]]; then
+    return
+  fi
+  if command -v dunstify &>/dev/null; then
+    dunstify "$@"
+  else
+    notify-send "$@"
+  fi
+}
+
+get_icon() {
+  output=$(
+    pactl list sinks |
+      grep -A20 "$(pactl info |
+        grep 'Default Sink' |
+        awk '{print $3}')"
+  )
+  output_name=$(
+    echo "$output" |
+      awk '{if ($1 == "Description:") print $0}' |
+      cut -d ':' -f 2 |
+      awk '{$1=$1};1'
+  )
+  type=$(
+    echo -n "$output" |
+      awk '{if ($1 == "api.bluez5.icon") print $0}' |
+      cut -d '=' -f 2 |
+      tr -d '"' |
+      awk '{$1=$1};1'
+  )
+  if [[ $type == "" ]]; then
+    type="speaker"
+  else
+    type="headphones"
+    icon=$(jq -rc '.icons.volume.headphones' $MASTERCFG)" "
+  fi
+  if [[ $1 == "muted" ]]; then
+    icon+=$(jq -rc '.icons.volume.muted' $MASTERCFG)
+  elif [[ $1 -lt 33 ]]; then
+    icon+=$(jq -rc '.icons.volume.low' $MASTERCFG)
+  elif [[ $1 -lt 66 ]]; then
+    icon+=$(jq -rc '.icons.volume.medium' $MASTERCFG)
+  else
+    icon+=$(jq -rc '.icons.volume.high' $MASTERCFG)
+  fi
+  echo $icon
+}
+
+notify() {
+  if [[ $MODE == "--default-source " ]]; then
+    device="mic"
+  else
+    device="speaker"
+  fi
+  if [[ $(pamixer $MODE--get-mute) == "true" ]]; then
+    icon=$(get_icon "muted")
+    not_daemon \
+      -a "${device}-volume-control" \
+      -h string:x-canonical-private-synchronous:sys-notify \
+      -h int:value:0 \
+      -u low "$device $icon" "muted"
+    echo "muted" >>/tmp/$device-volume-muted
+  else
+    level=$(pamixer $MODE--get-volume)
+    icon=$(get_icon $level)
+    not_daemon \
+      -a "${device}-volume-control" \
+      -h string:x-canonical-private-synchronous:sys-notify \
+      -h int:value:$level \
+      -u low "$device $icon" "$level%"
+    echo "unmuted" >>/tmp/$device-volume-muted
+    echo $level >>/tmp/$device-volume-level
+  fi
+  echo $icon >>/tmp/$device-volume-icon
+}
+
+if [[ "$1" == "--speaker" ]]; then
+  MODE=""
+elif [[ "$1" == "--mic" ]]; then
+  MODE="--default-source "
+else
+  notify
+fi
+
+if [[ "$2" == "--toggle" ]]; then
+
+  if [[ $(pamixer $MODE--get-mute) == "true" ]]; then
+    pamixer $MODE-u && notify
+  else
+    pamixer $MODE-m && notify
+  fi
+
+elif [[ "$2" == "--inc" ]]; then
+
+  if [[ $(pamixer $MODE--get-mute) == "true" ]]; then
+    pamixer $MODE-u
+  fi
+  pamixer $MODE-i $3 && notify
+
+elif [[ "$2" == "--dec" ]]; then
+
+  if [[ $(pamixer $MODE--get-mute) == "true" ]] && [[ $(pamixer $MODE--get-volume) != "0" ]]; then
+    pamixer $MODE-u
+  fi
+  pamixer $MODE-d $3 && notify
+  if [[ $(pamixer $MODE--get-volume) == "0" ]]; then
+    pamixer $MODE-m
+  fi
+
+elif [[ "$2" == "--get" ]]; then
+
+  pamixer $MODE--get-volume
+
+elif [[ "$2" == "--open" ]]; then
+
+  hyprctl dispatch exec "[floating; size 50% 40%; move 40% 60; animation slide top]" alacritty -- -e $HOME/.local/bin/pulsemixer
+
+else
+
+  echo "Invalid argument"
+  help
+  exit 1
+
+fi

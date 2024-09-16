@@ -63,7 +63,7 @@ if [ -d "/home/linuxbrew/.linuxbrew" ]; then
     module unuse "${moddir}"
     module config color always
     if [ -d "$HOME/.modules" ]; then
-      module use --append $HOME/.modules
+      module use --append $HOME/.modules/modfiles
     fi
   fi
 fi
@@ -137,6 +137,10 @@ fi
 
 if command -v fastfetch &> /dev/null; then
   alias ff='fastfetch'
+fi
+
+if command -v nerdfetch &> /dev/null; then
+  alias nf='nerdfetch'
 fi
 
 if command -v waybar &> /dev/null; then

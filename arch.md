@@ -60,7 +60,7 @@ sudo pacman -S wev
 ## sound, bluetooth, wireless
 ```sh
 # sound
-sudo pacman -S pipewire-media-session pipewire-jack pipewire-pulse pipewire-alsa pulsemixer
+sudo pacman -S pipewire pipewire-jack pipewire-pulse pipewire-alsa
 
 # wireless
 sudo pacman -S iwd network-manager
@@ -69,7 +69,7 @@ sudo nvim /etc/conf.d/wireless-regdom
 # uncomment WIRELESS_REGDOM="US"
 
 # bluetooth
-sudo pacman -S bluez bluez-utils bluetuith
+sudo pacman -S bluez bluez-utils bluetui
 ```
 
 # visuals

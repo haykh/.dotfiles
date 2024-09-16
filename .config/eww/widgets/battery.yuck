@@ -1,0 +1,62 @@
+(include "./widgets/templates.yuck")
+
+; constants
+(defvar batteryReveal false)
+(defvar batteryModeHover false)
+
+; pollers
+(defpoll batteryInfo 
+  :initial `
+    {
+      "pcent": 0, 
+      "pcent_state": "unknown", 
+      "status": "unknown", 
+      "icon": "unknown", 
+      "mode": "unknown", 
+      "modeicon": "unknown", 
+      "tooltip": "unknown"
+    }
+  `
+  :interval "2s"
+  `scripts/run.sh power --info`
+)
+
+(defwidget battery []
+  (eventbox 
+    :onhover "${ EWW_CMD } update batteryReveal=true"
+    :onhoverlost "${ EWW_CMD } update batteryReveal=false"
+    (box 
+      :space-evenly false
+      :orientation "h"
+      :tooltip { replace(jq(batteryInfo, '.tooltip'), '"', '') }
+      :class "battery"
+      (revealer 
+        :transition "slideright"
+        :reveal batteryReveal
+        :duration "350ms"
+        (box 
+          :class "mode ${ replace(jq(batteryInfo, '.mode'), '"', '') } ${ batteryModeHover ? 'hover' : '' }" 
+          :tooltip "power mode: ${ replace(jq(batteryInfo, '.mode'), '"', '') }"
+          (eventbox
+            :cursor "pointer"
+            :onclick `scripts/run.sh power --nextmode`
+            :onhover "${ EWW_CMD } update batteryModeHover=true"
+            :onhoverlost "${ EWW_CMD } update batteryModeHover=false"
+            { replace(jq(batteryInfo, '.modeicon'), '"', '') }
+          )
+        )
+      )
+      (box 
+        :class "icon ${ replace(jq(batteryInfo, '.pcent_state'), '"', '') } ${ replace(jq(batteryInfo, '.status'), '"', '') }"
+        (circular-progress
+          :value { replace(jq(batteryInfo, '.pcent'), '"', '') }
+          :thickness 3
+          (label 
+            :class "statusicon" 
+            :text { replace(jq(batteryInfo, '.icon'), '"', '') }
+          )
+        )
+      )
+    )
+  )
+)

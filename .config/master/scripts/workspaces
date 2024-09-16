@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+
+source $(dirname $0)/common.sh
+
+nworkspaces() {
+  hyprctl workspaces -j | jq -r '[.[].id] | max'
+}
+
+active() {
+  hyprctl monitors -j | jq '.[] | select(.focused) | .activeWorkspace.id'
+}
+
+eww() {
+  nwrk=$(tail -n1 /tmp/hypr-nworkspaces)
+  active=$(tail -n1 /tmp/hypr-active-workspace)
+  windows=$(tail -n1 /tmp/hypr-windows)
+  literal="(box :space-evenly true "
+  for i in $(seq 1 $nwrk); do
+    literal+="(eventbox :cursor \"pointer\" :onclick \"hyprctl dispatch workspace $i\" "
+    literal+="(box :class \"workspace "
+    if [[ $i -eq $active ]]; then
+      literal+="current "
+    fi
+    literal+="\" (label :text \"[ "
+    add_space=true
+    for w in $(echo "$windows" | jq -jrc ".\"$((i))\" | (.[] + \" \")"); do
+      literal+=$(jq -r ".icons.apps.\"$w\" // .icons.apps.generic" $MASTERCFG)" "
+      add_space=false
+    done
+    if [[ $add_space == true ]]; then
+      literal+=" "
+    fi
+    literal+="]\"))) "
+  done
+  literal+=")"
+  echo -n $literal
+}
+
+windows() {
+  hyprctl clients -j |
+    jq -rc 'group_by(.workspace.id) | map({(first.workspace.id | tostring): map(.class)}) | add'
+}
+
+if [[ $1 == "--next" ]]; then
+
+  curr=$(active)
+  nwrk=$(nworkspaces)
+  if [[ $curr -lt $nwrk ]]; then
+    hyprctl dispatch workspace $((curr + 1))
+  fi
+
+elif [[ $1 == "--prev" ]]; then
+
+  curr=$(active)
+  nwrk=$(nworkspaces)
+  if [[ $curr -gt 1 ]]; then
+    hyprctl dispatch workspace $((curr - 1))
+  fi
+
+elif [[ $1 == "--listen" ]]; then
+
+  handle() {
+    case $1 in
+    workspacev2*)
+      curr=$(echo "$1" | cut -d'>' -f3 | cut -d',' -f1)
+      echo $(nworkspaces) >>/tmp/hypr-nworkspaces
+      echo $curr >>/tmp/hypr-active-workspace
+      echo $(eww) >>/tmp/hypr-eww-workspaces
+      ;;
+    openwindow* | closewindow*)
+      echo $(windows) >>/tmp/hypr-windows
+      echo $(eww) >>/tmp/hypr-eww-workspaces
+      ;;
+    esac
+  }
+
+  handle "workspacev2>>$(active),$(active)"
+  handle "openwindow"
+  socat -u UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock - |
+    while read -r line; do
+      handle $line
+    done
+
+elif [[ $1 == "--eww" ]]; then
+
+  eww_widget=$(eww)
+  echo $eww_widget >>/tmp/hypr-eww-workspaces
+  echo $eww_widget
+
+fi

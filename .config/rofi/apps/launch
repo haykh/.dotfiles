@@ -27,4 +27,6 @@ elif [[ "$1" == "--emojis" ]]; then
     " --hidden-descriptions -a type copy --max-recent 0
 elif [[ "$1" == "--refs" ]]; then
   killall rofi || $SCRIPT_DIR/refs/refs.sh
+elif [[ "$1" == "--vpn" ]]; then
+  killall rofi || $SCRIPT_DIR/vpn/vpn.sh >/dev/null 2>&1
 fi

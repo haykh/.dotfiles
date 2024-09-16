@@ -20,7 +20,7 @@ return {
 		opts = function()
 			local cmd
 			if command_exists("lolcrab") then
-				cmd = "cat $1 | lolcrab -g warm -c '#f924f3' '#1c90fd' -s 0.03"
+				cmd = "cat $1 | lolcrab -g warm -c 'rgba(249,36,243,1) 0%, rgba(28,144,253,1) 100%' -s 0.03"
 			else
 				cmd = "cat"
 			end

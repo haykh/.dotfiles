@@ -115,6 +115,8 @@ render() {
       player_icon="<span color='#1CD762'></span>"
     elif [[ $active_player == *"vlc"* ]]; then
       player_icon="<span color='#FF8800'>󰕼</span>"
+    elif [[ $active_player == *"tidal"* ]]; then
+      player_icon="<span color='#b2b2b2'></span>"
     else
       player_icon=""
     fi
