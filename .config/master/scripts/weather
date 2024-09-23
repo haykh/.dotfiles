@@ -174,7 +174,7 @@ statusicon() {
           end
         else # clear
           if w then "'$DAY_WINDY_ICON'" # windy
-          elif h then "$DAY_HOT_ICON" # hot
+          elif h then "'$DAY_HOT_ICON'" # hot
           else "'$DAY_ICON'" # not windy not hot
           end
         end

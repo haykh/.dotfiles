@@ -3,8 +3,8 @@ window {
 }
 
 textbox-prompt {
-  str: " ";
-  color: #175DDC;
+  str: @symbol-bitwarden;
+  color: @col-bitwarden;
 }
 
 element {

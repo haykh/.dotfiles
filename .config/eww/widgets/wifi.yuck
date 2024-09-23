@@ -1,7 +1,5 @@
 (include "./widgets/templates.yuck")
 
-(defvar wifiReveal false)
-
 ; pollers
 (defpoll wifiInfo 
   :interval "5s"
@@ -29,14 +27,25 @@
 
 (defwidget wifi []
   (eventbox 
-    :onhover "${ EWW_CMD } update wifiReveal=true"
-    :onhoverlost "${ EWW_CMD } update wifiReveal=false"
     :onclick "scripts/run.sh wifi --open"
     :onrightclick "scripts/run.sh wifi --power-toggle"
+    :onmiddleclick "scripts/run.sh rofi --vpn"
     :cursor "pointer"
     (tooltip
       (box 
+        :space-evenly false
+        :class "wifi-tooltip"
         :orientation "v"
+        (label
+          :class "ssid"
+          :xalign 0
+          :text "${ replace(jq(wifiInfo, '.ssid'), '"', '') } ${ replace(jq(wifiInfo, '.strength'), '"', '') }"
+        )
+        (label
+          :xalign 0
+          :yalign 0.5
+          :text "@${ replace(jq(wifiInfo, '.frequency'), '"', '') } MHz"
+        )
         (label
           :xalign 0
           :markup networkAddress
@@ -50,14 +59,6 @@
         :space-evenly false
         :orientation "h"
         :class "wifi ${ replace(jq(wifiInfo, '.state'), '"', '') }"
-        (revealer 
-          :visible { replace(jq(wifiInfo, '.state'), '"', '') != "power-off" && replace(jq(wifiInfo, '.ssid'), '"', '') != "" }
-          :transition "slideright"
-          :reveal wifiReveal
-          :duration "350ms"
-          :class "ssid"
-          { replace(jq(wifiInfo, '.ssid'), '"', '') }
-        )
         (label 
           :class "statusicon" 
           :text { replace(jq(wifiInfo, '.icon'), '"', '') }

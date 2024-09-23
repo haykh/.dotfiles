@@ -1,12 +1,38 @@
+(include "./widgets/applauncher.yuck")
+(include "./widgets/workspaces.yuck")
+
 (include "./widgets/time.yuck")
+(include "./widgets/weather.yuck")
+
+(include "./widgets/brightness.yuck")
+(include "./widgets/volume.yuck")
 (include "./widgets/bluetooth.yuck")
 (include "./widgets/wifi.yuck")
 (include "./widgets/hardware.yuck")
 (include "./widgets/battery.yuck")
-(include "./widgets/volume.yuck")
-(include "./widgets/brightness.yuck")
-(include "./widgets/workspaces.yuck")
-(include "./widgets/weather.yuck")
+(include "./widgets/notification-center.yuck")
+
+(defwidget left []
+  (box
+    :orientation "h"
+    :space-evenly false
+    :halign "start"
+    :class "leftbar"
+    (applauncher)
+    (workspaces)
+  )
+)
+
+(defwidget center []
+  (box
+    :orientation "h"
+    :space-evenly false
+    :halign "center"
+    :class "centerbar"
+    (time)
+    (weather)
+  )
+)
 
 (defwidget right []
   (box 
@@ -27,27 +53,7 @@
       (cpu)
     )
     (battery)
-  )
-)
-
-(defwidget center []
-  (box
-    :orientation "h"
-    :space-evenly false
-    :halign "center"
-    :class "centerbar"
-    (time)
-    (weather)
-  )
-)
-
-(defwidget left []
-  (box
-    :orientation "h"
-    :space-evenly false
-    :halign "start"
-    :class "leftbar"
-    (workspaces)
+    (notifications)
   )
 )
 

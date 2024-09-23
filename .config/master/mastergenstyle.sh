@@ -56,7 +56,11 @@ else
       "$col-uvindex-3: \(.temperature[2]);\n" +
       "$col-uvindex-4: \(.temperature[3]);\n" +
       "$col-uvindex-5: \(.temperature[4]);\n" +
-      "$col-uvindex-6: \(.temperature[5]);\n"
+      "$col-uvindex-6: \(.temperature[5]);\n\n" +
+      "$col-category-1: \(.sequential[2]);\n" +
+      "$col-category-2: \(.sequential[1]);\n" +
+      "$col-category-3: \(.sequential[0]);\n\n" +
+      "$col-applauncher: \(.special.applauncher);\n"
       )
     )' $MASTERCFG >$ewwfile
 fi

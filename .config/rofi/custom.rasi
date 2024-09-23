@@ -1,26 +1,57 @@
 * {
-  font: "MonaspiceKr Nerd Font 12";
-  background-color: transparent;
-  bg: #0f0f17;
-  fg: #f5f8f2;
-  dimmed-fg: #81a3deff;
-  active-bg: #2D5CAD88;
-  border: #9cb9dd33;
-  accent: #d95d5d;
+  // variables
+  fontmono: "MonaspiceKr Nerd Font 12";
+  fontsans: "Cantarell 12";
 
-  text-color: @fg;
+  col-bg: #0f0f17;
+  col-fg: #f5f8f2;
+  col-fg-alt: #d1dfef;
+  col-fg-dim: #81a3deff;
+  col-bg-active: #2D5CAD88;
+  col-border: #9cb9dd33;
+
+  col-applauncher: #d95d5d;
+  col-bitwarden: #175DDC;
+  col-nerdicons: #d9d55d;
+  col-pyfia: #3774A9;
+  col-refs: #74d495;
+  col-vpn: #d2518c;
+
+  symbol-applauncher: "λ ";
+  symbol-bitwarden: " ";
+  symbol-nerdicons: " ";
+  symbol-pyfia: " ";
+  symbol-refs: " ";
+  symbol-vpn: "󰖂 ";
+  symbol-moji: "😎";
+
+  placeholder-applauncher: "run";
+  placeholder-nerdicons: "nerdicons";
+  placeholder-refs: "refs";
+  placeholder-vpn: "vpn";
+  placeholder-moji: "emojis";
+
+  borderradius: 12px;
+  borderradius-bottom: 0 0 12px 12px;
+}
+
+* {
+  background-color: transparent;
+  text-color: @col-fg;
 }
 
 window {
-  background-color: @bg;
-  border-radius: 20px;
+  font: @fontmono;
+  background-color: @col-bg;
+  border-radius: @borderradius;
   border: 1px solid;
-  border-color: @border;
+  border-color: @col-border;
 }
 
 mainbox {
+  background: transparent;
   spacing: 0px;
-  border-radius: 20px;
+  border-radius: @borderradius;
   padding: 1em;
   children: [ inputbar, message, listview ];
 }
@@ -34,12 +65,12 @@ inputbar {
 
 textbox-prompt {
   expand: false;
-  str: "λ";
-  color: @accent;
+  str: @symbol-applauncher;
+  color: @col-applauncher;
 }
 
 entry {
-  placeholder: "run";
+  placeholder: @placeholder-applauncher;
   placeholder-color: white/30%;
 }
 
@@ -48,7 +79,7 @@ message {
   padding: 0.5em;
   margin: 0.5em 0 0 0;
   border: 0 0 0 2px solid;
-  border-color: @border;
+  border-color: @col-border;
 }
 
 // .... listview .... //
@@ -65,8 +96,8 @@ listview {
 }
 
 scrollbar {
-  background-color: @bg;
-  handle-color: @border;
+  background-color: @col-bg;
+  handle-color: @col-border;
 }
 
 // .... listview elements .... //
@@ -78,7 +109,7 @@ element {
 }
 
 element-text {
-  font: "Cantarell 12";
+  font: @fontsans;
 }
 
 element-text,
@@ -95,13 +126,13 @@ element-icon {
 }
 
 element-text {
-  color: @dimmed-fg;
+  color: @col-fg-dim;
   highlight: white;
 }
 
 element selected {
-  background-color: @active-bg;
+  background-color: @col-bg-active;
   border: 1px solid;
-  border-radius: 20px;
-  border-color: @border;
+  border-radius: @borderradius;
+  border-color: @col-border;
 }

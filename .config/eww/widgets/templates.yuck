@@ -9,29 +9,25 @@
   )
 )
 
-(defwidget hwindicator [class show ?icon toggle toggle_str text1 text2 tooltip showtooltip showtooltip_str]
+(defwidget hwindicator [class show ?icon toggle toggle_str text1 text2 tooltip]
   (tooltip
     :visible show
     (box
       tooltip
     )
-    (eventbox
-      :onhover `${ EWW_CMD } update ${ showtooltip_str }=true`
-      :onhoverlost `${ EWW_CMD } update ${ showtooltip_str }=false`
-      (box 
-        :space-evenly false
-        :class "${ class } hw-ind"
-        (label 
-          :class "icon"
-          :text icon
-          :visible { icon != "" }
-        )
-        (indicator
-          :toggle toggle
-          :toggle_str toggle_str
-          :text1 text1
-          :text2 text2
-        )
+    (box 
+      :space-evenly false
+      :class "${ class } hw-ind"
+      (label 
+        :class "icon"
+        :text icon
+        :visible { icon != "" }
+      )
+      (indicator
+        :toggle toggle
+        :toggle_str toggle_str
+        :text1 text1
+        :text2 text2
       )
     )
   )

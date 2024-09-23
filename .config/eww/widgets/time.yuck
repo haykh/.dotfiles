@@ -1,31 +1,38 @@
 (defwidget time []
-  (box 
-    :class "time"
-    (eventbox 
-      :onclick `./launch.sh calendar`
-      :cursor "pointer"
-      { formattime(EWW_TIME, "%-I:%M %P ⋮ %a %-d %b") }
+  (box
+    :space-evenly false
+    (tooltip
+      (box
+        :class "calendar-tooltip"
+        :orientation "h"
+        :valign "fill"
+        :halign "fill"
+        (calendar)
+      )
+      (box 
+        :class "time"
+        (eventbox 
+          :cursor "context-menu"
+          { formattime(EWW_TIME, "%-I:%M %P") }
+        )
+      )
+    )
+    (tooltip
+      (box
+        :class "calendar-tooltip"
+        :orientation "h"
+        :valign "fill"
+        :halign "fill"
+        (calendar)
+      )
+      (box 
+        :class "date"
+        (eventbox 
+          :cursor "pointer"
+          :onclick `hyprctl dispatch exec [float] $HOME/.local/thorium.app/thorium -- --ozone-platform-hint=auto --app='https://calendar.proton.me/'`
+          { formattime(EWW_TIME, " ⋮ %a %-d %b") }
+        )
+      )
     )
   )
 )
-
-(defwindow calendar
-  :geometry 
-    (geometry 
-      :anchor "top center"
-      :x "0" 
-      :y "0"
-      :width "325px"
-      :height "100px")
-  :monitor 0
-  :exclusive false
-  :stacking "fg"
-  (box
-    :class "calendar-popup"
-    :orientation "h"
-    :valign "fill"
-    :halign "fill"
-    (calendar)
-  )
-)
-

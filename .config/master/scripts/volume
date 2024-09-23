@@ -53,6 +53,9 @@ get_icon() {
   )
   if [[ $type == "" ]]; then
     type="speaker"
+  elif [[ $type == *"headset"* ]]; then
+    type="headset"
+    icon=$(jq -rc '.icons.volume.headset' $MASTERCFG)" "
   else
     type="headphones"
     icon=$(jq -rc '.icons.volume.headphones' $MASTERCFG)" "

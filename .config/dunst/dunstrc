@@ -114,6 +114,7 @@
   frame_color = "#d95d5d33"
   timeout = 0
   override_pause_level = 60
+  script = /home/hayk/.config/dunst/dunst-hijack.sh
 
 [slack]
   desktop_entry = "Slack"

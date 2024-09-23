@@ -190,12 +190,14 @@
 )
 
 (defwidget weather []
-  (box
-    :class "weather-ind"
-    (eventbox 
-      :cursor "pointer"
-      :onclick `./launch.sh weather`
-      "⋮ ${ wttr_statusicon } ${ wttr_temp + wttr_daemon}°C"
+  (tooltip
+    (weather-tooltip)
+    (box
+      :class "weather-short"
+      (eventbox 
+        :cursor "context-menu"
+        "⋮ ${ wttr_statusicon } ${ wttr_temp + wttr_daemon}°C"
+      )
     )
   )
 )
@@ -223,44 +225,45 @@
   )
 )
 
-(defwindow weather
-  :geometry 
-    (geometry 
-      :x "1050px" 
-      :y "0")
-  :monitor 0
-  :exclusive false
-  :stacking "fg"
+(defwidget weather-tooltip []
   (box
     :space-evenly false
-    :class "weather-popup weather-background"
+    :class "weather-long"
     :orientation "v"
-    :valign "center"
-    :halign "center"
+
     (box
       :space-evenly false
-      :class "basic"
+      :class "header"
       :orientation "h"
-      (box 
+      (label 
+        :xalign 0
+        :text "@ ${ wttr_location }"
+      )
+      (label 
+        :hexpand true
+        :xalign 1
+        :text "~${ wttr_status }~"
+      )
+    )
+    
+    (box
+      :space-evenly false
+      :class "main"
+      :orientation "h"
+      (box
         :space-evenly false
         :class "left"
         :orientation "v"
-        (label 
-          :xalign 0
-          :text "@ ${ wttr_location }"
-        )
-        (box 
+        (box
+          :space-evenly false
           :class "temperature"
-          :orientation "h"
           (label 
             :yalign 1
             :text "${ wttr_temp }°C"
           )
           (label 
             :yalign 1
-            :xalign 0.2
-            :tooltip "feels like"
-            :text "(${ wttr_feelslike }°C)"
+            :text "/${ wttr_feelslike }°C"
           )
         )
         (label 
@@ -270,24 +273,23 @@
 ${ sunsetIcon } ${ wttr_sunset }"
         )
       )
-      (box 
-        :space-evenly false
+      (box
+        :hexpand true
         :class "right"
         :orientation "v"
         (label 
-          :xalign 1
-          :text "~${ wttr_status }~"
-        )
-        (label 
+          :xalign 0.6
           :text wttr_statusicon
         )
         (label 
           :xalign 1
+          :yalign 0
           :tooltip "precipitation"
           :text wttr_rainorsnow
         )
       )
     )
+
     (box
       :space-evenly false
       :class "extra"
@@ -323,8 +325,9 @@ ${ sunsetIcon } ${ wttr_sunset }"
       )
       (box
         :orientation "v"
+        :hexpand true
         (label 
-          :xalign 0
+          :xalign 1
           :tooltip "humidity"
           :class "humidity-${
             wttr_humidity < 15 ? 
@@ -351,10 +354,10 @@ ${ sunsetIcon } ${ wttr_sunset }"
               )
             )
           }"
-          :text "${ humidityIcon } ${ wttr_humidity }%"
+          :text "${ wttr_humidity }% ${ humidityIcon }"
         )
         (label 
-          :xalign 0
+          :xalign 1
           :class "pressure-${
             wttr_pressure < 985 ? 
             1 :
@@ -372,10 +375,11 @@ ${ sunsetIcon } ${ wttr_sunset }"
               )
             )
           }"
-          :text "${ pressureIcon } ${ wttr_pressure } hPa"
+          :text "${ wttr_pressure } hPa ${ pressureIcon }"
         )
       )
     )
+
     (box
       :space-evenly false
       :class "forecast"

@@ -6,6 +6,14 @@ help() {
   echo "  --nextmode: next power mode"
 }
 
+not_daemon() {
+  if command -v dunstify &>/dev/null; then
+    dunstify "$@"
+  else
+    notify-send "$@"
+  fi
+}
+
 if [[ $1 == "--nextmode" ]]; then
 
   mode=$(powerprofilesctl get)
@@ -25,6 +33,7 @@ elif [[ $1 == "--info" ]]; then
   MAXPCENT=$(jq -rc '.hardware.battery.maxpcent' $MASTERCFG)
 
   LOGFILE=$TMPDIR/battery.log
+  NOTIFICATIONFILE=$TMPDIR/battery.notification
 
   # charge [μAh]
   # current [μA]
@@ -55,7 +64,7 @@ elif [[ $1 == "--info" ]]; then
 
   tooltip=$(echo $hrs"h" $mins"m" ":" $sign$(($voltage / 1000000 * $current / 1000000))"W")
 
-  if [ $status == "Charging" ] && [ $current == 0 ]; then
+  if [[ $status == "Charging" ]] && [[ $current == 0 ]]; then
     status="Full"
   fi
 
@@ -79,6 +88,22 @@ elif [[ $1 == "--info" ]]; then
     pcent_state="charge-lt90"
   else
     pcent_state="charge-full"
+  fi
+
+  if [[ $status == "Charging" ]] || [[ $status == "Full" ]]; then
+    rm -f $NOTIFICATIONFILE
+  else
+    if [[ $pcent -le 5 ]]; then
+      if [[ ! -f $NOTIFICATIONFILE ]] || [[ $(wc -l $NOTIFICATIONFILE | cut -d' ' -f1) -lt 5 ]]; then
+        not_daemon \
+          -a "battery-low" \
+          -i "battery-low" \
+          -h string:x-canonical-private-synchronous:sys-notify \
+          -u critical "Battery @ $pcent%" "connect a charger"
+
+        echo "dismiss" >>$NOTIFICATIONFILE
+      fi
+    fi
   fi
 
   mode=$(powerprofilesctl get 2>$LOGFILE)

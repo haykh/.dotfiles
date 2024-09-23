@@ -67,7 +67,7 @@ elif [[ $1 == "--listen" ]]; then
       echo $curr >>/tmp/hypr-active-workspace
       echo $(eww) >>/tmp/hypr-eww-workspaces
       ;;
-    openwindow* | closewindow*)
+    openwindow* | closewindow* | activewindow*)
       echo $(windows) >>/tmp/hypr-windows
       echo $(eww) >>/tmp/hypr-eww-workspaces
       ;;

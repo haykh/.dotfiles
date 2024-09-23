@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 SCRIPT_DIR=$HOME/.config/master/scripts
+ROFI_DIR=$HOME/.config/rofi
 
 LOGFILE=/tmp/masterctrl.log
 
@@ -88,6 +89,8 @@ help() {
 
 if [[ $1 == "help" ]]; then
   help
+elif [[ $1 == "rofi" ]]; then
+  $ROFI_DIR/apps/launch $2
 elif [[ -f $SCRIPT_DIR/$1 ]]; then
   $SCRIPT_DIR/$1 "${@:2}"
 else

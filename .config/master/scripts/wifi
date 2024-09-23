@@ -38,6 +38,23 @@ elif [[ $1 == "--info" ]]; then
   status=$(nmcli g | grep -oE "full")
   essid=$(nmcli c | grep $DEVICEID | awk '{print ($1)}')
   powered=$(nmcli r wifi | grep enabled)
+  devinfo=$(iw dev $DEVICEID link)
+  frequency=$(echo "$devinfo" | grep 'freq' | cut -d':' -f2 | cut -d'.' -f1)
+  strength=$(echo "$devinfo" | grep 'signal' | cut -d':' -f2 | cut -d' ' -f2)
+  rxrate=$(echo "$devinfo" | grep rx | cut -d':' -f2 | cut -d' ' -f2-3)
+  txrate=$(echo "$devinfo" | grep tx | cut -d':' -f2 | cut -d' ' -f2-3)
+
+  if [[ $strength -gt -50 ]]; then
+    strength="▂▄▆█"
+  elif [[ $strength -gt -67 ]]; then
+    strength="▂▄▆ "
+  elif [[ $strength -gt -70 ]]; then
+    strength="▂▄  "
+  elif [[ $strength -gt -80 ]]; then
+    strength="▂   "
+  else
+    strength="    "
+  fi
 
   if [ $status ]; then
     if [ $powered ]; then
@@ -60,7 +77,7 @@ elif [[ $1 == "--info" ]]; then
     fi
   fi
 
-  echo '{"state": "'$state'", "ssid": "'$ssid'", "icon": "'$icon'"}'
+  echo '{"state": "'$state'", "ssid": "'$ssid'", "icon": "'$icon'", "frequency": "'$frequency'", "strength": "'$strength'", "rxrate": "'$rxrate'", "txrate": "'$txrate'"}'
 
 elif [[ $1 == "--usage" ]]; then
 

@@ -3,8 +3,8 @@ mainbox {
 }
 
 textbox-prompt {
-  str: " ";
-  color: #3774A9;
+  str: @symbol-pyfia;
+  color: @col-pyfia;
 }
 
 window {

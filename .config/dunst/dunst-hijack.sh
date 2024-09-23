@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-if [ "$1" == "Slack" ]; then
+if [[ "$1" == "Slack" ]]; then
+
   ACTION=$(
     dunstify \
       -u "$5" -a "Slack" -i "slack" \
@@ -13,7 +14,9 @@ if [ "$1" == "Slack" ]; then
     hyprctl dispatch exec $HOME/.dotfiles/scripts/hypr/launcher -- --slack
     ;;
   esac
-elif [ "$1" == "Betterbird" ]; then
+
+elif [[ "$1" == "Betterbird" ]]; then
+
   ACTION=$(
     dunstify \
       -u "$5" -a "Betterbird" -i "email" \
@@ -27,7 +30,9 @@ elif [ "$1" == "Betterbird" ]; then
     hyprctl dispatch exec $HOME/.dotfiles/scripts/hypr/launcher -- --thunderbird
     ;;
   esac
-elif [ "$1" == "Spotify" ]; then
+
+elif [[ "$1" == "Spotify" ]]; then
+
   artUrl=$(echo "$(playerctl metadata)" | grep -oP 'artUrl\K.*$' | tr -d ' ')
   old_artUrl=$(cat /tmp/player_artUrl)
   if [ "$artUrl" != "$old_artUrl" ]; then
@@ -48,4 +53,11 @@ elif [ "$1" == "Spotify" ]; then
     hyprctl dispatch exec $HOME/.dotfiles/scripts/hypr/launcher -- --spotify
     ;;
   esac
+
+elif [[ "$1" == "battery-low" ]]; then
+
+  echo 'зарадка болшэ нэт' |
+    /opt/piper-tts/piper --model $HOME/Music/voices/ka_GE-natia-medium.onnx --output-raw |
+    aplay -r 22050 -f S16_LE -t raw -
+
 fi

@@ -24,18 +24,15 @@ $hist-width: 8px;
 *{
 	all: unset;
   font-size: $fs-md;
+  transition: 0.1s;
 }
 
-tooltip {
-  &.background {
-    background-color: $col-bg-alt;
-    border: 1px solid $col-border;
-    border-radius: 0px 0px $bar-border-rad $bar-border-rad;
-  }
-
-  label {
-    font-family: $font-main;
-    margin: $bar-padding-y $bar-padding-x;
+progressbar trough {
+  border-bottom: $nonzero solid $col-border;
+  min-height: $nonzero;
+  min-width: $hist-width;
+  progress {
+    background-color: $col-accent;
   }
 }
 
@@ -46,6 +43,18 @@ tooltip {
 	font-family: $font-main;
 
   // left
+  .applauncher {
+    color: $col-applauncher;
+
+    label {
+      font-size: $fs-hg;
+    }
+
+    &:hover {
+      color: lighten($col-applauncher, 20%);
+    }
+  }
+
   .workspaces {
     .workspace {
       margin: 0px calc(0.5 * $bar-padding-x);
@@ -58,11 +67,8 @@ tooltip {
   }
 
   // center
-  .time {
+  .time, .date, .weather-short {
     font-family: $font-alt;
-  }
-
-  .time, .weather-ind {
     margin: 0px calc(0.5 * $bar-padding-x);
   }
 
@@ -80,9 +86,6 @@ tooltip {
     .cpu {
       margin-right: calc(-1 * $bar-padding-x);
     }
-    .cpus {
-      margin-right: $indicator-margin-x;
-    }
 
     .hw-ind {
       .icon {
@@ -90,28 +93,13 @@ tooltip {
         margin-right: $indicator-margin-x;
       }
     }
-
-    .cpu-usage0 trough progress {
-      background-color: $col-heat-0;
-    }
-    .cpu-usage1 trough progress {
-      background-color: $col-heat-1;
-    }
-    .cpu-usage2 trough progress {
-      background-color: $col-heat-2;
-    }
-    .cpu-usage3 trough progress {
-      background-color: $col-heat-3;
-    }
-    .cpu-usage4 trough progress {
-      background-color: $col-heat-4;
-    }
-    .cpu-usage5 trough progress {
-      background-color: $col-heat-5;
-    }
   }
 
   .battery {
+    * {
+      transition: 0;
+    }
+
     margin-right: calc(0.12 * $indicator-margin-x);
 
     .icon {
@@ -152,6 +140,7 @@ tooltip {
     .mode {
       min-width: $widget-width;
       font-size: $fs-md;
+      margin-top: calc(0.5 * $bar-padding-y);
       margin-right: calc(0.4 * $indicator-margin-x);
       padding-right: calc(0.8 * $bar-padding-x);
       border-radius: $bar-border-rad;
@@ -183,10 +172,6 @@ tooltip {
     }
   }
 
-  .wifi .ssid {
-    padding: 0px calc($bar-padding-x * 1.2) 0px 0px;
-  }
-
   .bluetooth {
     margin-right: calc(1.0 * $indicator-margin-x);
   }
@@ -211,34 +196,92 @@ tooltip {
       color: $col-device-disconnected;
     }
   }
+}
 
-  .wifi {
-    & .ip {
-      font-size: 50px;
-    }
+// tooltips (hover)
+
+tooltip {
+  &.background {
+    background-color: $col-bg-alt;
+    border: 1px solid $col-border;
+    border-radius: 0px 0px $bar-border-rad $bar-border-rad;
   }
 
-  progressbar trough {
-    border-bottom: 1px solid $col-border;
-    min-height: $nonzero;
-    min-width: $hist-width;
-    progress {
-      background-color: $col-accent;
-    }
+  label {
+    font-family: $font-main;
+    margin: $bar-padding-y $bar-padding-x;
   }
 }
 
-// popups
-.calendar-popup, .weather-popup {
+.cpu-tooltip {
+  .cpu-usage0 {
+    color: $col-heat-0;
+    trough progress {
+      background-color: $col-heat-0;
+    }
+  }
+  .cpu-usage1 {
+    color: $col-heat-1;
+    trough progress {
+      background-color: $col-heat-1;
+    }
+  }
+  .cpu-usage2 {
+    color: $col-heat-2;
+    trough progress {
+      background-color: $col-heat-2;
+    }
+  }
+  .cpu-usage3 {
+    color: $col-heat-3;
+    trough progress {
+      background-color: $col-heat-3;
+    }
+  }
+  .cpu-usage4 {
+    color: $col-heat-4;
+    trough progress {
+      background-color: $col-heat-4;
+    }
+  }
+  .cpu-usage5 {
+    color: $col-heat-5;
+    trough progress {
+      background-color: $col-heat-5;
+    }
+  }
+
+  .temperature {
+    color: $col-category-1;
+  }
+
+  .usage {
+    color: $col-category-2;
+  }
+
+  .cpu-stats {
+    border-bottom: $nonzero solid $col-border;
+    margin-bottom: calc($bar-padding-y * 2);
+  }
+
+  .graph-labels label {
+    font-size: $fs-xs;
+  }
+}
+
+.wifi-tooltip {
+  & .ssid {
+    font-size: $fs-hg;
+  }
+}
+
+.calendar-tooltip, .weather-long {
   font-family: $font-main;
-
-  background-color: $col-bg-alt;
-  border: 1px solid $col-border;
-  border-radius: 0px 0px $bar-border-rad $bar-border-rad;
 }
 
-.calendar-popup {
+.calendar-tooltip {
   padding: $bar-padding-y $bar-padding-x;
+  min-width: 300px;
 
   .highlight {
     color: $col-accent-alt;
@@ -254,29 +297,36 @@ tooltip {
   }
 }
 
-.weather-popup {
+.weather-long {
   padding: calc(2.5 * $bar-padding-y) calc(1.5 * $bar-padding-x);
   padding-right: calc($bar-padding-x);
 
   .temperature :first-child {
     font-size: $fs-gg;
     margin-top: calc(3 * $bar-padding-y);
+    margin-right: 0;
   }
 
-  .right :nth-child(2) {
-    font-size: calc($fs-GG * 1.5);
-    margin-top: calc(-2.5 * $bar-padding-y);
-    margin-bottom: 0;
+  .header :nth-child(2) {
+    // status
+    font-family: $font-alt;
   }
 
-  .right :nth-child(3) {
-    font-size: $fs-hg;
-    margin-top: calc(-2.5 * $bar-padding-y);
+  .main {
+    margin-bottom: calc(-14 * $bar-padding-y);
+
+    .right :first-child {
+      // status-icon
+      font-size: calc(1.5 * $fs-GG);
+      margin-bottom: calc(-3 * $bar-padding-y);
+    }
+    .right :nth-child(2) {
+      // precipitation
+      font-size: $fs-hg;
+    }
   }
 
   .extra {
-    margin: calc(3 * $bar-padding-y) 0px;
-
     & label {
       font-size: $fs-hg;
     }
@@ -368,9 +418,8 @@ tooltip {
       background-color: $col-bg;
       padding: calc(2 * $bar-padding-y) calc(1.5 * $bar-padding-x);
       padding-top: calc(1 * $bar-padding-y);
-      border-top: 2px dotted $col-fg-dim;
-      border-bottom: 2px dotted $col-fg-dim;
-      border-radius: calc(0.5 * $bar-border-rad);
+      border-top: 1px dashed $col-fg-dim;
+      border-radius: 0;
 
       &:first-child {
         margin-right: calc(2 * $bar-padding-x);
@@ -387,6 +436,81 @@ tooltip {
 
       .forecast-temp {
         font-size: $fs-md;
+      }
+    }
+  }
+}
+
+// popups (click)
+.notification-center {
+  background-color: $col-bg-alt;
+  border-radius: 0 0 0 $bar-border-rad;
+  padding: 0 0 calc(3 * $bar-padding-y) 0;
+  border: $nonzero solid $col-border;
+	font-family: $font-main;
+
+  .toprow {
+    padding: calc(2 * $bar-padding-y) calc(1.5 * $bar-padding-x);
+    .title {
+      font-size: $fs-hg;
+    }
+
+    .clearall-box {
+      color: $col-fg-dim;
+
+      &:hover {
+        color: $col-fg;
+      }
+    }
+  }
+
+  .noti-container {
+
+    &:hover {
+      .noti {
+        background-color: $col-bg;
+
+        .clear {
+          color: $col-bg;
+        }
+      }
+    }
+
+    .noti {
+      border: $nonzero solid $col-border;
+      padding: calc(2 * $bar-padding-y) calc(1.5 * $bar-padding-x);
+      margin: calc(2 * $bar-padding-y) calc(2 * $bar-padding-x);
+      border-radius: $bar-border-rad;
+      box-shadow: 4px 4px 2px 0px $col-bg;
+
+      &:hover {
+        background-color: $col-bg;
+      }
+
+      .header {
+        font-family: $font-alt;
+      }
+
+      .icon {
+        margin: 0 calc(1.5 * $bar-padding-x) 0 0;
+      }
+
+      .clear {
+        color: $col-bg-alt;
+          transition: 0s;
+
+        label {
+          font-size: $fs-hg;
+        }
+
+        &:hover {
+          color: $col-fg-dim;
+        }
+      }
+
+      .timestamp {
+        font-size: $fs-sm;
+        color: darken($col-fg-dim, 20%);
       }
     }
   }

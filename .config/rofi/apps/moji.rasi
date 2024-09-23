@@ -5,11 +5,11 @@ window {
 }
 
 textbox-prompt {
-  str: "😎";
+  str: @symbol-moji;
 }
 
 entry {
-  placeholder: "emojis";
+  placeholder: @placeholder-moji;
   placeholder-color: white/30%;
 }
 
@@ -40,7 +40,7 @@ element {
 }
 
 element selected {
-  background-color: #2D5CAD66;
+  background-color: @col-bg-active;
   border: none;
 }
 

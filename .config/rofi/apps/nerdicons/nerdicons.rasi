@@ -3,12 +3,12 @@ window {
 }
 
 textbox-prompt {
-  str: " ";
-  color: #d9d55d;
+  str: @symbol-nerdicons;
+  color: @col-nerdicons;
 }
 
 entry {
-  placeholder: "nerdicons";
+  placeholder: @placeholder-nerdicons;
 }
 
 listview {

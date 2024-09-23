@@ -2,13 +2,26 @@
 
 ; constants
 (defvar cpus "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]")
-(defvar cpuReveal false)
+
+(defpoll cpuIcon
+  :interval "5000s"
+  :initial "x"
+  :run-while false
+  `jq -r '.icons.hardware.cpu' ~/.config/master/mastercfg.json`
+)
+
+(defpoll ramIcon
+  :interval "5000s"
+  :initial "x"
+  :run-while false
+  `jq -r '.icons.hardware.ram' ~/.config/master/mastercfg.json`
+)
+
 
 ; indicator states
 (defvar ramShowGB true)
 (defvar ramShowTooltip false)
 (defvar cpuShowT true)
-(defvar cpuShowTooltip false)
 (defvar gpu0ShowT true)
 (defvar gpu0ShowTooltip false)
 (defvar gpu1ShowT true)
@@ -58,22 +71,6 @@
   `scripts/run.sh amdgpu 1 --procs`
 )
 
-; constants
-(defpoll cpuIcon
-  :interval "5000s"
-  :initial "x"
-  :run-while false
-  `jq -r '.icons.hardware.cpu' ~/.config/master/mastercfg.json`
-)
-
-(defpoll ramIcon
-  :interval "5000s"
-  :initial "x"
-  :run-while false
-  `jq -r '.icons.hardware.ram' ~/.config/master/mastercfg.json`
-)
-
-
 ; indicator widgets
 (defwidget ram []
   (hwindicator
@@ -85,24 +82,76 @@
     :text1 "${ round(EWW_RAM["used_mem"] / (1024 * 1024 * 1024), 1) }GB" 
     :text2 "${ round(EWW_RAM["used_mem_perc"], 0) }%" 
     :tooltip ramProc
-    :showtooltip ramShowTooltip
-    :showtooltip_str "ramShowTooltip"
   )
 )
 
 (defwidget cpu []
-  (eventbox 
-    :onhover "${ EWW_CMD } update cpuReveal=true"
-    :onhoverlost "${ EWW_CMD } update cpuReveal=false"
+  (tooltip
     (box
       :space-evenly false
-      (revealer 
-        :transition "slideleft"
-        :reveal cpuReveal
-        :duration "350ms"
+      :orientation "v"
+      :class "cpu-tooltip"
+      (box
+        :class "cpu-stats"
+        :orientation "h"
+        :space-evenly false
+        (box 
+          :width "20"
+          :space-evenly false
+          :orientation "v"
+          :class "graph-labels temperature"
+          (label 
+            :text "100°C"
+            :yalign 0
+            :xalign 1
+          )
+          (label 
+            :vexpand true
+            :text "20°C"
+            :yalign 1
+            :xalign 1
+          )
+        )
+        (overlay 
+          :hexpand true
+          :height "50"
+          (graph
+            :class "usage"
+            :value { jq(EWW_CPU, '.cores | map(.usage | tonumber) | add / length | round') }
+            :min 0
+            :max 100
+            :time-range "60s"
+          )
+          (graph
+            :class "temperature"
+            :value { jq(EWW_TEMPS, '. as $temp | [range(1, 8) | . as $i | $temp[("ACPITZ_TEMP" + ($i + 1 | tostring))] | tonumber | round] | max') }
+            :min 20
+            :max 100
+            :time-range "60s"
+          )
+        )
+        (box 
+          :width "20"
+          :space-evenly false
+          :orientation "v"
+          :class "graph-labels usage"
+          (label 
+            :text "100%"
+            :yalign 0
+            :xalign 0
+          )
+          (label 
+            :vexpand true
+            :text "0%"
+            :yalign 1
+            :xalign 0
+          )
+        )
         (box
           :class "cpus"
-          :space-evenly false
+          :width "100"
+          :height "40"
+          :space-evenly true
           (for cpu in cpus
             (progress
               :class "cpu-usage${ jq(EWW_CPU, '.cores | (.[${ cpu }].usage / 20 | round)') }"
@@ -113,17 +162,23 @@
           )
         )
       )
-      (hwindicator
-        :class "cpu"
-        :show true
-        :icon cpuIcon
+      (box
+        :class "processes"
+        cpuProc
+      )
+    )
+    (box 
+      :space-evenly false
+      :class "cpu hw-ind"
+      (label 
+        :class "icon"
+        :text cpuIcon
+      )
+      (indicator
         :toggle cpuShowT
         :toggle_str "cpuShowT"
         :text1 "${ jq(EWW_TEMPS, '. as $temp | [range(1, 8) | . as $i | $temp[("ACPITZ_TEMP" + ($i + 1 | tostring))] | tonumber | round] | max') }°C"
         :text2 "${ jq(EWW_CPU, '.cores | map(.usage | tonumber) | add / length | round') }%"
-        :tooltip cpuProc
-        :showtooltip cpuShowTooltip
-        :showtooltip_str "cpuShowTooltip"
       )
     )
   )
@@ -138,8 +193,6 @@
     :text1 { gpu0Info != "" ? "${ jq(gpu0Info, '.temp') }°C" : "" }
     :text2 { gpu0Info != "" ? "${ jq(gpu0Info, '.percentage') }%" : "" }
     :tooltip gpu0Proc
-    :showtooltip gpu0ShowTooltip
-    :showtooltip_str "gpu0ShowTooltip"
   )
 )
 
@@ -152,7 +205,5 @@
     :text1 { gpu1Info != "" ? "${ jq(gpu1Info, '.temp') }°C" : "" }
     :text2 { gpu1Info != "" ? "${ jq(gpu1Info, '.percentage') }%" : "" }
     :tooltip gpu1Proc
-    :showtooltip gpu1ShowTooltip
-    :showtooltip_str "gpu1ShowTooltip"
   )
 )
