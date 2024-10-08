@@ -1,0 +1,18 @@
+.workspaces {
+  * {
+    font-family: $font-mono;
+    font-size: $fs-lg;
+    transition: 0s;
+  }
+
+  .workspace {
+    margin: 0px calc(0.5 * $padx);
+
+    &.current {
+      font-weight: bold;
+      color: $col-accent1;
+      border-bottom: 1px solid $col-accent1;
+    }
+  }
+}
+

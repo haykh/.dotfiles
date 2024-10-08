@@ -13,21 +13,25 @@ else
   ewwfile=$HOME/.config/eww/style.scss
   jq -r '
     "$font-main: \(.fonts.main);\n" +
-    "$font-alt: \(.fonts.alt);\n\n" +
+    "$font-alt: \(.fonts.alt);\n" +
+    "$font-mono: \(.fonts.mono);\n" +
+    "$font-serif: \(.fonts.serif);\n\n" +
     (.colors | (
       "$col-bg: \(.theme.bg);\n" + 
       "$col-bg-alt: \(.theme."bg-alt");\n" + 
       "$col-border: \(.theme.border);\n" + 
       "$col-fg: \(.theme.fg);\n" + 
       "$col-fg-dim: \(.theme."fg-dim");\n" + 
-      "$col-accent: \(.theme.accent);\n" + 
-      "$col-accent-alt: \(.theme."accent-alt");\n\n" + 
-      "$col-heat-0: \(.temperature[0]);\n" + 
-      "$col-heat-1: \(.temperature[1]);\n" + 
-      "$col-heat-2: \(.temperature[2]);\n" + 
-      "$col-heat-3: \(.temperature[3]);\n" + 
-      "$col-heat-4: \(.temperature[4]);\n" + 
-      "$col-heat-5: \(.temperature[5]);\n\n" + 
+      "$col-accent1: \(.theme.accent1);\n" + 
+      "$col-accent2: \(.theme.accent2);\n" + 
+      "$col-accent3: \(.theme.accent3);\n" + 
+      "$col-accent4: \(.theme.accent4);\n\n" + 
+      "$col-heat-0: \(.heat[0]);\n" + 
+      "$col-heat-1: \(.heat[1]);\n" + 
+      "$col-heat-2: \(.heat[2]);\n" + 
+      "$col-heat-3: \(.heat[3]);\n" + 
+      "$col-heat-4: \(.heat[4]);\n" + 
+      "$col-heat-5: \(.heat[5]);\n\n" + 
       "$col-battery-1: \(.charge[0]);\n" + 
       "$col-battery-2: \(.charge[1]);\n" + 
       "$col-battery-3: \(.charge[2]);\n" + 
@@ -39,24 +43,24 @@ else
       "$col-power-saver: \(.sequential[0]);\n\n" + 
       "$col-device-disconnected: \(.status.disabled);\n" + 
       "$col-device-off: \(.status.inactive);\n\n" +
-      "$col-humidity-1: \(.humidity[0]);\n" +
-      "$col-humidity-2: \(.humidity[1]);\n" +
-      "$col-humidity-3: \(.humidity[2]);\n" +
-      "$col-humidity-4: \(.humidity[3]);\n" +
-      "$col-humidity-5: \(.humidity[4]);\n" +
-      "$col-humidity-6: \(.humidity[5]);\n" +
-      "$col-humidity-7: \(.humidity[6]);\n\n" +
-      "$col-pressure-1: \(.diverging[0]);\n" +
-      "$col-pressure-2: \(.diverging[1]);\n" +
-      "$col-pressure-3: \(.diverging[2]);\n" +
-      "$col-pressure-4: \(.diverging[3]);\n" +
-      "$col-pressure-5: \(.diverging[4]);\n\n" +
-      "$col-uvindex-1: \(.temperature[0]);\n" +
-      "$col-uvindex-2: \(.temperature[1]);\n" +
-      "$col-uvindex-3: \(.temperature[2]);\n" +
-      "$col-uvindex-4: \(.temperature[3]);\n" +
-      "$col-uvindex-5: \(.temperature[4]);\n" +
-      "$col-uvindex-6: \(.temperature[5]);\n\n" +
+      "$col-humidity-1: \(.wet[0]);\n" +
+      "$col-humidity-2: \(.wet[1]);\n" +
+      "$col-humidity-3: \(.wet[2]);\n" +
+      "$col-humidity-4: \(.wet[3]);\n" +
+      "$col-humidity-5: \(.wet[4]);\n" +
+      "$col-humidity-6: \(.wet[5]);\n" +
+      "$col-humidity-7: \(.wet[6]);\n\n" +
+      "$col-pressure-1: \(.coolwarm[0]);\n" +
+      "$col-pressure-2: \(.coolwarm[1]);\n" +
+      "$col-pressure-3: \(.coolwarm[2]);\n" +
+      "$col-pressure-4: \(.coolwarm[3]);\n" +
+      "$col-pressure-5: \(.coolwarm[4]);\n\n" +
+      "$col-uvindex-1: \(.heat[0]);\n" +
+      "$col-uvindex-2: \(.heat[1]);\n" +
+      "$col-uvindex-3: \(.heat[2]);\n" +
+      "$col-uvindex-4: \(.heat[3]);\n" +
+      "$col-uvindex-5: \(.heat[4]);\n" +
+      "$col-uvindex-6: \(.heat[5]);\n\n" +
       "$col-category-1: \(.sequential[2]);\n" +
       "$col-category-2: \(.sequential[1]);\n" +
       "$col-category-3: \(.sequential[0]);\n\n" +

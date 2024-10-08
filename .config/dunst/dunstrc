@@ -14,7 +14,7 @@
   width = (300,500)
   height = 300
   origin = top-right
-  offset = 15x15
+  offset = 0x15
   scale = 0
 
   corners = bottom-left,top-left
@@ -30,7 +30,7 @@
   progress_bar_corner_radius = 5
   progress_bar_corners = all
 
-  icon_corner_radius = 20
+  icon_corner_radius = 5
   icon_corners = all
 
   indicate_hidden = yes
@@ -73,11 +73,11 @@
   show_indicators = yes
 
   enable_recursive_icon_lookup = true
-  icon_theme = "BeautySolar"
+  icon_theme = "Fluent-dark"
   icon_position = left
   min_icon_size = 32
   max_icon_size = 128
-  icon_path = /home/hayk/.config/share/icons/BeautySolar
+  icon_path = /home/hayk/.config/share/icons/Fluent-dark
 
   sticky_history = yes
   history_length = 20
@@ -116,6 +116,10 @@
   override_pause_level = 60
   script = /home/hayk/.config/dunst/dunst-hijack.sh
 
+[update_noti]
+  summary = "^(?!.*-control$).*"
+  script = /home/hayk/.config/dunst/dunst-update-noti.sh
+
 [slack]
   desktop_entry = "Slack"
   format = ""
@@ -150,21 +154,21 @@
 
 [speaker-volume]
   appname = "speaker-volume-control"
-  new_icon = /home/hayk/.local/share/icons/BeautySolar/apps/scalable/mx-sound.svg
+  new_icon = /home/hayk/.local/share/icons/Fluent-dark/22/actions/speaker.svg
   history_ignore = yes
   min_icon_size = 32
   max_icon_size = 32
 
 [mic-volume]
   appname = "mic-volume-control"
-  new_icon = /home/hayk/.local/share/icons/BeautySolar/apps/scalable/gnome-sound-recorder.svg
+  new_icon = /home/hayk/.local/share/icons/Fluent-dark/symbolic/devices/audio-input-microphone-symbolic.svg
   history_ignore = yes
   min_icon_size = 32
   max_icon_size = 32
 
 [brightness]
   appname = "brightness-control"
-  new_icon = /home/hayk/.local/share/icons/BeautySolar/apps/scalable/brightness-systray.svg
+  new_icon = /home/hayk/.local/share/icons/Fluent-dark/32/status/video-display-brightness.svg
   history_ignore = yes
   min_icon_size = 32
   max_icon_size = 32

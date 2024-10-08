@@ -6,9 +6,9 @@
 
 (deflisten wrk_widgets
   :initial ""
-  `rm -f /tmp/hypr-eww-workspaces && \
+  `rm -f ~/.config/eww/state/hypr-eww-workspaces && \
     ./scripts/run.sh workspaces --eww && \
-    tail -F /tmp/hypr-eww-workspaces`
+    tail -F ~/.config/eww/state/hypr-eww-workspaces`
 )
 
 (defwidget workspaces []
@@ -23,6 +23,10 @@
           echo '--prev'; 
         fi
       )`
-    (literal :content { wrk_widgets + wrk_daemon })
+    (literal 
+      :vexpand true
+      :valign "center"
+      :content { wrk_widgets + wrk_daemon }
+    )
   )
 )

@@ -1,0 +1,169 @@
+(include "./widgets/templates.yuck")
+
+; constants
+(defpoll gpu0Icon
+  :interval "5000s"
+  :initial "x"
+  :run-while false
+  `jq -r '.icons.hardware.dgpu' ~/.config/master/mastercfg.json`
+)
+(defpoll gpu1Icon
+  :interval "5000s"
+  :initial "x"
+  :run-while false
+  `jq -r '.icons.hardware.igpu' ~/.config/master/mastercfg.json`
+)
+
+;variables
+(defvar gpu0ShowT false)
+(defvar gpu0ShowUsage false)
+(defvar gpu1ShowT false)
+(defvar gpu1ShowUsage false)
+
+; pollers
+(defpoll gpu0Awake 
+  :interval "2s"
+  :run-while { panelRevealed || gpu0ShowT || gpu0ShowUsage }
+  `scripts/run.sh amdgpu 0 --isawake`
+)
+(defpoll gpu0Info 
+  :interval "10s"
+  :initial ""
+  :run-while { (gpu0Awake == 1) && (panelRevealed || gpu0ShowT || gpu0ShowUsage) }
+  `scripts/run.sh amdgpu 0 --info`
+)
+(defpoll gpu0Proc 
+  :interval "10s"
+  :initial ""
+  :run-while { gpu0Awake == 1 && panelRevealed }
+  `scripts/run.sh amdgpu 0 --procs`
+)
+(defpoll gpu1Awake 
+  :interval "2s"
+  `scripts/run.sh amdgpu 1 --isawake`
+)
+(defpoll gpu1Info 
+  :interval "5s"
+  :initial ""
+  :run-while { (gpu1Awake == 1) && (panelRevealed || gpu1ShowT || gpu1ShowUsage) }
+  `scripts/run.sh amdgpu 1 --info`
+)
+(defpoll gpu1Proc 
+  :interval "5s"
+  :initial ""
+  :run-while { gpu1Awake == 1 && panelRevealed }
+  `scripts/run.sh amdgpu 1 --procs`
+)
+
+; widgets
+(defwidget gpu0 []
+  (sensor
+    :icon gpu0Icon
+    :value1 { gpu0Info != "" ? "${ jq(gpu0Info, '.temp') }°C" : "" }
+    :value2 { gpu0Info != "" ? "${ jq(gpu0Info, '.percentage') }%" : "" }
+    :class "gpu0"
+    :class1 "gpu0-temp"
+    :class2 "gpu0-usage"
+    :show { gpu0Awake == 1 && ((gpu0ShowT && !gpu0ShowUsage) || (gpu0ShowUsage && !gpu0ShowT)) }
+    :show1 { gpu0ShowT && !gpu0ShowUsage } 
+    :show2 { gpu0ShowUsage && !gpu0ShowT }
+  )
+)
+
+(defwidget gpu1 []
+  (sensor
+    :icon gpu1Icon
+    :value1 { gpu1Info != "" ? "${ jq(gpu1Info, '.temp') }°C" : "" }
+    :value2 { gpu1Info != "" ? "${ jq(gpu1Info, '.percentage') }%" : "" }
+    :class "gpu1"
+    :class1 "gpu1-temp"
+    :class2 "gpu1-usage"
+    :show { gpu1Awake == 1 && ((gpu1ShowT && !gpu1ShowUsage) || (gpu1ShowUsage && !gpu1ShowT)) }
+    :show1 { gpu1ShowT && !gpu1ShowUsage } 
+    :show2 { gpu1ShowUsage && !gpu1ShowT }
+  )
+)
+
+(defwidget gpu1-extended []
+  (box
+    :class "gpu1-extended hw-extended ${ gpu1Awake == 1 ? '' : 'idle' }"
+    :vexpand true
+    :hexpand true
+    :halign "start"
+    :valign "fill"
+    :space-evenly false
+    :orientation "h"
+    (label
+      :xalign 0.2
+      :width 40
+      :class "icon"
+      :text { gpu1Icon }
+    )
+    (box
+      :orientation "v"
+      :visible { gpu1Awake == 1 }
+      (eventbox
+        :class "gpu1-temp fixed-${ gpu1ShowT }"
+        :cursor "pointer"
+        :tooltip "click to toggle"
+        :onclick `
+          eww update gpu1ShowT=${ !gpu1ShowT } && \
+          eww update gpu1ShowUsage=${ gpu1ShowUsage ? (!gpu1ShowT ? false : true) : false }
+        `
+        { gpu1Info != "" ? "${ jq(gpu1Info, '.temp') }°C" : "" }
+      )
+      (eventbox
+        :class "gpu1-usage fixed-${ gpu1ShowUsage }"
+        :cursor "pointer"
+        :tooltip "click to toggle"
+        :onclick `
+          eww update gpu1ShowUsage=${ !gpu1ShowUsage } && \
+          eww update gpu1ShowT=${ gpu1ShowT ? (!gpu1ShowUsage ? false : true) : false }
+        `
+        { gpu1Info != "" ? "${ jq(gpu1Info, '.percentage') }%" : "" }
+      )
+    )
+  )
+)
+
+(defwidget gpu0-extended []
+  (box
+    :class "gpu0-extended hw-extended ${ gpu0Awake == 1 ? '' : 'idle' }"
+    :vexpand true
+    :hexpand true
+    :halign "end"
+    :valign "fill"
+    :space-evenly false
+    :orientation "h"
+    (box
+      :orientation "v"
+      :visible { gpu0Awake == 1 }
+      (eventbox
+        :class "gpu0-temp fixed-${ gpu0ShowT }"
+        :cursor "pointer"
+        :tooltip "click to toggle"
+        :onclick `
+          eww update gpu0ShowT=${ !gpu0ShowT } && \
+          eww update gpu0ShowUsage=${ gpu0ShowUsage ? (!gpu0ShowT ? false : true) : false }
+        `
+        { gpu0Info != "" ? "${ jq(gpu0Info, '.temp') }°C" : "" }
+      )
+      (eventbox
+        :class "gpu0-usage fixed-${ gpu0ShowUsage }"
+        :cursor "pointer"
+        :tooltip "click to toggle"
+        :onclick `
+          eww update gpu0ShowUsage=${ !gpu0ShowUsage } && \
+          eww update gpu0ShowT=${ gpu0ShowT ? (!gpu0ShowUsage ? false : true) : false }
+        `
+        { gpu0Info != "" ? "${ jq(gpu0Info, '.percentage') }%" : "" }
+      )
+    )
+    (label
+      :xalign 0.2
+      :width 40
+      :class "icon"
+      :text { gpu0Icon }
+    )
+  )
+)

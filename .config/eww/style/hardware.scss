@@ -1,0 +1,193 @@
+.hardware.button {
+  margin-right: -12px;
+}
+
+.hardware.module {
+  font-family: $font-main;
+
+  .cpu-extended,
+  .ram-extended {
+    .icon {
+      font-size: $fs-xxxlg;
+    }
+  }
+
+  .gpu0-extended,
+  .gpu1-extended {
+    .icon {
+      font-size: $fs-lg;
+    }
+  }
+
+  &>box:not(:first-child) {
+    margin-top: calc(2 * $pady);
+  }
+
+  .hw-extended {
+    * {
+      transition: 0.0s;
+    }
+
+    &>box widget {
+      label {
+        border-bottom: calc(2 * $nonzero) solid transparent;
+        margin: calc(1.5 * $pady) $padx;
+      }
+
+      &:first-child.fixed-true {
+        label {
+          border-bottom: calc(2 * $nonzero) solid $col-category-1;
+        }
+      }
+
+      &:last-child.fixed-true {
+        label {
+          border-bottom: calc(2 * $nonzero) solid $col-category-2;
+        }
+      }
+    }
+  }
+
+  trough {
+    min-height: $nonzero;
+  }
+
+  .cpu-extended {
+    .cpus {
+      .cpu-usage0 {
+        color: $col-heat-0;
+
+        trough progress {
+          background-color: $col-heat-0;
+        }
+      }
+
+      .cpu-usage1 {
+        color: $col-heat-1;
+
+        trough progress {
+          background-color: $col-heat-1;
+        }
+      }
+
+      .cpu-usage2 {
+        color: $col-heat-2;
+
+        trough progress {
+          background-color: $col-heat-2;
+        }
+      }
+
+      .cpu-usage3 {
+        color: $col-heat-3;
+
+        trough progress {
+          background-color: $col-heat-3;
+        }
+      }
+
+      .cpu-usage4 {
+        color: $col-heat-4;
+
+        trough progress {
+          background-color: $col-heat-4;
+        }
+      }
+
+      .cpu-usage5 {
+        color: $col-heat-5;
+
+        trough progress {
+          background-color: $col-heat-5;
+        }
+      }
+    }
+  }
+}
+
+
+// .hardware {
+//   .panel.button label:first-child {
+//     font-size: $fs-lg;
+//   }
+
+//   .panel.button label:nth-child(2) {
+//     font-size: $fs-md;
+//     font-family: $font-alt;
+//   }
+
+//   .hardware-panel-btn {
+//     * {
+//       transition: 0s;
+//     }
+
+//     &.revealed-true .icon {
+//       padding: 0 $padx;
+//       background-color: $col-fg;
+//       border-radius: calc(0.75 * $border-r);
+//       color: $col-bg;
+//     }
+//   }
+
+//   .hw-ind {
+//     padding: 0 calc(0.8 * $padx);
+
+//     // & label {
+//     // }
+
+//     &.cpu .icon {
+//       padding-right: calc(0.75 * $padx);
+//     }
+//   }
+
+//   .gpu0,
+//   .gpu1 {
+//     .icon {
+//       font-size: $fs-xs;
+//     }
+//   }
+// }
+
+
+// .graph-labels label {
+//   font-size: $fs-xs;
+// }
+// }
+// .cpu-graph {
+//   .temperature {
+//     color: $col-category-1;
+//   }
+//
+//   .usage {
+//     color: $col-category-2;
+//   }
+//
+//   .graph {
+//     .usage * {
+//       color: $col-category-2;
+//     }
+//   }
+//
+//   .graph-labels {
+//     &.temperature {
+//       margin-right: calc(1.5 * $padx);
+//     }
+//
+//     &.usage {
+//       margin-left: calc(1.5 * $padx);
+//     }
+//   }
+// }
+// }
+
+// .ram-extended {
+//   .ram-graph {
+//     .usage {
+//       color: $col-category-3;
+//     }
+//
+//     .graph-labels {
+//       margin-left: calc(1.5 * $padx);
+//     }
+//   }
+// }

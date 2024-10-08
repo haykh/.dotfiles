@@ -7,142 +7,142 @@
 ; listeners
 (deflisten wttr_location
   :initial ""
-  `rm -f /tmp/wttr-location && \ 
+  `rm -f ~/.config/eww/state/wttr-location && \ 
     ./scripts/run.sh weather --location && \
-    tail -F /tmp/wttr-location`
+    tail -F ~/.config/eww/state/wttr-location`
 )
 
 (deflisten wttr_temp
-  :initial -1
-  `rm -f /tmp/wttr-temp && \ 
+  :initial -100
+  `rm -f ~/.config/eww/state/wttr-temp && \ 
     ./scripts/run.sh weather --temp && \
-    tail -F /tmp/wttr-temp`
+    tail -F ~/.config/eww/state/wttr-temp`
 )
 
 (deflisten wttr_feelslike
   :initial -1
-  `rm -f /tmp/wttr-feelslike && \ 
+  `rm -f ~/.config/eww/state/wttr-feelslike && \ 
     ./scripts/run.sh weather --feelslike && \
-    tail -F /tmp/wttr-feelslike`
+    tail -F ~/.config/eww/state/wttr-feelslike`
 )
 
 (deflisten wttr_sunrise
   :initial ""
-  `rm -f /tmp/wttr-sunrise && \ 
+  `rm -f ~/.config/eww/state/wttr-sunrise && \ 
     ./scripts/run.sh weather --sunrise && \
-    tail -F /tmp/wttr-sunrise`
+    tail -F ~/.config/eww/state/wttr-sunrise`
 )
 
 (deflisten wttr_sunset
   :initial ""
-  `rm -f /tmp/wttr-sunset && \ 
+  `rm -f ~/.config/eww/state/wttr-sunset && \ 
     ./scripts/run.sh weather --sunset && \
-    tail -F /tmp/wttr-sunset`
+    tail -F ~/.config/eww/state/wttr-sunset`
 )
 
 (deflisten wttr_status
   :initial ""
-  `rm -f /tmp/wttr-status && \ 
+  `rm -f ~/.config/eww/state/wttr-status && \ 
     ./scripts/run.sh weather --status && \
-    tail -F /tmp/wttr-status`
+    tail -F ~/.config/eww/state/wttr-status`
 )
 
 (deflisten wttr_statusicon
   :initial ""
-  `rm -f /tmp/wttr-statusicon && \ 
+  `rm -f ~/.config/eww/state/wttr-statusicon && \ 
     ./scripts/run.sh weather --statusicon && \
-    tail -F /tmp/wttr-statusicon`
+    tail -F ~/.config/eww/state/wttr-statusicon`
 )
 
 (deflisten wttr_rainorsnow
   :initial ""
-  `rm -f /tmp/wttr-rainorsnow && \ 
+  `rm -f ~/.config/eww/state/wttr-rainorsnow && \ 
     ./scripts/run.sh weather --rainorsnow && \
-    tail -F /tmp/wttr-rainorsnow`
+    tail -F ~/.config/eww/state/wttr-rainorsnow`
 )
 
 (deflisten wttr_uvindex
   :initial -1
-  `rm -f /tmp/wttr-uvindex && \ 
+  `rm -f ~/.config/eww/state/wttr-uvindex && \ 
     ./scripts/run.sh weather --uvindex && \
-    tail -F /tmp/wttr-uvindex`
+    tail -F ~/.config/eww/state/wttr-uvindex`
 )
 
 (deflisten wttr_wind
   :initial ""
-  `rm -f /tmp/wttr-wind && \ 
+  `rm -f ~/.config/eww/state/wttr-wind && \ 
     ./scripts/run.sh weather --wind && \
-    tail -F /tmp/wttr-wind`
+    tail -F ~/.config/eww/state/wttr-wind`
 )
 
 (deflisten wttr_humidity
   :initial -1
-  `rm -f /tmp/wttr-humidity && \ 
+  `rm -f ~/.config/eww/state/wttr-humidity && \ 
     ./scripts/run.sh weather --humidity && \
-    tail -F /tmp/wttr-humidity`
+    tail -F ~/.config/eww/state/wttr-humidity`
 )
 
 (deflisten wttr_pressure
   :initial -1
-  `rm -f /tmp/wttr-pressure && \ 
+  `rm -f ~/.config/eww/state/wttr-pressure && \ 
     ./scripts/run.sh weather --pressure && \
-    tail -F /tmp/wttr-pressure`
+    tail -F ~/.config/eww/state/wttr-pressure`
 )
 
 (deflisten wttr_forecast1_date
   :initial ""
-  `rm -f /tmp/wttr-forecast-1-date && \ 
+  `rm -f ~/.config/eww/state/wttr-forecast-1-date && \ 
     ./scripts/run.sh weather --forecast && \
-    tail -F /tmp/wttr-forecast-1-date`
+    tail -F ~/.config/eww/state/wttr-forecast-1-date`
 )
 
 (deflisten wttr_forecast1_icon
   :initial ""
-  `rm -f /tmp/wttr-forecast-1-icon && \ 
+  `rm -f ~/.config/eww/state/wttr-forecast-1-icon && \ 
     ./scripts/run.sh weather --forecast && \
-    tail -F /tmp/wttr-forecast-1-icon`
+    tail -F ~/.config/eww/state/wttr-forecast-1-icon`
 )
 
 (deflisten wttr_forecast1_tmin
   :initial -1
-  `rm -f /tmp/wttr-forecast-1-temp-min && \ 
+  `rm -f ~/.config/eww/state/wttr-forecast-1-temp-min && \ 
     ./scripts/run.sh weather --forecast && \
-    tail -F /tmp/wttr-forecast-1-temp-min`
+    tail -F ~/.config/eww/state/wttr-forecast-1-temp-min`
 )
 
 (deflisten wttr_forecast1_tmax
   :initial -1
-  `rm -f /tmp/wttr-forecast-1-temp-max && \ 
+  `rm -f ~/.config/eww/state/wttr-forecast-1-temp-max && \ 
     ./scripts/run.sh weather --forecast && \
-    tail -F /tmp/wttr-forecast-1-temp-max`
+    tail -F ~/.config/eww/state/wttr-forecast-1-temp-max`
 )
 
 (deflisten wttr_forecast2_date
   :initial ""
-  `rm -f /tmp/wttr-forecast-2-date && \ 
+  `rm -f ~/.config/eww/state/wttr-forecast-2-date && \ 
     ./scripts/run.sh weather --forecast && \
-    tail -F /tmp/wttr-forecast-2-date`
+    tail -F ~/.config/eww/state/wttr-forecast-2-date`
 )
 
 (deflisten wttr_forecast2_icon
   :initial ""
-  `rm -f /tmp/wttr-forecast-2-icon && \ 
+  `rm -f ~/.config/eww/state/wttr-forecast-2-icon && \ 
     ./scripts/run.sh weather --forecast && \
-    tail -F /tmp/wttr-forecast-2-icon`
+    tail -F ~/.config/eww/state/wttr-forecast-2-icon`
 )
 
 (deflisten wttr_forecast2_tmin
   :initial -1
-  `rm -f /tmp/wttr-forecast-2-temp-min && \ 
+  `rm -f ~/.config/eww/state/wttr-forecast-2-temp-min && \ 
     ./scripts/run.sh weather --forecast && \
-    tail -F /tmp/wttr-forecast-2-temp-min`
+    tail -F ~/.config/eww/state/wttr-forecast-2-temp-min`
 )
 
 (deflisten wttr_forecast2_tmax
   :initial -1
-  `rm -f /tmp/wttr-forecast-2-temp-max && \ 
+  `rm -f ~/.config/eww/state/wttr-forecast-2-temp-max && \ 
     ./scripts/run.sh weather --forecast && \
-    tail -F /tmp/wttr-forecast-2-temp-max`
+    tail -F ~/.config/eww/state/wttr-forecast-2-temp-max`
 )
 
 
@@ -191,12 +191,13 @@
 
 (defwidget weather []
   (tooltip
+    :visible { wttr_status != "" && wttr_temp != -100 }
     (weather-tooltip)
     (box
       :class "weather-short"
       (eventbox 
         :cursor "context-menu"
-        "⋮ ${ wttr_statusicon } ${ wttr_temp + wttr_daemon}°C"
+        "${ wttr_statusicon } ${ wttr_temp + wttr_daemon }°C"
       )
     )
   )
@@ -215,10 +216,12 @@
       :orientation "h"
       (label
         :class "forecast-icon"
+        :halign "end"
         :text icon
       )
       (label
         :class "forecast-temp"
+        :halign "start"
         :text "${ tmin }°C/${ tmax }°C"
       )
     )
@@ -228,9 +231,8 @@
 (defwidget weather-tooltip []
   (box
     :space-evenly false
-    :class "weather-long"
+    :class "weather tooltip"
     :orientation "v"
-
     (box
       :space-evenly false
       :class "header"
@@ -277,8 +279,9 @@ ${ sunsetIcon } ${ wttr_sunset }"
         :hexpand true
         :class "right"
         :orientation "v"
+        :space-evenly false
         (label 
-          :xalign 0.6
+          :xalign 1
           :text wttr_statusicon
         )
         (label 
@@ -379,11 +382,11 @@ ${ sunsetIcon } ${ wttr_sunset }"
         )
       )
     )
-
     (box
       :space-evenly false
       :class "forecast"
       :orientation "h"
+      :spacing 10
       (forecast 
         :date wttr_forecast1_date
         :icon wttr_forecast1_icon

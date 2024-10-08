@@ -21,39 +21,49 @@
   `scripts/run.sh power --info`
 )
 
+(defpoll keepDGPUAwake
+  :initial ""
+  :interval "2s"
+  :run-while { batteryInfo.mode != 'power-saver' }
+  `scripts/run.sh amdgpu 0 --wake`
+)
+
 (defwidget battery []
   (eventbox 
     :onhover "${ EWW_CMD } update batteryReveal=true"
     :onhoverlost "${ EWW_CMD } update batteryReveal=false"
     (box 
-      :space-evenly false
       :orientation "h"
-      :tooltip { replace(jq(batteryInfo, '.tooltip'), '"', '') }
       :class "battery"
+      :space-evenly false
+      :spacing 8
+      :tooltip { batteryInfo.tooltip }
       (revealer 
         :transition "slideright"
         :reveal batteryReveal
         :duration "350ms"
         (box 
-          :class "mode ${ replace(jq(batteryInfo, '.mode'), '"', '') } ${ batteryModeHover ? 'hover' : '' }" 
-          :tooltip "power mode: ${ replace(jq(batteryInfo, '.mode'), '"', '') }"
+          :width 25
+          :class "mode ${ batteryInfo.mode } ${ batteryModeHover ? 'hover' : '' }" 
+          :tooltip "power mode: ${ batteryInfo.mode }"
           (eventbox
             :cursor "pointer"
             :onclick `scripts/run.sh power --nextmode`
             :onhover "${ EWW_CMD } update batteryModeHover=true"
             :onhoverlost "${ EWW_CMD } update batteryModeHover=false"
-            { replace(jq(batteryInfo, '.modeicon'), '"', '') }
+            { batteryInfo.modeicon + keepDGPUAwake }
           )
         )
       )
       (box 
-        :class "icon ${ replace(jq(batteryInfo, '.pcent_state'), '"', '') } ${ replace(jq(batteryInfo, '.status'), '"', '') }"
+        :width 25
+        :class "icon ${ batteryInfo.pcent_state } ${ batteryInfo.status }"
         (circular-progress
-          :value { replace(jq(batteryInfo, '.pcent'), '"', '') }
+          :value { batteryInfo.pcent }
           :thickness 3
           (label 
             :class "statusicon" 
-            :text { replace(jq(batteryInfo, '.icon'), '"', '') }
+            :text { batteryInfo.icon }
           )
         )
       )

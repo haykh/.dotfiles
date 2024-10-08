@@ -1,59 +1,78 @@
-(include "./widgets/applauncher.yuck")
+; (include "./widgets/applauncher.yuck")
 (include "./widgets/workspaces.yuck")
 
-(include "./widgets/time.yuck")
-(include "./widgets/weather.yuck")
+(include "./widgets/locale/date-time.yuck")
+(include "./widgets/locale/weather.yuck")
 
-(include "./widgets/brightness.yuck")
-(include "./widgets/volume.yuck")
-(include "./widgets/bluetooth.yuck")
-(include "./widgets/wifi.yuck")
-(include "./widgets/hardware.yuck")
+(include "./widgets/indicators/brightness.yuck")
+(include "./widgets/indicators/volume.yuck")
+(include "./widgets/indicators/bluetooth.yuck")
+(include "./widgets/indicators/wifi.yuck")
+
+(include "./widgets/hardware/hardware.yuck")
 (include "./widgets/battery.yuck")
-(include "./widgets/notification-center.yuck")
+(include "./widgets/sidepanel.yuck")
+
+(include "./widgets/templates.yuck")
+(include "./widgets/debug.yuck")
+
 
 (defwidget left []
   (box
-    :orientation "h"
-    :space-evenly false
     :halign "start"
     :class "leftbar"
-    (applauncher)
+    :orientation "h"
+    :space-evenly false
+    ; (applauncher)
     (workspaces)
   )
 )
 
 (defwidget center []
   (box
-    :orientation "h"
-    :space-evenly false
     :halign "center"
     :class "centerbar"
-    (time)
-    (weather)
+    :orientation "h"
+    (box
+      :orientation "h"
+      :spacing 10
+      :valign "fill"
+      :vexpand true
+      :space-evenly false
+      :class "locale inlet"
+      (time)
+      (separator)
+      (date)
+      (separator)
+      (weather)
+    )
+      ; (color-shades)
   )
 )
 
 (defwidget right []
   (box 
-    :orientation "h"
-    :space-evenly false
     :halign "end"
     :class "rightbar"
-    (brightness)
-    (volume)
-    (bluetooth) 
-    (wifi)
+    :orientation "h"
+    :space-evenly false
+    :spacing 10
     (box
+      :orientation "h"
+      :valign "fill"
+      :vexpand true
       :space-evenly false
-      :class "hardware"
-      (gpu0)
-      (gpu1)
-      (ram)
-      (cpu)
+      :spacing 12
+      :class "indicators inlet batterymode-${ batteryInfo.mode } batterymode-${ batteryModeHover ? 'hover' : '' }"
+      (brightness)
+      (volume)
+      (bluetooth) 
+      (wifi)
     )
+    (hardware-panel-btn)
+    (hardware)
     (battery)
-    (notifications)
+    (sidepanel-btn)
   )
 )
 

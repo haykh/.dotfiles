@@ -1,0 +1,66 @@
+(include "./widgets/notifications.yuck")
+(include "./widgets/player.yuck")
+
+; listeners
+(deflisten panelRevealed 
+  :initial false
+  `
+    rm -f ~/.config/eww/state/sidepanel && \
+    ./scripts/run.sh panels side --state && \
+    tail -F ~/.config/eww/state/sidepanel
+  `
+)
+
+; widgets
+(defwidget sidepanel-btn []
+  (box 
+    :class "sidepanel panel leftlit button revealed-${ panelRevealed } batterymode-${ batteryInfo.mode } batterymode-${ batteryModeHover ? 'hover' : '' }"
+    (eventbox
+      :cursor "pointer"
+      :width 30
+      :onclick `./launch.sh sidepanel`
+      (label
+        :class "icon"
+        :text "󰎟"
+      )
+    )
+  )
+)
+
+; windows
+(defwindow sidepanel [width]
+  :geometry (geometry 
+    :width "500px"
+    :anchor "top right"
+    :x 5
+    :y 5
+  )
+  :monitor 0
+  :exclusive false
+  :stacking "fg"
+  (box
+    :class "sidepanel module"
+    :orientation "v"
+    :space-evenly false
+    (player
+      :width width
+    )
+    (notifications
+      :width width
+    )
+  )
+)
+
+; (defwidget closer [window]
+;   (eventbox 
+;     :onclick `./launch.sh sidepanel false`
+;   )
+; )
+;
+; (defwindow closer-ghost [window]
+;   :monitor 0
+;   :geometry (geometry :width "100%" :height "100%")
+;   :stacking "overlay"
+;   :focusable false
+;   (closer :window window)
+; )

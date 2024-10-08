@@ -85,7 +85,7 @@ notify() {
       -h string:x-canonical-private-synchronous:sys-notify \
       -h int:value:0 \
       -u low "$device $icon" "muted"
-    echo "muted" >>/tmp/$device-volume-muted
+    echo "muted" >>$TMPDIR/$device-volume-muted
   else
     level=$(pamixer $MODE--get-volume)
     icon=$(get_icon $level)
@@ -94,10 +94,16 @@ notify() {
       -h string:x-canonical-private-synchronous:sys-notify \
       -h int:value:$level \
       -u low "$device $icon" "$level%"
-    echo "unmuted" >>/tmp/$device-volume-muted
-    echo $level >>/tmp/$device-volume-level
+    if [ ! -f $TMPDIR/$device-volume-muted ] || [[ $(cat $TMPDIR/$device-volume-muted) == "muted" ]]; then
+      echo "unmuted" >>$TMPDIR/$device-volume-muted
+    fi
+    if [ ! -f $TMPDIR/$device-volume-level ] || [[ $(cat $TMPDIR/$device-volume-level) != $level ]]; then
+      echo $level >>$TMPDIR/$device-volume-level
+    fi
   fi
-  echo $icon >>/tmp/$device-volume-icon
+  if [ ! -f $TMPDIR/$device-volume-icon ] || [[ $(cat $TMPDIR/$device-volume-icon) != $icon ]]; then
+    echo $icon >>$TMPDIR/$device-volume-icon
+  fi
 }
 
 if [[ "$1" == "--speaker" ]]; then

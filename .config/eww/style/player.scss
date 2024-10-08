@@ -1,0 +1,74 @@
+.player {
+  margin-top: $pady;
+  padding: calc(2 * $pady) calc(1.5 * $padx);
+  border-radius: $border-r;
+  background-color: $col-bg-alt;
+  border: $nonzero solid $col-border;
+  font-family: $font-main;
+
+  * {
+    font-size: $fs-md;
+  }
+
+  .info {
+    padding: 0 $padx;
+    padding-top: calc($pady * 2);
+
+    label {
+      &:nth-child(2) {
+        font-family: $font-alt;
+      }
+    }
+  }
+
+  .controls {
+    color: $col-accent2;
+    font-family: $font-mono;
+    padding: calc(3 * $pady) 0;
+
+    * {
+      font-size: $fs-lg;
+    }
+
+    .prev, .play-pause, .next {
+      margin: 0px calc($padx);
+      &>* {
+        border: $nonzero solid $col-border;
+        border-radius: 50%;
+
+        &:hover {
+          background-color: $col-accent3;
+          border: $nonzero solid $col-accent3;
+
+          * {
+            color: $col-bg-alt;
+          }
+        }
+      }
+    }
+  }
+
+  .progress {
+    padding: 0 calc($padx);
+    padding-bottom: calc(2 * $pady);
+
+    .position {
+      padding-right: calc($padx);
+    }
+
+    .duration {
+      padding-left: calc($padx);
+    }
+
+    scale trough {
+      background-color: $col-border;
+      min-height: calc(7 * $nonzero);
+      // min-width: $hist-width;
+    
+      highlight {
+        background-color: $col-accent3;
+      }
+    }    
+  }
+}
+

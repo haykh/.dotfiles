@@ -3,7 +3,7 @@
 SCRIPT_DIR=$HOME/.config/master/scripts
 ROFI_DIR=$HOME/.config/rofi
 
-LOGFILE=/tmp/masterctrl.log
+LOGFILE=$TMPDIR/masterctrl.log
 
 # dependencies:
 # - jq, grep, awk, bc, sort, head, sed, ps, cat, socat, tr

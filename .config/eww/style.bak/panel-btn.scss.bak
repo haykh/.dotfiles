@@ -1,0 +1,22 @@
+.panel-btn {
+  * {
+    transition: 0s;
+    font-size: $fs-hg;
+  }
+
+  .icon {
+    border-radius: calc(0.75 * $bar-border-rad);
+
+    &:hover {
+      background-color: $col-bg-alt;
+    }
+
+  }
+
+  &.revealed-true {
+    .icon {
+      background-color: $col-fg;
+      color: $col-bg-alt;
+    }
+  }
+}

@@ -37,13 +37,13 @@ get_icon_pcent() {
     idx=$(($nicons - 1))
   fi
   icon=$(jq -rc ".icons.brightness[$idx]" $MASTERCFG)
-  echo $pcent >>/tmp/brightness-level
-  echo $icon >>/tmp/brightness-icon
+  echo $pcent >>$TMPDIR/brightness-level
+  echo $icon >>$TMPDIR/brightness-icon
 }
 
 notify() {
-  pcent=$(tail -n1 /tmp/brightness-level)
-  icon=$(tail -n1 /tmp/brightness-icon)
+  pcent=$(tail -n1 $TMPDIR/brightness-level)
+  icon=$(tail -n1 $TMPDIR/brightness-icon)
   not_daemon \
     -a brightness-control \
     -h string:x-canonical-private-synchronous:sys-notify \
@@ -67,9 +67,9 @@ elif [[ "$1" == "--show" ]]; then
 
   laptop_monitor=$(jq -rc '.hardware.monitors.laptop' $MASTERCFG)
   if [[ $(hyprctl monitors | grep -e $laptop_monitor) ]]; then
-    echo "true" >>/tmp/brightness-show
+    echo "true" >>$TMPDIR/brightness-show
   else
-    echo "false" >>/tmp/brightness-show
+    echo "false" >>$TMPDIR/brightness-show
   fi
 
 else

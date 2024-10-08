@@ -15,7 +15,8 @@ if [[ $1 == "--procs" ]]; then
         print k " " mem[k]/1024
     };' | sort -rgk 2 | head -n 10 | awk '
     { 
-      printf "%5.0f : %s\n", $2, $1 
+      split($1, proc, "/")
+      printf "%5.0f : %s\n", $2, proc[length(proc)]
     };' | awk '
     NR==1 { 
       printf "%5s   %s\n%s\n", "MB", "PROCESS", $0 

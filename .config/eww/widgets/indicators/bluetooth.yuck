@@ -1,0 +1,27 @@
+(include "./widgets/templates.yuck")
+
+; pollers
+(defpoll bluetoothInfo 
+  :interval "2s"
+  :initial `
+    {
+      "state": "unknown", 
+      "icon": "unknown", 
+      "devices": "unknown"
+    }
+  `
+  `scripts/run.sh bluetooth --info`
+)
+
+(defwidget bluetooth []
+  (indicator
+    :class "bluetooth"
+    :sec-class { bluetoothInfo.state }
+    :icon { bluetoothInfo.icon }
+    :tooltip `(label :text "${ bluetoothInfo.devices }")`
+    :tooltip-alt `(label :text "${ bluetoothInfo.state }")`
+    :use-alt { bluetoothInfo.state != 'connected' }
+    :onclick `scripts/run.sh bluetooth --open`
+    :onrightclick `scripts/run.sh bluetooth --power-toggle`
+  )
+)

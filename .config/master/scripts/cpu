@@ -3,6 +3,7 @@
 help() {
   echo "Usage: $0 [args]"
   echo "  --procs: returns the top 10 processes by cpu usage"
+  echo "  --temp: returns the cpu temperature"
 }
 
 if [[ $1 == "--procs" ]]; then
@@ -18,8 +19,21 @@ if [[ $1 == "--procs" ]]; then
       };' |
     sort -rgk 2 |
     head -n 10 |
-    awk '{ printf "%5.1f : %s\n", $2, $1 };' |
-    awk 'NR==1{ printf "%5s   %s\n%s\n", "CPU%", "PROCESS", $0 } NR>1{ printf "%s\n", $0 }'
+    awk '{ 
+          split($1, proc, "/"); 
+          printf "%5.1f : %s\n", $2, proc[length(proc)] 
+        };' |
+    awk '
+      NR==1 { 
+      printf "%5s   %s\n%s\n", "CPU%", "PROCESS", $0 
+    } 
+    NR>1 { 
+      printf "%s\n", $0 
+    }'
+
+elif [[ $1 == "--temp" ]]; then
+
+  for i in {0..3}; do cat /sys/class/thermal/thermal_zone$i/temp; done | sort | tail -n 1 | awk '{printf "%.0f\n", $1/1000}'
 
 else
 

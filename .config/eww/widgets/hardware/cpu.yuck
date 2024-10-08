@@ -1,0 +1,156 @@
+(include "./widgets/templates.yuck")
+
+; constants
+(defvar cpus "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]")
+
+; variables
+(defvar cpuShowT false)
+(defvar cpuShowUsage false)
+
+; pollers
+(defpoll cpuProc 
+  :interval "5s"
+  :run-while { panelRevealed }
+  `scripts/run.sh cpu --procs`
+)
+(defpoll cpuTemp 
+  :interval "5s"
+  :run-while { panelRevealed || cpuShowT }
+  `scripts/run.sh cpu --temp`
+)
+
+(defpoll cpuIcon
+  :interval "5000s"
+  :initial "x"
+  :run-while false
+  `jq -r '.icons.hardware.cpu' ~/.config/master/mastercfg.json`
+)
+
+; widgets
+(defwidget cpu []
+  (sensor
+    :icon cpuIcon
+    :value1 "${ jq(EWW_CPU, '.cores | map(.usage | tonumber) | add / length | round') }%"
+    :value2 "${ cpuTemp }°C"
+    :class "cpu"
+    :class1 "cpu-usage"
+    :class2 "cpu-temp"
+    :show { (cpuShowT && !cpuShowUsage) || (cpuShowUsage && !cpuShowT) }
+    :show1 { cpuShowUsage && !cpuShowT }
+    :show2 { cpuShowT && !cpuShowUsage }
+  )
+)
+
+(defwidget cpu-extended []
+  (box
+    :hexpand true
+    :halign "start"
+    :class "cpu-extended hw-extended"
+    :space-evenly false
+    :orientation "h"
+    (label
+      :xalign 0.2
+      :width 40
+      :class "icon"
+      :text { cpuIcon }
+    )
+    (box
+      :orientation "v"
+      (eventbox
+        :class "cpu-temp fixed-${ cpuShowT }"
+        :cursor "pointer"
+        :tooltip "click to toggle"
+        :onclick `
+          eww update cpuShowT=${ !cpuShowT } && \
+          eww update cpuShowUsage=${ cpuShowUsage ? (!cpuShowT ? false : true) : false }
+        `
+        "${ cpuTemp }°C"
+      )
+      (eventbox
+        :class "cpu-usage fixed-${ cpuShowUsage }"
+        :cursor "pointer"
+        :tooltip "click to toggle"
+        :onclick `
+          eww update cpuShowUsage=${ !cpuShowUsage } && \
+          eww update cpuShowT=${ cpuShowT ? (!cpuShowUsage ? false : true) : false }
+        `
+        "${ jq(EWW_CPU, '.cores | map(.usage | tonumber) | add / length | round') }%"
+      )
+    )
+    (box
+      :class "cpus"
+      :space-evenly true
+      (for cpu in cpus
+        (progress
+          :class "cpu-usage${ jq(EWW_CPU, '.cores | (.[${ cpu }].usage / 20 | round)') }"
+          :value "${ jq(EWW_CPU, '.cores | .[${ cpu }].usage') }"
+          :orientation "v"
+          :flipped true
+        )
+      )
+    )
+    ;
+    ; *** NOTE ***
+    ; graph widget is commented out because it cleans up every time the window is closed
+    ;
+    ; (box
+    ;   :hexpand true
+    ;   :class "cpu-graph"
+    ;   :orientation "h"
+    ;   :space-evenly false
+    ;   (box 
+    ;     :width 20
+    ;     :space-evenly false
+    ;     :orientation "v"
+    ;     :class "graph-labels temperature"
+    ;     (label 
+    ;       :text "100°C"
+    ;       :yalign 0
+    ;       :xalign 1
+    ;     )
+    ;     (label 
+    ;       :vexpand true
+    ;       :text "20°C"
+    ;       :yalign 1
+    ;       :xalign 1
+    ;     )
+    ;   )
+    ;   (overlay 
+    ;     :hexpand true
+    ;     :height 50
+    ;     (graph
+    ;       :class "usage"
+    ;       :value { jq(EWW_CPU, '.cores | map(.usage | tonumber) | add / length | round') }
+    ;       :min 0
+    ;       :max 100
+    ;       :time-range "60s"
+    ;     )
+    ;     (graph
+    ;       :class "temperature"
+    ;       :value 50
+    ;       :value cpuTemp
+    ;       :min 20
+    ;       :max 100
+    ;       :time-range "60s"
+    ;     )
+    ;   )
+    ;   (box 
+    ;     :width 20
+    ;     :space-evenly false
+    ;     :orientation "v"
+    ;     :class "graph-labels usage"
+    ;     (label 
+    ;       :text "100%"
+    ;       :yalign 0
+    ;       :xalign 0
+    ;     )
+    ;     (label 
+    ;       :vexpand true
+    ;       :text "0%"
+    ;       :yalign 1
+    ;       :xalign 0
+    ;     )
+    ;   )
+    ; )
+  )
+)

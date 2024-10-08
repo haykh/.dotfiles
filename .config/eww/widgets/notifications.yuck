@@ -1,12 +1,10 @@
 (deflisten notis 
   :initial "[]"
-  `tail -F /tmp/notifications`
-)
-
-(defpoll notis_daemon
-  :initial ""
-  :interval "30s"
-  `./scripts/run.sh notifications --update`
+  `
+    rm ~/.config/eww/state/notifications && \
+      ./scripts/run.sh notifications --update && \
+      tail -F ~/.config/eww/state/notifications
+  `
 )
 
 (defwidget noti [header body time id ?icon]
@@ -80,8 +78,9 @@
   )
 )
 
-(defwidget notification-center [width]
+(defwidget notifications [width]
   (box
+    :class "notifications"
     :space-evenly false
     :orientation "v"
     (box
@@ -108,7 +107,7 @@
     )
     (scroll
       :vscroll true
-      :height { round(replace(width, "px", "") / 3, 0) + notis_daemon }
+      :height { round(replace(width, "px", "") / 3, 0) }
       (box
         :space-evenly false
         :orientation "v"
@@ -127,22 +126,3 @@
   )
 )
 
-(defwindow notification-center [width]
-  :geometry (geometry 
-    :width "500px"
-    :anchor "top right"
-  )
-  :monitor 0
-  :exclusive false
-  :stacking "fg"
-  (notification-center
-    :width width
-  )
-)
-
-(defwidget notifications []
-  (eventbox
-    :onclick `scripts/run.sh notifications --update && ./launch.sh notification-center`
-    "open"
-  )
-)

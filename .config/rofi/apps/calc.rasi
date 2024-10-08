@@ -1,7 +1,3 @@
-window {
-  width: 30%;
-}
-
 textbox-prompt {
   str: "󰿈";
   color: #D49A74;

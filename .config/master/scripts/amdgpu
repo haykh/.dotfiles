@@ -6,6 +6,7 @@ help() {
   echo "  1: integrated GPU"
   echo "  --info: GPU info"
   echo "  --isawake: check if GPU is awake"
+  echo "  --wake: wake up the GPU"
   echo "  --procs: list processes using GPU"
 }
 
@@ -54,7 +55,8 @@ elif [[ $2 == "--procs" ]]; then
 
   proc=$(amdgpu_top -i $1 --single -p | grep "ctx" |
     awk '{ 
-      printf "%5d : %s\n", $7, $1 
+      split($1, proc, "/");
+      printf "%5d : %s\n", $7, proc[length(proc)] 
     }' |
     awk 'NR==1 { 
       printf "%5s   %s\n%s\n", "MB", "PROCESS", $0 
@@ -64,7 +66,11 @@ elif [[ $2 == "--procs" ]]; then
 
   amdgpu_top -i $1 --single -d --json |
     jq -c --arg ITEM "$proc" \
-      '(.[0].DeviceName + " | " + .[0]."ASIC Name" + "\n\n" + $ITEM)' | sed 's/\"//g'
+      '(.[0].DeviceName + "\n[" + .[0]."ASIC Name" + "]\n" + $ITEM)' | sed 's/\"//g'
+
+elif [[ $2 == "--wake" ]]; then
+
+  cat /sys/class/drm/card$(($1 + 1))/device/power_dpm_state >/dev/null
 
 else
 

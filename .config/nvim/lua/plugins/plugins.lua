@@ -96,6 +96,9 @@ return {
 			require("scrollbar.handlers.gitsigns").setup()
 		end,
 	},
+	{
+		"MagicDuck/grug-far.nvim",
+	},
 	-- custom plugins
 	{
 		"HiPhish/rainbow-delimiters.nvim",

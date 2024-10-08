@@ -1,0 +1,128 @@
+.hardware-panel {
+  & > box:nth-child(2) .icon {
+    font-size: $fs-hg;
+  }
+
+  & > box:not(:first-child) {
+    margin-top: calc(2 * $bar-padding-y);
+  }
+
+  .hw-extended {
+    * {
+      transition: 0.0s;
+    }
+
+    .icon {
+      font-size: calc(0.75 * $fs-gg);
+    }
+
+    &.idle .icon {
+      color: $col-device-off;
+    }
+
+    & > box {
+      widget {
+        label {
+          border-bottom: calc(2 * $nonzero) solid transparent;
+          margin: calc(1.5 * $bar-padding-y) $bar-padding-x;
+        }
+
+        &:first-child.fixed-true {
+          label {
+            border-bottom: calc(2 * $nonzero) solid $col-category-1;
+          }
+        }
+
+        &:last-child.fixed-true {
+          label {
+            border-bottom: calc(2 * $nonzero) solid $col-category-2;
+          }
+        }
+      }
+
+    }
+
+    // .graph-labels label {
+    //   font-size: $fs-xs;
+    // }
+  }
+
+  .cpu-extended {
+    .cpus {
+      background-color: $col-bg-alt;
+      .cpu-usage0 {
+        color: $col-heat-0;
+        trough progress {
+          background-color: $col-heat-0;
+        }
+      }
+      .cpu-usage1 {
+        color: $col-heat-1;
+        trough progress {
+          background-color: $col-heat-1;
+        }
+      }
+      .cpu-usage2 {
+        color: $col-heat-2;
+        trough progress {
+          background-color: $col-heat-2;
+        }
+      }
+      .cpu-usage3 {
+        color: $col-heat-3;
+        trough progress {
+          background-color: $col-heat-3;
+        }
+      }
+      .cpu-usage4 {
+        color: $col-heat-4;
+        trough progress {
+          background-color: $col-heat-4;
+        }
+      }
+      .cpu-usage5 {
+        color: $col-heat-5;
+        trough progress {
+          background-color: $col-heat-5;
+        }
+      }
+    }
+    // .cpu-graph {
+    //   .temperature {
+    //     color: $col-category-1;
+    //   }
+    //
+    //   .usage {
+    //     color: $col-category-2;
+    //   }
+    //
+    //   .graph {
+    //     .usage * {
+    //       color: $col-category-2;
+    //     }
+    //   }
+    //
+    //   .graph-labels {
+    //     &.temperature {
+    //       margin-right: calc(1.5 * $bar-padding-x);
+    //     }
+    //
+    //     &.usage {
+    //       margin-left: calc(1.5 * $bar-padding-x);
+    //     }
+    //   }
+    // }
+  }
+
+  // .ram-extended {
+  //   .ram-graph {
+  //     .usage {
+  //       color: $col-category-3;
+  //     }
+  //
+  //     .graph-labels {
+  //       margin-left: calc(1.5 * $bar-padding-x);
+  //     }
+  //   }
+  // }
+}

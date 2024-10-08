@@ -1,0 +1,30 @@
+(defvar shades "[1, 2, 3, 4, 5]")
+
+(defwidget color-shades []
+  (box
+    :orientation "h"
+    :halign "center"
+    (for shade in shades
+      (box
+        :width 20
+        :height 20
+        :class "shade-light-${ 6 - shade }"
+        { 6 - shade }
+      )
+    )
+    (box
+      :width 20
+      :height 20
+      :class "shade-0"
+    )
+    (for shade in shades
+      (box
+        :width 20
+        :height 20
+        :class "shade-dark-${ shade }"
+        shade
+      )
+    )
+  )
+)
+

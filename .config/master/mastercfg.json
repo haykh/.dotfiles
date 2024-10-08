@@ -11,6 +11,11 @@
       "device_id": "wlp4s0"
     }
   },
+  "configs": {
+    "time": {
+      "world": ["America/Los_Angeles", "Europe/Paris", "Europe/Moscow", "Asia/Yerevan", "Asia/Shanghai"]
+    }
+  },
   "icons": {
     "apps": {
       "thorium-browser": "",
@@ -59,8 +64,11 @@
       "forecast-clear": ""
     },
     "hardware": {
+      "hardware": "󰘚",
       "cpu": "",
-      "ram": ""
+      "ram": "",
+      "igpu": "iGPU",
+      "dgpu": "dGPU"
     },
     "battery": {
       "discharging": "󰁹",
@@ -104,7 +112,9 @@
   },
   "fonts": {
     "main": "MonaspiceKr Nerd Font",
-    "alt": "MonaspiceRn Nerd Font"
+    "alt": "MonaspiceRn Nerd Font",
+    "mono": "MonaspiceRn Nerd Font Mono",
+    "serif": "Cantarell"
   },
   "colors": {
     "theme": {
@@ -113,9 +123,11 @@
       "fg": "#ffffff",
       "fg-dim": "#b1b1ba",
       "fg-dim-alt": "#8e818e",
-      "border": "#2e2e5c",
-      "accent": "#e486af",
-      "accent-alt": "#6978e1"
+      "border": "#414181",
+      "accent1": "#e5669a",
+      "accent2": "#7683df",
+      "accent3": "#80c35f",
+      "accent4": "#c7b356"
     },
     "status": {
       "inactive": "#606aa1",
@@ -124,7 +136,7 @@
     "special": {
       "applauncher": "#1793D1"
     },
-    "temperature": [
+    "heat": [
       "#47b6ff",
       "#96d9fd",
       "#e9f9cc",
@@ -145,7 +157,7 @@
       "#5d9fd9",
       "#d95d5d"
     ],
-    "humidity": [
+    "wet": [
       "#f79e53",
       "#edb383",
       "#e1cbbb",
@@ -154,7 +166,7 @@
       "#6f73f8",
       "#4345ff"
     ],
-    "diverging": [
+    "coolwarm": [
       "#43b1ff", 
       "#68b8f5",
       "#cfdbeb",

@@ -1,0 +1,110 @@
+(include "./widgets/templates.yuck")
+
+; constants
+(defpoll ramIcon
+  :interval "5000s"
+  :initial "x"
+  :run-while false
+  `jq -r '.icons.hardware.ram' ~/.config/master/mastercfg.json`
+)
+
+;variables
+(defvar ramShowGB false)
+(defvar ramShowUsage false)
+
+; pollers
+(defpoll ramProc 
+  :interval "5s"
+  :run-while { hardwareRevealed }
+  `scripts/run.sh ram --procs`
+)
+
+; widgets
+(defwidget ram []
+  (sensor
+    :icon ramIcon
+    :value1 "${ round(EWW_RAM["used_mem_perc"], 0) }%"
+    :value2 "${ round(EWW_RAM["used_mem"] / (1024 * 1024 * 1024), 1) }GB"
+    :class "ram"
+    :class1 "ram-usage"
+    :class2 "ram-gb"
+    :show { (ramShowGB && !ramShowUsage) || (ramShowUsage && !ramShowGB) }
+    :show1 { ramShowUsage && !ramShowGB }
+    :show2 { ramShowGB && !ramShowUsage }
+  )
+)
+
+(defwidget ram-extended []
+  (box
+    :halign "end"
+    :valign "fill"
+    :class "ram-extended hw-extended"
+    :space-evenly false
+    :orientation "h"
+    (box
+      :orientation "v"
+      (eventbox
+        :class "ram-gb fixed-${ ramShowGB }"
+        :cursor "pointer"
+        :tooltip "click to toggle"
+        :onclick `
+          eww update ramShowGB=${ !ramShowGB } && \
+          eww update ramShowUsage=${ ramShowUsage ? (!ramShowGB ? false : true) : false }
+        `
+        "${ round(EWW_RAM["used_mem"] / (1024 * 1024 * 1024), 1) }GB"
+      )
+      (eventbox
+        :class "ram-usage fixed-${ ramShowUsage }"
+        :cursor "pointer"
+        :tooltip "click to toggle"
+        :onclick `
+          eww update ramShowUsage=${ !ramShowUsage } && \
+          eww update ramShowGB=${ ramShowGB ? (!ramShowUsage ? false : true) : false }
+        `
+        "${ round(EWW_RAM["used_mem_perc"], 0) }%"
+      )
+    )
+    (label
+      :xalign 0.2
+      :width 40
+      :class "icon"
+      :text { ramIcon }
+    )
+    ;
+    ; *** NOTE ***
+    ; graph widget is commented out because it cleans up every time the window is closed
+    ;
+    ; (box
+    ;   :hexpand true
+    ;   :class "ram-graph"
+    ;   :orientation "h"
+    ;   :space-evenly false
+    ;   (graph
+    ;     :hexpand true
+    ;     :height 50
+    ;     :class "usage"
+    ;     :value { round(EWW_RAM["used_mem"] / (1024 * 1024 * 1024), 1) }
+    ;     :min 0
+    ;     :max { round(EWW_RAM["total_mem"] / (1024 * 1024 * 1024), 1) }
+    ;     :time-range "60s"
+    ;   )
+    ;   (box 
+    ;     :width "20"
+    ;     :space-evenly false
+    ;     :orientation "v"
+    ;     :class "graph-labels usage"
+    ;     (label 
+    ;       :text "${ round(EWW_RAM["total_mem"] / (1024 * 1024 * 1024), 0) } GB"
+    ;       :yalign 0
+    ;       :xalign 0
+    ;     )
+    ;     (label 
+    ;       :vexpand true
+    ;       :text "0 GB"
+    ;       :yalign 1
+    ;       :xalign 0
+    ;     )
+    ;   )
+    ; )
+  )
+)

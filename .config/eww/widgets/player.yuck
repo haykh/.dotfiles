@@ -1,0 +1,114 @@
+(defvar playerInfo `
+  {
+    "app": "Tidal",
+    "artist": "Creedence Clearwater Revival",
+    "album": "I Put A Spell On You or The Best Of Creedence Clearwater Revival",
+    "track": "Jail",
+    "position": "3:00",
+    "duration": "4:00",
+    "art": "~/.config/eww/state/player-art",
+    "playing": true
+  }`)
+
+(defwidget player [width]
+  (box
+    :class "player"
+    :space-evenly false
+    :orientation "h"
+    (image
+      :class "art"
+      :path { playerInfo.art }
+      :image-width 150
+      :image-height 150
+    )
+    (box
+      :hexpand true
+      :orientation "v"
+      :space-evenly false
+      (box
+        :class "info"
+        :hexpand true
+        :orientation "v"
+        :space-evenly false
+        (label 
+          :xalign 0
+          :limit-width 80
+          :text ".. ${ playerInfo.track }"
+        )
+        (label 
+          :xalign 0
+          :limit-width 80
+          :text ".: ${ playerInfo.artist }"
+        )
+        (label 
+          :xalign 0
+          :limit-width 80
+          :text ":: ${ playerInfo.album }"
+        )
+      )
+      (box
+        :space-evenly true
+        :class "controls"
+        :orientation "h"
+        :halign "center"
+        (box
+          :class "prev"
+          (eventbox
+            :cursor "pointer"
+            :onclick ``
+            (label 
+              :width 40
+              :height 40
+              :text "󰼨"
+            )
+          )
+        )
+        (box
+          :class "play-pause"
+          (eventbox
+            :cursor "pointer"
+            :onclick ``
+            (label 
+              :width 40
+              :height 40
+              :xalign 0.6
+              :text "󰼛"
+            )
+          )
+        )
+        (box
+          :class "next"
+          (eventbox
+            :cursor "pointer"
+            :onclick ``
+            (label 
+              :width 40
+              :height 40
+              :text "󰼧"
+            )
+          )
+        )
+      )
+      (box
+        :class "progress"
+        :hexpand true
+        :orientation "h"
+        :space-evenly false
+        (label
+          :class "position"
+          :text "${ playerInfo.position }"
+        )
+        (scale
+          :hexpand true
+          :value 10
+          :min 0
+          :max 100
+        )
+        (label 
+          :class "duration"
+          :text "${ playerInfo.duration }"
+        )
+      )
+    )
+  )
+)
