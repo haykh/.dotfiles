@@ -67,6 +67,7 @@
     :show { gpu0Awake == 1 && ((gpu0ShowT && !gpu0ShowUsage) || (gpu0ShowUsage && !gpu0ShowT)) }
     :show1 { gpu0ShowT && !gpu0ShowUsage } 
     :show2 { gpu0ShowUsage && !gpu0ShowT }
+    :tooltip { gpu0Proc }
   )
 )
 
@@ -81,6 +82,7 @@
     :show { gpu1Awake == 1 && ((gpu1ShowT && !gpu1ShowUsage) || (gpu1ShowUsage && !gpu1ShowT)) }
     :show1 { gpu1ShowT && !gpu1ShowUsage } 
     :show2 { gpu1ShowUsage && !gpu1ShowT }
+    :tooltip { gpu1Proc }
   )
 )
 
@@ -97,6 +99,7 @@
       :xalign 0.2
       :width 40
       :class "icon"
+      :tooltip { gpu1Proc }
       :text { gpu1Icon }
     )
     (box
@@ -107,8 +110,8 @@
         :cursor "pointer"
         :tooltip "click to toggle"
         :onclick `
-          eww update gpu1ShowT=${ !gpu1ShowT } && \
-          eww update gpu1ShowUsage=${ gpu1ShowUsage ? (!gpu1ShowT ? false : true) : false }
+          ./launch.sh update gpu1ShowT ${ !gpu1ShowT } && \
+          ./launch.sh update gpu1ShowUsage ${ gpu1ShowUsage ? (!gpu1ShowT ? false : true) : false }
         `
         { gpu1Info != "" ? "${ jq(gpu1Info, '.temp') }°C" : "" }
       )
@@ -117,8 +120,8 @@
         :cursor "pointer"
         :tooltip "click to toggle"
         :onclick `
-          eww update gpu1ShowUsage=${ !gpu1ShowUsage } && \
-          eww update gpu1ShowT=${ gpu1ShowT ? (!gpu1ShowUsage ? false : true) : false }
+          ./launch.sh update gpu1ShowUsage ${ !gpu1ShowUsage } && \
+          ./launch.sh update gpu1ShowT ${ gpu1ShowT ? (!gpu1ShowUsage ? false : true) : false }
         `
         { gpu1Info != "" ? "${ jq(gpu1Info, '.percentage') }%" : "" }
       )
@@ -143,8 +146,8 @@
         :cursor "pointer"
         :tooltip "click to toggle"
         :onclick `
-          eww update gpu0ShowT=${ !gpu0ShowT } && \
-          eww update gpu0ShowUsage=${ gpu0ShowUsage ? (!gpu0ShowT ? false : true) : false }
+          ./launch.sh update gpu0ShowT ${ !gpu0ShowT } && \
+          ./launch.sh update gpu0ShowUsage ${ gpu0ShowUsage ? (!gpu0ShowT ? false : true) : false }
         `
         { gpu0Info != "" ? "${ jq(gpu0Info, '.temp') }°C" : "" }
       )
@@ -153,8 +156,8 @@
         :cursor "pointer"
         :tooltip "click to toggle"
         :onclick `
-          eww update gpu0ShowUsage=${ !gpu0ShowUsage } && \
-          eww update gpu0ShowT=${ gpu0ShowT ? (!gpu0ShowUsage ? false : true) : false }
+          ./launch.sh update gpu0ShowUsage ${ !gpu0ShowUsage } && \
+          ./launch.sh update gpu0ShowT ${ gpu0ShowT ? (!gpu0ShowUsage ? false : true) : false }
         `
         { gpu0Info != "" ? "${ jq(gpu0Info, '.percentage') }%" : "" }
       )
@@ -163,6 +166,7 @@
       :xalign 0.2
       :width 40
       :class "icon"
+      :tooltip { gpu0Proc }
       :text { gpu0Icon }
     )
   )

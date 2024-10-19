@@ -31,6 +31,7 @@
     :show { (ramShowGB && !ramShowUsage) || (ramShowUsage && !ramShowGB) }
     :show1 { ramShowUsage && !ramShowGB }
     :show2 { ramShowGB && !ramShowUsage }
+    :tooltip { ramProc }
   )
 )
 
@@ -48,8 +49,8 @@
         :cursor "pointer"
         :tooltip "click to toggle"
         :onclick `
-          eww update ramShowGB=${ !ramShowGB } && \
-          eww update ramShowUsage=${ ramShowUsage ? (!ramShowGB ? false : true) : false }
+          ./launch.sh update ramShowGB ${ !ramShowGB } && \
+          ./launch.sh update ramShowUsage ${ ramShowUsage ? (!ramShowGB ? false : true) : false }
         `
         "${ round(EWW_RAM["used_mem"] / (1024 * 1024 * 1024), 1) }GB"
       )
@@ -58,8 +59,8 @@
         :cursor "pointer"
         :tooltip "click to toggle"
         :onclick `
-          eww update ramShowUsage=${ !ramShowUsage } && \
-          eww update ramShowGB=${ ramShowGB ? (!ramShowUsage ? false : true) : false }
+          ./launch.sh update ramShowUsage ${ !ramShowUsage } && \
+          ./launch.sh update ramShowGB ${ ramShowGB ? (!ramShowUsage ? false : true) : false }
         `
         "${ round(EWW_RAM["used_mem_perc"], 0) }%"
       )
@@ -68,6 +69,7 @@
       :xalign 0.2
       :width 40
       :class "icon"
+      :tooltip { ramProc }
       :text { ramIcon }
     )
     ;

@@ -94,16 +94,16 @@ notify() {
       -h string:x-canonical-private-synchronous:sys-notify \
       -h int:value:$level \
       -u low "$device $icon" "$level%"
-    if [ ! -f $TMPDIR/$device-volume-muted ] || [[ $(cat $TMPDIR/$device-volume-muted) == "muted" ]]; then
+    # if [ ! -f $TMPDIR/$device-volume-muted ] || [[ $(cat $TMPDIR/$device-volume-muted) == "muted" ]]; then
       echo "unmuted" >>$TMPDIR/$device-volume-muted
-    fi
-    if [ ! -f $TMPDIR/$device-volume-level ] || [[ $(cat $TMPDIR/$device-volume-level) != $level ]]; then
+    # fi
+    # if [ ! -f $TMPDIR/$device-volume-level ] || [[ $(cat $TMPDIR/$device-volume-level) != $level ]]; then
       echo $level >>$TMPDIR/$device-volume-level
-    fi
+    # fi
   fi
-  if [ ! -f $TMPDIR/$device-volume-icon ] || [[ $(cat $TMPDIR/$device-volume-icon) != $icon ]]; then
+  # if [ ! -f $TMPDIR/$device-volume-icon ] || [[ $(cat $TMPDIR/$device-volume-icon) != $icon ]]; then
     echo $icon >>$TMPDIR/$device-volume-icon
-  fi
+  # fi
 }
 
 if [[ "$1" == "--speaker" ]]; then

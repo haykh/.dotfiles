@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+
+source $(dirname $0)/common.sh
+player=tidal-hifi
+
+help() {
+  echo "Usage: $0 [args]"
+  echo "  --play-pause: play or pause"
+  echo "  --next: next track"
+  echo "  --prev: previous track"
+  echo "  --update: update the metadata"
+  echo "  --tick: update only the time in eww"
+}
+
+update() {
+  playerctl -p $player metadata custom:artists >>$TMPDIR/player_artist
+  playerctl -p $player metadata custom:title >>$TMPDIR/player_title
+  playerctl -p $player metadata custom:album >>$TMPDIR/player_album
+  playerctl -p $player metadata custom:icon >>$TMPDIR/player_icon
+  playerctl -p $player metadata custom:duration >>$TMPDIR/player_duration
+  playerctl -p $player metadata custom:durationInSeconds >>$TMPDIR/player_duration_sec
+}
+
+tick() {
+  eww update playerCurrent=$(playerctl -p $player metadata custom:current)
+  eww update playerCurrentSec=$(playerctl -p $player metadata custom:currentInSeconds)
+  eww update playerStatus=$(playerctl -p $player metadata custom:player.status)
+}
+
+if [[ $1 == "--play-pause" ]]; then
+
+  playerctl -p $player play-pause && sleep 1 && update && tick
+
+elif [[ $1 == "--next" ]]; then
+
+  playerctl -p $player next && sleep 1 && update && tick
+
+elif [[ $1 == "--prev" ]]; then
+
+  playerctl -p $player previous && sleep 1 && update && tick
+
+elif [[ $1 == "--update" ]]; then
+
+  update && tick
+
+elif [[ $1 == "--tick" ]]; then
+
+  tick
+
+else
+
+  echo "Invalid argument"
+  help
+  exit 1
+
+fi

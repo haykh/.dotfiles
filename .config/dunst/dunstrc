@@ -96,82 +96,83 @@
   mouse_left_click = do_action, close_current
   mouse_middle_click = close_all
   mouse_right_click = close_current
+  script = /home/hayk/.config/dunst/dunst-hijack.sh
 
 [experimental]
   per_monitor_dpi = true
 
-[urgency_low]
-  frame_color = "#9cb9dd33"
-  foreground="#9cb9dd"
-  timeout = 5
-
-[urgency_normal]
-  frame_color = "#c4dd9c33"
-  timeout = 10
-  override_pause_level = 30
-
-[urgency_critical]
-  frame_color = "#d95d5d33"
-  timeout = 0
-  override_pause_level = 60
-  script = /home/hayk/.config/dunst/dunst-hijack.sh
-
-[update_noti]
-  summary = "^(?!.*-control$).*"
-  script = /home/hayk/.config/dunst/dunst-update-noti.sh
-
-[slack]
-  desktop_entry = "Slack"
-  format = ""
-  script = /home/hayk/.config/dunst/dunst-hijack.sh
-  history_ignore = yes
-  min_icon_size = 48
-  max_icon_size = 48
-
-[spotify]
-  appname = "Spotify"
-  format = ""
-  script = /home/hayk/.config/dunst/dunst-hijack.sh
-  history_ignore = yes
-
-[betterbird]
-  desktop_entry = "Betterbird"
-  format = ""
-  script = /home/hayk/.config/dunst/dunst-hijack.sh
-  min_icon_size = 48
-  max_icon_size = 48
-
-[bw-notifications]
-  icon = "bitwarden"
-  min_icon_size = 48
-  max_icon_size = 48
-  history_ignore = yes
-
-[kblayout]
-  appname = "kblayout-control"
-  alignment = center
-  history_ignore = yes
-
-[speaker-volume]
-  appname = "speaker-volume-control"
-  new_icon = /home/hayk/.local/share/icons/Fluent-dark/22/actions/speaker.svg
-  history_ignore = yes
-  min_icon_size = 32
-  max_icon_size = 32
-
-[mic-volume]
-  appname = "mic-volume-control"
-  new_icon = /home/hayk/.local/share/icons/Fluent-dark/symbolic/devices/audio-input-microphone-symbolic.svg
-  history_ignore = yes
-  min_icon_size = 32
-  max_icon_size = 32
-
-[brightness]
-  appname = "brightness-control"
-  new_icon = /home/hayk/.local/share/icons/Fluent-dark/32/status/video-display-brightness.svg
-  history_ignore = yes
-  min_icon_size = 32
-  max_icon_size = 32
+# [urgency_low]
+#   frame_color = "#9cb9dd33"
+#   foreground="#9cb9dd"
+#   timeout = 5
+#
+# [urgency_normal]
+#   frame_color = "#c4dd9c33"
+#   timeout = 10
+#   override_pause_level = 30
+#
+# [urgency_critical]
+#   frame_color = "#d95d5d33"
+#   timeout = 0
+#   override_pause_level = 60
+#   script = /home/hayk/.config/dunst/dunst-hijack.sh
+#
+# [update_noti]
+#   summary = "^(?!.*-control$).*"
+#   script = /home/hayk/.config/dunst/dunst-update-noti.sh
+#
+# [slack]
+#   desktop_entry = "Slack"
+#   format = ""
+#   script = /home/hayk/.config/dunst/dunst-hijack.sh
+#   history_ignore = yes
+#   min_icon_size = 48
+#   max_icon_size = 48
+#
+# [spotify]
+#   appname = "Spotify"
+#   format = ""
+#   script = /home/hayk/.config/dunst/dunst-hijack.sh
+#   history_ignore = yes
+#
+# [betterbird]
+#   desktop_entry = "Betterbird"
+#   format = ""
+#   script = /home/hayk/.config/dunst/dunst-hijack.sh
+#   min_icon_size = 48
+#   max_icon_size = 48
+#
+# [bw-notifications]
+#   icon = "bitwarden"
+#   min_icon_size = 48
+#   max_icon_size = 48
+#   history_ignore = yes
+#
+# [kblayout]
+#   appname = "kblayout-control"
+#   alignment = center
+#   history_ignore = yes
+#
+# [speaker-volume]
+#   appname = "speaker-volume-control"
+#   new_icon = /home/hayk/.local/share/icons/Fluent-dark/22/actions/speaker.svg
+#   history_ignore = yes
+#   min_icon_size = 32
+#   max_icon_size = 32
+#
+# [mic-volume]
+#   appname = "mic-volume-control"
+#   new_icon = /home/hayk/.local/share/icons/Fluent-dark/symbolic/devices/audio-input-microphone-symbolic.svg
+#   history_ignore = yes
+#   min_icon_size = 32
+#   max_icon_size = 32
+#
+# [brightness]
+#   appname = "brightness-control"
+#   new_icon = /home/hayk/.local/share/icons/Fluent-dark/32/status/video-display-brightness.svg
+#   history_ignore = yes
+#   min_icon_size = 32
+#   max_icon_size = 32
 
 # Every section that isn't one of the above is interpreted as a rules to
 # override settings for certain messages.

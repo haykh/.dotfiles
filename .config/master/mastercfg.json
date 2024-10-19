@@ -26,6 +26,18 @@
       "codium-url-handler": "",
       "Alacritty": "",
       "org.jabref.gui.JabRefGUI": "",
+      "org.godotengine.ProjectManager": "",
+      "org.freecad.FreeCAD": "",
+      "Gimp-2.10": "",
+      "org.kde.kdenlive": "",
+      "OrcaSlicer": "󰐫",
+      "blender": "󰂫",
+      "org.telegram.desktop": "",
+      "com.github.flxzt.rnote": "󰽉",
+      "notion-app": "",
+      "ONLYOFFICE Desktop Editors": "󰏆",
+      "Docker Desktop": "",
+      "org.pwmt.zathura": "",
       "generic": ""
     },
     "weather": {
@@ -106,8 +118,11 @@
       "", "", "", "", 
       "", "", "󰃠"
     ],
-    "rofi": {
-      "applauncher": ""
+    "player": {
+      "play": "󰼛",
+      "pause": "󰏤",
+      "next": "󰼧",
+      "prev": "󰼨"
     }
   },
   "fonts": {

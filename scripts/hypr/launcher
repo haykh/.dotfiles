@@ -4,7 +4,7 @@
 
 if [[ "$1" == "--kitty" ]]; then
   if [[ -z $(hyprctl workspaces | grep ws_kitty) ]]; then
-    hyprctl dispatch -- exec "[workspace special:ws_kitty; float; size 50% 50%; move 25% 50]" -- kitty
+    hyprctl dispatch -- exec "[workspace special:ws_kitty; float up; size 50% 50%; move 25% 50]" -- kitty
   else
     hyprctl dispatch togglespecialworkspace ws_kitty
   fi

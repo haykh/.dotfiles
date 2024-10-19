@@ -1,5 +1,3 @@
-; (include "./widgets/templates.yuck")
-
 ; constants
 (defpoll hardwareIcon
   :interval "5000s"
@@ -11,11 +9,7 @@
 ; listeners
 (deflisten hardwareRevealed 
   :initial false
-  `
-    rm -f ~/.config/eww/state/hw-panel && \
-    ./scripts/run.sh panels hw --state && \
-    tail -F ~/.config/eww/state/hw-panel
-  `
+  `tail -F ~/.config/eww/state/hw-panel`
 )
 
 ; widgets
@@ -40,6 +34,7 @@
           :text hardwareIcon
         )
         (label
+          :class "separator"
           :visible { 
             (gpu0Awake == 1 && (gpu0ShowT || gpu0ShowUsage)) || 
               (gpu1Awake == 1 && (gpu1ShowT || gpu1ShowUsage)) ||
@@ -58,6 +53,7 @@
   (box
     :spacing 10
     :space-evenly false
+    :class "hardware indicators"
     (cpu)
     (ram)
     (gpu1)

@@ -3,12 +3,14 @@
   fontmono: "MonaspiceKr Nerd Font 12";
   fontsans: "Cantarell 12";
 
-  col-bg: #0f0f17;
+  col-bg: #0f0f17af;
   col-fg: #f5f8f2;
   col-fg-alt: #d1dfef;
   col-fg-dim: #81a3deff;
   col-bg-active: #2D5CAD88;
   col-border: #9cb9dd33;
+  col-accent: #d992e1;
+  col-highlight: bold #d992e1;
 
   col-applauncher: #d95d5d;
   col-bitwarden: #175DDC;
@@ -16,6 +18,8 @@
   col-pyfia: #3774A9;
   col-refs: #74d495;
   col-vpn: #d2518c;
+  col-finder: #c4a3e9;
+  col-calc: #D49A74;
 
   symbol-applauncher: "λ ";
   symbol-bitwarden: " ";
@@ -24,12 +28,15 @@
   symbol-refs: " ";
   symbol-vpn: "󰖂 ";
   symbol-moji: "😎";
+  symbol-finder: "󰮗 ";
+  symbol-calc: "󰿈 ";
 
   placeholder-applauncher: "run";
   placeholder-nerdicons: "nerdicons";
   placeholder-refs: "refs";
   placeholder-vpn: "vpn";
   placeholder-moji: "emojis";
+  placeholder-finder: "find";
 
   borderradius: 12px;
   borderradius-bottom: 0 0 12px 12px;
@@ -86,7 +93,7 @@ message {
 listview {
   margin: 0.5em 0 0 0;
   fixed-columns: true;
-  columns: 6;
+  columns: 7;
   lines: 4;
   spacing: 1em;
   dynamic: true;
@@ -104,7 +111,7 @@ scrollbar {
 element {
   background: transparent;
   children: [ element-icon, element-text ];
-  padding: 1em 0;
+  padding: 1em 1em;
   orientation: vertical;
 }
 

@@ -17,6 +17,12 @@ sudo udevadm control --reload
 sudo udevadm trigger
 ```
 
+## automatic disk mounting
+```sh
+sudo systemctl enable --now udisk2.service
+sudo pacman -S udiskie
+```
+
 ## icc profile
 ```sh
 yay -S xiccd
@@ -77,7 +83,7 @@ sudo pacman -S bluez bluez-utils bluetui
 ## compositor, display server, desktop portal, etc.
 ```sh
 sudo pacman -S hyprland wayland hyprpaper hyprlock xdg-desktop-portal-hyprland xdg-desktop-portal-gtk
-yay -S hyprpicker
+yay -S hyprpicker hyprpolkitagent-git
 ln -s $HOME/.dotfiles/.config/hypr/ $HOME/.config/hypr
 sudo pacman -S dunst
 ln -s $HOME/.dotfiles/.config/dunst/ $HOME/.config/dunst
