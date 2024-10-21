@@ -1,0 +1,192 @@
+{
+  "hardware": {
+    "monitors": {
+      "laptop": "eDP-2"
+    },
+    "battery": {
+      "label": "BAT1",
+      "maxpcent": 85
+    },
+    "wifi": {
+      "device_id": "wlp4s0"
+    }
+  },
+  "configs": {
+    "time": {
+      "world": ["America/Los_Angeles", "Europe/Paris", "Europe/Moscow", "Asia/Yerevan", "Asia/Shanghai"]
+    }
+  },
+  "icons": {
+    "apps": {
+      "thorium-browser": "",
+      "firefox": "",
+      "kitty": "󰄛",
+      "thunar": "",
+      "notepadqq": "",
+      "codium-url-handler": "",
+      "Alacritty": "",
+      "org.jabref.gui.JabRefGUI": "",
+      "org.godotengine.ProjectManager": "",
+      "org.freecad.FreeCAD": "",
+      "Gimp-2.10": "",
+      "org.kde.kdenlive": "",
+      "OrcaSlicer": "󰐫",
+      "blender": "󰂫",
+      "org.telegram.desktop": "",
+      "com.github.flxzt.rnote": "󰽉",
+      "notion-app": "",
+      "ONLYOFFICE Desktop Editors": "󰏆",
+      "Docker Desktop": "",
+      "org.pwmt.zathura": "",
+      "generic": ""
+    },
+    "weather": {
+      "sunrise": "",
+      "sunset": "",
+      "uv": "󱟿",
+      "wind": "󰖝",
+      "humidity": "",
+      "pressure": "",
+      "night": "",
+      "night-cloudy": "",
+      "night-cloudy-windy": "",
+      "night-rainy": "",
+      "night-rainy-windy": "",
+      "dawn": "",
+      "dusk": "",
+      "duskdawn-cloudy": "",
+      "duskdawn-cloudy-windy": "",
+      "duskdawn-rainy": "",
+      "duskdawn-rainy-windy": "",
+      "day": "",
+      "day-hot": "",
+      "day-windy": "",
+      "day-cloudy": "",
+      "day-cloudy-windy": "",
+      "day-rainy": "",
+      "day-rainy-windy": "",
+      "rain": "󰖗",
+      "snow": "󰼶",
+      "snowy-rain": "󰙿",
+      "forecast-rain": "",
+      "forecast-snow": "󰼶",
+      "forecast-snowy-rain": "󰙿",
+      "forecast-heavy-rain": "",
+      "forecast-cloudy": "",
+      "forecast-clear": ""
+    },
+    "hardware": {
+      "hardware": "󰘚",
+      "cpu": "",
+      "ram": "",
+      "igpu": "iGPU",
+      "dgpu": "dGPU"
+    },
+    "battery": {
+      "discharging": "󰁹",
+      "charging": "󰂄",
+      "full": "",
+      "performance": "",
+      "balanced": "",
+      "power-saver": ""
+    },
+    "bluetooth": {
+      "connected": "󰂰",
+      "disconnected": "󰂯",
+      "poweroff": "󰂲"
+    },
+    "wifi": {
+      "connected": "󰤨",
+      "disconnected": "󰤯",
+      "poweroff": "󰤭",
+      "download": "󰞒",
+      "upload": "󰞕",
+      "global": "",
+      "local": ""
+    },
+    "volume": {
+      "muted": "",
+      "low": "",
+      "medium": "",
+      "high": "",
+      "headphones": "󱡏",
+      "headset": ""
+    },
+    "brightness": [
+      "", "", "", "", 
+      "", "", "", "", 
+      "", "", "", "", 
+      "", "", "󰃠"
+    ],
+    "player": {
+      "play": "󰼛",
+      "pause": "󰏤",
+      "next": "󰼧",
+      "prev": "󰼨"
+    }
+  },
+  "fonts": {
+    "main": "MonaspiceKr Nerd Font",
+    "alt": "MonaspiceRn Nerd Font",
+    "mono": "MonaspiceRn Nerd Font Mono",
+    "serif": "Cantarell"
+  },
+  "colors": {
+    "theme": {
+      "bg": "#0f0f17",
+      "bg-alt": "#171923",
+      "fg": "#ffffff",
+      "fg-dim": "#b1b1ba",
+      "fg-dim-alt": "#8e818e",
+      "border": "#414181",
+      "accent1": "#e5669a",
+      "accent2": "#7683df",
+      "accent3": "#80c35f",
+      "accent4": "#c7b356"
+    },
+    "status": {
+      "inactive": "#606aa1",
+      "disabled": "#a1a1a1"
+    },
+    "special": {
+      "applauncher": "#1793D1"
+    },
+    "heat": [
+      "#47b6ff",
+      "#96d9fd",
+      "#e9f9cc",
+      "#f9b848",
+      "#f7743a",
+      "#f42a2a"
+    ], 
+    "charge": [
+      "#ef6161", 
+      "#efbc5d", 
+      "#efe95d", 
+      "#baef5d", 
+      "#81ef5f", 
+      "#30de6a"
+    ],
+    "sequential": [
+      "#5dda5f",
+      "#5d9fd9",
+      "#d95d5d"
+    ],
+    "wet": [
+      "#f79e53",
+      "#edb383",
+      "#e1cbbb",
+      "#d7dee8",
+      "#a3a8f0",
+      "#6f73f8",
+      "#4345ff"
+    ],
+    "coolwarm": [
+      "#43b1ff", 
+      "#68b8f5",
+      "#cfdbeb",
+      "#e76e76",
+      "#f75353"
+    ]
+  }
+}

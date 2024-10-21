@@ -1,0 +1,23 @@
+{
+  "include": "$HOME/.config/waybar/modules.jsonc",
+  "layer": "top",
+  "height": 40,
+  "reload_style_on_change": true,
+
+  "modules-left": [
+    "group/battery",
+    "group/stats",
+  ],
+
+  "modules-center": [
+    "hyprland/workspaces",
+  ], 
+
+  "modules-right": [
+    "privacy",
+    "custom/player",
+    "group/controls",
+    "custom/weather",
+    "clock",
+  ],
+}

@@ -1,0 +1,26 @@
+# syntax = devthefuture/dockerfile-x
+
+ARG CUDA_VERSION
+ARG UBUNTU_VERSION
+
+FROM nvidia/cuda:${CUDA_VERSION}-devel-ubuntu${UBUNTU_VERSION}
+
+ARG DEBIAN_FRONTEND=noninteractive
+ARG USER=cuda-usr
+
+USER root
+
+# common packages:
+#   - utils (sudo, bc, gpgp, ssh, eza, fzf, nvim, ...)
+#   - hdf5 & adios2
+#   - cmake
+#   - llvm
+#   - python
+INCLUDE Dockerfile.common
+
+INCLUDE Dockerfile.user
+
+ENV CUDA_HOME=/usr/local/cuda
+ENV PATH=/usr/local/cuda/bin:$PATH
+
+ENTRYPOINT ["/usr/bin/zsh", "-l"]

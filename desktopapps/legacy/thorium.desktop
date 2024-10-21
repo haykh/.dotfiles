@@ -1,0 +1,7 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Terminal=false
+Exec=/home/hayk/.local/thorium.app/thorium
+Name=thorium browser
+Icon=~/.local/share/icons/candy-icons/apps/scalable/thorium-browser.svg

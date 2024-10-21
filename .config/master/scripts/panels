@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+source $(dirname $0)/common.sh
+
+if [[ $1 == "side" ]]; then
+
+  if [[ $(eww active-windows | grep sidepanel) == "" ]]; then
+    if [[ $2 == "--toggle" ]]; then
+      echo true >>$TMPDIR/sidepanel
+    elif [[ $2 == "--state" ]]; then
+      echo false >>$TMPDIR/sidepanel
+    fi
+  else
+    if [[ $2 == "--toggle" ]]; then
+      echo false >>$TMPDIR/sidepanel
+    elif [[ $2 == "--state" ]]; then
+      echo true >>$TMPDIR/sidepanel
+    fi
+  fi
+
+elif [[ $1 == "hw" ]]; then
+
+  if [[ $(eww active-windows | grep hardware) == "" ]]; then
+    if [[ $2 == "--toggle" ]]; then
+      echo true >>$TMPDIR/hw-panel
+    elif [[ $2 == "--state" ]]; then
+      echo false >>$TMPDIR/hw-panel
+    fi
+  else
+    if [[ $2 == "--toggle" ]]; then
+      echo false >>$TMPDIR/hw-panel
+    elif [[ $2 == "--state" ]]; then
+      echo true >>$TMPDIR/hw-panel
+    fi
+  fi
+
+fi

@@ -1,0 +1,25 @@
+* {
+  background-image: none;
+}
+window {
+  background: rgba(19, 29, 43, 0.5);
+}
+button {
+  background-color: rgba(19, 29, 43, 0.0);
+  border-style: solid;
+  border-radius: 40px;
+  color: #9cb9dd;
+  border-width: 1px;
+  border-color: #9cb9dd;
+  transition: background-color 0.2s, border-color 0.2s;
+  padding: 25px 0px;
+}
+
+button * {
+  font-size: 30px;
+  font-family: "MonaspiceKr Nerd Font";
+}
+
+button:focus, button:active, button:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}

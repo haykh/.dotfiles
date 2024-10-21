@@ -1,0 +1,21 @@
+function bwpass() {
+  local ITEMS
+  ITEMS=$(bw list items --search $1)
+  if [[ $(jq -r '. | length' <<< $ITEMS) -eq 1 ]]; then
+    (jq -r '.[].login.password' <<< $ITEMS) | tr -d '\n' | wl-copy
+    jq -r '"name : " + .[].name + "\n  username : " + .[].login.username + "\n  password : <clipboard>"' <<< $ITEMS
+  else
+    echo "Found multiple items:"
+    jq -r 'to_entries | .[] | (.key | tostring) + ": " + .value.name + " -- " + .value.login.username' <<< $ITEMS
+    echo ""
+    read "INDEX?Pick one by specifying the index [q to cancel]: "
+    if [[ $INDEX == "q" ]] || [[ $INDEX == "Q" ]]; then
+      return
+    elif [[ $INDEX -ge $(jq -r '. | length' <<< $ITEMS) ]]; then
+      echo "Invalid index"
+    else
+      (jq -r ".[$INDEX].login.password" <<< $ITEMS) | tr -d '\n' | wl-copy
+      jq -r ".[$INDEX]"'| ("name : " + .name + "\n  username : " + .login.username + "\n  password : <clipboard>")' <<< $ITEMS
+    fi
+  fi
+}

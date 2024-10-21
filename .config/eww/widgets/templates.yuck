@@ -1,0 +1,60 @@
+(defwidget indicator [class icon tooltip ?sec-class ?visible ?use-alt ?tooltip-alt ?onclick ?onrightclick ?onmiddleclick ?onscroll]
+  (eventbox 
+    :visible { visible == "" ? true : visible }
+    :onclick { onclick }
+    :onrightclick { onrightclick }
+    :onmiddleclick { onmiddleclick }
+    :onscroll { onscroll }
+    :cursor "pointer"
+    :class "${ class } ${ sec-class } indicator"
+    (tooltip
+      (box 
+        :class "tooltip"
+        (literal 
+          :content { tooltip-alt != "" ? (use-alt ? tooltip-alt : tooltip) : tooltip }
+        )
+      )
+      (label
+        :width 15
+        :hexpand true
+        :halign "center"
+        :class "icon"
+        :text icon
+      )
+    )
+  )
+)
+
+(defwidget sensor [icon value1 value2 class class1 class2 show show1 show2 ?tooltip]
+  (box 
+    :class "${ class } hw-ind"
+    :visible show
+    :space-evenly false
+    :spacing 10
+    (label 
+      :class "icon"
+      :visible { icon != "" }
+      :xalign 1.0
+      :tooltip tooltip
+      :text icon
+    )
+    (label
+      :class class1
+      :visible show1
+      :xalign 0.0
+      :text value1
+    )
+    (label
+      :class class2
+      :visible show2
+      :xalign 0.0
+      :text value2
+    )
+  )
+)
+
+(defwidget separator []
+  (box
+    "⋮"
+  )
+)

@@ -1,0 +1,79 @@
+.hardware {
+  border-left: 1px solid $col-border;
+  border-right: 1px solid $col-border;
+  padding: $bar-padding-y calc(1.5 * $bar-padding-x);
+  margin-right: calc(0.7 * $indicator-margin-x);
+
+  .indicator {
+    margin-right: $indicator-margin-x;
+  }
+
+  .cpu {
+    margin-right: calc(-1 * $bar-padding-x);
+  }
+}
+
+.bluetooth {
+  margin-right: calc(1.0 * $indicator-margin-x);
+}
+
+.wifi, .volume, .brightness {
+  margin-right: calc(1.6 * $indicator-margin-x);
+}
+
+.volume {
+  &.muted {
+    color: $col-device-disconnected;
+  }
+}
+
+.wifi, .bluetooth {
+  &.power-off {
+    color: $col-device-off;
+  }
+
+  &.disconnected {
+    color: $col-device-disconnected;
+  }
+}
+
+.hardware {
+  .hardware-panel-btn label:first-child {
+    font-size: $fs-hg;
+  }
+
+  .hardware-panel-btn label:nth-child(2) {
+    font-size: $fs-md;
+    font-family: $font-alt;
+  }
+
+  .hardware-panel-btn {
+    * {
+      transition: 0s;
+    }
+
+    &.revealed-true .icon {
+      padding: 0 $bar-padding-x;
+      background-color: $col-fg;
+      border-radius: calc(0.75 * $bar-border-rad);
+      color: $col-bg;
+    }
+  }
+
+  .hw-ind {
+    padding: 0 calc(0.8 * $bar-padding-x);
+
+    & label {
+    }
+    
+    &.cpu .icon {
+      padding-right: calc(0.75 * $bar-padding-x);
+    }
+  }
+
+  .gpu0, .gpu1 {
+    .icon {
+      font-size: $fs-xs;
+    }
+  }
+}

@@ -1,0 +1,60 @@
+// color shades
+$col-accent1-dark1: desaturate(darken($col-accent1, 10%), 15%);
+$col-accent1-dark2: desaturate(darken($col-accent1, 20%), 15%);
+$col-accent1-dark3: desaturate(darken($col-accent1, 30%), 15%);
+$col-accent1-dark4: desaturate(darken($col-accent1, 40%), 15%);
+$col-accent1-dark5: desaturate(darken($col-accent1, 45%), 15%);
+
+$col-accent1-light1: desaturate(lighten($col-accent1, 5%), 15%);
+$col-accent1-light2: desaturate(lighten($col-accent1, 10%), 15%);
+$col-accent1-light3: desaturate(lighten($col-accent1, 15%), 15%);
+$col-accent1-light4: desaturate(lighten($col-accent1, 20%), 15%);
+$col-accent1-light5: desaturate(lighten($col-accent1, 23%), 15%);
+
+$col-accent2-dark1: desaturate(darken($col-accent2, 10%), 15%);
+$col-accent2-dark2: desaturate(darken($col-accent2, 20%), 15%);
+$col-accent2-dark3: desaturate(darken($col-accent2, 30%), 15%);
+$col-accent2-dark4: desaturate(darken($col-accent2, 40%), 15%);
+$col-accent2-dark5: desaturate(darken($col-accent2, 45%), 15%);
+
+$col-accent2-light1: desaturate(lighten($col-accent2, 5%), 15%);
+$col-accent2-light2: desaturate(lighten($col-accent2, 10%), 15%);
+$col-accent2-light3: desaturate(lighten($col-accent2, 15%), 15%);
+$col-accent2-light4: desaturate(lighten($col-accent2, 20%), 15%);
+$col-accent2-light5: desaturate(lighten($col-accent2, 23%), 15%);
+
+$col-accent3-dark1: desaturate(darken($col-accent3, 10%), 15%);
+$col-accent3-dark2: desaturate(darken($col-accent3, 20%), 15%);
+$col-accent3-dark3: desaturate(darken($col-accent3, 30%), 15%);
+$col-accent3-dark4: desaturate(darken($col-accent3, 40%), 15%);
+$col-accent3-dark5: desaturate(darken($col-accent3, 45%), 15%);
+
+$col-accent3-light1: desaturate(lighten($col-accent3, 5%), 15%);
+$col-accent3-light2: desaturate(lighten($col-accent3, 10%), 15%);
+$col-accent3-light3: desaturate(lighten($col-accent3, 15%), 15%);
+$col-accent3-light4: desaturate(lighten($col-accent3, 20%), 15%);
+$col-accent3-light5: desaturate(lighten($col-accent3, 23%), 15%);
+
+$col-accent4-dark1: desaturate(darken($col-accent4, 10%), 15%);
+$col-accent4-dark2: desaturate(darken($col-accent4, 20%), 15%);
+$col-accent4-dark3: desaturate(darken($col-accent4, 30%), 15%);
+$col-accent4-dark4: desaturate(darken($col-accent4, 40%), 15%);
+$col-accent4-dark5: desaturate(darken($col-accent4, 45%), 15%);
+
+$col-accent4-light1: desaturate(lighten($col-accent4, 5%), 15%);
+$col-accent4-light2: desaturate(lighten($col-accent4, 10%), 15%);
+$col-accent4-light3: desaturate(lighten($col-accent4, 15%), 15%);
+$col-accent4-light4: desaturate(lighten($col-accent4, 20%), 15%);
+$col-accent4-light5: desaturate(lighten($col-accent4, 23%), 15%);
+
+$col-bg-dark1: desaturate(darken($col-bg, 10%), 10%);
+$col-bg-dark2: desaturate(darken($col-bg, 20%), 10%);
+$col-bg-dark3: desaturate(darken($col-bg, 30%), 10%);
+$col-bg-dark4: desaturate(darken($col-bg, 40%), 10%);
+$col-bg-dark5: desaturate(darken($col-bg, 45%), 10%);
+
+$col-bg-light1: lighten($col-bg, 5%);
+$col-bg-light2: lighten($col-bg, 10%);
+$col-bg-light3: lighten($col-bg, 15%);
+$col-bg-light4: lighten($col-bg, 20%);
+$col-bg-light5: lighten($col-bg, 23%);

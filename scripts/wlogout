@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+vpad=$(hyprctl monitors -j | jq '((.[0].height - 200 - 25) / 2 | round)')
+wlogout -T $vpad -B $vpad -L 450 -R 450 -c 50 -r 25 -s --protocol layer-shell

@@ -1,0 +1,11 @@
+.applauncher {
+  color: $col-applauncher;
+
+  label {
+    font-size: $fs-hg;
+  }
+
+  &:hover {
+    color: lighten($col-applauncher, 20%);
+  }
+}

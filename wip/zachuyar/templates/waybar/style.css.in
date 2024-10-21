@@ -1,0 +1,102 @@
+* {
+  font-family: "MonaspiceKr Nerd Font", "JetBrainsMono NFM SemiBold";
+  font-size: 100%;
+  font-feature-settings: '"zero", "ss01", "ss02", "ss03", "ss04", "ss05", "cv31"';
+  border: none;
+  border-radius: 0px;
+  font-size: 97%;
+  min-height: 0;
+}
+
+@define-color default-bg #131d2b40;
+@define-color default-fg white;
+@define-color default-border rgba(156,185,221,0.2);
+
+@define-color widget-bg #131d2b1a;
+@define-color tooltip-bg #131D2B;
+@define-color tooltip-fg #9cb9dd;
+@define-color inactive-workspace-fg #9cb9dd;
+@define-color power-saver-fg #5DDA5F;
+@define-color balanced-fg #5d9fd9;
+@define-color performance-fg #d95d5d;
+
+window#waybar {
+  background-color: transparent;
+}
+
+tooltip {
+  background-color: @tooltip-bg;
+  border-radius: 0px 0px 10px 10px;
+}
+
+tooltip * {
+  color: @tooltip-fg;
+}
+
+/* Common ..................... */
+box#battery,
+box#stats,
+#workspaces,
+#privacy-item,
+#custom-player,
+box#controls,
+#custom-weather,
+#clock {
+  background-color: @widget-bg;
+  border: 1px solid @default-border;
+  padding: 0px 10px;
+  border-radius: 20px;
+  margin: 5px 5px;
+}
+
+/* Left ....................... */
+#power-profiles-daemon {
+  padding-left: 2px;
+}
+
+#battery {
+  padding-right: 2px;
+}
+
+#power-profiles-daemon.power-saver {
+  color: @power-saver-fg;
+}
+
+#power-profiles-daemon.balanced {
+  color: @balanced-fg;
+}
+
+#power-profiles-daemon.performance {
+  color: @performance-fg;
+}
+
+/* Center ..................... */
+#workspaces button {
+  background: transparent;
+  color: @inactive-workspace-fg;
+}
+
+#workspaces button.active,
+#workspaces button:hover {
+  color: @default-fg;
+}
+
+/* Right ...................... */
+#privacy-item {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+box .module {
+  padding: 0px 10px;
+}
+
+box .module {
+  border-right: 1px dotted @default-border;
+}
+
+#language,
+#custom-disk, 
+#battery {
+  border: none;
+}

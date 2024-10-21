@@ -1,0 +1,51 @@
+@import "config.rasi"
+
+window {
+  width: 30%;
+}
+
+textbox-prompt {
+  str: @symbol-moji;
+}
+
+entry {
+  placeholder: @placeholder-moji;
+  placeholder-color: white/30%;
+}
+
+textbox {
+  vertical-align:   0.5;
+  horizontal-align: 0.5;
+}
+
+listview {
+  columns:       9;
+  lines:         7;
+  cycle:         true;
+  dynamic:       true;
+  layout:        vertical;
+  flow:          horizontal;
+  reverse:       false;
+  fixed-height:  true;
+  fixed-columns: true;
+  spacing: 0;
+}
+
+element {
+  background: transparent;
+  padding: 0.5em  0;
+  orientation: vertical;
+  children: [ element-text ];
+  text-transform: underline;
+}
+
+element selected {
+  background-color: @col-bg-active;
+  border: none;
+}
+
+element-text {
+  vertical-align: 0.5;
+  horizontal-align: 0.5;
+  font: "MonaspiceKr Nerd Font 24";
+}

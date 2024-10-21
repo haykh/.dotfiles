@@ -1,0 +1,101 @@
+; (include "./widgets/applauncher.yuck")
+(include "./widgets/workspaces.yuck")
+
+(include "./widgets/locale/date-time.yuck")
+(include "./widgets/locale/weather.yuck")
+
+(include "./widgets/indicators/brightness.yuck")
+(include "./widgets/indicators/volume.yuck")
+(include "./widgets/indicators/bluetooth.yuck")
+(include "./widgets/indicators/wifi.yuck")
+
+(include "./widgets/hardware/hardware.yuck")
+(include "./widgets/battery.yuck")
+(include "./widgets/sidepanel.yuck")
+
+(include "./widgets/templates.yuck")
+(include "./widgets/debug.yuck")
+
+
+(defwidget left []
+  (box
+    :halign "start"
+    :class "leftbar"
+    :orientation "h"
+    :space-evenly false
+    ; (applauncher)
+    (workspaces)
+  )
+)
+
+(defwidget center []
+  (box
+    :halign "center"
+    :class "centerbar"
+    :orientation "h"
+    (box
+      :orientation "h"
+      :spacing 10
+      :valign "fill"
+      :vexpand true
+      :space-evenly false
+      :class "locale inlet"
+      (time)
+      (separator)
+      (date)
+      (separator)
+      (weather)
+    )
+      ; (color-shades)
+  )
+)
+
+(defwidget right []
+  (box 
+    :halign "end"
+    :class "rightbar"
+    :orientation "h"
+    :space-evenly false
+    :spacing 10
+    (box
+      :orientation "h"
+      :valign "fill"
+      :vexpand true
+      :space-evenly false
+      :spacing 12
+      :class "indicators inlet batterymode-${ batteryInfo.mode } batterymode-${ batteryModeHover ? 'hover' : '' }"
+      (brightness)
+      (volume)
+      (bluetooth) 
+      (wifi)
+    )
+    (hardware-panel-btn)
+    (hardware)
+    (battery)
+    (sidepanel-btn)
+  )
+)
+
+(defwidget bar []
+  (box 
+    :orientation "h"
+    :class "bar"
+    (left)
+    (center)
+    (right)
+  )
+)
+
+(defwindow mainbar [screen width]
+  :monitor screen
+  :geometry (geometry 
+    :x "0%"
+    :y "5px"
+    :width width
+    :height "40px"
+    :anchor "top center"
+  )
+  :stacking "fg"
+  :exclusive true
+  (bar)
+)

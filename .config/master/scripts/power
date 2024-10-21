@@ -1,0 +1,120 @@
+#!/usr/bin/env bash
+
+help() {
+  echo "Usage: $0 [args]"
+  echo "  --info: json with power/battery info"
+  echo "  --nextmode: next power mode"
+}
+
+not_daemon() {
+  if command -v dunstify &>/dev/null; then
+    dunstify "$@"
+  else
+    notify-send "$@"
+  fi
+}
+
+if [[ $1 == "--nextmode" ]]; then
+
+  mode=$(powerprofilesctl get)
+  if [[ $mode == "performance" ]]; then
+    powerprofilesctl set balanced
+  elif [[ $mode == "balanced" ]]; then
+    powerprofilesctl set power-saver
+  elif [[ $mode == "power-saver" ]]; then
+    powerprofilesctl set performance
+  fi
+
+elif [[ $1 == "--info" ]]; then
+
+  source $(dirname $0)/common.sh
+
+  BAT=$(jq -rc '.hardware.battery.label' $MASTERCFG)
+  MAXPCENT=$(jq -rc '.hardware.battery.maxpcent' $MASTERCFG)
+
+  LOGFILE=$TMPDIR/battery.log
+  NOTIFICATIONFILE=$TMPDIR/battery.notification
+
+  # charge [μAh]
+  # current [μA]
+  # voltage [μV]
+
+  # read main info
+  status=$(cat /sys/class/power_supply/$BAT/status 2>$LOGFILE)
+  maxcharge=$(cat /sys/class/power_supply/$BAT/charge_full 2>$LOGFILE)
+  charge=$(cat /sys/class/power_supply/$BAT/charge_now 2>$LOGFILE)
+  current=$(cat /sys/class/power_supply/$BAT/current_now 2>$LOGFILE)
+  voltage=$(cat /sys/class/power_supply/$BAT/voltage_now 2>$LOGFILE)
+
+  # infer time remaining
+  if [ $status == "Discharging" ]; then
+    time_hr=$(echo "scale=2; $charge / $current" | bc)
+    sign="-"
+  elif [ $status == "Charging" ] && [ $current != 0 ]; then
+    time_hr=$(echo "scale=2; ($maxcharge * $MAXPCENT / 100 - $charge) / $current" | bc)
+    sign="+"
+  else
+    time_hr=0
+    sign=""
+  fi
+  hrs=$(echo $time_hr | cut -d'.' -f1)
+  hrs=${hrs:-0}
+  mins=$(echo "scale=0; 60 * ($time_hr - $hrs)" | bc | cut -d'.' -f1)
+  mins=${mins:-0}
+
+  tooltip=$(echo $hrs"h" $mins"m" ":" $sign$(($voltage / 1000000 * $current / 1000000))"W")
+
+  if [[ $status == "Charging" ]] && [[ $current == 0 ]]; then
+    status="Full"
+  fi
+
+  status_lower=$(echo $status | tr '[:upper:]' '[:lower:]')
+  icon=$(jq -rc '.icons.battery."'$status_lower'"' $MASTERCFG)
+  if [[ $status == "Full" ]]; then
+    tooltip=""
+  fi
+
+  pcent=$(($charge * 100 / ($maxcharge * $MAXPCENT / 100)))
+
+  if [ $pcent -le 10 ]; then
+    pcent_state="charge-lt10"
+  elif [ $pcent -le 25 ]; then
+    pcent_state="charge-lt25"
+  elif [ $pcent -le 50 ]; then
+    pcent_state="charge-lt50"
+  elif [ $pcent -le 70 ]; then
+    pcent_state="charge-lt70"
+  elif [ $pcent -le 90 ]; then
+    pcent_state="charge-lt90"
+  else
+    pcent_state="charge-full"
+  fi
+
+  if [[ $status == "Charging" ]] || [[ $status == "Full" ]]; then
+    rm -f $NOTIFICATIONFILE
+  else
+    if [[ $pcent -le 5 ]]; then
+      if [[ ! -f $NOTIFICATIONFILE ]] || [[ $(wc -l $NOTIFICATIONFILE | cut -d' ' -f1) -lt 5 ]]; then
+        not_daemon \
+          -a "battery-low" \
+          -i "battery-low" \
+          -h string:x-canonical-private-synchronous:sys-notify \
+          -u critical "Battery @ $pcent%" "connect a charger"
+
+        echo "dismiss" >>$NOTIFICATIONFILE
+      fi
+    fi
+  fi
+
+  mode=$(powerprofilesctl get 2>$LOGFILE)
+  modeicon=$(jq -rc '.icons.battery."'$mode'"' $MASTERCFG)
+
+  echo '{"status": "'$status'", "icon": "'$icon'", "pcent": "'$pcent'", "pcent_state": "'$pcent_state'", "tooltip": "'$tooltip'", "mode": "'$mode'", "modeicon": "'$modeicon'"}'
+
+else
+
+  echo "Invalid argument"
+  help
+  exit 1
+
+fi

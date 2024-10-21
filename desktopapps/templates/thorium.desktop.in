@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=thorium browser
+Exec=@exe@
+Icon=@icon@
+Encoding=UTF-8
+Type=Application
+Terminal=false

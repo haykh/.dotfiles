@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=VRRTest
+Exec=@exe@
+Icon=@icon@
+Terminal=false
+Type=Application

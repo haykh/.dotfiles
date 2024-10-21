@@ -1,0 +1,11 @@
+.indicator .icon {
+  font-size: $fs-md;
+}
+
+.tooltip .ssid {
+  font-size: $fs-xlg;
+}
+
+.indicator * {
+  margin: 0 calc(4 * $nonzero);
+}

@@ -1,0 +1,628 @@
+#!/usr/bin/env bash
+
+source $(dirname $0)/common.sh
+
+help() {
+  echo "Usage: weather [args]"
+  echo "  --update : update weather data"
+  echo "  --location : get location"
+  echo "  --temp : get temperature"
+  echo "  --feelslike : get feels like temperature"
+  echo "  --sunrise : get sunrise time"
+  echo "  --sunset : get sunset time"
+  echo "  --status : get weather status"
+  echo "  --statusicon : get weather status icon"
+  echo "  --rainorsnow : get rain or snow with %"
+  echo "  --uvindex : get uv index"
+  echo "  --wind : get wind speed/direction"
+  echo "  --humidity : get humidity"
+  echo "  --pressure : get pressure"
+  echo "  --forecast : get forecast"
+}
+
+location() {
+  weather=$(cat $TMPDIR/weather.json)
+
+  jq -r '
+    .nearest_area.[].areaName.[].value + ", " + 
+      (.nearest_area.[].region.[].value | 
+        gsub("(?i)\\bAlabama\\b"; "AL") |
+        gsub("(?i)\\bAlaska\\b"; "AK") |
+        gsub("(?i)\\bArizona\\b"; "AZ") |
+        gsub("(?i)\\bArkansas\\b"; "AR") |
+        gsub("(?i)\\bCalifornia\\b"; "CA") |
+        gsub("(?i)\\bColorado\\b"; "CO") |
+        gsub("(?i)\\bConnecticut\\b"; "CT") |
+        gsub("(?i)\\bDelaware\\b"; "DE") |
+        gsub("(?i)\\bFlorida\\b"; "FL") |
+        gsub("(?i)\\bGeorgia\\b"; "GA") |
+        gsub("(?i)\\bHawaii\\b"; "HI") |
+        gsub("(?i)\\bIdaho\\b"; "ID") |
+        gsub("(?i)\\bIllinois\\b"; "IL") |
+        gsub("(?i)\\bIndiana\\b"; "IN") |
+        gsub("(?i)\\bIowa\\b"; "IA") |
+        gsub("(?i)\\bKansas\\b"; "KS") |
+        gsub("(?i)\\bKentucky\\b"; "KY") |
+        gsub("(?i)\\bLouisiana\\b"; "LA") |
+        gsub("(?i)\\bMaine\\b"; "ME") |
+        gsub("(?i)\\bMaryland\\b"; "MD") |
+        gsub("(?i)\\bMassachusetts\\b"; "MA") |
+        gsub("(?i)\\bMichigan\\b"; "MI") |
+        gsub("(?i)\\bMinnesota\\b"; "MN") |
+        gsub("(?i)\\bMississippi\\b"; "MS") |
+        gsub("(?i)\\bMissouri\\b"; "MO") |
+        gsub("(?i)\\bMontana\\b"; "MT") |
+        gsub("(?i)\\bNebraska\\b"; "NE") |
+        gsub("(?i)\\bNevada\\b"; "NV") |
+        gsub("(?i)\\bNew Hampshire\\b"; "NH") |
+        gsub("(?i)\\bNew Jersey\\b"; "NJ") |
+        gsub("(?i)\\bNew Mexico\\b"; "NM") |
+        gsub("(?i)\\bNew York\\b"; "NY") |
+        gsub("(?i)\\bNorth Carolina\\b"; "NC") |
+        gsub("(?i)\\bNorth Dakota\\b"; "ND") |
+        gsub("(?i)\\bOhio\\b"; "OH") |
+        gsub("(?i)\\bOklahoma\\b"; "OK") |
+        gsub("(?i)\\bOregon\\b"; "OR") |
+        gsub("(?i)\\bPennsylvania\\b"; "PA") |
+        gsub("(?i)\\bRhode Island\\b"; "RI") |
+        gsub("(?i)\\bSouth Carolina\\b"; "SC") |
+        gsub("(?i)\\bSouth Dakota\\b"; "SD") |
+        gsub("(?i)\\bTennessee\\b"; "TN") |
+        gsub("(?i)\\bTexas\\b"; "TX") |
+        gsub("(?i)\\bUtah\\b"; "UT") |
+        gsub("(?i)\\bVermont\\b"; "VT") |
+        gsub("(?i)\\bVirginia\\b"; "VA") |
+        gsub("(?i)\\bWashington\\b"; "WA") |
+        gsub("(?i)\\bWest Virginia\\b"; "WV") |
+        gsub("(?i)\\bWisconsin\\b"; "WI") |
+        gsub("(?i)\\bWyoming\\b"; "WY")
+      )
+    ' <<<$weather >>$TMPDIR/wttr-location
+}
+
+temp() {
+  jq -r '.current_condition.[].temp_C' $TMPDIR/weather.json >>$TMPDIR/wttr-temp
+}
+
+feelslike() {
+  jq -r '.current_condition.[].FeelsLikeC' $TMPDIR/weather.json >>$TMPDIR/wttr-feelslike
+}
+
+sunrise() {
+  jq -r '(.weather[0].date + " " + .weather.[0].astronomy.[].sunrise) | strptime("%Y-%m-%d %I:%M %p") | strftime("%l:%M %P")' $TMPDIR/weather.json >>$TMPDIR/wttr-sunrise
+}
+
+sunset() {
+  jq -r '(.weather[0].date + " " + .weather.[0].astronomy.[].sunset) | strptime("%Y-%m-%d %I:%M %p") | strftime("%l:%M %P")' $TMPDIR/weather.json >>$TMPDIR/wttr-sunset
+}
+
+status() {
+  jq -r '.current_condition.[].weatherDesc.[].value | ascii_downcase' $TMPDIR/weather.json >>$TMPDIR/wttr-status
+}
+
+statusicon() {
+  NIGHT_ICON=$(jq -r '.icons.weather.night' $MASTERCFG)
+  NIGHT_CLOUDY_ICON=$(jq -r '.icons.weather."night-cloudy"' $MASTERCFG)
+  NIGHT_CLOUDY_WINDY_ICON=$(jq -r '.icons.weather."night-cloudy-windy"' $MASTERCFG)
+  NIGHT_RAINY_ICON=$(jq -r '.icons.weather."night-rainy"' $MASTERCFG)
+  NIGHT_RAINY_WINDY_ICON=$(jq -r '.icons.weather."night-rainy-windy"' $MASTERCFG)
+  DAWN_ICON=$(jq -r '.icons.weather.dawn' $MASTERCFG)
+  DUSK_ICON=$(jq -r '.icons.weather.dusk' $MASTERCFG)
+  DUSKDAWN_CLOUDY_ICON=$(jq -r '.icons.weather."duskdawn-cloudy"' $MASTERCFG)
+  DUSKDAWN_CLOUDY_WINDY_ICON=$(jq -r '.icons.weather."duskdawn-cloudy-windy"' $MASTERCFG)
+  DUSKDAWN_RAINY_ICON=$(jq -r '.icons.weather."duskdawn-rainy"' $MASTERCFG)
+  DUSKDAWN_RAINY_WINDY_ICON=$(jq -r '.icons.weather."duskdawn-rainy-windy"' $MASTERCFG)
+  DAY_ICON=$(jq -r '.icons.weather.day' $MASTERCFG)
+  DAY_HOT_ICON=$(jq -r '.icons.weather."day-hot"' $MASTERCFG)
+  DAY_WINDY_ICON=$(jq -r '.icons.weather."day-windy"' $MASTERCFG)
+  DAY_CLOUDY_ICON=$(jq -r '.icons.weather."day-cloudy"' $MASTERCFG)
+  DAY_CLOUDY_WINDY_ICON=$(jq -r '.icons.weather."day-cloudy-windy"' $MASTERCFG)
+  DAY_RAINY_ICON=$(jq -r '.icons.weather."day-rainy"' $MASTERCFG)
+  DAY_RAINY_WINDY_ICON=$(jq -r '.icons.weather."day-rainy-windy"' $MASTERCFG)
+
+  jq -r '
+    def timeofday(now; sunrise; sunset):
+      if now < (sunrise - 3600) then 0
+      elif now < (sunrise + 3600) then 1
+      elif now < (sunset - 3600) then 2
+      elif now < (sunset + 3600) then 3
+      else 0
+      end;
+    def geticon(t; c; r; h; w):
+      if t == 0 then
+        # night
+        if c then # cloudy
+          if r then # rainy
+            if w then "'$NIGHT_RAINY_WINDY_ICON'" # windy
+            else "'$NIGHT_RAINY_ICON'" # not windy
+            end
+          else # not rainy
+            if w then "'$NIGHT_CLOUDY_WINDY_ICON'" # windy
+            else "'$NIGHT_CLOUDY_ICON'" # not windy
+            end
+          end
+        else "'$NIGHT_ICON'" # clear
+        end
+      elif t == 1 or t == 3 then
+        # dusk/dawn
+        if c then # cloudy
+          if r then # rainy
+            if w then "'$DUSKDAWN_RAINY_WINDY_ICON'" # windy
+            else "'$DUSKDAWN_RAINY_ICON'" # not windy
+            end
+          else # not rainy
+            if w then "'$DUSKDAWN_CLOUDY_WINDY_ICON'" # windy
+            else "'$DUSKDAWN_CLOUDY_ICON'" # not windy
+            end
+          end
+        else # clear
+          if t == 1 then "'$DAWN_ICON'" # dawn
+          else "'$DUSK_ICON'" # dusk
+          end
+        end
+      else
+        # day
+        if c then # cloudy
+          if r then # rainy
+            if w then "'$DAY_RAINY_WINDY_ICON'" # windy
+            else "'$DAY_RAINY_ICON'" # not windy
+            end
+          else # not rainy
+            if w then "'$DAY_CLOUDY_WINDY_ICON'" # windy
+            else "'$DAY_CLOUDY_ICON'" # not windy
+            end
+          end
+        else # clear
+          if w then "'$DAY_WINDY_ICON'" # windy
+          elif h then "'$DAY_HOT_ICON'" # hot
+          else "'$DAY_ICON'" # not windy not hot
+          end
+        end
+      end;
+    . | geticon(
+       (timeofday(
+       ((.current_condition.[].localObsDateTime | strptime("%Y-%m-%d %I:%M %p")) | mktime); 
+         (((.weather[0].date + " " + .weather.[0].astronomy.[].sunrise) | strptime("%Y-%m-%d %I:%M %p")) | mktime); 
+         (((.weather[0].date + " " + .weather.[0].astronomy.[].sunset) | strptime("%Y-%m-%d %I:%M %p")) | mktime)
+       ));
+       ((.current_condition.[].cloudcover) | tonumber > 30);
+       ((.weather.[0].hourly[0].chanceofrain) | tonumber > 30);
+       ((.current_condition.[].temp_C) | tonumber > 28);
+       ((.current_condition.[].windspeedMiles) | tonumber > 20)
+    )
+  ' $TMPDIR/weather.json >>$TMPDIR/wttr-statusicon
+}
+
+rainorsnow() {
+  RAIN_ICON=$(jq -r '.icons.weather.rain' $MASTERCFG)
+  SNOW_ICON=$(jq -r '.icons.weather.snow' $MASTERCFG)
+  SNOWY_RAIN_ICON=$(jq -r '.icons.weather."snowy-rain"' $MASTERCFG)
+
+  jq -r '
+    def rainorsnow(snowcm; rainpct):
+      if snowcm > 0 and rainpct > 30 then ("'$SNOWY_RAIN_ICON' " + (snowcm | tostring) + " cm")
+      elif snowcm > 0 then ("'$SNOW_ICON' " + (snowcm | tostring) + " cm")
+      else ("'$RAIN_ICON' " + (rainpct | tostring) + "%")
+      end;
+    . | rainorsnow(.weather.[0].totalSnow_cm | tonumber; .weather.[0].hourly[0].chanceofrain | tonumber)
+  ' $TMPDIR/weather.json >>$TMPDIR/wttr-rainorsnow
+}
+
+uvindex() {
+  jq -r '.current_condition.[].uvIndex' $TMPDIR/weather.json >>$TMPDIR/wttr-uvindex
+}
+
+wind() {
+  jq -r '.wind' $TMPDIR/weather.short.json >>$TMPDIR/wttr-wind
+}
+
+humidity() {
+  jq -r '.current_condition.[].humidity' $TMPDIR/weather.json >>$TMPDIR/wttr-humidity
+}
+
+pressure() {
+  jq -r '.current_condition.[].pressure' $TMPDIR/weather.json >>$TMPDIR/wttr-pressure
+}
+
+forecast() {
+  forecast=$(jq -r '. | { 
+      forecast: [.weather[1:][] | {
+        dateTime: .date | strptime("%Y-%m-%d") | strftime("%a %e %b"),
+        tminC: .mintempC,
+        tmaxC: .maxtempC,
+        cloudcoverPct: ([.hourly[].cloudcover | tonumber] | add / length | tostring),
+        snowchancePct: [.hourly[].chanceofsnow | tonumber] | max | tostring,
+        rainchancePct: [.hourly[].chanceofrain | tonumber] | max | tostring
+      }] 
+    }' $TMPDIR/weather.json)
+
+  RAIN_ICON=$(jq -r '.icons.weather."forecast-rain"' $MASTERCFG)
+  SNOW_ICON=$(jq -r '.icons.weather."forecast-snow"' $MASTERCFG)
+  SNOWY_RAIN_ICON=$(jq -r '.icons.weather."forecast-snowy-rain"' $MASTERCFG)
+  HEAVY_RAIN_ICON=$(jq -r '.icons.weather."forecast-heavy-rain"' $MASTERCFG)
+  CLOUDY_ICON=$(jq -r '.icons.weather."forecast-cloudy"' $MASTERCFG)
+  CLEAR_ICON=$(jq -r '.icons.weather."forecast-clear"' $MASTERCFG)
+
+  jq -r '.forecast[0].dateTime' <<<$forecast >>$TMPDIR/wttr-forecast-1-date
+  jq -r '
+    def forecast_icon(clouds; rain; snow):
+      if snow > 30 and rain > 30 then "'$SNOWY_RAIN_ICON'"
+      elif snow > 30 then "'$SNOW_ICON'"
+      elif rain > 30 then "'$RAIN_ICON'"
+      elif rain > 60 then "'$HEAVY_RAIN_ICON'"
+      elif clouds > 30 then "'$CLOUDY_ICON'"
+      else "'$CLEAR_ICON'"
+      end;
+    . | forecast_icon(
+      (.forecast[0].cloudcoverPct) | tonumber;
+      (.forecast[0].rainchancePct) | tonumber;
+      (.forecast[0].snowchancePct) | tonumber
+    )
+  ' <<<$forecast >>$TMPDIR/wttr-forecast-1-icon
+  jq -r '.forecast[0].tminC' <<<$forecast >>$TMPDIR/wttr-forecast-1-temp-min
+  jq -r '.forecast[0].tmaxC' <<<$forecast >>$TMPDIR/wttr-forecast-1-temp-max
+
+  jq -r '.forecast[1].dateTime' <<<$forecast >>$TMPDIR/wttr-forecast-2-date
+  jq -r '
+    def forecast_icon(clouds; rain; snow):
+      if snow > 30 and rain > 30 then "'$SNOWY_RAIN_ICON'"
+      elif snow > 30 then "'$SNOW_ICON'"
+      elif rain > 30 then "'$RAIN_ICON'"
+      elif rain > 60 then "'$HEAVY_RAIN_ICON'"
+      elif clouds > 30 then "'$CLOUDY_ICON'"
+      else "'$CLEAR_ICON'"
+      end;
+    . | forecast_icon(
+      (.forecast[1].cloudcoverPct) | tonumber;
+      (.forecast[1].rainchancePct) | tonumber;
+      (.forecast[1].snowchancePct) | tonumber
+    )
+  ' <<<$forecast >>$TMPDIR/wttr-forecast-2-icon
+  jq -r '.forecast[1].tminC' <<<$forecast >>$TMPDIR/wttr-forecast-2-temp-min
+  jq -r '.forecast[1].tmaxC' <<<$forecast >>$TMPDIR/wttr-forecast-2-temp-max
+}
+
+if [[ $1 == "--update" ]]; then
+
+  weather=$(curl -s "wttr.in/?m&format=j1")
+  short=$(curl -s "wttr.in/?m&format=\{\"wind\":\"%w\"\}\n")
+
+  echo $weather >$TMPDIR/weather.json
+  echo $short >$TMPDIR/weather.short.json
+
+  location
+  temp
+  feelslike
+  sunrise
+  sunset
+  status
+  statusicon
+  rainorsnow
+  uvindex
+  wind
+  humidity
+  pressure
+  forecast
+
+elif [[ $1 == "--location" ]]; then
+
+  location
+
+elif [[ $1 == "--temp" ]]; then
+
+  temp
+
+elif [[ $1 == "--feelslike" ]]; then
+
+  feelslike
+
+elif [[ $1 == "--sunrise" ]]; then
+
+  sunrise
+
+elif [[ $1 == "--sunset" ]]; then
+
+  sunset
+
+elif [[ $1 == "--status" ]]; then
+
+  status
+
+elif [[ $1 == "--statusicon" ]]; then
+
+  statusicon
+
+elif [[ $1 == "--rainorsnow" ]]; then
+
+  rainorsnow
+
+elif [[ $1 == "--uvindex" ]]; then
+
+  uvindex
+
+elif [[ $1 == "--wind" ]]; then
+
+  wind
+
+elif [[ $1 == "--humidity" ]]; then
+
+  humidity
+
+elif [[ $1 == "--pressure" ]]; then
+
+  pressure
+
+elif [[ $1 == "--forecast" ]]; then
+
+  forecast
+
+elif [[ $1 == "--help" ]]; then
+
+  help
+
+else
+
+  echo "Invalid argument"
+  help
+  exit 1
+
+fi
+
+# forecast_2_date=$(jq -r '.forecast[1].dateTime' <<<$weather)
+# forecast_2_icon=$(jq -r'
+#   def forecast_icon(clouds; rain; snow):
+#     if snow > 30 and rain > 30 then "󰙿"
+#     elif snow > 30 then "󰼶"
+#     elif rain > 30 then ""
+#     elif rain > 60 then ""
+#     elif clouds > 30 then ""
+#     else ""
+#     end;
+#   . + input | {
+#     forecast: [.weather[1:][] | {
+#       dateTime: .date | strptime("%Y-%m-%d") | strftime("%a %e %b"),
+#       tminC: .mintempC,
+#       tmaxC: .maxtempC,
+#       cloudcoverPct: ([.hourly[].cloudcover | tonumber] | add / length | tostring),
+#       snowchancePct: [.hourly[].chanceofsnow | tonumber] | max | tostring,
+#       rainchancePct: [.hourly[].chanceofrain | tonumber] | max | tostring
+#     }]
+#   } | forecast_icon(
+#     (.forecast[1].cloudcoverPct) | tonumber;
+#     (.forecast[1].rainchancePct) | tonumber;
+#     (.forecast[1].snowchancePct) | tonumber
+#   )
+# ' <<<$weather)
+# forecast_2_temp_min=$(jq -r '.forecast[1].tminC' <<<$weather)
+# forecast_2_temp_max=$(jq -r '.forecast[1].tmaxC' <<<$weather)
+#
+# echo $forecast_1_icon $forecast_1_temp_min $forecast_1_temp_max $forecast_1_date $forecast_2_icon $forecast_2_temp_min $forecast_2_temp_max $forecast_2_date
+#
+# # for debugging purposes
+# place=/home/hayk/.config/waybar/scripts
+# # if file does not exist
+# if [ ! -f $place/wttr.json ]; then
+#   curl -s "wttr.in/?m&format=j1" > $place/wttr.json
+#   curl -s "wttr.in/?m&format=\{\"wind\":\"%w\"\}\n" > $place/wttr.short.json
+# fi
+# weather=$(cat $place/wttr.json)
+# short=$(cat $place/wttr.short.json)
+#
+# (
+#   echo $weather
+#   echo $short
+# ) | jq -c '
+# def uvcolor(v):
+#   if v < 3 then "#7fccff"
+#   elif v < 5 then "#a2dcfb"
+#   elif v < 7 then "#c9edec"
+#   elif v < 8 then "#e9f9cc"
+#   elif v < 9 then "#f8e28f"
+#   elif v < 10 then "#f9b848"
+#   elif v < 11 then "#f7743a"
+#   else "#f42a2a"
+#   end;
+# def humiditycolor(h):
+#   if h < 15 then "#f79e53"
+#   elif h < 30 then "#edb383"
+#   elif h < 35 then "#e1cbbb"
+#   elif h < 55 then "#d7dee8"
+#   elif h < 65 then "#a3a8f0"
+#   elif h < 80 then "#6f73f8"
+#   else "#4345ff"
+#   end;
+# def pressurecolor(p):
+#   if p < 985 then "#43b1ff"
+#   elif p < 1007 then "#68b8f5"
+#   elif p < 1015 then "#cfdbeb"
+#   elif p < 1021 then "#e76e76"
+#   else "#f75353"
+#   end;
+# def rainorsnow(snowcm; rainpct):
+#   if snowcm > 0 and rainpct > 30 then ("󰙿 " + (snowcm | tostring) + " cm")
+#   elif snowcm > 0 then ("󰼶 " + (snowcm | tostring) + " cm")
+#   else ("󰖗 " + (rainpct | tostring) + "%")
+#   end;
+# def forecast_icon(clouds; rain; snow):
+#   if snow > 30 and rain > 30 then "󰙿"
+#   elif snow > 30 then "󰼶"
+#   elif rain > 30 then ""
+#   elif rain > 60 then ""
+#   elif clouds > 30 then ""
+#   else ""
+#   end;
+# def timeofday(now; sunrise; sunset):
+#   if now < (sunrise - 3600) then 0
+#   elif now < (sunrise + 3600) then 1
+#   elif now < (sunset - 3600) then 2
+#   elif now < (sunset + 3600) then 3
+#   else 0
+#   end;
+# def geticon(t; c; r; h; w):
+#   if t == 0 then
+#     # night
+#     if c then # cloudy
+#       if r then # rainy
+#         if w then "" # windy
+#         else "" # not windy
+#         end
+#       else # not rainy
+#         if w then "" # windy
+#         else "" # not windy
+#         end
+#       end
+#     else "" # clear
+#     end
+#   elif t == 1 or t == 3 then
+#     # dusk/dawn
+#     if c then # cloudy
+#       if r then # rainy
+#         if w then "" # windy
+#         else "" # not windy
+#         end
+#       else # not rainy
+#         if w then "" # windy
+#         else "" # not windy
+#         end
+#       end
+#     else # clear
+#       if t == 1 then "" # dawn
+#       else "" # dusk
+#       end
+#     end
+#   else
+#     # day
+#     if c then # cloudy
+#       if r then # rainy
+#         if w then "" # windy
+#         else "" # not windy
+#         end
+#       else # not rainy
+#         if w then "" # windy
+#         else "" # not windy
+#         end
+#       end
+#     else # clear
+#       if w then "" # windy
+#       elif h then "" # hot
+#       else "" # not windy not hot
+#       end
+#     end
+#   end;
+# . + input | {
+#   localTime: .current_condition.[].localObsDateTime | strptime("%Y-%m-%d %I:%M %p"),
+#   tempC: .current_condition.[].temp_C,
+#   feelslikeC: .current_condition.[].FeelsLikeC,
+#   status: .current_condition.[].weatherDesc.[].value,
+#   # statusicon: .state_icon,
+#   windKMpH: .wind,
+#   windrawMpH: .current_condition.[].windspeedMiles,
+#   humidityPct: .current_condition.[].humidity,
+#   pressureHPa: .current_condition.[].pressure,
+#   uvindex: .current_condition.[].uvIndex,
+#   sunriseTime: (.weather[0].date + " " + .weather.[0].astronomy.[].sunrise) | strptime("%Y-%m-%d %I:%M %p"),
+#   sunsetTime: (.weather[0].date + " " + .weather.[0].astronomy.[].sunset) | strptime("%Y-%m-%d %I:%M %p"),
+#   snowCM: ,
+#   rainchancePct: ,
+#   rainMM: .current_condition.[].precipMM,
+#   cloudcoverPct: .current_condition.[].cloudcover,
+#   location: (.nearest_area.[].areaName.[].value + ", " +
+#     (.nearest_area.[].region.[].value |
+#       gsub("(?i)\\bAlabama\\b"; "AL") |
+#       gsub("(?i)\\bAlaska\\b"; "AK") |
+#       gsub("(?i)\\bArizona\\b"; "AZ") |
+#       gsub("(?i)\\bArkansas\\b"; "AR") |
+#       gsub("(?i)\\bCalifornia\\b"; "CA") |
+#       gsub("(?i)\\bColorado\\b"; "CO") |
+#       gsub("(?i)\\bConnecticut\\b"; "CT") |
+#       gsub("(?i)\\bDelaware\\b"; "DE") |
+#       gsub("(?i)\\bFlorida\\b"; "FL") |
+#       gsub("(?i)\\bGeorgia\\b"; "GA") |
+#       gsub("(?i)\\bHawaii\\b"; "HI") |
+#       gsub("(?i)\\bIdaho\\b"; "ID") |
+#       gsub("(?i)\\bIllinois\\b"; "IL") |
+#       gsub("(?i)\\bIndiana\\b"; "IN") |
+#       gsub("(?i)\\bIowa\\b"; "IA") |
+#       gsub("(?i)\\bKansas\\b"; "KS") |
+#       gsub("(?i)\\bKentucky\\b"; "KY") |
+#       gsub("(?i)\\bLouisiana\\b"; "LA") |
+#       gsub("(?i)\\bMaine\\b"; "ME") |
+#       gsub("(?i)\\bMaryland\\b"; "MD") |
+#       gsub("(?i)\\bMassachusetts\\b"; "MA") |
+#       gsub("(?i)\\bMichigan\\b"; "MI") |
+#       gsub("(?i)\\bMinnesota\\b"; "MN") |
+#       gsub("(?i)\\bMississippi\\b"; "MS") |
+#       gsub("(?i)\\bMissouri\\b"; "MO") |
+#       gsub("(?i)\\bMontana\\b"; "MT") |
+#       gsub("(?i)\\bNebraska\\b"; "NE") |
+#       gsub("(?i)\\bNevada\\b"; "NV") |
+#       gsub("(?i)\\bNew Hampshire\\b"; "NH") |
+#       gsub("(?i)\\bNew Jersey\\b"; "NJ") |
+#       gsub("(?i)\\bNew Mexico\\b"; "NM") |
+#       gsub("(?i)\\bNew York\\b"; "NY") |
+#       gsub("(?i)\\bNorth Carolina\\b"; "NC") |
+#       gsub("(?i)\\bNorth Dakota\\b"; "ND") |
+#       gsub("(?i)\\bOhio\\b"; "OH") |
+#       gsub("(?i)\\bOklahoma\\b"; "OK") |
+#       gsub("(?i)\\bOregon\\b"; "OR") |
+#       gsub("(?i)\\bPennsylvania\\b"; "PA") |
+#       gsub("(?i)\\bRhode Island\\b"; "RI") |
+#       gsub("(?i)\\bSouth Carolina\\b"; "SC") |
+#       gsub("(?i)\\bSouth Dakota\\b"; "SD") |
+#       gsub("(?i)\\bTennessee\\b"; "TN") |
+#       gsub("(?i)\\bTexas\\b"; "TX") |
+#       gsub("(?i)\\bUtah\\b"; "UT") |
+#       gsub("(?i)\\bVermont\\b"; "VT") |
+#       gsub("(?i)\\bVirginia\\b"; "VA") |
+#       gsub("(?i)\\bWashington\\b"; "WA") |
+#       gsub("(?i)\\bWest Virginia\\b"; "WV") |
+#       gsub("(?i)\\bWisconsin\\b"; "WI") |
+#       gsub("(?i)\\bWyoming\\b"; "WY")
+#     )
+#   ),
+#   forecast: [.weather[1:][] | {
+#     dateTime: .date | strptime("%Y-%m-%d") | strftime("%a %e %b"),
+#     tminC: .mintempC,
+#     tmaxC: .maxtempC,
+#     cloudcoverPct: ([.hourly[].cloudcover | tonumber] | add / length | tostring),
+#     snowchancePct: [.hourly[].chanceofsnow | tonumber] | max | tostring,
+#     rainchancePct: [.hourly[].chanceofrain | tonumber] | max | tostring
+#   }]
+# } | (. + {
+#   statusicon: geticon(
+#         (timeofday((.localTime | mktime); (.sunriseTime | mktime); (.sunsetTime | mktime)));
+#         (.cloudcoverPct | tonumber > 30);
+#         (.rainchancePct | tonumber > 30);
+#         (.tempC | tonumber > 28);
+#         (.windrawMpH | tonumber > 20)
+#       )
+# }) | {
+#   text: ("<tt><big>" + .statusicon + " </big></tt>" + .tempC + "°"),
+#   alt: (.status + " " + .tempC + "°"),
+#   class: "wttr",
+#   tooltip: (
+#     .location +
+#       (22 - (.status | length)) * " " +
+#       "<span font=\"15px\">~" + (.status | ascii_downcase) + "~</span>" +
+#     "\n<span font=\"50px\">" + .tempC + "°</span>" +
+#       "(" + .feelslikeC + "°C)" +
+#       "\t\t<span font=\"60px\">" +
+#         .statusicon +
+#         "</span>" +
+#     "\n " + (.sunriseTime | strftime("%l:%M%P")) +
+#       "\t\t\t<span font=\"25px\">" + rainorsnow(.snowCM | tonumber; .rainchancePct | tonumber) + "</span>" +
+#     "\n " + (.sunsetTime | strftime("%l:%M%P")) +
+#       "\n\n<span font=\"18px\" color=\"" + uvcolor(.uvindex | tonumber) + "\">󱟿 " + .uvindex + "</span>" +
+#       "\t\t<span font=\"18px\" color=\"" + humiditycolor(.humidityPct | tonumber) + "\"> " + .humidityPct + "%</span>" +
+#     "\n<span font=\"18px\"> " + .windKMpH + "</span>" +
+#       "\t<span font=\"18px\" color=\"" + pressurecolor(.pressureHPa | tonumber) + "\"> " + .pressureHPa + " hPA</span>" +
+#     "\n\n<span font=\"12px\">`````````````\t`````````````\n" +
+#     .forecast[0].dateTime +
+#       "\t" + .forecast[1].dateTime + "</span>" +
+#     "\n<span font=\"30px\">" + forecast_icon(.forecast[0].cloudcoverPct | tonumber; .forecast[0].rainchancePct | tonumber; .forecast[0].snowchancePct | tonumber) + "</span>  " +
+#       "<span font=\"12px\">" + .forecast[0].tminC + "°/" + .forecast[0].tmaxC + "°</span>" +
+#       "\t<span font=\"30px\">" + forecast_icon(.forecast[1].cloudcoverPct | tonumber; .forecast[1].rainchancePct | tonumber; .forecast[1].snowchancePct | tonumber) + "</span>  " +
+#       "<span font=\"12px\">" + .forecast[1].tminC + "°/" + .forecast[1].tmaxC +
+#     "°\n.............\t.............</span>"
+#   )
+# }'

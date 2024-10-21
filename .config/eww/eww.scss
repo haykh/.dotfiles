@@ -1,0 +1,152 @@
+@import 'style.scss';
+@import 'style/shades.scss';
+
+// global scale
+$scale: 1.0;
+
+// font sizes
+$fs-xxxxlg: calc(46px * $scale);
+$fs-xxxlg: calc(32px * $scale);
+$fs-xxlg: calc(26px * $scale);
+$fs-xlg: calc(20px * $scale);
+$fs-lg: calc(16px * $scale);
+$fs-md: calc(14px * $scale);
+$fs-sm: calc(12px * $scale);
+$fs-xs: calc(10px * $scale);
+
+// dimensions
+$nonzero: 1px;
+$padx: calc(8px * $scale);
+$pady: calc(4px * $scale);
+$border-r: calc(12px * $scale);
+$progress-w: calc(50px * $scale);
+
+/**
+ * general
+ */
+* {
+	all: unset;
+  font-size: $fs-md;
+  transition: 0.1s;
+}
+
+tooltip {
+  &.background {
+    background-color: $col-bg-alt;
+    // border: 1px solid $col-border;
+    border-radius: $border-r;
+    box-shadow: inset 0 0 2px $col-bg-dark2;
+  }
+
+  label {
+    font-family: $font-main;
+    padding: $pady $padx;
+  }
+}
+
+
+.module {
+  background-color: $col-bg;
+  box-shadow: inset 0 0 2px $col-bg-dark1;
+}
+
+@import 'style/templates.scss';
+@import 'style/debug.scss';
+
+/**
+ * bar
+ */
+.bar {
+  background-color: $col-bg;
+  border-radius: $border-r;
+  padding: $pady $padx;
+  padding-left: calc(1.5 * $padx);
+	font-family: $font-main;
+}
+
+/**
+ * left
+ */
+@import 'style/workspaces.scss';
+
+/**
+ * center
+ */
+@import 'style/locale.scss';
+
+/**
+ * right
+ */
+@import 'style/indicators.scss';
+@import 'style/hardware.scss';
+@import 'style/battery.scss';
+@import 'style/sidepanel.scss';
+@import 'style/player.scss';
+@import 'style/notifications.scss';
+
+// progressbar trough {
+//   border-bottom: $nonzero solid $col-border;
+//   min-height: $nonzero;
+//   min-width: $hist-width;
+//
+//   progress {
+//     background-color: $col-accent;
+//   }
+// }
+//
+// scale trough {
+//   background-color: $col-border;
+//   min-height: calc(7 * $nonzero);
+//   min-width: $hist-width;
+//
+//   highlight {
+//     background-color: $col-accent;
+//   }
+// }
+//
+// // widgets
+// .bar {
+  // // left
+  // @import 'style/applauncher.scss';
+  // @import 'style/workspaces.scss';
+  //
+  // // center
+  // .time {
+  //   font-family: $font-alt;
+  //   margin: 0px calc(0.5 * $bar-padding-x);
+  // }
+  // .date {
+  //   font-family: $font-alt;
+  //   margin: 0px calc(0.5 * $bar-padding-x);
+  // }
+  // .weather-short {
+  //   font-family: $font-alt;
+  //   margin: 0px calc(0.5 * $bar-padding-x);
+  // }
+  //
+  // // right
+  // @import 'style/hardware.scss';
+  // @import 'style/battery.scss';
+  //
+  // // common
+  // @import 'style/panel-btn.scss';
+// }
+//
+// // tooltips (hover)
+// @import 'style/tooltips.scss';
+//
+// // panels (click to open)
+// @import 'style/hardware-panel.scss';
+//
+// .sidepanel {
+//   @import 'style/player.scss';
+//   @import 'style/notifications.scss';
+// }
+//
+// .sidepanel, .hardware-panel {
+//   background-color: $col-bg;
+//   border-radius: $bar-border-rad;
+//   padding: calc(3 * $bar-padding-y);
+//   border: $nonzero solid $col-border;
+//   font-family: $font-main;
+// }

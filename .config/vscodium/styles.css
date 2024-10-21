@@ -1,0 +1,22 @@
+.type.storage,.type.storage.declaration, .storage.class.modifier, .mtki {
+  font-family: 'MonaspiceRn Nerd Font';
+  font-size: 1.1em;
+}
+
+.type.storage.arrow.function {
+  font-family: 'MonaspiceKr Nerd Font'
+}
+
+.decorator.name, .decorator.punctuation:not(.block), .import.keyword {
+    font-family: 'MonaspiceRn Nerd Font';
+    font-size: 1.1em
+}
+.attribute-name {
+    font-family: 'MonaspiceRn Nerd Font';
+    font-size: 1.1em
+}
+
+.comment:not(.punctuation) {
+    font-family: 'MonaspiceRn Nerd Font';
+    font-size: 1.1em
+}

@@ -1,0 +1,61 @@
+(include "./widgets/templates.yuck")
+
+; pollers
+(defpoll wifiInfo 
+  :interval "5s"
+  :initial `
+    {
+      "state": "unknown", 
+      "icon": "unknown", 
+      "ssid": "unknown"
+    }
+  `
+  `scripts/run.sh wifi --info`
+)
+
+(defpoll networkUsage
+  :interval "2s"
+  :initial ""
+  `scripts/run.sh wifi --usage`
+)
+
+(defpoll networkAddress
+  :interval "5s"
+  :initial ""
+  `scripts/run.sh wifi --address`
+)
+
+(defwidget wifi []
+  (indicator
+    :class "wifi"
+    :sec-class { wifiInfo.state }
+    :icon { wifiInfo.icon }
+    :tooltip `(box
+      :space-evenly false
+      :orientation "v"
+      (label
+        :class "ssid"
+        :xalign 0
+        :text "${ wifiInfo.ssid } ${ wifiInfo.strength }"
+      )
+      (label
+        :xalign 0
+        :yalign 0.5
+        :text "@${ wifiInfo.frequency } MHz"
+      )
+      (label
+        :xalign 0
+        :markup "${ networkAddress }"
+      )
+      (label
+        :xalign 0
+        :text "${ networkUsage }"
+      )
+    )`
+    :use-alt { wifiInfo.state != 'connected' }
+    :tooltip-alt `(label :class "state" :xalign 0 :text { wifiInfo.state })`
+    :onclick "scripts/run.sh wifi --open"
+    :onrightclick "scripts/run.sh wifi --power-toggle"
+    :onmiddleclick "scripts/run.sh rofi --vpn"
+  )
+)

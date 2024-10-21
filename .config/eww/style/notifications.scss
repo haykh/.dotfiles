@@ -1,0 +1,69 @@
+.notifications {
+  font-family: $font-serif;
+  margin-top: calc(4 * $pady);
+  margin-bottom: calc(4 * $pady);
+
+  .toprow {
+    padding: calc(2 * $pady) calc(1.5 * $padx);
+
+    .title {
+      font-family: $font-main;
+      font-size: $fs-xlg;
+    }
+
+    .clearall-box {
+      color: $col-fg-dim;
+
+      &:hover {
+        color: $col-fg;
+      }
+    }
+  }
+
+  .noti-container {
+    transition: 0;
+
+    &:hover {
+      .noti {
+        background-color: $col-bg-light2;
+        .clear {
+          color: $col-bg-light2;
+        }
+      }
+    }
+
+    .noti {
+      padding: calc(2 * $pady) calc(1.5 * $padx);
+      margin: calc(2 * $pady) calc(2 * $padx);
+      border-radius: $border-r;
+      box-shadow: 2px 2px 2px -2px $col-bg-dark1;
+      background-color: $col-bg-alt;
+
+      .header {
+        font-family: $font-alt;
+      }
+
+      .icon {
+        margin: 0 calc(1.5 * $padx) 0 0;
+      }
+
+      .clear {
+        color: $col-bg-alt;
+          transition: 0s;
+
+        label {
+          font-size: $fs-xlg;
+        }
+
+        &:hover {
+          color: $col-fg-dim;
+        }
+      }
+
+      .timestamp {
+        font-size: $fs-sm;
+        color: darken($col-fg-dim, 20%);
+      }
+    }
+  }
+}

@@ -1,0 +1,48 @@
+textbox-prompt {
+  str: @symbol-finder;
+  color: @col-finder;
+}
+
+entry {
+  placeholder: @placeholder-finder;
+}
+
+listview {
+  margin: 0.5em 0 0 0;
+  columns: 1;
+  lines: 12;
+  spacing: 0.0em;
+  dynamic: true;
+  flow: horizontal;
+  scrollbar: true;
+  scrollbar-width: 20px;
+}
+
+element {
+  children: [ element-icon, element-text ];
+  padding: 0;
+  orientation: horizontal;
+}
+
+element-icon {
+  size: 1.2em;
+  padding: 0.1em 0.2em 0.1em 0.5em;
+}
+
+element-text {
+  color: @col-fg-alt;
+  padding: 0.1em 0.0em 0.0em 0.0em;
+  font: "MonaspiceKr Nerd Font 12";
+  highlight: @col-highlight;
+}
+
+element-icon, 
+element-text {
+  horizontal-align: 0;
+}
+
+element selected {
+  border-radius: 5;
+  active-bg: @col-bg-active;
+  border: 0;
+}

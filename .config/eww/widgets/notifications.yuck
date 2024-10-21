@@ -1,0 +1,128 @@
+(deflisten notis 
+  :initial "[]"
+  `
+    rm ~/.config/eww/state/notifications && \
+      ./scripts/run.sh notifications --update && \
+      tail -F ~/.config/eww/state/notifications
+  `
+)
+
+(defwidget noti [header body time id ?icon]
+  (overlay
+    (eventbox
+      :class "noti-container"
+      (box
+        :class "noti"
+        :space-evenly false
+        :height 80
+        (box
+          :space-evenly false
+          :orientation "h"
+          (image
+            :class "icon"
+            :path "${ replace(icon, '"', '') }"
+            :image-width 60
+            :width 65
+            :valign "center"
+            :visible { icon != "" }
+          )
+          (box
+            :space-evenly false
+            :orientation "v"
+            :halign "start"
+            :valign "center"
+            (box
+              :class "header"
+              :space-evenly false
+              (label
+                :xalign 0
+                :wrap true
+                :text "${ replace(header, '"', '') }"
+              )
+            )
+            (box
+              :class "body"
+              :space-evenly false
+              (label
+                :xalign 0
+                :unindent true
+                :wrap true
+                :text "${ replace(body, '"', '') }"
+              )
+            )
+          )
+        )
+        (box 
+          :hexpand true
+          :halign "end"
+          :orientation "v"
+          (eventbox
+            :class "clear"
+            :vexpand true
+            :valign "start"
+            :halign "end"
+            :cursor "pointer"
+            :onclick `scripts/run.sh notifications --clear ${ id }`
+            (label
+              :text ""
+            )
+          )
+          (label
+            :class "timestamp"
+            :yalign 1
+            :text "${ replace(time, '"', '') }"
+          )
+        )
+      )
+    )
+  )
+)
+
+(defwidget notifications [width]
+  (box
+    :class "notifications"
+    :space-evenly false
+    :orientation "v"
+    (box
+      :class "toprow"
+      :space-evenly false
+      :hexpand true
+      :orientation "h"
+      (label
+        :class "title"
+        :xalign 0
+        :text "notifications"
+      )
+      (eventbox
+        :class "clearall-box"
+        :hexpand true
+        :onclick `scripts/run.sh notifications --clearall`
+        :cursor "pointer"
+        (label
+          :class "clearall"
+          :xalign 1
+          :text "clear all"
+        )
+      )
+    )
+    (scroll
+      :vscroll true
+      :height { round(replace(width, "px", "") / 3, 0) }
+      (box
+        :space-evenly false
+        :orientation "v"
+        :class "notis"
+        (for n in notis
+          (noti
+            :header { replace(n.header, '"', '') }
+            :body { replace(n.body, '"', '') }
+            :time { n.time }
+            :id { n.id }
+            :icon { n.img }
+          )
+        )
+      )
+    )
+  )
+)
+

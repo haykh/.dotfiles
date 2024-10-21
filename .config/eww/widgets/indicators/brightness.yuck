@@ -1,0 +1,44 @@
+; listeners
+(deflisten brightnessShow 
+  :interval "5s"
+  :initial false
+  `
+    rm -f ~/.config/eww/state/brightness-show && \
+    scripts/run.sh brightness --show --nonotify && \
+    tail -F ~/.config/eww/state/brightness-show
+  `
+)
+
+(deflisten brightnessLevel 
+  :initial 0
+  `
+    rm -f ~/.config/eww/state/brightness-level && \
+    scripts/run.sh brightness --inc 0 --nonotify && \
+    tail -F ~/.config/eww/state/brightness-level
+  `
+)
+
+(deflisten brightnessIcon 
+  :initial ""
+  `
+    rm -f ~/.config/eww/state/brightness-icon && \
+    scripts/run.sh brightness --inc 0 --nonotify && \
+    tail -F ~/.config/eww/state/brightness-icon
+  `
+)
+
+(defwidget brightness []
+  (indicator
+    :class "brightness"
+    :icon brightnessIcon
+    :tooltip `(label :text "${ brightnessLevel }%")`
+    :visible brightnessShow
+    :onscroll `scripts/run.sh brightness $(
+      if [[ {} == 'up' ]]; then 
+        echo '--inc 2'; 
+      else 
+        echo '--dec 2'; 
+      fi
+    )`
+  )
+)

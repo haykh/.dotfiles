@@ -1,0 +1,51 @@
+x-common-config: &common-config
+  USER: hayk
+  CMAKE_VERSION: "3.30.1"
+  LLVM_VERSION: "17"
+  FZF_VERSION: "0.54.2"
+  NVIM_VERSION: "0.10.1"
+  PYTHON_VERSION: "3.12"
+
+services:
+  cuda-dev:
+    image: morninbru/dev:cuda
+    container_name: cuda_dev
+    stdin_open: true
+    tty: true
+    volumes:
+      - /home/hayk/Documents/Codes/entity:/home/$USER/workspace
+    build:
+      context: .
+      dockerfile: Dockerfile.cuda
+      args:
+        USER: $USER
+        CUDA_VERSION: "12.5.0"
+        UBUNTU_VERSION: "22.04"
+        <<: *common-config
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+  rocm-dev:
+    image: morninbru/dev:rocm
+    container_name: rocm_dev
+    stdin_open: true
+    tty: true
+    privileged: true
+    ipc: host
+    volumes:
+      - /home/hayk/Documents/Codes/entity:/home/hayk/workspace
+    build: 
+      context: .
+      dockerfile: Dockerfile.rocm
+      args:
+        UBUNTU_VERSION: "20.04"
+        ROCM_VERSION: "6.1.1"
+        AMDGPU_VERSION: "6.1.1"
+        <<: *common-config
+    group_add:
+      - video
+    devices:
+      - /dev/kfd
+      - /dev/dri
+    security_opt:
+      - seccomp:unconfined

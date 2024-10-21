@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+# launchers for special apps in special workspaces
+
+if [[ "$1" == "--kitty" ]]; then
+  if [[ -z $(hyprctl workspaces | grep ws_kitty) ]]; then
+    hyprctl dispatch -- exec "[workspace special:ws_kitty; float up; size 50% 50%; move 25% 50]" -- kitty
+  else
+    hyprctl dispatch togglespecialworkspace ws_kitty
+  fi
+elif [[ "$1" == "--music" ]]; then
+  pgrep tidal-hifi && hyprctl dispatch togglespecialworkspace ws_music || tidal-hifi >/dev/null &
+elif [[ "$1" == "--slack" ]]; then
+  pgrep slack && hyprctl dispatch togglespecialworkspace ws_slack ||
+    /usr/bin/slack \
+      --disable-gpu-compositing \
+      --enable-features=UseOzonePlatform \
+      --ozone-platform=wayland \
+      --enable-features=WebRTCPipeWireCapturer \
+      --enable-features=WaylandWindowDecorations \
+      --disable-features=WaylandFractionalScaleV1 &
+elif [[ "$1" == "--email" ]]; then
+  if [[ -z $(hyprctl workspaces | grep ws_mail) ]]; then
+    hyprctl dispatch -- exec "[workspace special:ws_mail; float down; size 50% 50%; center]" -- betterbird
+  else
+    hyprctl dispatch togglespecialworkspace ws_mail
+  fi
+fi

@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+
+source $(dirname $0)/common.sh
+
+help() {
+  echo "Usage: $0 [args]"
+  echo "  --inc <n>: increase brightness by n%"
+  echo "  --dec <n>: decrease brightness by n%"
+  echo "  --get: get current brightness"
+  echo "  --show: whether to show brightness control (true if laptop)"
+  echo "  --nonotify: don't show notifications (optional)"
+}
+
+if [[ "$#" -gt 1 ]] && [[ "${@: -1}" == "--nonotify" ]]; then
+  nonotify=true
+else
+  nonotify=false
+fi
+
+not_daemon() {
+  if [[ $nonotify == true ]]; then
+    return
+  fi
+  if command -v dunstify &>/dev/null; then
+    dunstify "$@"
+  else
+    notify-send "$@"
+  fi
+}
+
+get_icon_pcent() {
+  nicons=$(jq -rc '.icons.brightness | length' $MASTERCFG)
+  value=$(brightnessctl g)
+  pcent=$(echo $value \* 100 / 255 | bc)
+  idx=$(echo $value \* $nicons / 255 | bc)
+  if [[ idx -ge $nicons ]]; then
+    idx=$(($nicons - 1))
+  fi
+  icon=$(jq -rc ".icons.brightness[$idx]" $MASTERCFG)
+  echo $pcent >>$TMPDIR/brightness-level
+  echo $icon >>$TMPDIR/brightness-icon
+}
+
+notify() {
+  pcent=$(tail -n1 $TMPDIR/brightness-level)
+  icon=$(tail -n1 $TMPDIR/brightness-icon)
+  not_daemon \
+    -a brightness-control \
+    -h string:x-canonical-private-synchronous:sys-notify \
+    -h int:value:$pcent \
+    -u low "$icon brightness" "$pcent%"
+}
+
+if [[ "$1" == "--inc" ]]; then
+
+  brightnessctl set $2%+ && get_icon_pcent && notify
+
+elif [[ "$1" == "--dec" ]]; then
+
+  brightnessctl set $2%- && get_icon_pcent && notify
+
+elif [[ "$1" == "--get" ]]; then
+
+  echo $(brightnessctl g) \* 100 / 255 | bc
+
+elif [[ "$1" == "--show" ]]; then
+
+  laptop_monitor=$(jq -rc '.hardware.monitors.laptop' $MASTERCFG)
+  if [[ $(hyprctl monitors | grep -e $laptop_monitor) ]]; then
+    echo "true" >>$TMPDIR/brightness-show
+  else
+    echo "false" >>$TMPDIR/brightness-show
+  fi
+
+else
+
+  echo "Invalid argument"
+  help
+  exit 1
+
+fi

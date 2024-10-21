@@ -1,0 +1,47 @@
+window {
+  width: 8%;
+  x-offset: -10%;        
+  location: north east;
+  anchor: north east;
+  border-radius: @borderradius-bottom;
+}
+
+textbox-prompt {
+  str: @symbol-vpn;
+  color: @col-vpn;
+}
+
+entry {
+  placeholder: @placeholder-vpn;
+}
+
+listview {
+  margin: 0.5em 0 0 0;
+  columns: 1;
+  lines: 10;
+  spacing: 0.0em;
+  dynamic: true;
+  flow: horizontal;
+  scrollbar: false;
+}
+
+element {
+  children: [ element-text ];
+  padding: 0.2em 0.5em;
+  orientation: horizontal;
+}
+
+element-text {
+  color: @col-fg-alt;
+  padding: 0.2em 0.0em 0.2em 0.0em;
+}
+
+element-text {
+  horizontal-align: 0;
+}
+
+element selected {
+  border-radius: 5;
+  active-bg: @col-bg-active;
+  border: 0;
+}

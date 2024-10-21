@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+
+help() {
+  echo "Usage: $0 [ 0 | 1 ] [args]"
+  echo "  0: discrete GPU"
+  echo "  1: integrated GPU"
+  echo "  --info: GPU info"
+  echo "  --isawake: check if GPU is awake"
+  echo "  --wake: wake up the GPU"
+  echo "  --procs: list processes using GPU"
+}
+
+if [ $# -ne 2 ]; then
+  help
+  exit 1
+fi
+
+if [[ $2 == "--info" ]]; then
+
+  if [ $1 -eq 0 ]; then
+    # discrete GPU
+    amdgpu_top -i $1 --single -d --json |
+      jq -c \
+        '{
+        temp: (.[0].gpu_metrics.temperature_hotspot), 
+        percentage: (.[0].gpu_activity.GFX.value), 
+      }'
+  else
+    # integrated GPU
+    amdgpu_top -i $1 --single -d --json |
+      jq -c \
+        '{
+        temp: (.[0].gpu_metrics.temperature_soc / 100 | round), 
+        percentage: (.[0].gpu_activity.GFX.value), 
+      }'
+  fi
+
+elif [[ $2 == "--isawake" ]]; then
+
+  if [ $1 -eq 0 ]; then
+    HWMON=4
+  else
+    HWMON=5
+  fi
+
+  POWER=$(cat /sys/class/hwmon/hwmon${HWMON}/device/power_state)
+
+  if [ "$POWER" == "D0" ]; then
+    echo 1
+  else
+    echo 0
+  fi
+
+elif [[ $2 == "--procs" ]]; then
+
+  dev=$(amdgpu_top -i $1 --single -d --json | jq -c '(.[0].DeviceName)' | sed 's/\"//g')
+  asic=$(amdgpu_top -i $1 --single -d --json | jq -c '(.[0]."ASIC Name")' | sed 's/\"//g')
+
+  proc=$(amdgpu_top -i $1 --single -p | grep "ctx" |
+    awk '{ 
+      split($1, proc, "/");
+      printf "%5d : %s\n", $7, proc[length(proc)] 
+    }' |
+    awk -v dev="$dev" -v asic="$asic" 'NR==1 { 
+      printf "%s\n(%s)\n", dev, asic
+      printf "%5s   %s\n%s\n", "MB", "PROCESS", $0 
+    } NR>1 { 
+      printf "%s\n", $0 
+    }')
+
+  echo "$proc"
+
+elif [[ $2 == "--wake" ]]; then
+
+  cat /sys/class/drm/card$(($1 + 1))/device/power_dpm_state >/dev/null
+
+else
+
+  echo "Invalid argument"
+  help
+  exit 1
+
+fi

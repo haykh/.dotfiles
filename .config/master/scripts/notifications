@@ -1,0 +1,106 @@
+#!/usr/bin/env bash
+
+source $(dirname $0)/common.sh
+
+NOTI_FILE=$TMPDIR/notifications
+ICON_PATH=$HOME/.local/share/icons/Fluent-dark
+ALT_ICON_PATH=$HOME/.local/share/icons/Fluent
+DEFAULT_ICON=$ICON_PATH/symbolic/status/info-symbolic.svg
+
+help() {
+  echo "Usage: $0 [args]"
+  echo "  --clear <id>: clear notifications by id"
+  echo "  --clearall: clear all notifications"
+  echo "  --update: update notifications"
+}
+
+update() {
+  nots=$(dunstctl history | jq -rc '.data[0]')
+  uptime=$(date +%s -d@$(cut -d' ' -f1 /proc/uptime))
+
+  allnots=$(echo "$nots" |
+    jq -rc --arg uptime "$uptime" '
+      def time_ago(ts):
+        def format_time(diff):
+          if diff < 60 then "\(diff | floor)s ago"
+          elif diff < 3600 then "\(diff / 60 | floor)m ago"
+          elif diff < 86400 then "\(diff / 3600 | floor)hr ago"
+          else "\(diff / 86400 | floor)d ago"
+          end;
+        
+        format_time((($uptime | tonumber) - ts) | floor);
+
+      [.[] | {
+        "header": .summary.data | gsub("\""; ""),
+        "body": .body.data | gsub("\""; ""),
+        "app": .appname.data,
+        "img": .icon_path.data,
+        "id": .id.data,
+        "time": time_ago(.timestamp.data / 1000000)
+      }]
+    ')
+
+  ids=$(echo "$allnots" | jq -r '.[].id')
+  apps=$(echo "$allnots" | jq -r '.[].app')
+  imgs=$(echo "$allnots" | jq -r '.[].img')
+
+  napps=$(echo "$apps" | wc -l)
+
+  newnots=$allnots
+
+  for i in $(seq 1 $napps); do
+    id=$(echo "$ids" | sed -n ${i}p)
+    app=$(echo "$apps" | sed -n ${i}p)
+    img=$(echo "$imgs" | sed -n ${i}p)
+
+    icon=$img
+
+    if [[ $app == "" ]]; then
+      icon=$DEFAULT_ICON
+    else
+      if [[ $icon == "" ]]; then
+        icon=$(find $ICON_PATH -type f -iname "*$app*" | head -n1)
+        if [[ $icon == "" ]] && [[ $ALT_ICON_PATH != "" ]]; then
+          icon=$(find $ALT_ICON_PATH -type f -iname "*$app*" | head -n1)
+        fi
+        if [[ $icon == "" ]]; then
+          icon=$DEFAULT_ICON
+        fi
+      fi
+    fi
+
+    newnots=$(echo "$newnots" | jq -rc --arg id "$id" --arg icon "$icon" '
+      (.[] | select(.id == ($id | tonumber))).img |= ($icon)
+    ')
+  done
+
+  if [[ -f $NOTI_FILE ]]; then
+    oldnots=$(tail -n1 $NOTI_FILE)
+  else
+    oldnots="[]"
+  fi
+
+  if [[ $newnots != $oldnots ]]; then
+    echo "$newnots" >>$NOTI_FILE
+  fi
+}
+
+if [[ $1 == "--clear" ]]; then
+
+  dunstctl history-rm $2 && update
+
+elif [[ $1 == "--clearall" ]]; then
+
+  dunstctl history-clear && update
+
+elif [[ $1 == "--update" ]]; then
+
+  update
+
+else
+
+  echo "Invalid argument"
+  help
+  exit 1
+
+fi

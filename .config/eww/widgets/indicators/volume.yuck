@@ -1,0 +1,45 @@
+; listeners
+(deflisten speakerVolumeLevel 
+  :initial 0
+  `
+    rm -f ~/.config/eww/state/speaker-volume-level && \
+    scripts/run.sh volume --speaker --inc 0 --nonotify && \
+    tail -F ~/.config/eww/state/speaker-volume-level
+  `
+)
+
+(deflisten speakerVolumeMuted 
+  :initial "muted"
+  `
+    rm -f ~/.config/eww/state/speaker-volume-muted && \
+    scripts/run.sh volume --speaker --inc 0 --nonotify && \
+    tail -F ~/.config/eww/state/speaker-volume-muted
+  `
+)
+
+(deflisten speakerVolumeIcon 
+  :initial ""
+  `
+    rm -f ~/.config/eww/state/speaker-volume-icon && \
+    scripts/run.sh volume --speaker --inc 0 --nonotify && \
+    tail -F ~/.config/eww/state/speaker-volume-icon
+  `
+)
+
+(defwidget volume []
+  (indicator
+    :class "volume"
+    :sec-class speakerVolumeMuted
+    :icon speakerVolumeIcon
+    :tooltip `(label :text "${ speakerVolumeLevel }%")`
+    :onclick `scripts/run.sh volume --speaker --open`
+    :onrightclick `scripts/run.sh volume --speaker --toggle`
+    :onscroll `scripts/run.sh volume --speaker $(
+      if [[ {} == 'up' ]]; then 
+        echo '--inc 2'; 
+      else 
+        echo '--dec 2'; 
+      fi
+    )`
+  )
+)

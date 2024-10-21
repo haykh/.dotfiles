@@ -1,0 +1,198 @@
+; player daemon
+(defpoll playerDaemon
+  :interval 1
+  `./scripts/run.sh player --tick`
+)
+
+; constants
+(defpoll playIcon
+  :interval "5000s"
+  :initial "x"
+  :run-while false
+  `jq -r '.icons.player.play' ~/.config/master/mastercfg.json`
+)
+
+(defpoll pauseIcon
+  :interval "5000s"
+  :initial "x"
+  :run-while false
+  `jq -r '.icons.player.pause' ~/.config/master/mastercfg.json`
+)
+
+(defpoll nextIcon
+  :interval "5000s"
+  :initial "x"
+  :run-while false
+  `jq -r '.icons.player.next' ~/.config/master/mastercfg.json`
+)
+
+(defpoll prevIcon
+  :interval "5000s"
+  :initial "x"
+  :run-while false
+  `jq -r '.icons.player.prev' ~/.config/master/mastercfg.json`
+)
+
+; variables
+(defvar playerCurrent "")
+(defvar playerCurrentSec "")
+(defvar playerStatus "")
+
+; listeners
+(deflisten playerArtist
+  :initial ""
+  `
+    rm ~/.config/eww/state/player_artist && \
+      ./scripts/run.sh player --update && \
+      tail -F ~/.config/eww/state/player_artist
+  `
+)
+
+(deflisten playerTitle
+  :initial ""
+  `
+    rm ~/.config/eww/state/player_title && \
+      ./scripts/run.sh player --update && \
+      tail -F ~/.config/eww/state/player_title
+  `
+)
+
+(deflisten playerAlbum
+  :initial ""
+  `
+    rm ~/.config/eww/state/player_album && \
+      ./scripts/run.sh player --update && \
+      tail -F ~/.config/eww/state/player_album
+  `
+)
+
+(deflisten playerIcon
+  :initial ""
+  `
+    rm ~/.config/eww/state/player_icon && \
+      ./scripts/run.sh player --update && \
+      tail -F ~/.config/eww/state/player_icon
+  `
+)
+
+(deflisten playerDuration
+  :initial ""
+  `
+    rm ~/.config/eww/state/player_duration && \
+      ./scripts/run.sh player --update && \
+      tail -F ~/.config/eww/state/player_duration
+  `
+)
+
+(deflisten playerDurationSec
+  :initial ""
+  `
+    rm ~/.config/eww/state/player_duration_sec && \
+      ./scripts/run.sh player --update && \
+      tail -F ~/.config/eww/state/player_duration_sec
+  `
+)
+
+(defwidget player [width]
+  (box
+    :class "player"
+    :space-evenly false
+    :orientation "h"
+    :visible { playerCurrent != "" }
+    (image
+      :class "art"
+      :path playerIcon
+      :image-width 150
+      :image-height 150
+    )
+    (box
+      :hexpand true
+      :orientation "v"
+      :space-evenly false
+      (box
+        :class "info"
+        :hexpand true
+        :orientation "v"
+        :space-evenly false
+        (label 
+          :xalign 0
+          :limit-width 80
+          :text ".. ${ playerTitle }"
+        )
+        (label 
+          :xalign 0
+          :limit-width 80
+          :text ".: ${ playerArtist }"
+        )
+        (label 
+          :xalign 0
+          :limit-width 80
+          :text ":: ${ playerAlbum }"
+        )
+      )
+      (box
+        :space-evenly true
+        :class "controls"
+        :orientation "h"
+        :halign "center"
+        (box
+          :class "prev"
+          (eventbox
+            :cursor "pointer"
+            :onclick `./scripts/run.sh player --prev`
+            (label 
+              :width 40
+              :height 40
+              :text prevIcon
+            )
+          )
+        )
+        (box
+          :class "play-pause"
+          (eventbox
+            :cursor "pointer"
+            :onclick `./scripts/run.sh player --play-pause`
+            (label 
+              :width 40
+              :height 40
+              :xalign { playerStatus == "paused" ? 0.55 : 0.5 }
+              :text { playerStatus == "paused" ? playIcon : pauseIcon }
+            )
+          )
+        )
+        (box
+          :class "next"
+          (eventbox
+            :cursor "pointer"
+            :onclick `./scripts/run.sh player --next`
+            (label 
+              :width 40
+              :height 40
+              :text nextIcon
+            )
+          )
+        )
+      )
+      (box
+        :class "progress"
+        :hexpand true
+        :orientation "h"
+        :space-evenly false
+        (label
+          :class "position"
+          :text "${ playerCurrent + playerDaemon}"
+        )
+        (scale
+          :hexpand true
+          :value playerCurrentSec
+          :min 0
+          :max playerDurationSec
+        )
+        (label 
+          :class "duration"
+          :text "${ playerDuration }"
+        )
+      )
+    )
+  )
+)

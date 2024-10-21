@@ -1,0 +1,62 @@
+tooltip {
+  &.background {
+    background-color: $col-bg-alt;
+    border: 1px solid $col-border;
+    border-radius: 0px 0px $bar-border-rad $bar-border-rad;
+  }
+
+  label {
+    font-family: $font-main;
+    margin: $bar-padding-y $bar-padding-x;
+  }
+}
+
+.timezones-tooltip {
+  box:first-child {
+    * {
+      font-family: $font-alt;
+      color: $col-fg-dim;
+    }
+    margin-right: -5px;
+  }
+
+  progressbar {
+    &.day {
+      progress {
+        background-color: $col-accent;
+      }
+    }
+    &.night {
+      progress {
+        background-color: $col-accent-alt;
+      }
+    }
+    trough{
+      padding-left: 10px;
+      border-bottom: none;
+      min-height: $nonzero;
+      min-width: $hist-width;
+    }
+  }
+}
+
+.calendar-tooltip {
+  font-family: $font-main;
+  padding: $bar-padding-y $bar-padding-x;
+  min-width: 300px;
+
+  .highlight {
+    color: $col-accent-alt;
+  }
+
+  .header {
+    color: $col-fg-dim;
+  }
+
+  & :selected {
+    border-radius: 5px;
+    background: $col-accent-alt;
+  }
+}
+
+

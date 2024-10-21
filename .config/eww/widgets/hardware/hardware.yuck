@@ -1,0 +1,206 @@
+; constants
+(defpoll hardwareIcon
+  :interval "5000s"
+  :initial "x"
+  :run-while false
+  `jq -r '.icons.hardware.hardware' ~/.config/master/mastercfg.json`
+)
+
+; listeners
+(deflisten hardwareRevealed 
+  :initial false
+  `tail -F ~/.config/eww/state/hw-panel`
+)
+
+; widgets
+(include "./widgets/hardware/cpu.yuck")
+(include "./widgets/hardware/ram.yuck")
+(include "./widgets/hardware/gpu.yuck")
+
+(defwidget hardware-panel-btn []
+  (box
+    :orientation "h"
+    :class "hardware panel rightlit button revealed-${ hardwareRevealed } batterymode-${ batteryInfo.mode } batterymode-${ batteryModeHover ? 'hover' : '' }"
+    (eventbox
+      :width 30
+      :cursor "pointer"
+      :onclick `./launch.sh hardware-panel`
+      (box
+        :orientation "h"
+        :space-evenly false
+        (label
+          :width 35
+          :class "icon"
+          :text hardwareIcon
+        )
+        (label
+          :class "separator"
+          :visible { 
+            (gpu0Awake == 1 && (gpu0ShowT || gpu0ShowUsage)) || 
+              (gpu1Awake == 1 && (gpu1ShowT || gpu1ShowUsage)) ||
+              (cpuShowT || cpuShowUsage) || 
+              (ramShowUsage || ramShowGB)
+          }
+          :hexpand true
+          :text "⋮"
+        )
+      )
+    )
+  )
+)
+
+(defwidget hardware []
+  (box
+    :spacing 10
+    :space-evenly false
+    :class "hardware indicators"
+    (cpu)
+    (ram)
+    (gpu1)
+    (gpu0)
+  )
+)
+
+(defwindow hardware-panel [width]
+  :geometry (geometry 
+    :width "300px"
+    :anchor "top right"
+    :x 5
+    :y 5
+  )
+  :monitor 0
+  :exclusive false
+  :stacking "fg"
+  (box
+    :class "hardware module"
+    :orientation "v"
+    (box
+      :valign "start"
+      :orientation "h"
+      :space-evenly false
+      (cpu-extended)
+      (ram-extended)
+    )
+    (box
+      :valign "start"
+      :orientation "h"
+      :space-evenly false
+      (gpu1-extended)
+      (gpu0-extended)
+    )
+  )
+)
+
+; (defwidget cpu []
+;   (tooltip
+;     (box
+;       :space-evenly false
+;       :orientation "v"
+;       :class "cpu-tooltip"
+;       (box
+;         :class "cpu-stats"
+;         :orientation "h"
+;         :space-evenly false
+;         (box 
+;           :width "20"
+;           :space-evenly false
+;           :orientation "v"
+;           :class "graph-labels temperature"
+;           (label 
+;             :text "100°C"
+;             :yalign 0
+;             :xalign 1
+;           )
+;           (label 
+;             :vexpand true
+;             :text "20°C"
+;             :yalign 1
+;             :xalign 1
+;           )
+;         )
+;         (overlay 
+;           :hexpand true
+;           :height "50"
+;           (graph
+;             :class "usage"
+;             :value { jq(EWW_CPU, '.cores | map(.usage | tonumber) | add / length | round') }
+;             :min 0
+;             :max 100
+;             :time-range "60s"
+;           )
+;           (graph
+;             :class "temperature"
+;             :value 50
+;             :value cpuTemp
+;             :min 20
+;             :max 100
+;             :time-range "60s"
+;           )
+;         )
+;         (box 
+;           :width "20"
+;           :space-evenly false
+;           :orientation "v"
+;           :class "graph-labels usage"
+;           (label 
+;             :text "100%"
+;             :yalign 0
+;             :xalign 0
+;           )
+;           (label 
+;             :vexpand true
+;             :text "0%"
+;             :yalign 1
+;             :xalign 0
+;           )
+;         )
+;       )
+;       (box 
+;         :space-evenly false
+;         :class "processes"
+;         :orientation "h"
+;         (box
+;           :space-evenly false
+;           :orientation "v"
+;           (box
+;             :class "cpu-proc"
+;             cpuProc
+;           )
+;           (box
+;             :class "ram-proc"
+;             ramProc
+;           )
+;         )
+;         (box 
+;           :space-evenly false
+;           :orientation "v"
+;           (box
+;             :class "gpu0-proc"
+;             :visible { gpu0Awake == 1 }
+;             gpu0Proc
+;           )
+;           (box
+;             :class "gpu1-proc"
+;             :visible { gpu1Awake == 1 }
+;             gpu1Proc
+;           )
+;         )
+;       )
+;     )
+;     (box 
+;       :space-evenly false
+;       :class "cpu hw-ind"
+;       (label 
+;         :class "icon"
+;         :text cpuIcon
+;       )
+;       (indicator
+;         :toggle cpuShowT
+;         :toggle_str "cpuShowT"
+;         :text1 "${ cpuTemp }°C"
+;         :text2 "${ jq(EWW_CPU, '.cores | map(.usage | tonumber) | add / length | round') }%"
+;       )
+;     )
+;   )
+; )
+

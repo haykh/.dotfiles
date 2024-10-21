@@ -1,0 +1,33 @@
+window {
+  width: 30%;
+}
+
+textbox-prompt {
+  str: @symbol-nerdicons;
+  color: @col-nerdicons;
+}
+
+entry {
+  placeholder: @placeholder-nerdicons;
+}
+
+listview {
+  require-input: true;
+  columns: 6;
+  lines: 6;
+  spacing: 0.25em;
+}
+
+element-text {
+  font: "Cantarell 10";
+}
+
+element-icon {
+  horizontal-align: 0.65;
+  size: 3em;
+}
+
+element selected {
+  background-color: #2D5CAD33;
+  border: 0px solid;
+}

@@ -1,0 +1,19 @@
+(defpoll launcherIcon
+  :interval "5000s"
+  :initial "x"
+  :run-while false
+  `jq -r '.icons.rofi.applauncher' ~/.config/master/mastercfg.json`
+)
+
+(defwidget applauncher []
+  (eventbox
+    :class "applauncher"
+    :width 40
+    :cursor "pointer"
+    :onclick `scripts/run.sh rofi --drun`
+    (label
+      :xalign 0.4
+      :text launcherIcon
+    )
+  )
+)

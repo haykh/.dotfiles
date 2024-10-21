@@ -1,0 +1,93 @@
+[
+  {
+    "IN": "docker",
+    "EXE": "/opt/docker-desktop/bin/docker-desktop",
+    "ICON": "preferences-virtualization-container",
+    "FNAME": "docker-desktop",
+    "SCRIPT": "."
+  },
+  {
+    "IN": "heroic",
+    "EXE": "/opt/Heroic/heroic --ozone-platform-hint=auto",
+    "ICON": "heroic",
+    "FNAME": "heroic",
+    "SCRIPT": "."
+  },
+  {
+    "IN": "jabref",
+    "EXE": "$HOME/.local/jabref.app/bin/JabRef",
+    "ICON": "applications-education-science",
+    "FNAME": "jabref",
+    "SCRIPT": "."
+  },
+  {
+    "IN": "kitty",
+    "EXE": "$HOME/.local/kitty.app/bin/kitty",
+    "ICON": "kitty",
+    "FNAME": "kitty",
+    "SCRIPT": "."
+  },
+  {
+    "IN": "notion",
+    "EXE": "env GDK_BACKEND=x11 /opt/Notion/notion-app",
+    "ICON": "com.notepadqq.Notepadqq",
+    "FNAME": "notion-app",
+    "SCRIPT": "."
+  },
+  {
+    "IN": "thorium",
+    "EXE": "$HOME/.local/thorium.app/thorium --ozone-platform-hint=auto",
+    "ICON": "thorium",
+    "FNAME": "thorium",
+    "SCRIPT": "."
+  },
+  {
+    "IN": "protonvpn",
+    "EXE": "protonvpn-app",
+    "ICON": "protonvpn-logo",
+    "FNAME": "protonvpn",
+    "SCRIPT": "."
+  },
+  {
+    "IN": "fontmanager",
+    "EXE": "font-manager",
+    "ICON": "fontmanager",
+    "FNAME": "com.github.FontManager.FongManager",
+    "SCRIPT": "."
+  },
+  {
+    "IN": "fontviewer",
+    "EXE": "/usr/lib/font-manager/font-viewer",
+    "ICON": "fontviewer",
+    "FNAME": "com.github.FontManager.FontViewer",
+    "SCRIPT": "."
+  },
+  {
+    "IN": "codium",
+    "EXE": "",
+    "ICON": "vscodium",
+    "FNAME": "codium-wayland",
+    "SCRIPT": "SSH_AUTH_SOCK=$(cat /tmp/ssh_auth_sock) /usr/bin/codium --enable-features=UseOzonePlatform,WaylandWindowDecorations --ozone-platform=wayland &"
+  },
+  {
+    "IN": "vrrtest",
+    "EXE": "vrrtest",
+    "ICON": "virtual-box",
+    "FNAME": "vrrtest",
+    "SCRIPT": "."
+  },
+  {
+    "IN": "freecad",
+    "EXE": "FreeCAD",
+    "ICON": "freecad",
+    "FNAME": "org.freecad.FreeCAD",
+    "SCRIPT": "."
+  },
+  {
+    "IN": "rnote",
+    "EXE": "env GSK_RENDERER=gl rnote",
+    "ICON": "com.github.flxzt.rnote",
+    "FNAME": "com.github.flxzt.rnote",
+    "SCRIPT": "."
+  }
+]

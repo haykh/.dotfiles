@@ -1,0 +1,145 @@
+* {
+  // variables
+  fontmono: "MonaspiceKr Nerd Font 12";
+  fontsans: "Cantarell 12";
+
+  col-bg: #0f0f17af;
+  col-fg: #f5f8f2;
+  col-fg-alt: #d1dfef;
+  col-fg-dim: #81a3deff;
+  col-bg-active: #2D5CAD88;
+  col-border: #9cb9dd33;
+  col-accent: #d992e1;
+  col-highlight: bold #d992e1;
+
+  col-applauncher: #d95d5d;
+  col-bitwarden: #175DDC;
+  col-nerdicons: #d9d55d;
+  col-pyfia: #3774A9;
+  col-refs: #74d495;
+  col-vpn: #d2518c;
+  col-finder: #c4a3e9;
+  col-calc: #D49A74;
+
+  symbol-applauncher: "λ ";
+  symbol-bitwarden: " ";
+  symbol-nerdicons: " ";
+  symbol-pyfia: " ";
+  symbol-refs: " ";
+  symbol-vpn: "󰖂 ";
+  symbol-moji: "😎";
+  symbol-finder: "󰮗 ";
+  symbol-calc: "󰿈 ";
+
+  placeholder-applauncher: "run";
+  placeholder-nerdicons: "nerdicons";
+  placeholder-refs: "refs";
+  placeholder-vpn: "vpn";
+  placeholder-moji: "emojis";
+  placeholder-finder: "find";
+
+  borderradius: 12px;
+  borderradius-bottom: 0 0 12px 12px;
+}
+
+* {
+  background-color: transparent;
+  text-color: @col-fg;
+}
+
+window {
+  font: @fontmono;
+  background-color: @col-bg;
+  border-radius: @borderradius;
+  border: 1px solid;
+  border-color: @col-border;
+}
+
+mainbox {
+  background: transparent;
+  spacing: 0px;
+  border-radius: @borderradius;
+  padding: 1em;
+  children: [ inputbar, message, listview ];
+}
+
+// .... inputbar .... //
+inputbar {
+  margin: 0px 0px 0em 0em;
+  spacing: 0.4em;
+  children: [ textbox-prompt, entry ];
+}
+
+textbox-prompt {
+  expand: false;
+  str: @symbol-applauncher;
+  color: @col-applauncher;
+}
+
+entry {
+  placeholder: @placeholder-applauncher;
+  placeholder-color: white/30%;
+}
+
+// .... message .... //
+message {
+  padding: 0.5em;
+  margin: 0.5em 0 0 0;
+  border: 0 0 0 2px solid;
+  border-color: @col-border;
+}
+
+// .... listview .... //
+listview {
+  margin: 0.5em 0 0 0;
+  fixed-columns: true;
+  columns: 7;
+  lines: 4;
+  spacing: 1em;
+  dynamic: true;
+  flow: horizontal;
+  scrollbar: true;
+  scrollbar-width: 20px;
+}
+
+scrollbar {
+  background-color: @col-bg;
+  handle-color: @col-border;
+}
+
+// .... listview elements .... //
+element {
+  background: transparent;
+  children: [ element-icon, element-text ];
+  padding: 1em 1em;
+  orientation: vertical;
+}
+
+element-text {
+  font: @fontsans;
+}
+
+element-text,
+element-icon  {
+  horizontal-align: 0.5;
+}
+
+element, element-text, element-icon, button {
+  cursor: pointer;
+}
+
+element-icon {
+  size: 3.5em;
+}
+
+element-text {
+  color: @col-fg-dim;
+  highlight: white;
+}
+
+element selected {
+  background-color: @col-bg-active;
+  border: 1px solid;
+  border-radius: @borderradius;
+  border-color: @col-border;
+}

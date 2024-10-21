@@ -1,0 +1,21 @@
+[Desktop Entry]
+Name=Thunderbird (beta)
+Exec=@exe@ %u
+Icon=@icon@
+Type=Application
+Terminal=false
+Categories=Network;Email;
+MimeType=message/rfc822;x-scheme-handler/mailto;application/x-xpinstall;
+StartupNotify=true
+Actions=ComposeMessage;OpenAddressBook;
+StartupWMClass=thunderbird-beta
+
+[Desktop Action ComposeMessage]
+Name=Write new message
+Exec=@exe@ -compose
+StartupWMClass=thunderbird-beta
+
+[Desktop Action OpenAddressBook]
+Name=Open address book
+Exec=@exe@ -addressbook
+StartupWMClass=thunderbird-beta

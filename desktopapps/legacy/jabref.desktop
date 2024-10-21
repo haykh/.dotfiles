@@ -1,0 +1,7 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Terminal=false
+Exec=/home/hayk/.local/jabref.app/bin/JabRef
+Name=JabRef
+Icon=~/.local/share/icons/candy-icons/apps/scalable/JabRef.svg

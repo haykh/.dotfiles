@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=ghostwriter
+Exec=@exe@
+Icon=@icon@
+Type=Application
+Comment=Distraction-free text editor for Markdown
+Terminal=false
+MimeType=text/plain;text/markdown;text/x-markdown;
+Categories=Qt;Office;WordProcessor;
+Keywords=Markdown;editor;document;fullscreen;distraction;concentration;focused;writing;

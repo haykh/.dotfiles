@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+help() {
+  echo "Usage: $0 [args]"
+  echo "  --procs: returns the top 10 processes by memory usage"
+}
+
+if [[ $1 == "--procs" ]]; then
+
+  ps -eo rss,cmd | grep -v '\[' | awk '
+    NR>2 {
+      mem[$2]+=$1
+    } END {
+      for(k in mem) 
+        print k " " mem[k]/1024
+    };' | sort -rgk 2 | head -n 10 | awk '
+    { 
+      split($1, proc, "/")
+      printf "%5.0f : %s\n", $2, proc[length(proc)]
+    };' | awk '
+    NR==1 { 
+      printf "%5s   %s\n%s\n", "MB", "PROCESS", $0 
+    } NR>1 { 
+      printf "%s\n", $0 
+    }' | sed 's/\n$//'
+
+else
+
+  echo "Invalid argument"
+  help
+  exit 1
+
+fi

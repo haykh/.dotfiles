@@ -1,0 +1,72 @@
+(include "./widgets/templates.yuck")
+
+; constants
+(defvar batteryReveal false)
+(defvar batteryModeHover false)
+
+; pollers
+(defpoll batteryInfo 
+  :initial `
+    {
+      "pcent": 0, 
+      "pcent_state": "unknown", 
+      "status": "unknown", 
+      "icon": "unknown", 
+      "mode": "unknown", 
+      "modeicon": "unknown", 
+      "tooltip": "unknown"
+    }
+  `
+  :interval "2s"
+  `scripts/run.sh power --info`
+)
+
+(defpoll keepDGPUAwake
+  :initial ""
+  :interval "2s"
+  :run-while { batteryInfo.mode != 'power-saver' }
+  `scripts/run.sh amdgpu 0 --wake`
+)
+
+(defwidget battery []
+  (eventbox 
+    :onhover "${ EWW_CMD } update batteryReveal=true"
+    :onhoverlost "${ EWW_CMD } update batteryReveal=false"
+    (box 
+      :orientation "h"
+      :class "battery"
+      :space-evenly false
+      :spacing 8
+      :tooltip { batteryInfo.tooltip }
+      (revealer 
+        :transition "slideright"
+        :reveal batteryReveal
+        :duration "350ms"
+        (box 
+          :width 25
+          :class "mode ${ batteryInfo.mode } ${ batteryModeHover ? 'hover' : '' }" 
+          :tooltip "power mode: ${ batteryInfo.mode }"
+          (eventbox
+            :cursor "pointer"
+            :onclick `scripts/run.sh power --nextmode`
+            :onhover "${ EWW_CMD } update batteryModeHover=true"
+            :onhoverlost "${ EWW_CMD } update batteryModeHover=false"
+            { batteryInfo.modeicon + keepDGPUAwake }
+          )
+        )
+      )
+      (box 
+        :width 25
+        :class "icon ${ batteryInfo.pcent_state } ${ batteryInfo.status }"
+        (circular-progress
+          :value { batteryInfo.pcent }
+          :thickness 3
+          (label 
+            :class "statusicon" 
+            :text { batteryInfo.icon }
+          )
+        )
+      )
+    )
+  )
+)

@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+if [[ "$1" == "--drun" ]]; then
+  killall rofi ||
+    rofi -show drun \
+      -kb-row-left Left -kb-row-right Right \
+      -kb-move-char-back Control+b -kb-move-char-forward Control+f \
+      -drun-display-format "{name}" \
+      -theme-str "@import \"$SCRIPT_DIR/drun.rasi\""
+elif [[ "$1" == "--calc" ]]; then
+  killall rofi ||
+    rofi \
+      -show calc -modi calc \
+      -no-show-match -no-sort -no-show-icons -no-fixed-num-lines \
+      -theme-str "@import \"$SCRIPT_DIR/calc.rasi\"" | wl-copy
+elif [[ "$1" == "--bw" ]]; then
+  killall rofi || $SCRIPT_DIR/bw/bw.sh
+elif [[ "$1" == "--pyfia" ]]; then
+  killall rofi || $SCRIPT_DIR/pyfia/pyfia.sh
+elif [[ "$1" == "--nerdicons" ]]; then
+  killall rofi || $SCRIPT_DIR/nerdicons/nerdicons.sh
+elif [[ "$1" == "--emojis" ]]; then
+  killall rofi || killall rofimoji || $HOME/.local/bin/rofimoji --selector-args="
+      -theme $SCRIPT_DIR/moji.rasi
+      -kb-row-left Left -kb-row-right Right 
+      -kb-move-char-back Control+b -kb-move-char-forward Control+f
+    " --hidden-descriptions -a type copy --max-recent 0
+elif [[ "$1" == "--refs" ]]; then
+  killall rofi || $SCRIPT_DIR/refs/refs.sh
+elif [[ "$1" == "--vpn" ]]; then
+  killall rofi || $SCRIPT_DIR/vpn/vpn.sh >/dev/null 2>&1
+elif [[ "$1" == "--finder" ]]; then
+  killall rofi || rofi \
+    -show find -modi find:$HOME/.config/master/scripts/finder.sh \
+    -theme-str "@import \"$SCRIPT_DIR/finder/finder.rasi\""
+fi

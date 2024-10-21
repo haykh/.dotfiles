@@ -1,0 +1,150 @@
+#!/usr/bin/env bash
+
+source $(dirname $0)/common.sh
+
+help() {
+  echo "Usage: $0 [args]"
+  echo "  --power-toggle: toggle wifi power"
+  echo "  --open: open wifi settings"
+  echo "  --info: json with wifi info"
+  echo "  --usage: wifi usage info for tooltip"
+  echo "  --address: local and global ip address"
+}
+
+if [ $# -ne 1 ]; then
+  help
+  exit 1
+fi
+
+if [[ $1 == "--power-toggle" ]]; then
+
+  if [[ $(nmcli r wifi | grep enabled) ]]; then
+    nmcli r wifi off
+  else
+    nmcli r wifi on
+  fi
+
+elif [[ $1 == "--open" ]]; then
+
+  hyprctl dispatch exec "[floating; size 50% 40%; move 40% 60; animation slide top]" alacritty -- -e $(dirname $0)/wifi.sh
+
+elif [[ $1 == "--info" ]]; then
+
+  DEVICEID=$(jq -rc '.hardware.wifi.device_id' $MASTERCFG)
+  CONNECTED_ICON=$(jq -rc '.icons.wifi.connected' $MASTERCFG)
+  DISCONNECTED_ICON=$(jq -rc '.icons.wifi.disconnected' $MASTERCFG)
+  POWEROFF_ICON=$(jq -rc '.icons.wifi.poweroff' $MASTERCFG)
+
+  status=$(nmcli g | grep -oE "full")
+  essid=$(nmcli c | grep $DEVICEID | awk '{print ($1)}')
+  powered=$(nmcli r wifi | grep enabled)
+  devinfo=$(iw dev $DEVICEID link)
+  frequency=$(echo "$devinfo" | grep 'freq' | cut -d':' -f2 | cut -d'.' -f1)
+  strength=$(echo "$devinfo" | grep 'signal' | cut -d':' -f2 | cut -d' ' -f2)
+  rxrate=$(echo "$devinfo" | grep rx | cut -d':' -f2 | cut -d' ' -f2-3)
+  txrate=$(echo "$devinfo" | grep tx | cut -d':' -f2 | cut -d' ' -f2-3)
+
+  if [[ $strength -gt -50 ]]; then
+    strength="▂▄▆█"
+  elif [[ $strength -gt -67 ]]; then
+    strength="▂▄▆ "
+  elif [[ $strength -gt -70 ]]; then
+    strength="▂▄  "
+  elif [[ $strength -gt -80 ]]; then
+    strength="▂   "
+  else
+    strength="    "
+  fi
+
+  if [ $status ]; then
+    if [ $powered ]; then
+      icon=$CONNECTED_ICON
+      ssid="${essid}"
+      state="connected"
+    else
+      icon=$POWEROFF_ICON
+      ssid=""
+      state="power-off"
+    fi
+  else
+    ssid=""
+    if [ $powered ]; then
+      icon=$DISCONNECTED_ICON
+      state="disconnected"
+    else
+      icon=$POWEROFF_ICON
+      state="power-off"
+    fi
+  fi
+
+  echo '{"state": "'$state'", "ssid": "'$ssid'", "icon": "'$icon'", "frequency": "'$frequency'", "strength": "'$strength'", "rxrate": "'$rxrate'", "txrate": "'$txrate'"}'
+
+elif [[ $1 == "--usage" ]]; then
+
+  UPDATE_INTERVAL=2
+  DEVICEID=$(jq -rc '.hardware.wifi.device_id' $MASTERCFG)
+  DOWNLOAD_ICON=$(jq -rc '.icons.wifi.download' $MASTERCFG)
+  UPLOAD_ICON=$(jq -rc '.icons.wifi.upload' $MASTERCFG)
+
+  bytes_to_human_readable() {
+    scale=0
+    multiplier=1
+    unit="B"
+    diff=$(echo "scale=0; ($1) / $UPDATE_INTERVAL" | bc)
+    if [ $diff -gt 1073741824 ]; then
+      multiplier=1073741824
+      scale=2
+      unit="GB"
+    elif [ $diff -gt 1048576 ]; then
+      multiplier=1048576
+      scale=1
+      unit="MB"
+    elif [ $diff -gt 1024 ]; then
+      multiplier=1024
+      scale=0
+      unit="KB"
+    else
+      scale=0
+      unit="B"
+    fi
+    echo $(echo "scale=$scale; ($diff) / ($multiplier)" | bc) $unit"/s"
+  }
+
+  if [ ! -f $TMPDIR/rx_bytes ]; then
+    echo 0 >$TMPDIR/rx_bytes
+  fi
+
+  if [ ! -f $TMPDIR/tx_bytes ]; then
+    echo 0 >$TMPDIR/tx_bytes
+  fi
+
+  rx_bytes=$(cat $TMPDIR/rx_bytes)
+  tx_bytes=$(cat $TMPDIR/tx_bytes)
+
+  now=$(ifstat -j | jq ".kernel.${DEVICEID}")
+  rx_bytes_now=$(echo $now | jq ".rx_bytes")
+  rx_bytes_diff=$(echo "$rx_bytes_now - $rx_bytes")
+  tx_bytes_now=$(echo $now | jq ".tx_bytes")
+  tx_bytes_diff=$(echo "$tx_bytes_now - $tx_bytes")
+
+  echo $rx_bytes_now >$TMPDIR/rx_bytes
+  echo $tx_bytes_now >$TMPDIR/tx_bytes
+
+  printf "%s %s %s\n%s %s %s" $DOWNLOAD_ICON $(bytes_to_human_readable "${rx_bytes_diff}") $UPLOAD_ICON $(bytes_to_human_readable "${tx_bytes_diff}")
+
+elif [[ $1 == "--address" ]]; then
+
+  GLOBAL_ICON=$(jq -rc '.icons.wifi.global' $MASTERCFG)
+  LOCAL_ICON=$(jq -rc '.icons.wifi.local' $MASTERCFG)
+
+  glob_ip=$(curl ifconfig.me)
+  loc_ip=$(ip a show $(jq -r '.hardware.wifi.device_id' $MASTERCFG) | grep "inet " | awk '{ print $2 }' | cut -d '/' -f 1)
+  printf "%s %s\n%s %s" $LOCAL_ICON $loc_ip $GLOBAL_ICON $glob_ip
+
+else
+
+  echo "Invalid argument"
+  help
+  exit 1
+
+fi

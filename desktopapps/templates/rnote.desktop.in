@@ -1,0 +1,16 @@
+[Desktop Entry]
+Name=Rnote
+Exec=@exe@ %f
+Icon=@icon@
+Comment=Sketch and take handwritten notes
+Type=Application
+Terminal=false
+MimeType=application/rnote;image/svg+xml;image/png;image/jpeg;application/pdf;application/x-xopp;
+Categories=GNOME;GTK;Graphics;
+Keywords=Gnome;GTK;Office;Graphics;Notes;
+StartupNotify=true
+Actions=new-window
+
+[Desktop Action new-window]
+Name=New Window
+Exec=@exe@ %f

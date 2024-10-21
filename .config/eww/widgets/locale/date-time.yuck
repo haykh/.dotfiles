@@ -1,0 +1,103 @@
+(include "./widgets/templates.yuck")
+
+; variables
+(defvar updateTz false)
+
+; pollers
+(defpoll worldtime
+  :initial '[]'
+  :interval "5s"
+  `
+    TZS=$(jq -rc '.configs.time.world' ~/.config/master/mastercfg.json);
+    len=$(echo "$TZS" | jq -r '. | length'); 
+    now=$(date +%Y%m%d);
+    echo [$(
+      for i in $(seq 1 $len); do 
+        tz=$(echo "$TZS" | jq -r '.['$i-1']');
+        loc=$(echo $tz | cut -d'/' -f2 | sed 's/_/ /g');
+        echo -n '{"time": "'
+        echo -n " ";
+        echo -n $(
+          TZ=$tz date +'%-I:%M %P'
+        ); 
+        pcent=$(printf %.0f $(echo "scale=2;100 * ("$(TZ=$tz date "+%H + %M / 60")")" / 24 | bc -l))
+        diff=$(( $(TZ=$tz date +%Y%m%d) - $now ));
+        if [[ $diff -ne 0 ]]; then 
+          echo -n '*'; 
+        fi;
+        echo -n '", ';
+        echo -n '"loc": "'$loc'", ';
+        echo -n '"pcent": "'$pcent'"';
+        if [[ ! i -eq $len ]]; then 
+          echo -n '}, '; 
+        else 
+          echo -n '}'; 
+        fi; 
+      done)]
+  `
+)
+
+(defwidget time []
+  (tooltip
+    (box
+      :space-evenly false
+      :class "time tooltip"
+      :orientation "h"
+      (box
+        :orientation "v"
+        :valign "fill"
+        (for l in { worldtime }
+          (label 
+            :text { replace(jq(l, ".loc"), "\"", "") }
+            :xalign 1
+          )
+        )
+      )
+      (box
+        :orientation "v"
+        :valign "fill"
+        (for t in { worldtime }
+          (overlay
+            (label 
+              :text { replace(jq(t, ".time"), "\"", "") }
+              :xalign 0
+            )
+            (progress
+              :class { replace(jq(t, ".pcent"), "\"", "") < 30 || replace(jq(t, ".pcent"), "\"", "") > 90 ? "night" : "day" }
+              :valign "baseline"
+              :orientation "h"
+              :value { replace(jq(t, ".pcent"), "\"", "") }
+            )
+          )
+        )
+      )
+    )
+    (box 
+      :class "time"
+      (eventbox 
+        :onhover `eww update updateTz=true`
+        :onhoverlost `eww update updateTz=false`
+        :cursor "context-menu"
+        { formattime(EWW_TIME, "%-I:%M %P") }
+      )
+    )
+  )
+)
+
+(defwidget date []
+  (tooltip
+    (box
+      :class "calendar tooltip"
+      :orientation "h"
+      (calendar)
+    )
+    (box 
+      :class "date"
+      (eventbox 
+        :cursor "pointer"
+        :onclick `hyprctl dispatch exec [float] $HOME/.local/thorium.app/thorium -- --ozone-platform-hint=auto --app='https://calendar.proton.me/'`
+        { formattime(EWW_TIME, "%a %-d %b") }
+      )
+    )
+  )
+)

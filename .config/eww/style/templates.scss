@@ -1,0 +1,76 @@
+.inlet {
+  margin: calc(0.5 * $pady) 0;
+  background-color: $col-bg-light4;
+  border-radius: calc(2 * $border-r);
+  padding: 2px calc(1.5 * $padx);
+  box-shadow: inset 0 0 2px $col-bg-dark2, 0 0 1px $col-bg-dark4;
+
+  &.locale {
+    padding: 0px calc(2.5 * $padx);
+  }
+}
+
+.panel.button {
+  * {
+    transition: 0s;
+    font-size: $fs-xlg;
+    font-family: $font-mono;
+  }
+
+  margin: $pady 0;
+
+  .icon {
+    border-radius: calc(0.5 * $border-r);
+  }
+
+  &.revealed-true {
+    .icon {
+      background-color: $col-fg;
+      box-shadow: inset 0 0 2px $col-bg-light5, 0 0 1px $col-bg-dark4;
+      color: $col-bg-alt;
+    }
+
+    &.rightlit.batterymode-performance.batterymode-hover .icon {
+      box-shadow: inset 0 0 2px $col-bg-light5, 0 0 1px $col-bg-dark4, inset -6px 0px 2px -4px $col-performance;
+    }
+
+    &.rightlit.batterymode-balanced.batterymode-hover .icon {
+      box-shadow: inset 0 0 2px $col-bg-light5, 0 0 1px $col-bg-dark4, inset -6px 0px 2px -4px $col-balanced;
+    }
+
+    &.rightlit.batterymode-power-saver.batterymode-hover .icon {
+      box-shadow: inset 0 0 2px $col-bg-light5, 0 0 1px $col-bg-dark4, inset -6px 0px 2px -4px $col-power-saver;
+    }
+
+    &.leftlit.batterymode-performance.batterymode-hover .icon {
+      box-shadow: inset 0 0 2px $col-bg-light5, 0 0 1px $col-bg-dark4, inset 6px 0px 2px -4px $col-performance;
+    }
+
+    &.leftlit.batterymode-balanced.batterymode-hover .icon {
+      box-shadow: inset 0 0 2px $col-bg-light5, 0 0 1px $col-bg-dark4, inset 6px 0px 2px -4px $col-balanced;
+    }
+
+    &.leftlit.batterymode-power-saver.batterymode-hover .icon {
+      box-shadow: inset 0 0 2px $col-bg-light5, 0 0 1px $col-bg-dark4, inset 6px 0px 2px -4px $col-power-saver;
+    }
+  }
+}
+
+.inlet {
+  &.batterymode-performance.batterymode-hover {
+    box-shadow: inset 0 0 2px $col-bg-dark2, 0 0 1px $col-bg-dark4, inset -6px 0px 2px -4px $col-performance;
+  }
+
+  &.batterymode-balanced.batterymode-hover {
+    box-shadow: inset 0 0 2px $col-bg-dark2, 0 0 1px $col-bg-dark4, inset -6px 0px 2px -4px $col-balanced;
+  }
+
+  &.batterymode-power-saver.batterymode-hover {
+    box-shadow: inset 0 0 2px $col-bg-dark2, 0 0 1px $col-bg-dark4, inset -6px 0px 2px -4px $col-power-saver;
+  }
+}
+
+.module {
+  padding: calc(2 * $pady) calc(2 * $padx);
+  border-radius: $border-r;
+}

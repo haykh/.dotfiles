@@ -1,0 +1,404 @@
+(defpoll wttr_daemon
+  :initial ""
+  :interval "300s"
+  `./scripts/run.sh weather --update`
+)
+
+; listeners
+(deflisten wttr_location
+  :initial ""
+  `rm -f ~/.config/eww/state/wttr-location && \ 
+    ./scripts/run.sh weather --location && \
+    tail -F ~/.config/eww/state/wttr-location`
+)
+
+(deflisten wttr_temp
+  :initial -100
+  `rm -f ~/.config/eww/state/wttr-temp && \ 
+    ./scripts/run.sh weather --temp && \
+    tail -F ~/.config/eww/state/wttr-temp`
+)
+
+(deflisten wttr_feelslike
+  :initial -1
+  `rm -f ~/.config/eww/state/wttr-feelslike && \ 
+    ./scripts/run.sh weather --feelslike && \
+    tail -F ~/.config/eww/state/wttr-feelslike`
+)
+
+(deflisten wttr_sunrise
+  :initial ""
+  `rm -f ~/.config/eww/state/wttr-sunrise && \ 
+    ./scripts/run.sh weather --sunrise && \
+    tail -F ~/.config/eww/state/wttr-sunrise`
+)
+
+(deflisten wttr_sunset
+  :initial ""
+  `rm -f ~/.config/eww/state/wttr-sunset && \ 
+    ./scripts/run.sh weather --sunset && \
+    tail -F ~/.config/eww/state/wttr-sunset`
+)
+
+(deflisten wttr_status
+  :initial ""
+  `rm -f ~/.config/eww/state/wttr-status && \ 
+    ./scripts/run.sh weather --status && \
+    tail -F ~/.config/eww/state/wttr-status`
+)
+
+(deflisten wttr_statusicon
+  :initial ""
+  `rm -f ~/.config/eww/state/wttr-statusicon && \ 
+    ./scripts/run.sh weather --statusicon && \
+    tail -F ~/.config/eww/state/wttr-statusicon`
+)
+
+(deflisten wttr_rainorsnow
+  :initial ""
+  `rm -f ~/.config/eww/state/wttr-rainorsnow && \ 
+    ./scripts/run.sh weather --rainorsnow && \
+    tail -F ~/.config/eww/state/wttr-rainorsnow`
+)
+
+(deflisten wttr_uvindex
+  :initial -1
+  `rm -f ~/.config/eww/state/wttr-uvindex && \ 
+    ./scripts/run.sh weather --uvindex && \
+    tail -F ~/.config/eww/state/wttr-uvindex`
+)
+
+(deflisten wttr_wind
+  :initial ""
+  `rm -f ~/.config/eww/state/wttr-wind && \ 
+    ./scripts/run.sh weather --wind && \
+    tail -F ~/.config/eww/state/wttr-wind`
+)
+
+(deflisten wttr_humidity
+  :initial -1
+  `rm -f ~/.config/eww/state/wttr-humidity && \ 
+    ./scripts/run.sh weather --humidity && \
+    tail -F ~/.config/eww/state/wttr-humidity`
+)
+
+(deflisten wttr_pressure
+  :initial -1
+  `rm -f ~/.config/eww/state/wttr-pressure && \ 
+    ./scripts/run.sh weather --pressure && \
+    tail -F ~/.config/eww/state/wttr-pressure`
+)
+
+(deflisten wttr_forecast1_date
+  :initial ""
+  `rm -f ~/.config/eww/state/wttr-forecast-1-date && \ 
+    ./scripts/run.sh weather --forecast && \
+    tail -F ~/.config/eww/state/wttr-forecast-1-date`
+)
+
+(deflisten wttr_forecast1_icon
+  :initial ""
+  `rm -f ~/.config/eww/state/wttr-forecast-1-icon && \ 
+    ./scripts/run.sh weather --forecast && \
+    tail -F ~/.config/eww/state/wttr-forecast-1-icon`
+)
+
+(deflisten wttr_forecast1_tmin
+  :initial -1
+  `rm -f ~/.config/eww/state/wttr-forecast-1-temp-min && \ 
+    ./scripts/run.sh weather --forecast && \
+    tail -F ~/.config/eww/state/wttr-forecast-1-temp-min`
+)
+
+(deflisten wttr_forecast1_tmax
+  :initial -1
+  `rm -f ~/.config/eww/state/wttr-forecast-1-temp-max && \ 
+    ./scripts/run.sh weather --forecast && \
+    tail -F ~/.config/eww/state/wttr-forecast-1-temp-max`
+)
+
+(deflisten wttr_forecast2_date
+  :initial ""
+  `rm -f ~/.config/eww/state/wttr-forecast-2-date && \ 
+    ./scripts/run.sh weather --forecast && \
+    tail -F ~/.config/eww/state/wttr-forecast-2-date`
+)
+
+(deflisten wttr_forecast2_icon
+  :initial ""
+  `rm -f ~/.config/eww/state/wttr-forecast-2-icon && \ 
+    ./scripts/run.sh weather --forecast && \
+    tail -F ~/.config/eww/state/wttr-forecast-2-icon`
+)
+
+(deflisten wttr_forecast2_tmin
+  :initial -1
+  `rm -f ~/.config/eww/state/wttr-forecast-2-temp-min && \ 
+    ./scripts/run.sh weather --forecast && \
+    tail -F ~/.config/eww/state/wttr-forecast-2-temp-min`
+)
+
+(deflisten wttr_forecast2_tmax
+  :initial -1
+  `rm -f ~/.config/eww/state/wttr-forecast-2-temp-max && \ 
+    ./scripts/run.sh weather --forecast && \
+    tail -F ~/.config/eww/state/wttr-forecast-2-temp-max`
+)
+
+
+; constants
+(defpoll sunriseIcon
+  :interval "5000s"
+  :initial "x"
+  :run-while false
+  `jq -r '.icons.weather.sunrise' ~/.config/master/mastercfg.json`
+)
+
+(defpoll sunsetIcon
+  :interval "5000s"
+  :initial "x"
+  :run-while false
+  `jq -r '.icons.weather.sunset' ~/.config/master/mastercfg.json`
+)
+
+(defpoll uvIcon
+  :interval "5000s"
+  :initial "x"
+  :run-while false
+  `jq -r '.icons.weather.uv' ~/.config/master/mastercfg.json`
+)
+
+(defpoll windIcon
+  :interval "5000s"
+  :initial "x"
+  :run-while false
+  `jq -r '.icons.weather.wind' ~/.config/master/mastercfg.json`
+)
+
+(defpoll humidityIcon
+  :interval "5000s"
+  :initial "x"
+  :run-while false
+  `jq -r '.icons.weather.humidity' ~/.config/master/mastercfg.json`
+)
+
+(defpoll pressureIcon
+  :interval "5000s"
+  :initial "x"
+  :run-while false
+  `jq -r '.icons.weather.pressure' ~/.config/master/mastercfg.json`
+)
+
+(defwidget weather []
+  (tooltip
+    :visible { wttr_status != "" && wttr_temp != -100 }
+    (weather-tooltip)
+    (box
+      :class "weather-short"
+      (eventbox 
+        :cursor "context-menu"
+        "${ wttr_statusicon } ${ wttr_temp + wttr_daemon }°C"
+      )
+    )
+  )
+)
+
+(defwidget forecast [date icon tmin tmax]
+  (box
+    :class "forecast-item"
+    :orientation "v"
+    (label 
+      :xalign 0.5
+      :text date
+    )
+    (box 
+      :space-evenly false
+      :orientation "h"
+      (label
+        :class "forecast-icon"
+        :halign "end"
+        :text icon
+      )
+      (label
+        :class "forecast-temp"
+        :halign "start"
+        :text "${ tmin }°C/${ tmax }°C"
+      )
+    )
+  )
+)
+
+(defwidget weather-tooltip []
+  (box
+    :space-evenly false
+    :class "weather tooltip"
+    :orientation "v"
+    (box
+      :space-evenly false
+      :class "header"
+      :orientation "h"
+      (label 
+        :xalign 0
+        :text "@ ${ wttr_location }"
+      )
+      (label 
+        :hexpand true
+        :xalign 1
+        :text "~${ wttr_status }~"
+      )
+    )
+    
+    (box
+      :space-evenly false
+      :class "main"
+      :orientation "h"
+      (box
+        :space-evenly false
+        :class "left"
+        :orientation "v"
+        (box
+          :space-evenly false
+          :class "temperature"
+          (label 
+            :yalign 1
+            :text "${ wttr_temp }°C"
+          )
+          (label 
+            :yalign 1
+            :text "/${ wttr_feelslike }°C"
+          )
+        )
+        (label 
+          :xalign 0
+          :tooltip "sunrise/sunset time"
+          :text "${ sunriseIcon } ${ wttr_sunrise }
+${ sunsetIcon } ${ wttr_sunset }"
+        )
+      )
+      (box
+        :hexpand true
+        :class "right"
+        :orientation "v"
+        :space-evenly false
+        (label 
+          :xalign 1
+          :text wttr_statusicon
+        )
+        (label 
+          :xalign 1
+          :yalign 0
+          :tooltip "precipitation"
+          :text wttr_rainorsnow
+        )
+      )
+    )
+
+    (box
+      :space-evenly false
+      :class "extra"
+      :orientation "h"
+      (box
+        :orientation "v"
+        (label 
+          :xalign 0
+          :tooltip "UV index"
+          :class "uvindex-${
+            wttr_uvindex < 3 ? 
+            1 :
+            (
+              wttr_uvindex < 6 ?
+              2 :
+              (
+                wttr_uvindex < 8 ?
+                3 :
+                (
+                  wttr_uvindex < 9 ?
+                  4 :
+                  (wttr_uvindex < 10 ? 5 : 6)
+                )
+              )
+            ) 
+          }"
+          :text "${ uvIcon } ${ wttr_uvindex }"
+        )
+        (label 
+          :xalign 0
+          :text "${ windIcon } ${ wttr_wind }"
+        )
+      )
+      (box
+        :orientation "v"
+        :hexpand true
+        (label 
+          :xalign 1
+          :tooltip "humidity"
+          :class "humidity-${
+            wttr_humidity < 15 ? 
+            1 :
+            (
+              wttr_humidity < 30 ?
+              2 :
+              (
+                wttr_humidity < 35 ?
+                3 :
+                (
+                  wttr_humidity < 55 ?
+                  4 :
+                  (
+                    wttr_humidity < 65 ?
+                    5 :
+                    (
+                      wttr_humidity < 80 ?
+                      6 :
+                      7
+                    )
+                  )
+                )
+              )
+            )
+          }"
+          :text "${ wttr_humidity }% ${ humidityIcon }"
+        )
+        (label 
+          :xalign 1
+          :class "pressure-${
+            wttr_pressure < 985 ? 
+            1 :
+            (
+              wttr_pressure < 1007 ?
+              2 :
+              (
+                wttr_pressure < 1015 ?
+                3 :
+                (
+                  wttr_pressure < 1021 ?
+                  4 :
+                  5
+                )
+              )
+            )
+          }"
+          :text "${ wttr_pressure } hPa ${ pressureIcon }"
+        )
+      )
+    )
+    (box
+      :space-evenly false
+      :class "forecast"
+      :orientation "h"
+      :spacing 10
+      (forecast 
+        :date wttr_forecast1_date
+        :icon wttr_forecast1_icon
+        :tmin wttr_forecast1_tmin
+        :tmax wttr_forecast1_tmax
+      )
+      (forecast 
+        :date wttr_forecast2_date
+        :icon wttr_forecast2_icon
+        :tmin wttr_forecast2_tmin
+        :tmax wttr_forecast2_tmax
+      )
+    )
+  )
+)
