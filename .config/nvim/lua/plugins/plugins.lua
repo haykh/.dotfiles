@@ -1,22 +1,6 @@
 return {
 	{
 		"LazyVim/LazyVim",
-		keys = {
-			{
-				"<c-`>",
-				function()
-					LazyVim.terminal()
-				end,
-				mode = "n",
-				desc = "toggle terminal",
-			},
-			{
-				"<c-`>",
-				"<cmd>close<cr>",
-				mode = "t",
-				desc = "toggle terminal",
-			},
-		},
 	},
 	{
 		"nvim-neo-tree/neo-tree.nvim",
