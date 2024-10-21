@@ -1,11 +1,16 @@
 return {
 	{
-		"nvim-lspconfig",
+		"neovim/nvim-lspconfig",
 		opts = {
 			diagnostics = {
-				-- virtual_text = false,
-				signs = true,
 				underline = false,
+				signs = true,
+			},
+			setup = {
+				autostart = true,
+				clangd = function(_, opts)
+					opts.capabilities.offsetEncoding = { "utf-16" }
+				end,
 			},
 		},
 	},

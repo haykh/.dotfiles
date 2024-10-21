@@ -8,3 +8,5 @@ vim.opt.listchars = {
 	tab = "> ",
 	trail = " ",
 }
+vim.opt.path = vim.opt.path + "**"
+vim.opt.wildignore = "*.git/*,*build/*,*out/*,*node_modules/*"

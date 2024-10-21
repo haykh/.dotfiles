@@ -5,11 +5,14 @@ return {
 			formatters_by_ft = {
 				c = { "clang-format" },
 				cpp = { "clang-format" },
+				glsl = { "clang-format" },
 				python = { "black" },
 				fortran = { "fprettify" },
 				awk = { "awk" },
 				javascript = { "prettierd" },
 				typescript = { "prettierd" },
+				lua = { "stylua" },
+				cmake = { "cmake_format" },
 			},
 			formatters = {
 				injected = { options = { ignore_errors = true } },

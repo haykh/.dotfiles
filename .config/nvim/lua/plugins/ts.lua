@@ -12,6 +12,7 @@ return {
 				"css",
 				"diff",
 				"html",
+				"glsl",
 				"hyprlang",
 				"javascript",
 				"json",
@@ -39,6 +40,8 @@ return {
 					[".*/kitty/.*.conf"] = "bash",
 					[".*/hypr/.*%.conf"] = "hyprlang",
 					[".*/mako/config"] = "dosini",
+					[".*.vert"] = "glsl",
+					[".*.frag"] = "glsl",
 				},
 			})
 			require("nvim-treesitter.configs").setup(opts)
