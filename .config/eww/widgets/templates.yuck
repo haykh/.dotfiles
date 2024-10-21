@@ -14,18 +14,18 @@
           :content { tooltip-alt != "" ? (use-alt ? tooltip-alt : tooltip) : tooltip }
         )
       )
-      (label 
-        :width 20
+      (label
+        :width 15
         :hexpand true
         :halign "center"
-        :class "icon" 
+        :class "icon"
         :text icon
       )
     )
   )
 )
 
-(defwidget sensor [icon value1 value2 class class1 class2 show show1 show2]
+(defwidget sensor [icon value1 value2 class class1 class2 show show1 show2 ?tooltip]
   (box 
     :class "${ class } hw-ind"
     :visible show
@@ -35,6 +35,7 @@
       :class "icon"
       :visible { icon != "" }
       :xalign 1.0
+      :tooltip tooltip
       :text icon
     )
     (label

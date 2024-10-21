@@ -69,8 +69,8 @@
       // status-icon
       font-family: $font-mono;
       font-size: calc(3 * $fs-xxxxlg);
-      margin-bottom: -50px;
-      margin-top: -30px;
+      margin-bottom: calc(-1 * $fs-xxxxlg);
+      margin-top: calc(-1 * $fs-xxxxlg);
     }
 
     .right :nth-child(2) {

@@ -1,6 +1,10 @@
+window {
+  width: 40%;
+}
+
 textbox-prompt {
-  str: "󰿈";
-  color: #D49A74;
+  str: @symbol-calc;
+  color: @col-calc;
 }
 
 listview {

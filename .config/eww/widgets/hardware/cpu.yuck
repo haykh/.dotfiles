@@ -13,6 +13,7 @@
   :run-while { panelRevealed }
   `scripts/run.sh cpu --procs`
 )
+
 (defpoll cpuTemp 
   :interval "5s"
   :run-while { panelRevealed || cpuShowT }
@@ -38,6 +39,7 @@
     :show { (cpuShowT && !cpuShowUsage) || (cpuShowUsage && !cpuShowT) }
     :show1 { cpuShowUsage && !cpuShowT }
     :show2 { cpuShowT && !cpuShowUsage }
+    :tooltip { cpuProc }
   )
 )
 
@@ -52,6 +54,7 @@
       :xalign 0.2
       :width 40
       :class "icon"
+      :tooltip { cpuProc }
       :text { cpuIcon }
     )
     (box
@@ -61,8 +64,8 @@
         :cursor "pointer"
         :tooltip "click to toggle"
         :onclick `
-          eww update cpuShowT=${ !cpuShowT } && \
-          eww update cpuShowUsage=${ cpuShowUsage ? (!cpuShowT ? false : true) : false }
+          ./launch.sh update cpuShowT ${ !cpuShowT } && \
+          ./launch.sh update cpuShowUsage ${ cpuShowUsage ? (!cpuShowT ? false : true) : false }
         `
         "${ cpuTemp }°C"
       )
@@ -71,8 +74,8 @@
         :cursor "pointer"
         :tooltip "click to toggle"
         :onclick `
-          eww update cpuShowUsage=${ !cpuShowUsage } && \
-          eww update cpuShowT=${ cpuShowT ? (!cpuShowUsage ? false : true) : false }
+          ./launch.sh update cpuShowUsage ${ !cpuShowUsage } && \
+          ./launch.sh update cpuShowT ${ cpuShowT ? (!cpuShowUsage ? false : true) : false }
         `
         "${ jq(EWW_CPU, '.cores | map(.usage | tonumber) | add / length | round') }%"
       )

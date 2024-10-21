@@ -6,7 +6,9 @@ if [[ "$1" == "--drun" ]]; then
   killall rofi ||
     rofi -show drun \
       -kb-row-left Left -kb-row-right Right \
-      -kb-move-char-back Control+b -kb-move-char-forward Control+f
+      -kb-move-char-back Control+b -kb-move-char-forward Control+f \
+      -drun-display-format "{name}" \
+      -theme-str "@import \"$SCRIPT_DIR/drun.rasi\""
 elif [[ "$1" == "--calc" ]]; then
   killall rofi ||
     rofi \
@@ -29,4 +31,8 @@ elif [[ "$1" == "--refs" ]]; then
   killall rofi || $SCRIPT_DIR/refs/refs.sh
 elif [[ "$1" == "--vpn" ]]; then
   killall rofi || $SCRIPT_DIR/vpn/vpn.sh >/dev/null 2>&1
+elif [[ "$1" == "--finder" ]]; then
+  killall rofi || rofi \
+    -show find -modi find:$HOME/.config/master/scripts/finder.sh \
+    -theme-str "@import \"$SCRIPT_DIR/finder/finder.rasi\""
 fi

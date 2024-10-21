@@ -4,11 +4,7 @@
 ; listeners
 (deflisten panelRevealed 
   :initial false
-  `
-    rm -f ~/.config/eww/state/sidepanel && \
-    ./scripts/run.sh panels side --state && \
-    tail -F ~/.config/eww/state/sidepanel
-  `
+  `tail -F ~/.config/eww/state/sidepanel`
 )
 
 ; widgets

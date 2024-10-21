@@ -53,20 +53,22 @@ elif [[ $2 == "--isawake" ]]; then
 
 elif [[ $2 == "--procs" ]]; then
 
+  dev=$(amdgpu_top -i $1 --single -d --json | jq -c '(.[0].DeviceName)' | sed 's/\"//g')
+  asic=$(amdgpu_top -i $1 --single -d --json | jq -c '(.[0]."ASIC Name")' | sed 's/\"//g')
+
   proc=$(amdgpu_top -i $1 --single -p | grep "ctx" |
     awk '{ 
       split($1, proc, "/");
       printf "%5d : %s\n", $7, proc[length(proc)] 
     }' |
-    awk 'NR==1 { 
+    awk -v dev="$dev" -v asic="$asic" 'NR==1 { 
+      printf "%s\n(%s)\n", dev, asic
       printf "%5s   %s\n%s\n", "MB", "PROCESS", $0 
     } NR>1 { 
       printf "%s\n", $0 
     }')
 
-  amdgpu_top -i $1 --single -d --json |
-    jq -c --arg ITEM "$proc" \
-      '(.[0].DeviceName + "\n[" + .[0]."ASIC Name" + "]\n" + $ITEM)' | sed 's/\"//g'
+  echo "$proc"
 
 elif [[ $2 == "--wake" ]]; then
 

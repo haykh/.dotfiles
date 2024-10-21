@@ -2,17 +2,29 @@
 (deflisten brightnessShow 
   :interval "5s"
   :initial false
-  `rm -f ~/.config/eww/state/brightness-show && scripts/run.sh brightness --show --nonotify && tail -F ~/.config/eww/state/brightness-show`
+  `
+    rm -f ~/.config/eww/state/brightness-show && \
+    scripts/run.sh brightness --show --nonotify && \
+    tail -F ~/.config/eww/state/brightness-show
+  `
 )
 
 (deflisten brightnessLevel 
   :initial 0
-  `rm -f ~/.config/eww/state/brightness-level && scripts/run.sh brightness --inc 0 --nonotify && tail -F ~/.config/eww/state/brightness-level`
+  `
+    rm -f ~/.config/eww/state/brightness-level && \
+    scripts/run.sh brightness --inc 0 --nonotify && \
+    tail -F ~/.config/eww/state/brightness-level
+  `
 )
 
 (deflisten brightnessIcon 
   :initial ""
-  `rm -f ~/.config/eww/state/brightness-icon && scripts/run.sh brightness --inc 0 --nonotify && tail -F ~/.config/eww/state/brightness-icon`
+  `
+    rm -f ~/.config/eww/state/brightness-icon && \
+    scripts/run.sh brightness --inc 0 --nonotify && \
+    tail -F ~/.config/eww/state/brightness-icon
+  `
 )
 
 (defwidget brightness []

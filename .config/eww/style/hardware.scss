@@ -17,6 +17,9 @@
     .icon {
       font-size: $fs-lg;
     }
+    &.idle .icon {
+      color: $col-device-off;
+    }
   }
 
   &>box:not(:first-child) {
@@ -103,6 +106,14 @@
       }
     }
   }
+}
+
+.hardware.panel.button .separator, .hardware.indicators label {
+  font-size: calc(0.9 * $fs-md);
+}
+
+.hardware.panel.button .separator {
+  margin-right: $padx;
 }
 
 
