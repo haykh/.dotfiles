@@ -1,0 +1,79 @@
+makemovie() {
+    local framerate=30
+    local input="step_"
+    local output="anim.mov"
+    local compression=1
+    local start=0
+    local number=3
+    local extension="png"
+    local dry=0
+    while [[ $# -gt 0 ]]
+    do
+        key="$1"
+        case $key in
+            -h|--help)
+                echo "usage: makemovie [options]"
+                echo "  -h, --help                 print this menu and quit"
+                echo "  -r, --framerate            specify framerate in fps [default: 30]"
+                echo "  -i, --input                input image prefixes [default: step_]"
+                echo "  -o, --output               output file name [default: anim.mov]"
+                echo "  -c, --compression          specify video compression level [default: 1]"
+                echo "  -s, --start                starting number for images [default: 0]"
+                echo "  -n, --number               number of zeros to pad [default: 3]"
+                echo "  -x, --extension            image extension [default: png]"
+                echo "  -d, --dry                  dry run, print the command but don't run it"
+                return
+                ;;
+            -r|--framerate)
+                framerate="$2"
+                shift
+                shift
+                ;;
+            -i|--input)
+                input="$2"
+                shift
+                shift
+                ;;
+            -o|--output)
+                output="$2"
+                shift
+                shift
+                ;;
+            -c|--compression)
+                compression="$2"
+                shift
+                shift
+                ;;
+            -s|--start)
+                start="$2"
+                shift
+                shift
+                ;;
+            -n|--number)
+                number="$2"
+                shift
+                shift
+                ;;
+            -x|--extension)
+                extension="$2"
+                shift
+                shift
+                ;;
+            -d|--dry)
+                dry=1
+                shift
+                ;;
+            *)
+                echo "Unknown option: $1"
+                return
+                ;;
+        esac
+    done
+
+    local command="ffmpeg -nostdin -framerate $framerate -start_number $start -i $input%0$((number))d.$extension -c:v libx264 -crf $compression -filter_complex \"[0:v]format=yuv420p,pad=ceil(iw/2)*2:ceil(ih/2)*2\" $output"
+    if [[ $dry -eq 1 ]]; then
+        echo $command
+    else
+        eval $command
+    fi
+}
