@@ -1,6 +1,9 @@
-function command_exists(cmd)
+local function command_exists(cmd)
 	local handle = io.popen("command -v " .. cmd)
-	local result = handle:read("*a")
+	if handle == nil then
+		return false
+	end
+	local result = handle:read("*l")
 	handle:close()
 	return result ~= ""
 end
