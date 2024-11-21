@@ -1,17 +1,62 @@
 #!/usr/bin/env bash
 
+ICON_PATH=$HOME/.local/share/icons/
+MAIN_ICON_THEME=Fluent-dark
+ALT_ICON_THEME=Fluent
+
+echo "urgency: "$DUNST_URGENCY >>/tmp/dunst.log
+echo "appname: "$DUNST_APP_NAME >>/tmp/dunst.log
+echo "id: "$DUNST_ID >>/tmp/dunst.log
+echo "icon: "$DUNST_ICON >>/tmp/dunst.log
+echo "summary: "$DUNST_SUMMARY >>/tmp/dunst.log
+echo "body: "$DUNST_BODY >>/tmp/dunst.log
+echo "cat: "$DUNST_CATEGORY >>/tmp/dunst.log
+echo "....." >>/tmp/dunst.log
+echo "" >>/tmp/dunst.log
+
+icon=$DUNST_ICON
+summary=$DUNST_SUMMARY
+body=$DUNST_BODY
+
+action_primary=""
+action_secondary=""
+action=""
+
+action_tag=""
+
+if [[ $DUNST_APP_NAME == "Slack" ]]; then
+  icon="slack"
+  action_primary="OpenSlack"
+  action_tag="default,Open"
+elif [[ $DUNST_APP_NAME == "Betterbird" ]]; then
+  icon=$(find $ICON_PATH/$MAIN_ICON_THEME -name "better*")
+  if [[ $icon == "" ]]; then
+    icon=$(find $ICON_PATH/$ALT_ICON_THEME -name "better*")
+  fi
+  summary=$(echo $summary | sed 's/received.*//')
+fi
+
 if [ ! -f /tmp/$DUNST_ID-not ]; then
   if [[ $DUNST_STACK_TAG != "sys-notify" ]]; then
     ACTION=$(
       echo "block" >/tmp/$DUNST_ID-not &&
         dunstify \
-          -u "$DUNST_URGENCY" -a "$DUNST_APP_NAME" -i "$DUNST_ICON" \
-          -A "default,Open" \
+          -u "$DUNST_URGENCY" -a "$DUNST_APP_NAME" -i "$icon" \
+          -A "$action_tag" \
           -r $DUNST_ID \
-          "Summary: $DUNST_SUMMARY" "Body: $DUNST_BODY $DUNST_CATEGORY" &&
+          "$summary" "$body" &&
         rm /tmp/$DUNST_ID-not
     )
+    case "$ACTION" in
+    "default")
+      action=$action_primary
+      ;;
+    esac
   fi
+fi
+
+if [[ $action == "OpenSlack" ]]; then
+  hyprctl dispatch exec $HOME/.dotfiles/scripts/hypr/launcher -- --slack
 fi
 
 # if [[ "$1" == "Slack" ]]; then

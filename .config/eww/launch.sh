@@ -6,7 +6,7 @@ EWWBIN="$HOME/.local/eww.app/target/release/eww"
 EWW="$EWWBIN -c $HOME/.config/eww --force-wayland"
 
 monitor_scale="$(hyprctl -j monitors | jq -r '
-  first(.[] | select(.focused)) | 
+  first(.[] | select(.focused)) |
     (.model + "\n" + (.width | tostring) + "\n" + (.scale | tostring))
 ')"
 monitor=$(echo "$monitor_scale" | head -n 1)
@@ -31,7 +31,7 @@ if [[ $1 == "mainbar" ]]; then
 
   for i in "${persistent[@]}"; do
     if [[ -f $CURR_DIR/state/$i ]]; then
-      echo $i : $(cat $CURR_DIR/state/$i) >> $CURR_DIR/state/eww.log
+      echo $i : $(cat $CURR_DIR/state/$i) >>$CURR_DIR/state/eww.log
       $EWWBIN update $i=$(tail -n1 $CURR_DIR/state/$i)
     fi
   done
@@ -52,7 +52,7 @@ elif [[ $1 == "hardware-panel" ]]; then
 elif [[ $1 == "update" ]]; then
 
   $EWWBIN update $2=$3
-  echo $3 > $CURR_DIR/state/$2
+  echo $3 >$CURR_DIR/state/$2
 
 else
 

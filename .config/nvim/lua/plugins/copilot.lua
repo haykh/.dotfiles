@@ -1,4 +1,5 @@
 return {
+	{ "zbirenbaum/copilot-cmp" },
 	{
 		"zbirenbaum/copilot.lua",
 		lazy = false,
@@ -12,7 +13,7 @@ return {
 				hide_during_completion = false,
 				debounce = 25,
 				keymap = {
-					accept = "<c-Right>",
+					accept = "<c-cr>",
 				},
 			},
 		},

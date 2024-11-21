@@ -118,8 +118,9 @@ fi
 
 if command -v eza &> /dev/null; then
   alias ls='EXA_ICON_SPACING=1 eza -a --icons --sort=type'
-  alias ll='EXA_ICON_SPACING=1 eza -a --long --icons --header --sort=type --time-style=long-iso'
+  alias ll='EXA_ICON_SPACING=1 eza -a --long --icons --header --sort=type --git --time-style=long-iso'
   alias lt='EXA_ICON_SPACING=1 eza -a --icons --sort=type --tree --level 2 --icons --color'
+  alias ld='EXA_ICON_SPACING=1 eza -a --long --icons --header --sort=type --git --time-style=long-iso --total-size'
 fi
 
 if [ -d "$HOME/.cargo" ]; then
