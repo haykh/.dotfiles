@@ -113,5 +113,4 @@ return {
 		"elkowar/yuck.vim",
 	},
 	{ import = "lazyvim.plugins.extras.lang.python" },
-	{ import = "lazyvim.plugins.extras.lang.markdown" },
 }

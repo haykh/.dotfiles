@@ -1,0 +1,17 @@
+(deflisten tray_widgets
+  :initial ""
+  `rm -f ~/.config/eww/state/tray-eww && \
+    ./scripts/run.sh tray --eww && \
+    tail -F ~/.config/eww/state/tray-eww`
+)
+
+(defwidget tray []
+  (box
+    :class "tray"
+    (literal 
+      :vexpand true
+      :valign "center"
+      :content { tray_widgets }
+    )
+  )
+)

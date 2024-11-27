@@ -1,5 +1,6 @@
 ; (include "./widgets/applauncher.yuck")
 (include "./widgets/workspaces.yuck")
+(include "./widgets/tray.yuck")
 
 (include "./widgets/locale/date-time.yuck")
 (include "./widgets/locale/weather.yuck")
@@ -25,6 +26,7 @@
     :space-evenly false
     ; (applauncher)
     (workspaces)
+    (tray)
   )
 )
 

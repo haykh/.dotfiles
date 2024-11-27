@@ -1,0 +1,87 @@
+#!/usr/bin/env bash
+
+source $(dirname $0)/common.sh
+
+help() {
+  echo "Usage: $0 [args]"
+  echo "  --eww: update tray widgets"
+  echo "  --getactive: get active window id"
+  echo "  --minimize <id>: minimize window with id to tray"
+  echo "  --restore <id>: restore window with id"
+  echo "  --minimize_active: minimize active window to tray"
+  echo "  --restore_last: restore last minimized window"
+}
+
+eww() {
+  literal="(box :space-evenly false "
+  for id in $(hyprctl workspaces -j | jq -r '.[] | select(.name | startswith("special:ws_0x")) | .lastwindow'); do
+    client=$(hyprctl -j clients | jq -r '.[] | select(.address=="'$id'")')
+    appname=$(echo $client | jq -r '.class')
+    apptitle=$(echo $client | jq -r '.title')
+    literal+="(eventbox :cursor \"pointer\" :onclick \"$0 --restore $id\" :tooltip \"$apptitle\" "
+    literal+="(box :class \"tray "
+    literal+="\" (label :text \"("
+    literal+=$(jq -r ".icons.apps.\"$appname\" // .icons.apps.generic" $MASTERCFG)
+    literal+=")\"))) "
+  done
+  literal+=")"
+  echo $literal >>$TMPDIR/tray-eww
+}
+
+minimize() {
+  id=$1
+  ws=$(printf "ws_%s" $1)
+  if [[ -z $(hyprctl workspaces | grep $ws) ]]; then
+    hyprctl dispatch movetoworkspacesilent special:$ws,address:$id
+    if [[ -z $(cat $TMPDIR/tray) ]]; then
+      echo $id >$TMPDIR/tray
+    else
+      echo $(cat $TMPDIR/tray),$id >$TMPDIR/tray
+    fi
+    eww
+  fi
+}
+
+restore() {
+  id=$1
+  ws=$(printf "ws_%s" $1)
+  if [[ -z $(hyprctl workspaces | grep $ws) ]]; then
+    echo "Workspace does not exist"
+    exit 1
+  else
+    hyprctl dispatch movetoworkspacesilent +0,address:$id
+    eww
+  fi
+}
+
+if [[ $1 == "--getactive" ]]; then
+
+  echo $(hyprctl activewindow -j | jq -r '.address')
+
+elif [[ $1 == "--minimize" ]]; then
+
+  minimize $2
+
+elif [[ $1 == "--restore" ]]; then
+
+  restore $2
+
+elif [[ $1 == "--minimize_active" ]]; then
+
+  minimize $(hyprctl activewindow -j | jq -r '.address')
+
+elif [[ $1 == "--restore_last" ]]; then
+
+  restore $(tail -n 1 $TMPDIR/tray | sed 's/ /\n/g' | tail -n1 | cut --delimiter "," --fields 1)
+
+elif [[ $1 == "--eww" ]]; then
+
+  eww
+
+else
+
+  echo "Invalid argument"
+  help
+  exit 1
+
+fi
