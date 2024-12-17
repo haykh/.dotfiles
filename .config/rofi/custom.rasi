@@ -1,9 +1,9 @@
 * {
   // variables
-  fontmono: "MonaspiceKr Nerd Font 12";
-  fontsans: "Cantarell 12";
+  fontmono: "MonaspiceKr Nerd Font 14";
+  fontsans: "Cantarell 14";
 
-  col-bg: #0f0f17af;
+  col-bg: #0f0f17;
   col-fg: #f5f8f2;
   col-fg-alt: #d1dfef;
   col-fg-dim: #81a3deff;

@@ -6,7 +6,12 @@ config.default_domain = 'WSL:Arch'
 config.color_scheme = 'Brogrammer'
 config.font = wezterm.font 'MonaspiceKr Nerd Font'
 config.window_background_opacity = 0.8
+
 config.win32_system_backdrop = 'Acrylic'
+
+config.front_end = "WebGpu"
+config.webgpu_power_preference = 'HighPerformance'
+config.enable_wayland = true
 
 -- config.leader = { key = 'LeftShift', mods = 'CTRL', timeout_milliseconds = 500 }
 config.keys = {

@@ -13,21 +13,21 @@ entry {
 
 listview {
   require-input: true;
-  columns: 6;
+  columns: 5;
   lines: 6;
   spacing: 0.25em;
 }
 
 element-text {
-  font: "Cantarell 10";
+  font: "Cantarell 14";
 }
 
 element-icon {
   horizontal-align: 0.65;
-  size: 3em;
+  size: 4em;
 }
 
 element selected {
-  background-color: #2D5CAD33;
+  background-color: #2D5CAD;
   border: 0px solid;
 }

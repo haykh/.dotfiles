@@ -10,6 +10,11 @@ return {
 			setup = {
 				autostart = true,
 			},
+			servers = {
+				lua_ls = {
+					mason = false,
+				},
+			},
 		},
 	},
 	-- formatter
@@ -24,6 +29,7 @@ return {
 				javascript = { "prettierd" },
 				typescript = { "prettierd" },
 				lua = { "stylua" },
+				nix = { "nixfmt" },
 			},
 			formatters = {
 				injected = { options = { ignore_errors = true } },
@@ -49,13 +55,18 @@ return {
 			},
 		},
 	},
+	{
+		"williamboman/mason.nvim",
+		opts = {
+			ensure_installed = {},
+		},
+	},
 	-- treesitter
 	{
 		"nvim-treesitter/nvim-treesitter",
 		opts = {
 			highlight = { enable = true },
 			indent = { enable = true },
-			auto_install = true,
 			ensure_installed = {
 				"bash",
 				"c",
@@ -82,6 +93,7 @@ return {
 				"xml",
 				"cmake",
 				"yaml",
+				"nix",
 			},
 		},
 		config = function(_, opts)
@@ -113,4 +125,5 @@ return {
 		"elkowar/yuck.vim",
 	},
 	{ import = "lazyvim.plugins.extras.lang.python" },
+	{ import = "lazyvim.plugins.extras.lang.nix" },
 }

@@ -1,7 +1,21 @@
 return {
 	{ import = "lazyvim.plugins.extras.editor.aerial" },
 	{
+		"stevearc/aerial.nvim",
+		keys = {
+			{ "<leader>ae", "<cmd>AerialToggle<cr>", desc = "Aerial (Symbols)" },
+		},
+	},
+	{
 		"HiPhish/rainbow-delimiters.nvim",
+	},
+	{
+		"snacks.nvim",
+		opts = {
+			scroll = { enabled = false },
+			indent = { enabled = true },
+			dim = { enabled = true },
+		},
 	},
 	{
 		"nvim-neo-tree/neo-tree.nvim",
