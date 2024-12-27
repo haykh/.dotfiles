@@ -21,7 +21,7 @@
     #   extraPackages = [ amdvlk ];
     #   extraPackages32 = [ driversi686Linux.amdvlk ];
     # };
-    #
+
     graphics = {
       enable = true;
       # enable32Bit = true;

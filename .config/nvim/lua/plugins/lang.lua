@@ -121,9 +121,8 @@ return {
 		},
 	},
 	-- additional languages
-	{
-		"elkowar/yuck.vim",
-	},
+	{ "elkowar/yuck.vim" },
+	-- { "dccsillag/magma-nvim" },
 	{ import = "lazyvim.plugins.extras.lang.python" },
 	{ import = "lazyvim.plugins.extras.lang.nix" },
 }

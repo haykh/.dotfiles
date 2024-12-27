@@ -22,9 +22,6 @@
     fluent-gtk-theme
     fluent-icon-theme
 
-    gjs
-    gobject-introspection-unwrapped
-
     gnomeExtensions.hide-universal-access
     gnomeExtensions.vitals
     gnomeExtensions.user-themes
@@ -35,8 +32,13 @@
       custom-keybindings = [
         "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/wezterm/"
         "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/firefox/"
-        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/rofi-icons/"
         "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/nautilus/"
+        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/rofi-icons/"
+        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/rofi-refs/"
+        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/rofi-calc/"
+        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/rofi-moji/"
+        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/rofi-drun/"
+        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/largesize/"
       ];
     };
     "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/wezterm" = {
@@ -55,9 +57,34 @@
       name = "open-nautilus";
     };
     "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/rofi-icons" = {
-      binding = "<Super>i";
+      binding = "<Control><Super>i";
       command = "${dotfiles}/.config/rofi/apps/launch --nerdicons > /dev/null 2> &1";
       name = "rofi-icons";
+    };
+    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/rofi-refs" = {
+      binding = "<Control><Super>a";
+      command = "${dotfiles}/.config/rofi/apps/launch --refs > /dev/null 2> &1";
+      name = "rofi-refs";
+    };
+    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/rofi-calc" = {
+      binding = "<Control><Super>c";
+      command = "${dotfiles}/.config/rofi/apps/launch --calc > /dev/null 2> &1";
+      name = "rofi-calc";
+    };
+    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/rofi-moji" = {
+      binding = "<Control><Super>j";
+      command = "${dotfiles}/.config/rofi/apps/launch --emojis > /dev/null 2> &1";
+      name = "rofi-moji";
+    };
+    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/rofi-drun" = {
+      binding = "<Control><Super>r";
+      command = "${dotfiles}/.config/rofi/apps/launch --drun > /dev/null 2> &1";
+      name = "rofi-drun";
+    };
+    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/largesize" = {
+      binding = "<Super>equal";
+      command = "${dotfiles}/scripts/actions.sh --enlarge";
+      name = "increase-window-size";
     };
 
     "org/gnome/desktop/interface" = {
@@ -104,7 +131,7 @@
         "_temperature_acpi_thermal zone_"
         "_memory_allocated_"
         "__network-rx_max__"
-        "_voltage_bat1_in0_"
+        "_battery_rate_"
       ];
     };
 

@@ -22,7 +22,7 @@ elif [[ "$1" == "--pyfia" ]]; then
 elif [[ "$1" == "--nerdicons" ]]; then
   killall rofi || $SCRIPT_DIR/nerdicons/nerdicons.sh
 elif [[ "$1" == "--emojis" ]]; then
-  killall rofi || killall rofimoji || $HOME/.local/bin/rofimoji --selector-args="
+  killall rofi || killall rofimoji || rofimoji --selector-args="
       -theme $SCRIPT_DIR/moji.rasi
       -kb-row-left Left -kb-row-right Right 
       -kb-move-char-back Control+b -kb-move-char-forward Control+f

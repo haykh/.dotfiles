@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-CACHE_DIR=$HOME/Documents/Literature/cache
+CACHE_DIR=$HOME/Documents/Literature
 
 bibfile=$CACHE_DIR/refs.bib
 
@@ -45,5 +45,5 @@ fi
 fname=$CACHE_DIR/$(echo "$refs" | jq -r ".[$pick] | .file")
 
 if [ -n "$fname" ]; then
-  hyprctl dispatch -- exec "[floating; size 50% 80%; center; animation slide bottom]" zathura -- \"$fname\"
+  zathura "$fname"
 fi

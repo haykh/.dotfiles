@@ -1,4 +1,5 @@
 { ... }:
+
 {
   programs.wezterm = {
     enable = true;
@@ -11,11 +12,10 @@
       config.color_scheme = 'Brogrammer'
       config.font = wezterm.font 'MonaspiceKr Nerd Font'
 
+      config.enable_wayland = true
       config.front_end = "WebGpu"
       config.webgpu_power_preference = 'HighPerformance'
-      config.enable_wayland = true
 
-      -- config.leader = { key = 'LeftShift', mods = 'CTRL', timeout_milliseconds = 500 }
       config.keys = {
         {
           key = 'Enter',
