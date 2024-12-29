@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-CACHE_DIR=$HOME/Documents/Literature
+CACHE_DIR=$HOME/Documents/Literature/
 
 bibfile=$CACHE_DIR/refs.bib
 

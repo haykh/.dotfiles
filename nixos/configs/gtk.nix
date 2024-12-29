@@ -39,6 +39,7 @@
         "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/rofi-moji/"
         "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/rofi-drun/"
         "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/largesize/"
+        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/pickcolor/"
       ];
     };
     "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/wezterm" = {
@@ -85,6 +86,11 @@
       binding = "<Super>equal";
       command = "${dotfiles}/scripts/actions.sh --enlarge";
       name = "increase-window-size";
+    };
+    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/pickcolor" = {
+      binding = "<Control>Print";
+      command = "${dotfiles}/scripts/actions.sh --pick-color";
+      name = "color-picker";
     };
 
     "org/gnome/desktop/interface" = {

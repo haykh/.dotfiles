@@ -5,7 +5,7 @@
   services = {
     xserver.desktopManager.gnome.enable = true;
     xserver.displayManager.gdm.enable = true;
-    udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
+    udev.packages = with pkgs; [ gnome-settings-daemon ];
     touchegg.enable = true;
   };
 

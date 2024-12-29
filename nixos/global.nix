@@ -25,11 +25,25 @@
     openssh.enable = true;
   };
 
+  virtualisation.docker = {
+    enable = true;
+    rootless = {
+      enable = true;
+      setSocketVariable = true;
+    };
+    daemon.settings = {
+      data-root = "${cfg.home}/docker";
+    };
+  };
+
   users = {
     defaultUserShell = pkgs.zsh;
     users."${cfg.user}" = {
       isNormalUser = true;
-      extraGroups = [ "wheel" ];
+      extraGroups = [
+        "wheel"
+        "docker"
+      ];
     };
   };
 

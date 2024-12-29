@@ -29,4 +29,8 @@ icon=$(
     }'
 )
 
-wl-copy $icon && wtype $icon
+if [[ $XDG_SESSION_TYPE == x11 ]]; then
+  echo $icon | xclip -selection clipboard
+else
+  (wl-copy $icon) && wtype $icon
+fi

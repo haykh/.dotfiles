@@ -7,23 +7,25 @@
 }:
 
 let
-  user = cfg.user;
-  home = "/home/${user}";
-  dotfiles = "${home}/.dotfiles";
+  home = cfg.home;
+  dotfiles = "${cfg.home}/.dotfiles";
 in
 {
-  home.username = "${user}";
-  home.homeDirectory = "${home}";
+  home.username = "${cfg.user}";
+  home.homeDirectory = "${cfg.home}";
 
   home.stateVersion = "24.11";
 
   home.packages = with pkgs; [
-
     # system
     btop
     wmctrl
+    rclone
 
     # compilers & managers
+    nix-init
+    nodePackages_latest.nodejs
+    wineWowPackages.stable
     rustup
     luajitPackages.luarocks
     lua
@@ -51,10 +53,14 @@ in
     lazygit
     fastfetch
     ffmpeg
+    mapscii
 
     # apps
+    inkscape-with-extensions
+    blender-hip
+    freecad
     jabref
-    libreoffice-qt
+    onlyoffice-desktopeditors
     zoom-us
     neovim
     slack
@@ -64,6 +70,8 @@ in
     obsidian
     rofimoji
     gimp-with-plugins
+    nextcloud-client
+    gpick
 
     (pkgs.texlive.combine {
       inherit (pkgs.texlive)
@@ -106,6 +114,7 @@ in
     ./configs/wezterm.nix
     (import ./configs/ssh.nix { inherit home; })
     ./configs/vscode.nix
+    ./configs/drives.nix
   ];
 
   programs = {

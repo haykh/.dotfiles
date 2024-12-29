@@ -15,6 +15,7 @@ in
         "$python"
         "$conda"
         "$fill"
+        "$nix_shell"
         "$cmd_duration"
         "$username"
         "$hostname"
@@ -150,6 +151,11 @@ in
         utc_time_offset = "-4";
         use_12hr = true;
         style = "dimmed white";
+      };
+
+      nix_shell = {
+        symbol = "󰜗 ";
+        format = "[$symbol\\(nix-$name\\)]($style) ";
       };
 
       battery = {

@@ -1,6 +1,19 @@
 return {
 	-- colors
-	{ "projekt0n/github-nvim-theme" },
+	{
+		"projekt0n/github-nvim-theme",
+		config = function()
+			require("github-theme").setup({
+				options = {
+					styles = {
+						comments = "italic",
+						keywords = "bold",
+						types = "italic",
+					},
+				},
+			})
+		end,
+	},
 	{
 		"LazyVim/LazyVim",
 		opts = {

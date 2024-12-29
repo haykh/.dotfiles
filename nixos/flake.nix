@@ -19,6 +19,7 @@
     let
       cfg = {
         user = "hayk";
+        home = "/home/${cfg.user}";
         git = {
           username = "haykh";
           email = "haykh.astro@gmail.com";

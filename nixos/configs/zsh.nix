@@ -17,6 +17,7 @@ let
     ld = "EXA_ICON_SPACING=1 eza -a --long --icons --header --sort=type --git --time-style=long-iso --total-size";
     # pyvenv = "nix-shell ${dotfiles}/nixos/default-shell.nix --command \"zsh\"";
     icat = "wezterm imgcat";
+    rclone-reload = "systemctl --user restart mount-drives.service";
   };
 in
 {

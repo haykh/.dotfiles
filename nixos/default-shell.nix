@@ -1,30 +1,36 @@
-# with import <nixpkgs> { };
-#
-# let
-#   pythonPackages = python3Packages;
-# in
-# pkgs.mkShell {
-#   name = "global-python";
-#   venvDir = "/tmp/venv";
-#   buildInputs = [
-#     pythonPackages.python
-#     pythonPackages.venvShellHook
-#   ];
-#
-#   runScript = "zsh";
-#
-# }
 {
   pkgs ? import <nixpkgs> { },
 }:
 
 pkgs.mkShell {
-  nativeBuildInputs = [
-    pkgs.python310
+  name = "py312";
+  nativeBuildInputs = with pkgs; [
+    python312
+    zlib
+  ];
+
+  LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
     pkgs.zlib
+    pkgs.stdenv.cc.cc
   ];
 
   shellHook = ''
-    export LD_LIBRARY_PATH="${pkgs.zlib}/lib"
+    BLUE='\033[0;34m'
+    NC='\033[0m'
+    export VENV_DIR="/tmp/.venv"
+    export SHELL=$(which zsh)
+
+    if [ ! -d "$VENV_DIR" ]; then
+      python3 -m venv "$VENV_DIR"
+      source "$VENV_DIR/bin/activate"
+      pip install --upgrade pip --quiet
+      pip install numpy matplotlib euporie ipykernel --quiet
+    else
+      source "$VENV_DIR/bin/activate"
+    fi
+
+    echo ""
+    echo -e "python nix-shell activated: ''\${BLUE}$(which python)''\${NC}"
+    exec $SHELL
   '';
 }
