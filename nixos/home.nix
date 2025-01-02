@@ -33,10 +33,15 @@ in
     gcc
     libgcc
 
-    # formatters
+    # formatters & language servers
+    ## nix
     nixfmt-rfc-style
+    nil
+    ## lua
     stylua
     lua-language-server
+    ## shell
+    shfmt
 
     # shell
     fd

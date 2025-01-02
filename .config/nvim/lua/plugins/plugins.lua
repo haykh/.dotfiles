@@ -7,4 +7,6 @@ return {
 	{ "rafamadriz/friendly-snippets", enabled = false },
 	{ "echasnovski/mini.pairs", enabled = false },
 	{ "echasnovski/mini.ai", enabled = false },
+  { "williamboman/mason.nvim", enabled = false },
+  { "williamboman/mason-lspconfig.nvim", enabled=false }
 }

@@ -155,7 +155,7 @@ in
 
       nix_shell = {
         symbol = "󰜗 ";
-        format = "[$symbol\\(nix-$name\\)]($style) ";
+        format = "[$symbol\\($name\\)]($style) ";
       };
 
       battery = {

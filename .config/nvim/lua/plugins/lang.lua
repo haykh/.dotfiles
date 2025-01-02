@@ -11,9 +11,47 @@ return {
 				autostart = true,
 			},
 			servers = {
-				lua_ls = {
-					mason = false,
+				-- fortran
+				fortls = {},
+				-- cpp & cmake
+				clangd = {},
+				cmake = {},
+				-- glsl
+				glslls = {
+					cmd = { "glslls", "--target-env", "opengl4.5", "--stdin" },
 				},
+				-- python
+				pyright = {},
+				-- js, ts, html, css
+				ts_ls = {},
+				cssls = {},
+				emmet_ls = {},
+				html = {},
+				-- toml, json, yaml
+				taplo = {},
+				jsonls = {},
+				yamlls = {},
+				-- markdown
+				markdown_oxide = {},
+				-- go
+				gopls = {},
+				-- rust
+				rust_analyzer = {},
+				-- lua
+				lua_ls = {},
+				-- awk, bash, powershell
+				awk_ls = {},
+				bashls = {},
+				powershell_es = {},
+				-- hyprlang
+				hyprls = {},
+				-- nix
+				nil_ls = {},
+				-- docker
+				docker_compose_language_service = {},
+				dockerls = {},
+				-- tex
+				texlab = {},
 			},
 		},
 	},
@@ -22,43 +60,51 @@ return {
 		"stevearc/conform.nvim",
 		opts = {
 			formatters_by_ft = {
+				fortran = { "fprettify" },
+				cpp = { "clang-format" },
+				c = { "clang-format" },
+				cmake = { "cmake-format" },
 				glsl = { "clang-format" },
 				python = { "black" },
-				fortran = { "fprettify" },
-				awk = { "awk" },
 				javascript = { "prettierd" },
 				typescript = { "prettierd" },
+				css = { "prettierd" },
+				html = { "prettierd" },
+				toml = { "taplo" },
+				json = { "eslint_d" },
+				yaml = { "prettierd" },
+				markdown = { "mdformat" },
+				go = { "goimports", "gofmt" },
+				rust = { "rustfmt" },
 				lua = { "stylua" },
+				awk = { "awk" },
+				sh = { "shfmt" },
+				bash = { "shfmt" },
+				zsh = { "shfmt" },
 				nix = { "nixfmt" },
 			},
 			formatters = {
 				injected = { options = { ignore_errors = true } },
 				fprettify = {
-          -- stylua: ignore
-					prepend_args = {
-						"-i", "2",
-            "-w", "4",
-						"--whitespace-assignment", "true",
-						"--enable-decl",
-						"--whitespace-decl", "true",
-						"--whitespace-relational", "true",
-						"--whitespace-logical", "true",
-						"--whitespace-plusminus", "true",
-						"--whitespace-multdiv", "true",
-						"--whitespace-print", "true",
-						"--whitespace-type", "true",
-						"--whitespace-intrinsics", "true",
-						"--enable-replacements",
-						"-l", "1000",
-					},
+	         -- stylua: ignore
+	         prepend_args = {
+	           "-i", "2",
+	           "-w", "4",
+	           "--whitespace-assignment", "true",
+	           "--enable-decl",
+	           "--whitespace-decl", "true",
+	           "--whitespace-relational", "true",
+	           "--whitespace-logical", "true",
+	           "--whitespace-plusminus", "true",
+	           "--whitespace-multdiv", "true",
+	           "--whitespace-print", "true",
+	           "--whitespace-type", "true",
+	           "--whitespace-intrinsics", "true",
+	           "--enable-replacements",
+	           "-l", "1000",
+	         },
 				},
 			},
-		},
-	},
-	{
-		"williamboman/mason.nvim",
-		opts = {
-			ensure_installed = {},
 		},
 	},
 	-- treesitter
@@ -122,7 +168,4 @@ return {
 	},
 	-- additional languages
 	{ "elkowar/yuck.vim" },
-	-- { "dccsillag/magma-nvim" },
-	{ import = "lazyvim.plugins.extras.lang.python" },
-	{ import = "lazyvim.plugins.extras.lang.nix" },
 }

@@ -105,9 +105,34 @@
         "hide-universal-access@akiirui.github.io"
         "Vitals@CoreCoding.com"
         "workspace-indicator@gnome-shell-extensions.gcampax.github.com"
+        "blur-my-shell@aunetx"
       ];
-
     };
+
+    "org/gnome/shell/extensions/blur-my-shell/dash-to-dock" = {
+      blur = true;
+      brightness = 0.59999999999999998;
+      sigma = 30;
+      static-blur = true;
+      style-dash-to-dock = 0;
+    };
+    "org/gnome/shell/extensions/blur-my-shell/appfolder" = {
+      brightness = 0.59999999999999998;
+      sigma = 30;
+    };
+
+    "org/gnome/shell/extensions/blur-my-shell/panel" = {
+      brightness = 0.59999999999999998;
+      sigma = 30;
+    };
+    "org/gnome/shell/extensions/blur-my-shell" = {
+      settings-version = 2;
+    };
+    "org/gnome/shell/extensions/blur-my-shell/window-list" = {
+      brightness = 0.59999999999999998;
+      sigma = 30;
+    };
+
     "org/gnome/desktop/wm/preferences" = {
       resize-with-right-button = true;
     };
@@ -120,8 +145,8 @@
       cursor-theme = "Capitaine Cursors";
       color-scheme = "prefer-dark";
     };
-    "org/gnome/interface" = {
-      accent-color = "pink";
+    "org/gnome/desktop/interface" = {
+      accent-color = "#7295F6";
     };
     "org/gnome/desktop/background" = {
       picture-uri = "file://${dotfiles}/wallpapers/blueish-sunrise.jpg";
