@@ -73,7 +73,7 @@ return {
 				toml = { "taplo" },
 				json = { "eslint_d" },
 				yaml = { "prettierd" },
-				markdown = { "mdformat" },
+				-- markdown = { "mdformat" },
 				go = { "goimports", "gofmt" },
 				rust = { "rustfmt" },
 				lua = { "stylua" },
@@ -126,6 +126,8 @@ return {
 				"json",
 				"jsonc",
 				"jq",
+				"go",
+				"gotmpl",
 				"lua",
 				"markdown",
 				"markdown_inline",
@@ -152,6 +154,10 @@ return {
 					[".*/mako/config"] = "dosini",
 					[".*.vert"] = "glsl",
 					[".*.frag"] = "glsl",
+					[".*/layouts/404.html"] = "gotmpl",
+					[".*/layouts/_default/.*.html"] = "gotmpl",
+					[".*/layouts/partials/.*.html"] = "gotmpl",
+					[".*/layouts/shortcodes/.*.html"] = "gotmpl",
 				},
 			})
 			require("nvim-treesitter.configs").setup(opts)

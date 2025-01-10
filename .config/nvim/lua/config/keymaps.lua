@@ -5,3 +5,9 @@ vim.keymap.set("n", "<leader>cmb", "<cmd>CMakeBuild<cr>", { desc = "build projec
 vim.keymap.set("n", "<leader>cmr", "<cmd>CMakeRun<cr>", { desc = "run project" })
 vim.keymap.set("n", "<leader>cmc", "<cmd>CMakeCloseRunner<cr>", { desc = "close runner buffer" })
 vim.keymap.set("n", "<leader>cmg", "<cmd>CMakeGenerate<cr>", { desc = "regenerate project" })
+vim.keymap.set(
+	"n",
+	"<leader>ld",
+	"<cmd>lua vim.diagnostic.open_float()<cr>",
+	{ desc = "show lsp message in floating window" }
+)

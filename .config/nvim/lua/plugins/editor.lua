@@ -12,13 +12,21 @@ return {
 	{
 		"snacks.nvim",
 		opts = {
+			bigfile = { enabled = false },
 			scroll = { enabled = false },
 			indent = { enabled = true },
 			dim = { enabled = true },
 		},
 	},
+	{ "3rd/image.nvim", opts = {} },
 	{
-		"nvim-neo-tree/neo-tree.nvim",
+		-- temporary fix for image.nvim
+		"pynappo/neo-tree.nvim",
+		branch = "1547-fix-image-nvim",
+		-- "nvim-neo-tree/neo-tree.nvim",
+		requires = {
+			"3rd/image.nvim",
+		},
 		keys = {
 			{
 				"<leader><leader>",
@@ -32,7 +40,7 @@ return {
 			close_if_last_window = true,
 			window = {
 				mappings = {
-					["P"] = { "toggle_preview", config = { use_float = true } },
+					["P"] = { "toggle_preview", config = { use_float = true, use_image_nvim = true } },
 				},
 			},
 			filesystem = {
