@@ -1,4 +1,9 @@
-{ pkgs, dotfiles, ... }:
+{
+  pkgs,
+  gtktheme,
+  bindings,
+  ...
+}:
 
 {
   gtk = {
@@ -17,156 +22,157 @@
     };
   };
 
-  home.packages = with pkgs; [
-    capitaine-cursors-themed
-    fluent-gtk-theme
-    fluent-icon-theme
+  home.packages = [
+    pkgs.${gtktheme.main.pkg}
+    pkgs.${gtktheme.icon.pkg}
+    pkgs.${gtktheme.cursor.pkg}
 
-    gnomeExtensions.hide-universal-access
-    gnomeExtensions.vitals
-    gnomeExtensions.user-themes
+    pkgs.gnomeExtensions.user-themes
+    pkgs.gnomeExtensions.hide-universal-access
+    pkgs.gnomeExtensions.vitals
+    pkgs.gnomeExtensions.blur-my-shell
+    pkgs.gnomeExtensions.dash-to-dock
+    pkgs.gnomeExtensions.compiz-alike-magic-lamp-effect
+    pkgs.gnomeExtensions.weather-oclock
   ];
 
-  dconf.settings = {
-    "org/gnome/settings-daemon/plugins/media-keys" = {
-      custom-keybindings = [
-        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/wezterm/"
-        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/firefox/"
-        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/nautilus/"
-        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/rofi-icons/"
-        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/rofi-refs/"
-        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/rofi-calc/"
-        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/rofi-moji/"
-        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/rofi-drun/"
-        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/largesize/"
-        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/pickcolor/"
-      ];
-    };
-    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/wezterm" = {
-      binding = "<Super>t";
-      command = "wezterm";
-      name = "open-terminal";
-    };
-    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/firefox" = {
-      binding = "<Super>f";
-      command = "firefox";
-      name = "open-firefox";
-    };
-    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/nautilus" = {
-      binding = "<Super>e";
-      command = "nautilus";
-      name = "open-nautilus";
-    };
-    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/rofi-icons" = {
-      binding = "<Control><Super>i";
-      command = "${dotfiles}/.config/rofi/apps/launch --nerdicons > /dev/null 2> &1";
-      name = "rofi-icons";
-    };
-    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/rofi-refs" = {
-      binding = "<Control><Super>a";
-      command = "${dotfiles}/.config/rofi/apps/launch --refs > /dev/null 2> &1";
-      name = "rofi-refs";
-    };
-    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/rofi-calc" = {
-      binding = "<Control><Super>c";
-      command = "${dotfiles}/.config/rofi/apps/launch --calc > /dev/null 2> &1";
-      name = "rofi-calc";
-    };
-    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/rofi-moji" = {
-      binding = "<Control><Super>j";
-      command = "${dotfiles}/.config/rofi/apps/launch --emojis > /dev/null 2> &1";
-      name = "rofi-moji";
-    };
-    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/rofi-drun" = {
-      binding = "<Control><Super>r";
-      command = "${dotfiles}/.config/rofi/apps/launch --drun > /dev/null 2> &1";
-      name = "rofi-drun";
-    };
-    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/largesize" = {
-      binding = "<Super>equal";
-      command = "${dotfiles}/scripts/actions.sh --enlarge";
-      name = "increase-window-size";
-    };
-    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/pickcolor" = {
-      binding = "<Control>Print";
-      command = "${dotfiles}/scripts/actions.sh --pick-color";
-      name = "color-picker";
+  dconf.settings =
+    builtins.listToAttrs (
+      map (name: {
+        name = "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/${name}";
+        value = {
+          name = name;
+          binding = bindings.${name}.binding;
+          command = bindings.${name}.action;
+        };
+      }) (builtins.attrNames bindings)
+    )
+    // {
+      "org/gnome/settings-daemon/plugins/media-keys" = {
+        custom-keybindings = (
+          builtins.map (x: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/${x}/") (
+            builtins.attrNames bindings
+          )
+        );
+      };
+
+      "org/gnome/desktop/wm/keybindings" = {
+        minimize = [ "<Super>m" ];
+        toggle-quick-settings = "disabled";
+        toggle-message-tray = "disabled";
+      };
+
+      "org/gnome/shell/keybindings" = {
+        screenshot = [ ];
+        show-screenshot-ui = [ ];
+        screenshot-window = [ ];
+      };
+
+      "org/gnome/mutter" = {
+        dynamic-workspaces = true;
+      };
+
+      "org/gnome/desktop/interface" = {
+        text-scaling-factor = 1.25;
+        gtk-theme = "${gtktheme.main.interface}";
+        icon-theme = "${gtktheme.icon.interface}";
+        cursor-theme = "${gtktheme.cursor.interface}";
+        color-scheme = "prefer-dark";
+        accent-color = "${gtktheme.accent}";
+      };
+      "org/gnome/desktop/wm/preferences" = {
+        resize-with-right-button = true;
+        button-layout = "appmenu:minimize,maximize,close";
+      };
+      "org/gnome/desktop/background" = {
+        picture-uri = "file://${gtktheme.wallpaper}";
+        picture-uri-dark = "file://${gtktheme.wallpaper}";
+      };
+
+      "org/gnome/shell" = {
+        favorite-apps = [
+          "org.wezfurlong.wezterm.desktop"
+          "firefox.desktop"
+          "thunderbird.desktop"
+          "obsidian.desktop"
+          "slack.desktop"
+          "org.gnome.Nautilus.desktop"
+        ];
+        disable-user-extensions = false;
+        enabled-extensions = [
+          "user-theme@gnome-shell-extensions.gcampax.github.com"
+          "hide-universal-access@akiirui.github.io"
+          "Vitals@CoreCoding.com"
+          "blur-my-shell@aunetx"
+          "dash-to-dock@micxgx.gmail.com"
+          "compiz-alike-magic-lamp-effect@hermes83.github.com"
+          "weatheroclock@CleoMenezesJr.github.io"
+        ];
+      };
+
+      ## Extension settings
+
+      # for blur-my-shell
+      "org/gnome/shell/extensions/blur-my-shell/dash-to-dock" = {
+        blur = true;
+        brightness = 0.59999999999999998;
+        sigma = 30;
+        static-blur = true;
+        style-dash-to-dock = 0;
+      };
+      "org/gnome/shell/extensions/blur-my-shell/appfolder" = {
+        brightness = 0.59999999999999998;
+        sigma = 30;
+      };
+
+      "org/gnome/shell/extensions/blur-my-shell/panel" = {
+        brightness = 0.59999999999999998;
+        sigma = 30;
+      };
+      "org/gnome/shell/extensions/blur-my-shell" = {
+        settings-version = 2;
+      };
+      "org/gnome/shell/extensions/blur-my-shell/window-list" = {
+        brightness = 0.59999999999999998;
+        sigma = 30;
+      };
+
+      # for vitals
+      "org/gnome/shell/extensions/vitals" = {
+        hot-sensors = [
+          "_temperature_acpi_thermal zone_"
+          "_memory_allocated_"
+          "__network-rx_max__"
+          "_battery_rate_"
+        ];
+      };
+
+      # for dash2dock
+      "org/gnome/shell/extensions/dash-to-dock" = {
+        dock-position = "BOTTOM";
+        preferred-monitor-by-connector = "eDP";
+        preferred-monitor = -2;
+        height-fraction = 0.9;
+        background-opacity = 0.8;
+        dash-max-icon-size = 64;
+        apply-custom-theme = true;
+        show-mounts = false;
+        intellihide = false;
+        scroll-action = "switch-workspace";
+        show-show-apps-button = false;
+      };
+
+      # for compiz-alike-magic-lamp-effect
+      "org/gnome/shell/extensions/ncom/github/hermes83/compiz-alike-magic-lamp-effect" = {
+        duration = 200.0;
+      };
+
+      # for weather-oclock
+      "org/gnome/shell/extensions/weather-oclock" = {
+        weather-after-clock = true;
+      };
+
     };
 
-    "org/gnome/desktop/interface" = {
-      text-scaling-factor = 1.25;
-    };
-
-    "org/gnome/shell" = {
-      disable-user-extensions = false;
-
-      enabled-extensions = [
-        "user-theme@gnome-shell-extensions.gcampax.github.com"
-        "hide-universal-access@akiirui.github.io"
-        "Vitals@CoreCoding.com"
-        "workspace-indicator@gnome-shell-extensions.gcampax.github.com"
-        "blur-my-shell@aunetx"
-      ];
-    };
-
-    "org/gnome/shell/extensions/blur-my-shell/dash-to-dock" = {
-      blur = true;
-      brightness = 0.59999999999999998;
-      sigma = 30;
-      static-blur = true;
-      style-dash-to-dock = 0;
-    };
-    "org/gnome/shell/extensions/blur-my-shell/appfolder" = {
-      brightness = 0.59999999999999998;
-      sigma = 30;
-    };
-
-    "org/gnome/shell/extensions/blur-my-shell/panel" = {
-      brightness = 0.59999999999999998;
-      sigma = 30;
-    };
-    "org/gnome/shell/extensions/blur-my-shell" = {
-      settings-version = 2;
-    };
-    "org/gnome/shell/extensions/blur-my-shell/window-list" = {
-      brightness = 0.59999999999999998;
-      sigma = 30;
-    };
-
-    "org/gnome/desktop/wm/preferences" = {
-      resize-with-right-button = true;
-    };
-    "org/gnome/mutter" = {
-      dynamic-workspaces = true;
-    };
-    "org/gnome/desktop/interface" = {
-      gtk-theme = "Fluent-dark";
-      icon-theme = "Fluent-dark";
-      cursor-theme = "Capitaine Cursors";
-      color-scheme = "prefer-dark";
-    };
-    "org/gnome/desktop/interface" = {
-      accent-color = "#7295F6";
-    };
-    "org/gnome/desktop/background" = {
-      picture-uri = "file://${dotfiles}/wallpapers/blueish-sunrise.jpg";
-      picture-uri-dark = "file://${dotfiles}/wallpapers/blueish-sunrise.jpg";
-    };
-
-    # "org/gnome/shell/extensions/user-theme" = {
-    #   name = "palenight";
-    # };
-
-    "org/gnome/shell/extensions/vitals" = {
-      hot-sensors = [
-        "_temperature_acpi_thermal zone_"
-        "_memory_allocated_"
-        "__network-rx_max__"
-        "_battery_rate_"
-      ];
-    };
-
-  };
-
-  home.sessionVariables.GTK_THEME = "Fluent:dark";
+  home.sessionVariables.GTK_THEME = gtktheme.main.env;
 }

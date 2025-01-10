@@ -22,6 +22,7 @@
         gnome-photos
         gnome-tour
         gnome-music
+        gnome-screenshot
         epiphany
         geary
         totem

@@ -10,6 +10,7 @@ let
       env = [
         "web"
         "gl"
+        "go"
       ];
     }
   );

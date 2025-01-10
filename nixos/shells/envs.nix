@@ -14,6 +14,14 @@ let
     mdformat
   ];
 
+  goPkgs = with pkgs; [
+    go
+    gopls
+    gotools
+    hugo
+    prettier-plugin-go-template
+  ];
+
   cppPkgs = with pkgs; [
     zlib
     llvmPackages_19.libcxxClang
@@ -40,6 +48,7 @@ let
   nativeBuildInputs =
     [ ]
     ++ (if builtins.elem "web" env then webPkgs else [ ])
+    ++ (if builtins.elem "go" env then goPkgs else [ ])
     ++ (if builtins.elem "cpp" env then cppPkgs else [ ])
     ++ (if builtins.elem "gl" env then glPkgs else [ ])
     ++ (if builtins.elem "python" env then pythonPkgs else [ ]);

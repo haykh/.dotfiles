@@ -33,7 +33,7 @@ pkgs.mkShell (
       fi
       ${env.postShellHook {
         name = name;
-        cmd = "node";
+        cmd = "python3";
       }}
     '';
   }
