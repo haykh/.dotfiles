@@ -43,4 +43,18 @@
     ];
     terminal = false;
   };
+
+  xdg.desktopEntries.code = {
+    name = "Visual Studio Code";
+    genericName = "Text Editor";
+    exec = "env GTK_THEME=\"${themeEnv}\" code %F";
+    icon = "vscode";
+    comment = "Code Editing. Redefined.";
+    categories = [
+      "Utility"
+      "TextEditor"
+      "Development"
+      "IDE"
+    ];
+  };
 }

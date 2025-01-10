@@ -41,6 +41,8 @@ let
     python312
     black
     pyright
+    taplo
+    vscode-langservers-extracted
   ];
 
 in
