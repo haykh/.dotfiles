@@ -1,27 +1,11 @@
-{ dotfiles, ... }:
-
-let
-  aliases = {
-    vi = "nvim";
-    vim = "nvim";
-    ff = "fastfetch";
-    nixbuild = "sudo nixos-rebuild switch --flake ${dotfiles}/nixos";
-    nixupd = "cd ${dotfiles}/nixos/ && nix flake update";
-    homecfg = "cd ${dotfiles}/nixos && nvim home.nix";
-    flakecfg = "cd ${dotfiles}/nixos && nvim flake.nix";
-    nixcfg = "cd ${dotfiles}/nixos/ && nvim .";
-    cat = "bat -pp --theme=TwoDark";
-    ls = "EXA_ICON_SPACING=1 eza -a --icons --sort=type";
-    ll = "EXA_ICON_SPACING=1 eza -a --long --icons --header --sort=type --git --time-style=long-iso";
-    lt = "EXA_ICON_SPACING=1 eza -a --icons --sort=type --tree --level 2 --icons --color";
-    ld = "EXA_ICON_SPACING=1 eza -a --long --icons --header --sort=type --git --time-style=long-iso --total-size";
-    # pyvenv = "nix-shell ${dotfiles}/nixos/default-shell.nix --command \"zsh\"";
-    icat = "wezterm imgcat";
-    rclone-reload = "systemctl --user restart mount-drives.service";
-  };
-in
 {
+  pkgs,
+  dotfiles,
+  shell_aliases,
+  ...
+}:
 
+{
   programs.fzf = {
     enable = true;
     enableZshIntegration = true;
@@ -29,7 +13,7 @@ in
 
   programs.zsh = {
     enable = true;
-    shellAliases = aliases;
+    shellAliases = shell_aliases;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
 
@@ -61,5 +45,17 @@ in
         "docker-compose"
       ];
     };
+    plugins = [
+      {
+        name = "zsh-nix-shell";
+        file = "nix-shell.plugin.zsh";
+        src = pkgs.fetchFromGitHub {
+          owner = "chisui";
+          repo = "zsh-nix-shell";
+          rev = "v0.8.0";
+          sha256 = "1lzrn0n4fxfcgg65v0qhnj7wnybybqzs4adz7xsrkgmcsr0ii8b7";
+        };
+      }
+    ];
   };
 }

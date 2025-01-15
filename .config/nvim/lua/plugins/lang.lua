@@ -14,7 +14,7 @@ return {
 				-- fortran
 				fortls = {},
 				-- cpp & cmake
-				clangd = {},
+				clangd = { autostart = false },
 				cmake = {},
 				-- glsl
 				glslls = {

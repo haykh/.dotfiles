@@ -13,7 +13,7 @@ let
     accent = "#7295F6";
     main = {
       pkg = "fluent-gtk-theme";
-      interface = "Fluent-dark";
+      interface = "Fluent-Dark";
       env = "Fluent:dark";
     };
     icon = {
@@ -92,6 +92,23 @@ let
       action = "${dotfiles}/scripts/actions.sh --screenshot gui";
     };
   };
+  shell_aliases = {
+    vi = "nvim";
+    vim = "nvim";
+    ff = "fastfetch";
+    nixbuild = "sudo nixos-rebuild switch --flake ${dotfiles}/nixos";
+    nixupd = "cd ${dotfiles}/nixos/ && nix flake update";
+    homecfg = "cd ${dotfiles}/nixos && nvim home.nix";
+    flakecfg = "cd ${dotfiles}/nixos && nvim flake.nix";
+    nixcfg = "cd ${dotfiles}/nixos/ && nvim .";
+    cat = "bat -pp --theme=TwoDark";
+    ls = "EXA_ICON_SPACING=1 eza -a --icons --sort=type";
+    ll = "EXA_ICON_SPACING=1 eza -a --long --icons --header --sort=type --git --time-style=long-iso";
+    lt = "EXA_ICON_SPACING=1 eza -a --icons --sort=type --tree --level 2 --icons --color";
+    ld = "EXA_ICON_SPACING=1 eza -a --long --icons --header --sort=type --git --time-style=long-iso --total-size";
+    icat = "wezterm imgcat";
+    rclone-reload = "systemctl --user restart mount-drives.service";
+  };
 in
 {
   home.username = "${cfg.user}";
@@ -108,7 +125,7 @@ in
 
     # compilers & managers
     nix-init
-    nodePackages_latest.nodejs
+    nodejs_23
     wineWowPackages.stable
     rustup
     luajitPackages.luarocks
@@ -153,12 +170,14 @@ in
     freecad
     gimp-with-plugins
     gpick
+    heroic
     inkscape-with-extensions
     jabref
     nextcloud-client
     obsidian
     oculante
     onlyoffice-desktopeditors
+    paraview
     rofimoji
     slack
     telegram-desktop
@@ -201,8 +220,8 @@ in
   };
 
   imports = [
-    (import ./configs/zsh.nix { inherit pkgs dotfiles; })
-    ./configs/starship.nix
+    (import ./configs/zsh.nix { inherit pkgs dotfiles shell_aliases; })
+    (import ./configs/starship.nix)
     (import ./configs/gtk.nix {
       inherit
         pkgs
@@ -210,11 +229,10 @@ in
         bindings
         ;
     })
-    ./configs/wezterm.nix
+    (import ./configs/wezterm.nix)
     (import ./configs/ssh.nix { inherit home; })
-    ./configs/vscode.nix
-    ./configs/drives.nix
     (import ./configs/desktopapps.nix { themeEnv = gtktheme.main.env; })
+    (import ./configs/drives.nix)
   ];
 
   programs = {
@@ -222,6 +240,11 @@ in
       enable = true;
       extraLuaPackages = ps: [ ps.magick ];
       extraPackages = [ pkgs.imagemagick ];
+    };
+
+    vscode = {
+      enable = true;
+      package = pkgs.vscode;
     };
 
     thunderbird = {

@@ -17,9 +17,9 @@
       ...
     }:
     let
-      cfg = {
+      cfg = rec {
         user = "hayk";
-        home = "/home/${cfg.user}";
+        home = "/home/${user}";
         git = {
           username = "haykh";
           email = "haykh.astro@gmail.com";
@@ -42,16 +42,16 @@
             inherit system pkgs;
             modules = [
               nixos-hardware.nixosModules.framework-16-7040-amd
-              ./fw16/fw16.nix
+              (import ./fw16/fw16.nix)
               (import ./global.nix { inherit cfg; })
-              ./modules/locale.nix
-              ./modules/gnome.nix
+              (import ./modules/locale.nix)
+              (import ./modules/gnome.nix)
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;
                 home-manager.backupFileExtension = "bak";
                 home-manager.useUserPackages = true;
-                home-manager.users."${cfg.user}" = (import ./home.nix { inherit cfg; });
+                home-manager.users.${cfg.user} = (import ./home.nix { inherit cfg; });
               }
             ];
           };

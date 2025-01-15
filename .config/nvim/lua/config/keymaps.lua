@@ -7,7 +7,9 @@ vim.keymap.set("n", "<leader>cmc", "<cmd>CMakeCloseRunner<cr>", { desc = "close 
 vim.keymap.set("n", "<leader>cmg", "<cmd>CMakeGenerate<cr>", { desc = "regenerate project" })
 vim.keymap.set(
 	"n",
-	"<leader>ld",
+	"<leader>ll",
 	"<cmd>lua vim.diagnostic.open_float()<cr>",
 	{ desc = "show lsp message in floating window" }
 )
+vim.keymap.set("n", "<leader>le", "<cmd>LspStart<cr>", { desc = "enable lsp diagnostics" })
+vim.keymap.set("n", "<leader>ld", "<cmd>LspStop<cr>", { desc = "disable lsp diagnostics" })

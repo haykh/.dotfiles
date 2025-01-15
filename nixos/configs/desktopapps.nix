@@ -47,7 +47,7 @@
   xdg.desktopEntries.code = {
     name = "Visual Studio Code";
     genericName = "Text Editor";
-    exec = "env GTK_THEME=\"${themeEnv}\" code %F";
+    exec = "env GTK_THEME=\"${themeEnv}\" code --profile \"hayk\" %F";
     icon = "vscode";
     comment = "Code Editing. Redefined.";
     categories = [
