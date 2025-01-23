@@ -89,6 +89,15 @@
         picture-uri-dark = "file://${gtktheme.wallpaper}";
       };
 
+      # text editor
+      "org/gnome/TextEditor" = {
+        style-scheme = "Adwaita-dark";
+        custom-font = "MonaspiceKr Nerd Font 12";
+        use-system-font = false;
+        show-grid = true;
+        show-map = true;
+      };
+
       "org/gnome/shell" = {
         favorite-apps = [
           "org.wezfurlong.wezterm.desktop"

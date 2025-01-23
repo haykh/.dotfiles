@@ -45,6 +45,12 @@ let
     vscode-langservers-extracted
   ];
 
+  rocmPkgs = with pkgs; [
+    rocmPackages.hipcc
+    rocmPackages.rocminfo
+    rocmPackages.rocm-smi
+  ];
+
 in
 let
   nativeBuildInputs =
@@ -53,7 +59,8 @@ let
     ++ (if builtins.elem "go" env then goPkgs else [ ])
     ++ (if builtins.elem "cpp" env then cppPkgs else [ ])
     ++ (if builtins.elem "gl" env then glPkgs else [ ])
-    ++ (if builtins.elem "python" env then pythonPkgs else [ ]);
+    ++ (if builtins.elem "python" env then pythonPkgs else [ ])
+    ++ (if builtins.elem "rocm" env then rocmPkgs else [ ]);
   _vars = {
     LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath (
       if ((builtins.elem "cpp" env) || (builtins.elem "gl" env)) then
@@ -71,13 +78,23 @@ let
       value = _vars.${varName};
     }) (builtins.attrNames _vars)
   );
-  preShellHook = ''
-    RED='\033[0;31m'
-    GREEN='\033[0;32m'
-    BLUE='\033[0;34m'
-    NC='\033[0m'
-    export SHELL=$(which zsh)
-  '';
+  preShellHook =
+    ''
+      RED='\033[0;31m'
+      GREEN='\033[0;32m'
+      BLUE='\033[0;34m'
+      NC='\033[0m'
+      export SHELL=$(which zsh)
+    ''
+    + (
+      if builtins.elem "web" env then
+        ''
+          npm set prefix $HOME/.npm
+          export PATH=$HOME/.npm/bin:$PATH
+        ''
+      else
+        ""
+    );
   postShellHook =
     { name, cmd }:
     ''

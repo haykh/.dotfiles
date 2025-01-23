@@ -44,6 +44,7 @@
               nixos-hardware.nixosModules.framework-16-7040-amd
               (import ./fw16/fw16.nix)
               (import ./global.nix { inherit cfg; })
+              (import ./modules/kvm.nix { user = cfg.user; })
               (import ./modules/locale.nix)
               (import ./modules/gnome.nix)
               home-manager.nixosModules.home-manager

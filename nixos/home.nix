@@ -97,10 +97,10 @@ let
     vim = "nvim";
     ff = "fastfetch";
     nixbuild = "sudo nixos-rebuild switch --flake ${dotfiles}/nixos";
-    nixupd = "cd ${dotfiles}/nixos/ && nix flake update";
-    homecfg = "cd ${dotfiles}/nixos && nvim home.nix";
-    flakecfg = "cd ${dotfiles}/nixos && nvim flake.nix";
-    nixcfg = "cd ${dotfiles}/nixos/ && nvim .";
+    nixupd = "nix flake update --flake ${dotfiles}/nixos";
+    homecfg = "$EDITOR ${dotfiles}/nixos/home.nix";
+    flakecfg = "$EDITOR ${dotfiles}/nixos/flake.nix";
+    nixcfg = "$EDITOR ${dotfiles}/nixos/";
     cat = "bat -pp --theme=TwoDark";
     ls = "EXA_ICON_SPACING=1 eza -a --icons --sort=type";
     ll = "EXA_ICON_SPACING=1 eza -a --long --icons --header --sort=type --git --time-style=long-iso";
@@ -122,14 +122,14 @@ in
     wmctrl
     rclone
     cntr
+    nix-init
 
     # compilers & managers
-    nix-init
     nodejs_23
     wineWowPackages.stable
     rustup
     luajitPackages.luarocks
-    # lua
+    # older lua compatible with certain nvim plugins
     lua51Packages.lua
     python312
     gcc
@@ -166,6 +166,9 @@ in
 
     # apps
     blender-hip
+    cutter
+    devtoolbox
+    exhibit
     flameshot
     freecad
     gimp-with-plugins
@@ -184,6 +187,9 @@ in
     tidal-hifi
     ungoogled-chromium
     zoom-us
+
+    # custom
+    (pkgs.callPackage ./derivations/nogo.nix { inherit pkgs; })
 
     (pkgs.texlive.combine {
       inherit (pkgs.texlive)

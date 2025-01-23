@@ -43,6 +43,7 @@
       extraGroups = [
         "wheel"
         "docker"
+        "kvm"
       ];
     };
   };

@@ -14,6 +14,7 @@
       touchegg
       gnome-tweaks
       gnome-extension-manager
+      gdm-settings
     ];
 
     gnome.excludePackages = (
