@@ -51,6 +51,11 @@ let
     rocmPackages.rocm-smi
   ];
 
+  asm = with pkgs; [
+    nasm
+    (import ../derivations/asm-lsp.nix { inherit pkgs; })
+  ];
+
 in
 let
   nativeBuildInputs =
@@ -60,7 +65,8 @@ let
     ++ (if builtins.elem "cpp" env then cppPkgs else [ ])
     ++ (if builtins.elem "gl" env then glPkgs else [ ])
     ++ (if builtins.elem "python" env then pythonPkgs else [ ])
-    ++ (if builtins.elem "rocm" env then rocmPkgs else [ ]);
+    ++ (if builtins.elem "rocm" env then rocmPkgs else [ ])
+    ++ (if builtins.elem "asm" env then asm else [ ]);
   _vars = {
     LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath (
       if ((builtins.elem "cpp" env) || (builtins.elem "gl" env)) then

@@ -181,7 +181,7 @@ BEGIN {
 				value = "ApJL"
 			} else if (value == "Astrophysical Journal: Supplement" || value == "Astrophysical Journal Supplement") {
 				value = "ApJS"
-			} else if (value == "Astronomy and Astrophysics" || value == "Astronomy & Astrophysics") {
+			} else if (value == "Astronomy and Astrophysics" || value == "Astronomy & Astrophysics" || value == "Astronomy \\\\& Astrophysics") {
 				value = "A&amp;A"
 			} else if (value == "Monthly Notices of the Royal Astronomical Society") {
 				value = "MNRAS"

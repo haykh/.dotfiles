@@ -27,9 +27,9 @@ let
     wallpaper = "${dotfiles}/wallpapers/blueish-sunrise.jpg";
   };
   bindings = {
-    wezterm = {
+    terminal = {
       binding = "<Super>t";
-      action = "wezterm";
+      action = "ghostty";
     };
     firefox = {
       binding = "<Super>f";
@@ -102,11 +102,14 @@ let
     flakecfg = "$EDITOR ${dotfiles}/nixos/flake.nix";
     nixcfg = "$EDITOR ${dotfiles}/nixos/";
     cat = "bat -pp --theme=TwoDark";
-    ls = "EXA_ICON_SPACING=1 eza -a --icons --sort=type";
-    ll = "EXA_ICON_SPACING=1 eza -a --long --icons --header --sort=type --git --time-style=long-iso";
-    lt = "EXA_ICON_SPACING=1 eza -a --icons --sort=type --tree --level 2 --icons --color";
-    ld = "EXA_ICON_SPACING=1 eza -a --long --icons --header --sort=type --git --time-style=long-iso --total-size";
-    icat = "wezterm imgcat";
+    # ls = "EXA_ICON_SPACING=1 eza -a --icons=always --sort=type $@";
+    # ll = "EXA_ICON_SPACING=1 eza -a --long --icons=always --header --sort=type --git --time-style=long-iso";
+    # lt = "EXA_ICON_SPACING=1 eza -a --icons=always --sort=type --tree --level 2 --icons=always --color";
+    # ld = "EXA_ICON_SPACING=1 eza -a --long --icons=always --header --sort=type --git --time-style=long-iso --total-size";
+    ll = "ls --long --header --time-style=long-iso";
+    lt = "ls --tree --level 2 --icons=always --color";
+    ld = "ls --long --header --time-style=long-iso --total-size";
+    icat = "chafa -f kitty";
     rclone-reload = "systemctl --user restart mount-drives.service";
   };
 in
@@ -154,7 +157,6 @@ in
     curl
     unzip
     fzf
-    eza
     bat
     tldr
     ripgrep
@@ -163,9 +165,12 @@ in
     ffmpeg
     imagemagick
     mapscii
+    chafa
 
     # apps
     blender-hip
+    rocmPackages.clr
+
     cutter
     devtoolbox
     exhibit
@@ -181,6 +186,7 @@ in
     oculante
     onlyoffice-desktopeditors
     paraview
+    protonmail-desktop
     rofimoji
     slack
     telegram-desktop
@@ -235,7 +241,8 @@ in
         bindings
         ;
     })
-    (import ./configs/wezterm.nix)
+    # (import ./configs/wezterm.nix)
+    (import ./configs/ghostty.nix)
     (import ./configs/ssh.nix { inherit home; })
     (import ./configs/desktopapps.nix { themeEnv = gtktheme.main.env; })
     (import ./configs/drives.nix)

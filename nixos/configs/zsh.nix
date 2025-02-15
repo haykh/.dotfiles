@@ -11,6 +11,22 @@
     enableZshIntegration = true;
   };
 
+  programs.eza = {
+    enable = true;
+    enableZshIntegration = true;
+    icons = "always";
+    colors = "always";
+    git = true;
+    extraOptions = [
+      "-a"
+      "--sort=type"
+    ];
+  };
+
+  programs.git.diff-so-fancy = {
+    enable = true;
+  };
+
   programs.zsh = {
     enable = true;
     shellAliases = shell_aliases;
@@ -18,7 +34,7 @@
     syntaxHighlighting.enable = true;
 
     initExtra = ''
-      zstyle ':completion:*:default' list-colors "ow=30;44"
+      # zstyle ':completion:*:default' list-colors "ow=30;44"
       if [ -n "''${commands[fzf-share]}" ]; then
         source "$(fzf-share)/key-bindings.zsh"
         source "$(fzf-share)/completion.zsh"
@@ -28,7 +44,7 @@
       fi
 
       fpath+=${dotfiles}/.zsh_functions
-      autoload -U $fpath[-1]/*(.:t)
+      autoload -U ${dotfiles}/.zsh_functions/*
       fpath+=$HOME/.zfunc
       fpath+=$HOME/.zsh/functions
       autoload compinit -Uz && compinit

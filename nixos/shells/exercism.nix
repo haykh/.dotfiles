@@ -1,16 +1,14 @@
 {
   pkgs ? import <nixpkgs> { },
+  lang ? null,
 }:
 
 let
-  name = "rocm";
+  name = "exercism";
   env = (
     import ./envs.nix {
       inherit pkgs;
-      env = [
-        "rocm"
-        "cpp"
-      ];
+      env = (if lang == null then [ ] else (pkgs.lib.strings.splitString "," lang));
     }
   );
 in
@@ -18,13 +16,13 @@ pkgs.mkShell (
   env.envVars
   // {
     name = "${name}-env";
-    nativeBuildInputs = env.nativeBuildInputs;
+    nativeBuildInputs = env.nativeBuildInputs ++ [ pkgs.exercism ];
 
     shellHook = ''
       ${env.preShellHook}
       ${env.postShellHook {
         name = name;
-        cmd = "hipcc";
+        cmd = "exercism";
       }}
     '';
   }

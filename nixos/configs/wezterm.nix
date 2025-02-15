@@ -14,6 +14,7 @@
         background = "#0d1117",
       }
       config.font = wezterm.font "MonaspiceKr Nerd Font"
+      config.warn_about_missing_glyphs = false
 
       config.font_rules = {
         {

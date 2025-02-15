@@ -19,6 +19,10 @@
     "amdgpu"
     "kvm-amd"
   ];
-  boot.kernelParams = [ "amdgpu.abmlevel=0" ];
+  boot.kernelParams = [
+    "amdgpu.abmlevel=0"
+    # "amdgpu.sg_display=0"
+    # "amdgpu.dcdebugmask=0x400"
+  ];
   boot.extraModulePackages = [ ];
 }

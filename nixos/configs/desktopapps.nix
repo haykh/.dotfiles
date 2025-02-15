@@ -57,4 +57,16 @@
       "IDE"
     ];
   };
+
+  # xdg.desktopEntries.proton-mail = {
+  #   name = "Proton Mail";
+  #   genericName = "Proton official desktop application for Proton Mail and Proton Calendar";
+  #   exec = "proton-mail %U";
+  #   icon = "proton-mail";
+  #   comment = "Proton official desktop application for Proton Mail and Proton Calendar";
+  #   categories = [
+  #     "Network"
+  #     "Email"
+  #   ];
+  # };
 }

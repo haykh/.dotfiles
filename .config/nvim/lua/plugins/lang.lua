@@ -11,11 +11,13 @@ return {
 				autostart = true,
 			},
 			servers = {
+				-- nasm
+				asm_lsp = {},
 				-- fortran
 				fortls = {},
 				-- cpp & cmake
 				clangd = { autostart = false },
-				cmake = {},
+				neocmake = {},
 				-- glsl
 				glslls = {
 					cmd = { "glslls", "--target-env", "opengl4.5", "--stdin" },
@@ -71,7 +73,7 @@ return {
 				fortran = { "fprettify" },
 				cpp = { "clang-format" },
 				c = { "clang-format" },
-				cmake = { "cmake-format" },
+				cmake = { "cmake_format" },
 				glsl = { "clang-format" },
 				python = { "black" },
 				javascript = { "prettierd" },
@@ -95,23 +97,23 @@ return {
 			formatters = {
 				injected = { options = { ignore_errors = true } },
 				fprettify = {
-	         -- stylua: ignore
-	         prepend_args = {
-	           "-i", "2",
-	           "-w", "4",
-	           "--whitespace-assignment", "true",
-	           "--enable-decl",
-	           "--whitespace-decl", "true",
-	           "--whitespace-relational", "true",
-	           "--whitespace-logical", "true",
-	           "--whitespace-plusminus", "true",
-	           "--whitespace-multdiv", "true",
-	           "--whitespace-print", "true",
-	           "--whitespace-type", "true",
-	           "--whitespace-intrinsics", "true",
-	           "--enable-replacements",
-	           "-l", "1000",
-	         },
+            -- stylua: ignore
+            prepend_args = {
+              "-i", "2",
+              "-w", "4",
+              "--whitespace-assignment", "true",
+              "--enable-decl",
+              "--whitespace-decl", "true",
+              "--whitespace-relational", "true",
+              "--whitespace-logical", "true",
+              "--whitespace-plusminus", "true",
+              "--whitespace-multdiv", "true",
+              "--whitespace-print", "true",
+              "--whitespace-type", "true",
+              "--whitespace-intrinsics", "true",
+              "--enable-replacements",
+              "-l", "1000",
+            },
 				},
 			},
 		},
