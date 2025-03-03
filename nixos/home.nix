@@ -102,10 +102,6 @@ let
     flakecfg = "$EDITOR ${dotfiles}/nixos/flake.nix";
     nixcfg = "$EDITOR ${dotfiles}/nixos/";
     cat = "bat -pp --theme=TwoDark";
-    # ls = "EXA_ICON_SPACING=1 eza -a --icons=always --sort=type $@";
-    # ll = "EXA_ICON_SPACING=1 eza -a --long --icons=always --header --sort=type --git --time-style=long-iso";
-    # lt = "EXA_ICON_SPACING=1 eza -a --icons=always --sort=type --tree --level 2 --icons=always --color";
-    # ld = "EXA_ICON_SPACING=1 eza -a --long --icons=always --header --sort=type --git --time-style=long-iso --total-size";
     ll = "ls --long --header --time-style=long-iso";
     lt = "ls --tree --level 2 --icons=always --color";
     ld = "ls --long --header --time-style=long-iso --total-size";
@@ -126,6 +122,7 @@ in
     rclone
     cntr
     nix-init
+    gnupg
 
     # compilers & managers
     nodejs_23
@@ -232,8 +229,6 @@ in
   };
 
   imports = [
-    (import ./configs/zsh.nix { inherit pkgs dotfiles shell_aliases; })
-    (import ./configs/starship.nix)
     (import ./configs/gtk.nix {
       inherit
         pkgs
@@ -241,10 +236,14 @@ in
         bindings
         ;
     })
-    # (import ./configs/wezterm.nix)
-    (import ./configs/ghostty.nix)
-    (import ./configs/ssh.nix { inherit home; })
     (import ./configs/desktopapps.nix { themeEnv = gtktheme.main.env; })
+    (import ./configs/ghostty.nix)
+    (import ./configs/zsh.nix { inherit pkgs dotfiles shell_aliases; })
+    (import ./configs/starship.nix)
+    (import ./configs/ssh.nix { inherit home; })
+    # (import ./configs/wezterm.nix)
+    # (import ./configs/hyprland.nix)
+    # (import ./configs/kdeplasma.nix { inherit pkgs; })
     (import ./configs/drives.nix)
   ];
 

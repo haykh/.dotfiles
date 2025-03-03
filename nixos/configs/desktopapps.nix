@@ -58,15 +58,25 @@
     ];
   };
 
-  # xdg.desktopEntries.proton-mail = {
-  #   name = "Proton Mail";
-  #   genericName = "Proton official desktop application for Proton Mail and Proton Calendar";
-  #   exec = "proton-mail %U";
-  #   icon = "proton-mail";
-  #   comment = "Proton official desktop application for Proton Mail and Proton Calendar";
-  #   categories = [
-  #     "Network"
-  #     "Email"
-  #   ];
-  # };
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications = {
+      "application/pdf" = "org.pwmt.zathura-pdf-mupdf.desktop";
+      "x-scheme-handler/tg" = "org.telegram.desktop.desktop";
+      "x-scheme-handler/tonsite" = "org.telegram.desktop.desktop";
+      "x-scheme-handler/slack" = "slack.desktop";
+      "image/gif" = "oculante.desktop";
+      "image/png" = "oculante.desktop";
+      "image/jpeg" = "oculante.desktop";
+    };
+
+    associations.added = {
+      "application/pdf" = "org.pwmt.zathura-pdf-mupdf.desktop";
+      "x-scheme-handler/tg" = "org.telegram.desktop.desktop";
+      "x-scheme-handler/tonsite" = "org.telegram.desktop.desktop";
+      "image/gif" = "oculante.desktop";
+      "image/png" = "oculante.desktop";
+      "image/jpeg" = "oculante.desktop";
+    };
+  };
 }

@@ -12,6 +12,12 @@
     "flakes"
   ];
 
+  nix.gc = {
+    automatic = true;
+    randomizedDelaySec = "45min";
+    options = "--delete-older-than 30d";
+  };
+
   networking.networkmanager.enable = true;
   services.xserver.enable = true;
 
