@@ -1,6 +1,7 @@
 { ... }:
 
 {
+
   programs.ghostty = {
     enable = true;
     enableZshIntegration = true;
@@ -11,7 +12,7 @@
       font-style-italic = "MonaspiceRn NF";
       cursor-invert-fg-bg = true;
       cursor-opacity = 0.75;
-      window-decoration = false;
+      window-decoration = "none";
       keybind = [
         "ctrl+shift+|=new_split:right"
         "ctrl+shift+-=new_split:down"
@@ -21,4 +22,5 @@
       ];
     };
   };
+
 }

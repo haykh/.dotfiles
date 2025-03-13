@@ -55,7 +55,6 @@
   };
 
   programs = {
-    firefox.enable = true;
     zsh.enable = true;
   };
 
@@ -72,6 +71,9 @@
       # system
       docker
       docker-compose
+
+      # browser
+      librewolf
 
     ];
   };

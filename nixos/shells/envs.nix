@@ -29,6 +29,7 @@ let
     cmake
     neocmakelsp
     cmake-format
+    cmake-lint
   ];
 
   glPkgs = with pkgs; [

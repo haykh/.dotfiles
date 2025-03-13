@@ -6,6 +6,7 @@
 }:
 
 {
+
   gtk = {
     enable = true;
 
@@ -101,7 +102,7 @@
       "org/gnome/shell" = {
         favorite-apps = [
           "org.wezfurlong.wezterm.desktop"
-          "firefox.desktop"
+          "librewolf.desktop"
           "thunderbird.desktop"
           "obsidian.desktop"
           "slack.desktop"
@@ -184,4 +185,5 @@
     };
 
   home.sessionVariables.GTK_THEME = gtktheme.main.env;
+
 }

@@ -4,6 +4,7 @@ let
   lib = pkgs.lib;
 in
 {
+
   programs.starship = {
     enable = true;
     settings = {
@@ -198,4 +199,5 @@ in
       };
     };
   };
+
 }

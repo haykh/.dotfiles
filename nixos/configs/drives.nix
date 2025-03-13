@@ -1,6 +1,7 @@
 { pkgs, config, ... }:
 
 {
+
   systemd.user.services.mount-drives =
     let
       home = config.home.homeDirectory;
@@ -37,4 +38,5 @@
       };
       Install.WantedBy = [ "default.target" ];
     };
+
 }

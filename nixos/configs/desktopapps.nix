@@ -1,6 +1,7 @@
 { themeEnv, ... }:
 
 {
+
   xdg.desktopEntries.onlyoffice-desktopeditors = {
     name = "ONLYOFFICE Desktop Editors";
     genericName = "Document Editor";
@@ -79,4 +80,5 @@
       "image/jpeg" = "oculante.desktop";
     };
   };
+
 }

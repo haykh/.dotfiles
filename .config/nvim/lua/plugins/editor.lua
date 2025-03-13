@@ -1,6 +1,15 @@
 return {
 	{ import = "lazyvim.plugins.extras.editor.aerial" },
 	{
+		"ibhagwan/fzf-lua",
+		opts = {
+			grep = {
+				rg_opts = "--sort-files --hidden --column --line-number --no-heading "
+					.. "--color=always --smart-case -g '!{.git,node_modules,legacy,extern,build}/*'",
+			},
+		},
+	},
+	{
 		"stevearc/aerial.nvim",
 		keys = {
 			{ "<leader>ae", "<cmd>AerialToggle<cr>", desc = "Aerial (Symbols)" },

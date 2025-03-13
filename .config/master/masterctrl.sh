@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
-SCRIPT_DIR=$HOME/.config/master/scripts
-ROFI_DIR=$HOME/.config/rofi
+TMPDIR=/tmp
+
+SCRIPT_DIR=$HOME/.dotfiles/.config/master/scripts
+ROFI_DIR=$HOME/.dotfiles/.config/rofi
 
 LOGFILE=$TMPDIR/masterctrl.log
 

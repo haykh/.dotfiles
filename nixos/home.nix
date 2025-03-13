@@ -31,9 +31,9 @@ let
       binding = "<Super>t";
       action = "ghostty";
     };
-    firefox = {
+    browser = {
       binding = "<Super>f";
-      action = "firefox";
+      action = "librewolf";
     };
     nautilus = {
       binding = "<Super>e";
@@ -124,6 +124,10 @@ in
     nix-init
     gnupg
 
+    # hardware controllers
+    brightnessctl
+    pamixer
+
     # compilers & managers
     nodejs_23
     wineWowPackages.stable
@@ -184,12 +188,14 @@ in
     onlyoffice-desktopeditors
     paraview
     protonmail-desktop
+    protonvpn-gui
     rofimoji
     slack
     telegram-desktop
     tidal-hifi
     ungoogled-chromium
     zoom-us
+    steam-run
 
     # custom
     (pkgs.callPackage ./derivations/nogo.nix { inherit pkgs; })
@@ -198,6 +204,10 @@ in
       inherit (pkgs.texlive)
         scheme-basic
         dvisvgm
+        type1cm
+        xcolor
+        cm-super
+        underscore
         dvipng # for preview and export as html
         wrapfig
         amsmath
@@ -236,14 +246,12 @@ in
         bindings
         ;
     })
+    (import ./configs/hyprland.nix { inherit pkgs; })
     (import ./configs/desktopapps.nix { themeEnv = gtktheme.main.env; })
     (import ./configs/ghostty.nix)
     (import ./configs/zsh.nix { inherit pkgs dotfiles shell_aliases; })
     (import ./configs/starship.nix)
     (import ./configs/ssh.nix { inherit home; })
-    # (import ./configs/wezterm.nix)
-    # (import ./configs/hyprland.nix)
-    # (import ./configs/kdeplasma.nix { inherit pkgs; })
     (import ./configs/drives.nix)
   ];
 
