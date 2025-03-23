@@ -12,11 +12,6 @@
     touchegg.enable = true;
   };
 
-  programs.hyprland = {
-    enable = true;
-    xwayland.enable = true;
-  };
-
   environment = with pkgs; {
     systemPackages = [
       touchegg

@@ -1,4 +1,4 @@
-{ cfg }:
+{ inputs, cfg }:
 
 {
   pkgs,
@@ -33,7 +33,7 @@ let
     };
     browser = {
       binding = "<Super>f";
-      action = "librewolf";
+      action = "zen";
     };
     nautilus = {
       binding = "<Super>e";
@@ -101,6 +101,7 @@ let
     homecfg = "$EDITOR ${dotfiles}/nixos/home.nix";
     flakecfg = "$EDITOR ${dotfiles}/nixos/flake.nix";
     nixcfg = "$EDITOR ${dotfiles}/nixos/";
+    # hyprcfg = "$EDITOR ${dotfiles}/nixos/configs/hyprland.nix";
     cat = "bat -pp --theme=TwoDark";
     ll = "ls --long --header --time-style=long-iso";
     lt = "ls --tree --level 2 --icons=always --color";
@@ -121,7 +122,6 @@ in
     wmctrl
     rclone
     cntr
-    nix-init
     gnupg
 
     # hardware controllers
@@ -169,36 +169,46 @@ in
     chafa
 
     # apps
+    ## graphics & media
     blender-hip
-    rocmPackages.clr
-
-    cutter
-    devtoolbox
-    exhibit
-    flameshot
     freecad
     gimp-with-plugins
-    gpick
-    heroic
     inkscape-with-extensions
-    jabref
-    nextcloud-client
-    obsidian
     oculante
-    onlyoffice-desktopeditors
-    paraview
-    protonmail-desktop
-    protonvpn-gui
-    rofimoji
-    slack
-    telegram-desktop
     tidal-hifi
-    ungoogled-chromium
-    zoom-us
-    steam-run
 
-    # custom
+    ## utils
+    onlyoffice-desktopeditors
+    exhibit
+    flameshot
+    gpick
+    rofimoji
+    protonvpn-gui
+    proton-pass
+    obsidian
     (pkgs.callPackage ./derivations/nogo.nix { inherit pkgs; })
+
+    ## science
+    jabref
+    paraview
+
+    ## frameworks
+    rocmPackages.clr
+
+    ## web
+    (pkgs.callPackage ./derivations/zen.nix { inherit pkgs; })
+    nextcloud-client
+    slack
+    zoom-us
+    protonmail-desktop
+    telegram-desktop
+
+    ## dev
+    cutter
+    devtoolbox
+
+    heroic
+    steam-run
 
     (pkgs.texlive.combine {
       inherit (pkgs.texlive)
@@ -208,7 +218,7 @@ in
         xcolor
         cm-super
         underscore
-        dvipng # for preview and export as html
+        dvipng
         wrapfig
         amsmath
         ulem
@@ -235,6 +245,7 @@ in
   };
 
   home.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
     EDITOR = "nvim";
   };
 
@@ -246,7 +257,6 @@ in
         bindings
         ;
     })
-    (import ./configs/hyprland.nix { inherit pkgs; })
     (import ./configs/desktopapps.nix { themeEnv = gtktheme.main.env; })
     (import ./configs/ghostty.nix)
     (import ./configs/zsh.nix { inherit pkgs dotfiles shell_aliases; })
@@ -258,6 +268,7 @@ in
   programs = {
     neovim = {
       enable = true;
+      defaultEditor = true;
       extraLuaPackages = ps: [ ps.magick ];
       extraPackages = [ pkgs.imagemagick ];
     };

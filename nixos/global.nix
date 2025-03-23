@@ -73,7 +73,7 @@
       docker-compose
 
       # browser
-      librewolf
+      ungoogled-chromium
 
     ];
   };

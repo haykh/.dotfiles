@@ -102,7 +102,7 @@
       "org/gnome/shell" = {
         favorite-apps = [
           "org.wezfurlong.wezterm.desktop"
-          "librewolf.desktop"
+          "zen.desktop"
           "thunderbird.desktop"
           "obsidian.desktop"
           "slack.desktop"

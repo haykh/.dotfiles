@@ -69,6 +69,7 @@
       "image/gif" = "oculante.desktop";
       "image/png" = "oculante.desktop";
       "image/jpeg" = "oculante.desktop";
+      "x-scheme-handler/mailto" = "thunderbird.desktop";
     };
 
     associations.added = {
@@ -78,6 +79,7 @@
       "image/gif" = "oculante.desktop";
       "image/png" = "oculante.desktop";
       "image/jpeg" = "oculante.desktop";
+      "x-scheme-handler/mailto" = "thunderbird.desktop";
     };
   };
 

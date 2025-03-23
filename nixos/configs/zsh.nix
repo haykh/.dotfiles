@@ -33,6 +33,9 @@
     shellAliases = shell_aliases;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
+    sessionVariables = {
+      EDITOR = "nvim";
+    };
 
     initExtra = ''
       # zstyle ':completion:*:default' list-colors "ow=30;44"

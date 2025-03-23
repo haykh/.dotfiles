@@ -1,12 +1,17 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 {
 
   wayland.windowManager.hyprland = {
     enable = true;
+    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    portalPackage =
+      inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+
     plugins = [
-      pkgs.hyprlandPlugins.hyprexpo
+      inputs.hyprland-plugins.packages.${pkgs.stdenv.hostPlatform.system}.hyprexpo
     ];
+
     settings = {
       # startup
       exec-once = [
@@ -23,7 +28,7 @@
         "ELECTRON_OZONE_PLATFORM_HINT,auto"
 
         # gtk
-        "GDK_SCALE,1.25"
+        "GDK_SCALE,1.0"
         "GDK_BACKEND,wayland"
 
         # qt
@@ -34,7 +39,7 @@
       ];
 
       monitor = [
-        "eDP-2, highrr, auto, 1.25, bitdepth, 10"
+        "eDP-2, highrr, auto, 1.0, bitdepth, 10"
         "DP-1, preferred, auto-up, 2.0"
       ];
 
@@ -177,8 +182,9 @@
           "$mod, down, movefocus, d"
 
           # Apps
-          "$mod, F, exec, librewolf"
+          "$mod, F, exec, zen"
           "$mod, T, exec, ghostty"
+          "$mod, E, exec, nautilus"
 
           # Workspaces
           "$mod, mouse_down, workspace, e+1"
@@ -218,16 +224,16 @@
       windowrulev2 = [
         "float, class:^.*"
 
-        # librewolf
-        "size 60% 80%, class:^(librewolf)$ initialTitle:^(Librewolf)$"
-        "center, class:^(librewolf)$ initialTitle:^(Librewolf)$"
+        # zen
+        "size 60% 80%, class:^(zen)$"
+        "center, class:^(zen)$"
 
         # thunderbird
         "size 60% 80%, class:^(betterbird.*)$ title:^((?!Sending Message).)*$"
 
-        # kitty
+        # ghostty
         # "opacity 0.9 0.9, class:^(kitty)$"
-        "size 60% 80%, class:^(kitty)$"
+        "size 60% 80%, class:^(ghostty)$"
 
         # thunar
         "opacity 1 1, class:^([T|t]hunar) title:^(.*[T|t]hunar.*)$"
@@ -240,9 +246,8 @@
         # amdgpu
         "size 80% 80%, class:^(amdgpu_top)$"
 
-        # thorium
-        "size 80% 80%, class:^(thorium)(.*)$"
-        "opacity 0.85 0.85, class:^(thorium-calendar)(.*)$"
+        # chromium
+        "size 80% 80%, class:^(chromium)(.*)$"
 
         # pip
         "size 30% 30%, title:^(Picture in picture)$"
@@ -269,6 +274,4 @@
       ];
     };
   };
-  home.sessionVariables.NIXOS_OZONE_WL = "1";
-
 }
