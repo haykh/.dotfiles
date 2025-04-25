@@ -22,6 +22,7 @@ return {
 				glslls = {
 					cmd = { "glslls", "--target-env", "opengl4.5", "--stdin" },
 				},
+				svelte = {},
 				-- python
 				pyright = {},
 				-- js, ts, html, css
@@ -129,6 +130,7 @@ return {
 				"c",
 				"cpp",
 				"css",
+				"cmake",
 				"diff",
 				"html",
 				"glsl",
@@ -145,12 +147,12 @@ return {
 				"printf",
 				"python",
 				"regex",
+				"svelte",
 				"toml",
 				"javascript",
 				"vim",
 				"vimdoc",
 				"xml",
-				"cmake",
 				"yaml",
 				"nix",
 			},

@@ -38,6 +38,9 @@
     };
 
     initExtra = ''
+      export PATH=$HOME/.local/bin:$PATH
+      export EDITOR=nvim
+
       # zstyle ':completion:*:default' list-colors "ow=30;44"
       if [ -n "''${commands[fzf-share]}" ]; then
         source "$(fzf-share)/key-bindings.zsh"
