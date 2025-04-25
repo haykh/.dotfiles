@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  boot.kernelPackages = pkgs.linuxPackages_6_6;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
@@ -20,7 +20,7 @@
     "kvm-amd"
   ];
   boot.kernelParams = [
-    "amdgpu.abmlevel=0"
+    # "amdgpu.abmlevel=0"
     # "amdgpu.sg_display=0"
     # "amdgpu.dcdebugmask=0x400"
   ];

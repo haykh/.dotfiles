@@ -1,3 +1,4 @@
+vim.g.lazyvim_check_order = false
 vim.g.mapleader = "\\"
 vim.g.maplocalleader = "\\"
 vim.o.swapfile = false

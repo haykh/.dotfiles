@@ -12,6 +12,7 @@ let
     prettierd
     eslint_d
     mdformat
+    svelte-language-server
   ];
 
   goPkgs = with pkgs; [
@@ -19,6 +20,7 @@ let
     gopls
     gotools
     hugo
+    wails
     prettier-plugin-go-template
   ];
 

@@ -43,13 +43,13 @@ let
       binding = "<Control><Super>i";
       action = "${dotfiles}/.config/rofi/apps/launch --nerdicons > /dev/null 2> &1";
     };
-    rofi-calc = {
+    calc = {
       binding = "<Control><Super>c";
-      action = "${dotfiles}/.config/rofi/apps/launch --calc > /dev/null 2> &1";
+      action = "${cfg.home}/.local/bin/crifo > /dev/null 2> &1";
     };
-    rofi-refs = {
+    refs = {
       binding = "<Control><Super>a";
-      action = "${dotfiles}/.config/rofi/apps/launch --refs > /dev/null 2> &1";
+      action = "${cfg.home}/.local/bin/llyfr ${cfg.home}/Documents/Literature/refs.bib > /dev/null 2> &1";
     };
     rofi-moji = {
       binding = "<Control><Super>j";
@@ -101,7 +101,6 @@ let
     homecfg = "$EDITOR ${dotfiles}/nixos/home.nix";
     flakecfg = "$EDITOR ${dotfiles}/nixos/flake.nix";
     nixcfg = "$EDITOR ${dotfiles}/nixos/";
-    # hyprcfg = "$EDITOR ${dotfiles}/nixos/configs/hyprland.nix";
     cat = "bat -pp --theme=TwoDark";
     ll = "ls --long --header --time-style=long-iso";
     lt = "ls --tree --level 2 --icons=always --color";
@@ -167,6 +166,7 @@ in
     imagemagick
     mapscii
     chafa
+    libqalculate
 
     # apps
     ## graphics & media
@@ -202,6 +202,7 @@ in
     zoom-us
     protonmail-desktop
     telegram-desktop
+    mullvad-browser
 
     ## dev
     cutter
@@ -293,6 +294,10 @@ in
       enable = true;
       userName = cfg.git.username;
       userEmail = cfg.git.email;
+      extraConfig = {
+        pull.rebase = false;
+        init.defaultBranch = "master";
+      };
     };
 
     mpv = {
@@ -313,9 +318,6 @@ in
 
     rofi = {
       enable = true;
-      plugins = with pkgs; [
-        rofi-calc
-      ];
       theme = "${dotfiles}/.config/rofi/config.rasi";
     };
 

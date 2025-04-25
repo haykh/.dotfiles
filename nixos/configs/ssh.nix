@@ -55,6 +55,7 @@
         forwardAgent = false;
         forwardX11 = false;
       };
+
       frontera = {
         host = "frontera";
         hostname = "frontera.tacc.utexas.edu";
@@ -80,6 +81,12 @@
         port = 61022;
         forwardX11 = true;
         forwardX11Trusted = true;
+      };
+
+      perlmutter = {
+        host = "perlmutter";
+        hostname = "perlmutter.nersc.gov";
+        user = "hayk";
       };
 
     };

@@ -35,6 +35,8 @@
     pkgs.gnomeExtensions.dash-to-dock
     pkgs.gnomeExtensions.compiz-alike-magic-lamp-effect
     pkgs.gnomeExtensions.weather-oclock
+    pkgs.gnomeExtensions.window-calls
+    pkgs.gnomeExtensions.window-calls-extended
   ];
 
   dconf.settings =
@@ -117,6 +119,8 @@
           "dash-to-dock@micxgx.gmail.com"
           "compiz-alike-magic-lamp-effect@hermes83.github.com"
           "weatheroclock@CleoMenezesJr.github.io"
+          "window-calls-extended@hseliger.eu"
+          "window-calls@domandoman.xyz"
         ];
       };
 
