@@ -1,6 +1,5 @@
 return {
 	-- lsp
-	{ import = "lazyvim.plugins.extras.lang.clangd" },
 	{
 		"neovim/nvim-lspconfig",
 		opts = {
@@ -23,7 +22,6 @@ return {
 		},
 	},
 	-- cmake
-	{ import = "lazyvim.plugins.extras.lang.cmake" },
 	{
 		"Civitasv/cmake-tools.nvim",
 		opts = {

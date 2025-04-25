@@ -1,5 +1,4 @@
 return {
-	{ import = "lazyvim.plugins.extras.editor.aerial" },
 	{
 		"ibhagwan/fzf-lua",
 		opts = {
@@ -27,15 +26,15 @@ return {
 			dim = { enabled = true },
 		},
 	},
-	{ "3rd/image.nvim", opts = {} },
+	-- { "3rd/image.nvim", opts = {} },
 	{
 		-- temporary fix for image.nvim
-		"pynappo/neo-tree.nvim",
-		branch = "1547-fix-image-nvim",
-		-- "nvim-neo-tree/neo-tree.nvim",
-		requires = {
-			"3rd/image.nvim",
-		},
+		-- "pynappo/neo-tree.nvim",
+		-- branch = "1547-fix-image-nvim",
+		"nvim-neo-tree/neo-tree.nvim",
+		-- requires = {
+		-- 	"3rd/image.nvim",
+		-- },
 		keys = {
 			{
 				"<leader><leader>",

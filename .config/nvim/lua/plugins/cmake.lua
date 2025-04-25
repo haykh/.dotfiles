@@ -1,5 +1,4 @@
 return {
-	{ import = "lazyvim.plugins.extras.lang.cmake" },
 	{
 		"Civitasv/cmake-tools.nvim",
 		opts = {

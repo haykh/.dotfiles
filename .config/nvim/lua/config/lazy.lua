@@ -13,14 +13,17 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
 	spec = {
-		{ "LazyVim/LazyVim", import = "lazyvim.plugins" },
+		{
+			"LazyVim/LazyVim",
+			import = "lazyvim.plugins",
+		},
+		{ import = "lazyvim.plugins.extras.lang.clangd" },
+		{ import = "lazyvim.plugins.extras.lang.cmake" },
+		{ import = "lazyvim.plugins.extras.editor.aerial" },
+		{ import = "lazyvim.plugins.extras.lang.cmake" },
 		{ import = "plugins" },
 	},
 	change_detection = {
 		notify = false,
-	},
-}, {
-	rocks = {
-		hererocks = true, -- recommended if you do not have global installation of Lua 5.1.
 	},
 })
