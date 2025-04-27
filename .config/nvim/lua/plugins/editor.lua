@@ -18,12 +18,17 @@ return {
 			scroll = { enabled = false },
 			indent = { enabled = true },
 			dim = { enabled = true },
+			picker = {
+				ignored = true,
+				hidden = true,
+			},
+			dashboard = { enabled = false },
 		},
 		keys = {
 			{
 				"<leader><leader>",
 				function()
-					Snacks.explorer()
+					require("snacks").explorer()
 				end,
 				desc = "File Explorer",
 			},
