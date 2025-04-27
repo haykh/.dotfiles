@@ -1,7 +1,6 @@
 {
   pkgs,
-  gtktheme,
-  bindings,
+  cfg,
   ...
 }:
 
@@ -24,9 +23,9 @@
   };
 
   home.packages = [
-    pkgs.${gtktheme.main.pkg}
-    pkgs.${gtktheme.icon.pkg}
-    pkgs.${gtktheme.cursor.pkg}
+    pkgs.${cfg.gtktheme.main.pkg}
+    pkgs.${cfg.gtktheme.icon.pkg}
+    pkgs.${cfg.gtktheme.cursor.pkg}
 
     pkgs.gnomeExtensions.user-themes
     pkgs.gnomeExtensions.hide-universal-access
@@ -45,16 +44,16 @@
         name = "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/${name}";
         value = {
           name = name;
-          binding = bindings.${name}.binding;
-          command = bindings.${name}.action;
+          binding = cfg.bindings.${name}.binding;
+          command = cfg.bindings.${name}.action;
         };
-      }) (builtins.attrNames bindings)
+      }) (builtins.attrNames cfg.bindings)
     )
     // {
       "org/gnome/settings-daemon/plugins/media-keys" = {
         custom-keybindings = (
           builtins.map (x: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/${x}/") (
-            builtins.attrNames bindings
+            builtins.attrNames cfg.bindings
           )
         );
       };
@@ -77,19 +76,19 @@
 
       "org/gnome/desktop/interface" = {
         text-scaling-factor = 1.25;
-        gtk-theme = "${gtktheme.main.interface}";
-        icon-theme = "${gtktheme.icon.interface}";
-        cursor-theme = "${gtktheme.cursor.interface}";
+        gtk-theme = "${cfg.gtktheme.main.interface}";
+        icon-theme = "${cfg.gtktheme.icon.interface}";
+        cursor-theme = "${cfg.gtktheme.cursor.interface}";
         color-scheme = "prefer-dark";
-        accent-color = "${gtktheme.accent}";
+        accent-color = "${cfg.gtktheme.accent}";
       };
       "org/gnome/desktop/wm/preferences" = {
         resize-with-right-button = true;
         button-layout = "appmenu:minimize,maximize,close";
       };
       "org/gnome/desktop/background" = {
-        picture-uri = "file://${gtktheme.wallpaper}";
-        picture-uri-dark = "file://${gtktheme.wallpaper}";
+        picture-uri = "file://${cfg.gtktheme.wallpaper}";
+        picture-uri-dark = "file://${cfg.gtktheme.wallpaper}";
       };
 
       # text editor
@@ -188,6 +187,6 @@
 
     };
 
-  home.sessionVariables.GTK_THEME = gtktheme.main.env;
+  home.sessionVariables.GTK_THEME = cfg.gtktheme.main.env;
 
 }

@@ -1,4 +1,4 @@
-{ cfg }:
+{ home, user, ... }:
 
 {
   pkgs,
@@ -38,13 +38,13 @@
       setSocketVariable = true;
     };
     daemon.settings = {
-      data-root = "${cfg.home}/docker";
+      data-root = "${home}/docker";
     };
   };
 
   users = {
     defaultUserShell = pkgs.zsh;
-    users."${cfg.user}" = {
+    users."${user}" = {
       isNormalUser = true;
       extraGroups = [
         "wheel"
@@ -77,7 +77,5 @@
 
     ];
   };
-
-  system.stateVersion = "24.11"; # Do Not Change
 
 }

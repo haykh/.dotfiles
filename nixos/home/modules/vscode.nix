@@ -1,0 +1,7 @@
+{ pkgs, ... }:
+
+{
+
+  package = pkgs.vscode;
+
+}

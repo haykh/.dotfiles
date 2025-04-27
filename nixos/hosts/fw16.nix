@@ -1,18 +1,28 @@
 {
+  stateVersion,
+  hostPlatform,
+  hostname,
+}:
+
+{
   config,
   lib,
   pkgs,
   ...
 }:
+
 {
+
+  system.stateVersion = stateVersion;
+
   imports = [
-    ./disks.nix
-    ./boot.nix
+    ./fw16/disks.nix
+    ./fw16/boot.nix
   ];
-  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+  nixpkgs.hostPlatform = hostPlatform;
 
   networking.useDHCP = lib.mkDefault true;
-  networking.hostName = "nixwrk";
+  networking.hostName = hostname;
 
   hardware = {
     cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
