@@ -1,7 +1,8 @@
 { pkgs, ... }:
 
 {
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+
+  boot.kernelPackages = pkgs.linuxPackages_6_12;
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
@@ -25,4 +26,5 @@
     # "amdgpu.dcdebugmask=0x400"
   ];
   boot.extraModulePackages = [ ];
+
 }

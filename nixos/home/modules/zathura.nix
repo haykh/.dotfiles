@@ -1,0 +1,9 @@
+{ ... }:
+
+{
+
+  options = {
+    selection-clipboard = "clipboard";
+  };
+
+}
