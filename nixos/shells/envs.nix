@@ -54,6 +54,11 @@ let
     rocmPackages.rocm-smi
   ];
 
+  cudaPkgs = with pkgs; [
+    cudaPackages.cudatoolkit
+    cudaPackages.cuda_cudart
+  ];
+
   asm = with pkgs; [
     nasm
     (import ../derivations/asm-lsp.nix { inherit pkgs; })
@@ -69,6 +74,7 @@ let
     ++ (if builtins.elem "gl" env then glPkgs else [ ])
     ++ (if builtins.elem "python" env then pythonPkgs else [ ])
     ++ (if builtins.elem "rocm" env then rocmPkgs else [ ])
+    ++ (if builtins.elem "cuda" env then cudaPkgs else [ ])
     ++ (if builtins.elem "asm" env then asm else [ ]);
   _vars = {
     LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath (
@@ -108,8 +114,8 @@ let
     { name, cmd }:
     ''
       echo ""
-         echo -e "${name} nix-shell activated: ''\${BLUE}$(which ${cmd})''\${NC}"
-         exec $SHELL
+      echo -e "${name} nix-shell activated: ''\${BLUE}$(which ${cmd})''\${NC}"
+      exec $SHELL
     '';
 
 in

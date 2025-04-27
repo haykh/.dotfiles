@@ -146,9 +146,7 @@
           nixpkgs.lib.nixosSystem rec {
             pkgs = import nixpkgs {
               system = settings.system;
-              config = {
-                allowUnfree = true;
-              };
+              config.allowUnfree = true;
             };
             system = settings.system;
             modules = [
@@ -190,9 +188,7 @@
           nixpkgs.lib.nixosSystem rec {
             pkgs = import nixpkgs {
               system = settings.system;
-              config = {
-                allowUnfree = true;
-              };
+              config.allowUnfree = true;
             };
             system = settings.system;
             modules = [
