@@ -100,6 +100,9 @@ return {
 			},
 			formatters = {
 				injected = { options = { ignore_errors = true } },
+        stylua = {
+          mason = false,
+        },
 				fprettify = {
             -- stylua: ignore
             prepend_args = {

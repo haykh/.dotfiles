@@ -13,17 +13,42 @@ return {
 	},
 	{
 		"snacks.nvim",
-		opts = {
-			bigfile = { enabled = false },
-			scroll = { enabled = false },
-			indent = { enabled = true },
-			dim = { enabled = true },
-			picker = {
-				ignored = true,
-				hidden = true,
-			},
-			dashboard = { enabled = false },
-		},
+		opts = function(_, opts)
+			local ignored = {
+				"tmp",
+				"temp",
+				"extern",
+				"legacy",
+				"build",
+				"node_modules",
+				".git",
+				".venv",
+				"venv",
+				".cache",
+			}
+			return vim.tbl_deep_extend("force", opts or {}, {
+				bigfile = { enabled = false },
+				scroll = { enabled = false },
+				indent = { enabled = true },
+				dim = { enabled = true },
+				picker = {
+					ignored = true,
+					hidden = true,
+					sources = {
+						explorer = {
+							exclude = ignored,
+						},
+						files = {
+							exclude = ignored,
+						},
+						grep = {
+							exclude = ignored,
+						},
+					},
+				},
+				dashboard = { enabled = false },
+			})
+		end,
 		keys = {
 			{
 				"<leader><leader>",
