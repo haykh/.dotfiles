@@ -1,5 +1,7 @@
 {
-  pkgs ? import <nixpkgs> { },
+  pkgs ? import <nixpkgs> {
+    config.allowUnfree = true;
+  },
   lang ? null,
 }:
 
@@ -21,7 +23,9 @@ pkgs.mkShell (
 
     shellHook = ''
       ${env.preShellHook}
-      echo -e "${name} nix-shell activated ${if lang == null then '''' else ''with ${lang}''}"
+      echo -e "${name} nix-shell activated ${
+        if lang == null then '''' else ''with ''\${BLUE}${lang}''\${NC}''
+      }"
     '';
   }
 )

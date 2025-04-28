@@ -1,4 +1,6 @@
 return {
+	{ "LazyVim/LazyVim" },
+	{ "folke/lazy.nvim" },
 	-- disabled
 	{ "folke/tokyonight.nvim", enabled = false },
 	{ "catppuccin/nvim", enabled = false },

@@ -13,10 +13,18 @@
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixos-wsl = {
+      url = "github:nix-community/NixOS-WSL/main";
+    };
   };
 
   outputs =
-    inputs@{ nixpkgs, home-manager, ... }:
+    inputs@{
+      nixpkgs,
+      nixos-wsl,
+      home-manager,
+      ...
+    }:
     let
       cfg = rec {
         user = "hayk";
@@ -30,9 +38,8 @@
           vi = "nvim";
           vim = "nvim";
           ff = "fastfetch";
-          nixbuild = "sudo nixos-rebuild switch --flake ${dotfiles}/nixos";
-          nixupd = "nix flake update --flake ${dotfiles}/nixos";
-          homecfg = "$EDITOR ${dotfiles}/nixos/home.nix";
+          nixbuild = "sudo nixos-rebuild switch --flake ${dotfiles}/nixos#$(hostname)";
+          nixupd = "nix flake update --flake ${dotfiles}/nixos#$(hostname)";
           flakecfg = "$EDITOR ${dotfiles}/nixos/flake.nix";
           nixcfg = "$EDITOR ${dotfiles}/nixos/";
           cat = "bat -pp --theme=TwoDark";
@@ -139,9 +146,7 @@
           nixpkgs.lib.nixosSystem rec {
             pkgs = import nixpkgs {
               system = settings.system;
-              config = {
-                allowUnfree = true;
-              };
+              config.allowUnfree = true;
             };
             system = settings.system;
             modules = [
@@ -168,6 +173,50 @@
                     inherit inputs cfg;
                     stateVersion = settings.stateVersion;
                     configuration = import ./hosts/fw16/config.nix { inherit pkgs; };
+                  }
+                );
+              }
+            ];
+          };
+        nixwsl =
+          let
+            settings = {
+              stateVersion = "24.11";
+              system = "x86_64-linux";
+            };
+          in
+          nixpkgs.lib.nixosSystem rec {
+            pkgs = import nixpkgs {
+              system = settings.system;
+              config.allowUnfree = true;
+            };
+            system = settings.system;
+            modules = [
+              nixos-wsl.nixosModules.default
+              {
+                system.stateVersion = settings.stateVersion;
+                wsl.enable = true;
+                wsl.defaultUser = cfg.user;
+              }
+              (import ./hosts/wsl.nix {
+                stateVersion = settings.stateVersion;
+                hostPlatform = settings.system;
+                hostname = "nixwsl";
+              })
+              (import ./hosts/global.nix {
+                user = cfg.user;
+                home = cfg.home;
+              })
+              home-manager.nixosModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.backupFileExtension = "bak";
+                home-manager.users.${cfg.user} = (
+                  import ./home/home.nix {
+                    inherit inputs cfg;
+                    stateVersion = settings.stateVersion;
+                    configuration = import ./hosts/wsl/config.nix { inherit pkgs; };
                   }
                 );
               }

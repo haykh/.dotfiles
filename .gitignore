@@ -7,5 +7,6 @@ lazyvim.json
 .config/ranger/plugins
 .config/btop/btop.log
 *.log
+nixos/flake.lock
 
 __pycache__
