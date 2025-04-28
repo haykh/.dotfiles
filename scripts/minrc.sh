@@ -189,6 +189,7 @@ fi
 promptcargoinstall starship
 promptcargoinstall eza
 promptcargoinstall bat
+promptcargoinstall fd-find
 promptcargoinstall git-delta
 promptcargoinstall ripgrep
 promptcargoinstall stylua
