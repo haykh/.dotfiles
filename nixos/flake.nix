@@ -39,7 +39,7 @@
           vim = "nvim";
           ff = "fastfetch";
           nixbuild = "sudo nixos-rebuild switch --flake ${dotfiles}/nixos#$(hostname)";
-          nixupd = "nix flake update --flake ${dotfiles}/nixos#$(hostname)";
+          nixupd = "nix flake update --flake ${dotfiles}/nixos";
           flakecfg = "$EDITOR ${dotfiles}/nixos/flake.nix";
           nixcfg = "$EDITOR ${dotfiles}/nixos/";
           cat = "bat -pp --theme=TwoDark";
