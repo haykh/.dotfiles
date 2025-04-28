@@ -13,13 +13,10 @@ printf "Master directory is ${RED}${HOMEDIR}${NC}\n"
 TEMPDIR=$HOMEDIR/.temp
 LOCAL=$HOMEDIR/.local
 ZSHFUNC=$HOMEDIR/.zfunc
-PYTHONEXEC=/usr/licensed/anaconda3/2024.10/bin/python3
+PYTHONEXEC=$(which python3)
 OPTPATH=$HOMEDIR/opt
 
-EZA_VERSION=0.21.0
 FZF_VERSION=0.61.1
-BAT_VERSION=0.25.0
-STARSHIP_VERSION=1.22.1
 PIPX_VERSION=1.7.1
 NVIM_VERSION=0.11.1
 GO_VERSION=1.24.2
@@ -46,19 +43,41 @@ function prompt() {
   fi
 }
 
-# install eza
-prompt "install eza v${EZA_VERSION} in $LOCAL/bin? (Y/n)" "y"
-if [[ $? -ne 0 ]]; then
-  echo "eza installation skipped"
-else
-  echo "installing eza..."
-  wget https://github.com/eza-community/eza/releases/download/v${EZA_VERSION}/eza_x86_64-unknown-linux-gnu.tar.gz &&
-    tar xvf eza_x86_64-unknown-linux-gnu.tar.gz &&
-    mv eza $LOCAL/bin/ &&
-    rm eza_x86_64-unknown-linux-gnu.tar.gz &&
-    echo "eza installed to $LOCAL/bin" ||
-    echo "eza installation failed"
-fi
+function cargoinstall() {
+  local package=$1
+  echo "installing $package..."
+  $HOMEDIR/.cargo/bin/cargo install $package &&
+    echo "$package installed" ||
+    echo "$package installation failed"
+}
+
+function promptcargoinstall() {
+  local package=$1
+  prompt "install $package with cargo? (Y/n)" "y"
+  if [[ $? -ne 0 ]]; then
+    echo "$package installation skipped"
+  else
+    cargoinstall $package
+  fi
+}
+
+function pipxinstall() {
+  local package=$1
+  echo "installing $package..."
+  $PYTHONEXEC $LOCAL/bin/pipx.pyz install $package &&
+    echo "$package installed" ||
+    echo "$package installation failed"
+}
+
+function promptpipxinstall() {
+  local package=$1
+  prompt "install $package with pipx? (Y/n)" "y"
+  if [[ $? -ne 0 ]]; then
+    echo "$package installation skipped"
+  else
+    pipxinstall $package
+  fi
+}
 
 # install fzf
 prompt "install fzf v${FZF_VERSION} in $LOCAL/bin? (Y/n)" "y"
@@ -72,35 +91,6 @@ else
     rm fzf-${FZF_VERSION}-linux_amd64.tar.gz &&
     echo "fzf installed to $LOCAL/bin" ||
     echo "fzf installation failed"
-fi
-
-# install bat
-prompt "install bat v${BAT_VERSION} in $LOCAL/bin? (Y/n)" "y"
-if [[ $? -ne 0 ]]; then
-  echo "bat installation skipped"
-else
-  echo "installing bat..."
-  wget https://github.com/sharkdp/bat/releases/download/v${BAT_VERSION}/bat-v${BAT_VERSION}-x86_64-unknown-linux-gnu.tar.gz &&
-    tar xvf bat-v${BAT_VERSION}-x86_64-unknown-linux-gnu.tar.gz &&
-    mv bat-v${BAT_VERSION}-x86_64-unknown-linux-gnu/bat $LOCAL/bin/ &&
-    mv bat-v${BAT_VERSION}-x86_64-unknown-linux-gnu/autocomplete/bat.zsh $ZSHFUNC &&
-    rm -rf bat-v${BAT_VERSION}-x86_64-unknown-linux-gnu &&
-    echo "bat installed to $LOCAL/bin" ||
-    echo "bat installation failed"
-fi
-
-# install starship
-prompt "install starship v${STARSHIP_VERSION} in $LOCAL/bin? (Y/n)" "y"
-if [[ $? -ne 0 ]]; then
-  echo "starship installation skipped"
-else
-  echo "installing starship..."
-  wget https://github.com/starship/starship/releases/download/v${STARSHIP_VERSION}/starship-x86_64-unknown-linux-gnu.tar.gz &&
-    tar xvf starship-x86_64-unknown-linux-gnu.tar.gz &&
-    mv starship $LOCAL/bin/ &&
-    rm starship-x86_64-unknown-linux-gnu.tar.gz &&
-    echo "starship installed to $LOCAL/bin" ||
-    echo "starship installation failed"
 fi
 
 # install omz & plugins
@@ -129,22 +119,10 @@ else
     echo "pipx installation failed"
 fi
 
-# install fortls + clang-format + cmakelang
-prompt "install fortls + clang-format + cmakelang with pipx? (Y/n)" "y"
-if [[ $? -ne 0 ]]; then
-  echo "fortls + clang-format + cmakelang installation skipped"
-else
-  echo "installing fortls + clang-format + cmakelang..."
-  $PYTHONEXEC $LOCAL/bin/pipx.pyz install fortls &&
-    echo "fortls installed" ||
-    echo "fortls installation failed"
-  $PYTHONEXEC $LOCAL/bin/pipx.pyz install clang-format &&
-    echo "clang-format installed" ||
-    echo "clang-format installation failed"
-  $PYTHONEXEC $LOCAL/bin/pipx.pyz install cmakelang &&
-    echo "cmakelang installed" ||
-    echo "cmakelang installation failed"
-fi
+# pipx packages
+promptpipxinstall fortls
+promptpipxinstall clang-format
+promptpipxinstall cmakelang
 
 # install nvim
 prompt "install nvim v${NVIM_VERSION} in ${OPTPATH}/nvim-linux-x86-64? (Y/n)" "y"
@@ -191,7 +169,7 @@ if [[ $? -ne 0 ]]; then
   echo "gopls installation skipped"
 else
   echo "installing gopls..."
-  go install golang.org/x/tools/gopls@latest &&
+  $LOCAL/go/bin/go install golang.org/x/tools/gopls@latest &&
     echo "gopls installed" ||
     echo "gopls installation failed"
 fi
@@ -207,25 +185,14 @@ else
     echo "rust & cargo installation failed"
 fi
 
-# install stylua + neocmakelsp + ripgrep
-prompt "install stylua + neocmakelsp + ripgrep + git-delta with cargo? (Y/n)" "y"
-if [[ $? -ne 0 ]]; then
-  echo "stylua + neocmakelsp + ripgrep + git-delta installation skipped"
-else
-  echo "installing stylua + neocmakelsp + ripgrep + git-delta..."
-  $HOMEDIR/.cargo/bin/cargo install stylua &&
-    echo "stylua installed" ||
-    echo "stylua installation failed"
-  $HOMEDIR/.cargo/bin/cargo install neocmakelsp &&
-    echo "neocmakelsp installed" ||
-    echo "neocmakelsp installation failed"
-  $HOMEDIR/.cargo/bin/cargo install ripgrep &&
-    echo "ripgrep installed" ||
-    echo "ripgrep installation failed"
-  $HOMEDIR/.cargo/bin/cargo install git-delta &&
-    echo "git-delta installed" ||
-    echo "git-delta installation failed"
-fi
+# cargo packages
+promptcargoinstall starship
+promptcargoinstall eza
+promptcargoinstall bat
+promptcargoinstall git-delta
+promptcargoinstall ripgrep
+promptcargoinstall stylua
+promptcargoinstall neocmakelsp
 
 # append .gitconfig
 prompt "append .gitconfig with delta configs? (Y/n)" "y"
