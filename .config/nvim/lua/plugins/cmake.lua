@@ -1,30 +1,8 @@
 return {
-	-- lsp
-	{
-		"neovim/nvim-lspconfig",
-		opts = {
-			setup = {
-				clangd = function(_, opts)
-					opts.capabilities.offsetEncoding = { "utf-16" }
-				end,
-			},
-		},
-	},
-	-- formatting
-	{
-		"stevearc/conform.nvim",
-		opts = {
-			formatters_by_ft = {
-				c = { "clang-format" },
-				cpp = { "clang-format" },
-				cmake = { "cmake_format" },
-			},
-		},
-	},
-	-- cmake
 	{
 		"Civitasv/cmake-tools.nvim",
 		opts = {
+			cmake_regenerate_on_save = false,
 			cmake_executor = {
 				name = "toggleterm",
 				default_opts = {
@@ -39,14 +17,20 @@ return {
 				default_opts = {
 					toggleterm = {
 						direction = "horizontal",
-						close_on_exit = false,
+						close_on_exit = true,
 					},
 				},
 			},
 			cmake_notifications = {
 				runner = { enabled = false },
 			},
-			cmake_build_directory = "build",
+			cmake_build_directory = function()
+				local osys = require("cmake-tools.osys")
+				if osys.iswin32 then
+					return "build\\${variant:buildType}"
+				end
+				return "build/${variant:buildType}"
+			end,
 			cmake_virtual_text_support = false,
 		},
 	},

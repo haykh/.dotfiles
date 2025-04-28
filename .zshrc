@@ -77,13 +77,19 @@ fi
 if command -v kitty &> /dev/null; then
   alias icat="kitten icat"
 else
-  export TERM=xterm-256color
+  # export TERM=xterm-256color
 fi
 
 # fzf
 if command -v fzf &> /dev/null; then
   source <(fzf --zsh)
 fi
+
+if [ -d "$HOME/.local/share/spack/bin/" ]; then
+  # export PATH=$HOME/.local/share/spack/bin:$PATH
+  . $HOME/.local/share/spack/share/spack/setup-env.sh
+fi
+
 
 # Aliases . . . . . . . . . . .
 
