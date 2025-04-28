@@ -208,11 +208,11 @@ else
 fi
 
 # install stylua + neocmakelsp + ripgrep
-prompt "install stylua + neocmakelsp + ripgrep with cargo? (Y/n)" "y"
+prompt "install stylua + neocmakelsp + ripgrep + git-delta with cargo? (Y/n)" "y"
 if [[ $? -ne 0 ]]; then
-  echo "stylua + neocmakelsp + ripgrep installation skipped"
+  echo "stylua + neocmakelsp + ripgrep + git-delta installation skipped"
 else
-  echo "installing stylua + neocmakelsp + ripgrep..."
+  echo "installing stylua + neocmakelsp + ripgrep + git-delta..."
   $HOMEDIR/.cargo/bin/cargo install stylua &&
     echo "stylua installed" ||
     echo "stylua installation failed"
@@ -222,6 +222,39 @@ else
   $HOMEDIR/.cargo/bin/cargo install ripgrep &&
     echo "ripgrep installed" ||
     echo "ripgrep installation failed"
+  $HOMEDIR/.cargo/bin/cargo install git-delta &&
+    echo "git-delta installed" ||
+    echo "git-delta installation failed"
+fi
+
+# append .gitconfig
+prompt "append .gitconfig with delta configs? (Y/n)" "y"
+if [[ $? -ne 0 ]]; then
+  echo ".gitconfig append skipped"
+else
+  echo "appending .gitconfig..."
+  mkdir -p $LOCAL/share/delta &&
+    wget https://raw.githubusercontent.com/dandavison/delta/main/themes.gitconfig &&
+    mv themes.gitconfig $LOCAL/share/delta/themes.gitconfig
+  gitconfig_content=$(
+    cat <<EOF
+[core]
+  pager = delta
+
+[interactive]
+  diffFilter = delta --color-only
+
+[delta]
+  features = arctic-fox
+  side-by-side = true
+  navigate = true
+
+[include]
+  path = $LOCAL/share/delta/themes.gitconfig
+EOF
+  )
+
+  echo "$gitconfig_content" >>$HOMEDIR/.gitconfig
 fi
 
 # rewrite zshrc
@@ -247,7 +280,7 @@ source $HOMEDIR/.oh-my-zsh/oh-my-zsh.sh
 eval "\$(starship init zsh)"
 eval "\$(fzf --zsh)"
 
-alias -- cat='bat --completion zsh -pp --theme=TwoDark'
+alias -- cat='bat -pp --theme=TwoDark'
 alias -- eza='eza --icons always --color always --git -a '\''--sort=type'\'''
 alias -- la='eza -a'
 alias -- ld='ls --long --header --time-style=long-iso --total-size'
