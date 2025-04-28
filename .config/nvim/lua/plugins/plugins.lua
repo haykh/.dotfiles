@@ -1,3 +1,7 @@
+local nonnixos = function()
+  return not (os.getenv("NIXOS") or os.getenv("NIX_PATH") or os.getenv("NIX_PROFILES"))
+end
+
 return {
 	{ "LazyVim/LazyVim" },
 	{ "folke/lazy.nvim" },
@@ -10,14 +14,10 @@ return {
 	{ "echasnovski/mini.ai", enabled = false },
 	{
 		"williamboman/mason.nvim",
-		enabled = function()
-			return not (os.getenv("NIXOS") or os.getenv("NIX_PATH") or os.getenv("NIX_PROFILES"))
-		end,
-	},
+		enabled = nonnixos(),
+  },
 	{
 		"williamboman/mason-lspconfig.nvim",
-		enabled = function()
-			return not (os.getenv("NIXOS") or os.getenv("NIX_PATH") or os.getenv("NIX_PROFILES"))
-		end,
+		enabled = nonnixos(),
 	},
 }

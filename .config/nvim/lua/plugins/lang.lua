@@ -19,8 +19,9 @@ return {
 				clangd = { autostart = false },
 				neocmake = {},
 				-- glsl
+				glsl_analyzer = {},
 				glslls = {
-					cmd = { "glslls", "--target-env", "opengl4.5", "--stdin" },
+					mason = false,
 				},
 				svelte = {},
 				-- python
