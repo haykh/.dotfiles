@@ -8,6 +8,16 @@ return {
 	{ "rafamadriz/friendly-snippets", enabled = false },
 	{ "echasnovski/mini.pairs", enabled = false },
 	{ "echasnovski/mini.ai", enabled = false },
-	{ "williamboman/mason.nvim", enabled = false },
-	{ "williamboman/mason-lspconfig.nvim", enabled = false },
+	{
+		"williamboman/mason.nvim",
+		enabled = function()
+			return not (os.getenv("NIXOS") or os.getenv("NIX_PATH") or os.getenv("NIX_PROFILES"))
+		end,
+	},
+	{
+		"williamboman/mason-lspconfig.nvim",
+		enabled = function()
+			return not (os.getenv("NIXOS") or os.getenv("NIX_PATH") or os.getenv("NIX_PROFILES"))
+		end,
+	},
 }
