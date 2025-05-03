@@ -34,6 +34,16 @@ let
     cmake-lint
   ];
 
+  gccPkgs = with pkgs; [
+    zlib
+    gcc13
+    clang-tools
+    cmake
+    neocmakelsp
+    cmake-format
+    cmake-lint
+  ];
+
   glPkgs = with pkgs; [
     zlib
     glslls
@@ -59,6 +69,12 @@ let
     cudaPackages.cuda_cudart
   ];
 
+  adios2Pkgs = pkgs.callPackage ../home/derivations/adios2.nix {
+    inherit pkgs;
+    mpi = true;
+    hdf5 = true;
+  };
+
   asm = with pkgs; [
     nasm
     (import ../derivations/asm-lsp.nix { inherit pkgs; })
@@ -71,14 +87,16 @@ let
     ++ (if builtins.elem "web" env then webPkgs else [ ])
     ++ (if builtins.elem "go" env then goPkgs else [ ])
     ++ (if builtins.elem "cpp" env then cppPkgs else [ ])
+    ++ (if builtins.elem "gcc" env then gccPkgs else [ ])
     ++ (if builtins.elem "gl" env then glPkgs else [ ])
     ++ (if builtins.elem "python" env then pythonPkgs else [ ])
     ++ (if builtins.elem "rocm" env then rocmPkgs else [ ])
     ++ (if builtins.elem "cuda" env then cudaPkgs else [ ])
+    ++ (if builtins.elem "adios2" env then [ adios2Pkgs ] else [ ])
     ++ (if builtins.elem "asm" env then asm else [ ]);
   _vars = {
     LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath (
-      if ((builtins.elem "cpp" env) || (builtins.elem "gl" env)) then
+      if ((builtins.elem "cpp" env) || (builtins.elem "gl" env) || (builtins.elem "gcc" env)) then
         [
           pkgs.stdenv.cc.cc
           pkgs.zlib

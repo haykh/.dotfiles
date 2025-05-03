@@ -11,6 +11,7 @@
       "$python"
       "$conda"
       "$fill"
+      "$spack"
       "$nix_shell"
       "$cmd_duration"
       "$username"
@@ -152,6 +153,12 @@
     nix_shell = {
       symbol = "󰜗 ";
       format = "[$symbol\\($name\\)]($style) ";
+    };
+
+    spack = {
+      symbol = "󰙲 ";
+      style = "dimmed yellow";
+      format = "[$symbol$environment]($style) ";
     };
 
     battery = {
