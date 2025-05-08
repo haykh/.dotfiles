@@ -189,6 +189,7 @@
             pkgs = import nixpkgs {
               system = settings.system;
               config.allowUnfree = true;
+              config.cudaSupport = true;
             };
             system = settings.system;
             modules = [

@@ -8,6 +8,16 @@
 
   sessionVariables = {
     EDITOR = "nvim";
+    CUDA_PATH = "${pkgs.cudaPackages.cudatoolkit}";
+    LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
+      "/usr/lib/wsl"
+      "${pkgs.cudaPackages.cudatoolkit}"
+      "${pkgs.linuxPackages.nvidia_x11}"
+      "${pkgs.stdenv.cc.cc}"
+      "${pkgs.zlib}"
+    ];
+    EXTRA_LDFLAGS = "-L/lib -L${pkgs.linuxPackages.nvidia_x11}/lib";
+    EXTRA_CCFLAGS = "-I/usr/include";
   };
 
   packages =
@@ -15,15 +25,17 @@
       # system
       rclone
       gnupg
+      zlib
 
       # compilers & managers
+      cmake
+      gnumake
       nodejs_23
       rustup
       luajitPackages.luarocks
       # older lua compatible with certain nvim plugins
       lua51Packages.lua
       python312
-      gcc
       libgcc
 
       # formatters & language servers
@@ -36,6 +48,11 @@
       ## shell
       shfmt
       bash-language-server
+
+      # cuda
+      linuxPackages.nvidia_x11
+      cudaPackages.cudatoolkit
+      cudaPackages.cuda_cudart
 
       # shell
       fd
