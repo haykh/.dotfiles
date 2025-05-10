@@ -11,6 +11,8 @@
     cursor-invert-fg-bg = true;
     cursor-opacity = 0.75;
     window-decoration = "none";
+    background-opacity = 0.9;
+    background-blur = true;
     keybind = [
       "ctrl+shift+|=new_split:right"
       "ctrl+shift+-=new_split:down"

@@ -86,6 +86,7 @@
       proton-pass
       obsidian
       (pkgs.callPackage "${derivationsDir}/nogo.nix" { inherit pkgs; })
+      gnome-text-editor
 
       ## science
       jabref
