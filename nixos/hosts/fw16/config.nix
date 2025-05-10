@@ -145,6 +145,8 @@
     neovim = true;
     ssh = true;
 
+    plasma = true;
+
     ghostty = true;
     mpv = true;
     rofi = true;
@@ -167,6 +169,7 @@
 
   extraConfigs = [
     "gtk"
+    # "gnome"
   ];
 
 }

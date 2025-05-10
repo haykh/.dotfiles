@@ -16,6 +16,11 @@
     nixos-wsl = {
       url = "github:nix-community/NixOS-WSL/main";
     };
+    plasma-manager = {
+      url = "github:nix-community/plasma-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
   };
 
   outputs =
@@ -23,6 +28,7 @@
       nixpkgs,
       nixos-wsl,
       home-manager,
+      plasma-manager,
       ...
     }:
     let
@@ -162,12 +168,16 @@
               })
               (import ./modules/kvm.nix { user = cfg.user; })
               (import ./modules/locale.nix)
-              (import ./modules/gnome.nix)
+              # (import ./modules/gnome.nix)
+              (import ./modules/plasma.nix)
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.backupFileExtension = "bak";
+                home-manager.sharedModules = [
+                  plasma-manager.homeManagerModules.plasma-manager
+                ];
                 home-manager.users.${cfg.user} = (
                   import ./home/home.nix {
                     inherit inputs cfg;
