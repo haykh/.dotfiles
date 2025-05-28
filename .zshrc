@@ -4,14 +4,14 @@ export DOTFILES="$HOME/.dotfiles"
 ZSH_THEME=""
 
 plugins=(
-  git 
-  colorize 
-  colored-man-pages 
-  extract 
-  zsh-syntax-highlighting 
-  zsh-autosuggestions 
+  git
+  colorize
+  colored-man-pages
+  extract
+  zsh-syntax-highlighting
+  zsh-autosuggestions
   nvm
-  docker 
+  docker
   docker-compose
 )
 
@@ -26,22 +26,22 @@ autoload compinit -Uz && compinit
 
 source $ZSH/oh-my-zsh.sh
 
-# Paths . . . . . . . . . . . . . 
+# Paths . . . . . . . . . . . . .
 export LOCAL=$HOME/.local
 
 export PATH=$HOME/bin:$HOME/deps/bin:/usr/local/bin:$PATH
 export PATH=$LOCAL/bin:$PATH
 
 # ssh
-eval "$(ssh-agent -s)" > /dev/null
+eval "$(ssh-agent -s)" >/dev/null
 for key in $HOME/.ssh/id_*; do
   if [ -f "$key" ] && [[ ! $key == *.pub ]]; then
-    ssh-add $key 2> /dev/null
+    ssh-add $key 2>/dev/null
   fi
 done
 
 # go
-if command -v go &> /dev/null; then
+if command -v go &>/dev/null; then
   export GOPATH=$HOME/go
   export PATH=$GOPATH/bin:$PATH
 fi
@@ -74,26 +74,24 @@ if [ -d "$HOME/.spicetify" ]; then
 fi
 
 # kitty
-if command -v kitty &> /dev/null; then
+if command -v kitty &>/dev/null; then
   alias icat="kitten icat"
 else
   # export TERM=xterm-256color
 fi
 
 # fzf
-if command -v fzf &> /dev/null; then
+if command -v fzf &>/dev/null; then
   source <(fzf --zsh)
 fi
 
-if [ -d "$HOME/.local/share/spack/bin/" ]; then
-  # export PATH=$HOME/.local/share/spack/bin:$PATH
-  . $HOME/.local/share/spack/share/spack/setup-env.sh
+if [ -d "$HOME/spack/" ]; then
+  . $HOME/spack/share/spack/setup-env.sh
 fi
-
 
 # Aliases . . . . . . . . . . .
 
-if command -v nvim &> /dev/null; then
+if command -v nvim &>/dev/null; then
   export EDITOR=nvim
   alias vimconfig="vi $HOME/.config/nvim/init.vim"
   alias vim='nvim'
@@ -101,28 +99,28 @@ if command -v nvim &> /dev/null; then
   alias less='vim -R'
 fi
 
-if command -v ranger &> /dev/null; then
+if command -v ranger &>/dev/null; then
   export RANGER_LOAD_DEFAULT_RC=false
   alias rr='ranger'
 fi
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   if [ -f "/etc/arch-release" ]; then
-    if command -v bat &> /dev/null; then
+    if command -v bat &>/dev/null; then
       alias cat='bat -pp --theme=TwoDark'
     fi
   else
-    if command -v batcat &> /dev/null; then
+    if command -v batcat &>/dev/null; then
       alias cat='batcat -pp --theme=TwoDark'
     fi
   fi
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-  if command -v bat &> /dev/null; then
+  if command -v bat &>/dev/null; then
     alias cat='bat -pp --theme=TwoDark'
   fi
 fi
 
-if command -v eza &> /dev/null; then
+if command -v eza &>/dev/null; then
   alias ls='EXA_ICON_SPACING=1 eza -a --icons --sort=type'
   alias ll='EXA_ICON_SPACING=1 eza -a --long --icons --header --sort=type --git --time-style=long-iso'
   alias lt='EXA_ICON_SPACING=1 eza -a --icons --sort=type --tree --level 2 --icons --color'
@@ -133,7 +131,7 @@ if [ -d "$HOME/.cargo" ]; then
   export PATH=$HOME/.cargo/bin:$PATH
 fi
 
-if command -v gh &> /dev/null; then
+if command -v gh &>/dev/null; then
   function howto() {
     gh copilot suggest $1
   }
@@ -142,40 +140,40 @@ if command -v gh &> /dev/null; then
   }
 fi
 
-if command -v fastfetch &> /dev/null; then
+if command -v fastfetch &>/dev/null; then
   alias ff='fastfetch'
 fi
 
-if command -v nerdfetch &> /dev/null; then
+if command -v nerdfetch &>/dev/null; then
   alias nf='nerdfetch'
 fi
 
-if command -v waybar &> /dev/null; then
-  if command -v hyprctl &> /dev/null; then
+if command -v waybar &>/dev/null; then
+  if command -v hyprctl &>/dev/null; then
     alias resetwaybar="killall waybar & hyprctl dispatch exec waybar"
   fi
 fi
 
-if command -v hyprctl &> /dev/null; then
-  if command -v thunar &> /dev/null; then
+if command -v hyprctl &>/dev/null; then
+  if command -v thunar &>/dev/null; then
     function ofd() {
       hyprctl dispatch -- exec thunar -- $(pwd)
     }
   fi
 fi
 
-if command -v bw &> /dev/null; then
-  if command -v pass &> /dev/null; then
+if command -v bw &>/dev/null; then
+  if command -v pass &>/dev/null; then
     alias bw='BW_SESSION=$(pass bw_session) BITWARDENCLI_APPDATA_DIR=$HOME/.bw/ NODE_OPTIONS="--no-deprecation" bw'
   fi
 fi
 
-if command -v codium &> /dev/null; then
+if command -v codium &>/dev/null; then
   alias code='codium --enable-features=UseOzonePlatform,WaylandWindowDecorations --ozone-platform=wayland'
 fi
 
-# Theme . . . . . . . . . . . 
-if command -v starship &> /dev/null; then
+# Theme . . . . . . . . . . .
+if command -v starship &>/dev/null; then
   eval "$(starship init zsh)"
   export STARSHIP_CONFIG=$DOTFILES/.config/starship.toml
 fi

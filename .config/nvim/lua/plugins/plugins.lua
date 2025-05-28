@@ -1,5 +1,5 @@
 local nonnixos = function()
-  return not (os.getenv("NIXOS") or os.getenv("NIX_PATH") or os.getenv("NIX_PROFILES"))
+	return not (os.getenv("NIXOS") or os.getenv("NIX_PATH") or os.getenv("NIX_PROFILES"))
 end
 
 return {
@@ -12,12 +12,6 @@ return {
 	{ "rafamadriz/friendly-snippets", enabled = false },
 	{ "echasnovski/mini.pairs", enabled = false },
 	{ "echasnovski/mini.ai", enabled = false },
-	{
-		"williamboman/mason.nvim",
-		enabled = nonnixos(),
-  },
-	{
-		"williamboman/mason-lspconfig.nvim",
-		enabled = nonnixos(),
-	},
+	{ "mason-org/mason.nvim", version = "^1.0.0", enabled = nonnixos() },
+	{ "mason-org/mason-lspconfig.nvim", version = "^1.0.0", enabled = nonnixos() },
 }

@@ -5,6 +5,24 @@ GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 NC='\033[0m'
 
+# select the architecture
+ARCH=$(uname -m)
+
+if [[ "$ARCH" != "x86_64" && "$ARCH" != "aarch64" ]]; then
+  echo "Unsupported architecture: $ARCH. Only x86_64 and aarch64 are supported."
+  exit 1
+else
+  if [[ "$ARCH" == "x86_64" ]]; then
+    printf "%bArchitecture is %b%b%b\n" "${RED}" "${ARCH}" "${NC}" "${NC}"
+    ALTARCH="amd64"
+    ALTARCH_NVIM="x86_64"
+  else
+    printf "%bArchitecture is %b%b%b\n" "${RED}" "${ARCH}" "${NC}" "${NC}"
+    ALTARCH="arm64"
+    ALTARCH_NVIM="arm64"
+  fi
+fi
+
 # select the master directory
 printf "%bMaster directory%b " "${BLUE}" "${NC}"
 read -rp "(default: $HOME): " HOMEDIR
@@ -113,10 +131,10 @@ if [[ "$MODE" == "install" ]]; then
     echo "fzf installation skipped"
   else
     echo "installing fzf..."
-    wget https://github.com/junegunn/fzf/releases/download/v${FZF_VERSION}/fzf-${FZF_VERSION}-linux_amd64.tar.gz &&
-      tar xvf fzf-${FZF_VERSION}-linux_amd64.tar.gz &&
+    wget https://github.com/junegunn/fzf/releases/download/v${FZF_VERSION}/fzf-${FZF_VERSION}-linux_${ALTARCH}.tar.gz &&
+      tar xvf fzf-${FZF_VERSION}-linux_${ALTARCH}.tar.gz &&
       mv fzf "$LOCAL/bin/" &&
-      rm fzf-${FZF_VERSION}-linux_amd64.tar.gz &&
+      rm fzf-${FZF_VERSION}-linux_${ALTARCH}.tar.gz &&
       echo "fzf installed to $LOCAL/bin" ||
       echo "fzf installation failed"
   fi
@@ -223,28 +241,28 @@ fi
 
 # install nvim
 if [[ "$MODE" == "install" ]]; then
-  if ! prompt "install nvim v${NVIM_VERSION} in ${OPTPATH}/nvim-linux-x86-64? (Y/n)" "y"; then
+  if ! prompt "install nvim v${NVIM_VERSION} in ${OPTPATH}/nvim-linux-${ALTARCH_NVIM}? (Y/n)" "y"; then
     echo "nvim installation skipped"
   else
     echo "installing nvim..."
-    wget https://github.com/neovim/neovim-releases/releases/download/v${NVIM_VERSION}/nvim-linux-x86_64.tar.gz &&
-      tar xvf nvim-linux-x86_64.tar.gz &&
-      mv nvim-linux-x86_64 "$OPTPATH" &&
-      ln -s "$OPTPATH/nvim-linux-x86_64/bin/nvim" "$LOCAL/bin/" &&
-      rm nvim-linux-x86_64.tar.gz &&
+    (wget https://github.com/neovim/neovim-releases/releases/download/v${NVIM_VERSION}/nvim-linux-${ALTARCH_NVIM}.tar.gz || wget https://github.com/neovim/neovim/releases/download/v${NVIM_VERSION}/nvim-linux-${ALTARCH_NVIM}.tar.gz) &&
+      tar xvf nvim-linux-${ALTARCH_NVIM}.tar.gz &&
+      mv nvim-linux-${ALTARCH_NVIM} "$OPTPATH" &&
+      ln -s "$OPTPATH/nvim-linux-${ALTARCH_NVIM}/bin/nvim" "$LOCAL/bin/" &&
+      rm nvim-linux-${ALTARCH_NVIM}.tar.gz &&
       echo "nvim installed to $LOCAL/bin" ||
       echo "nvim installation failed"
   fi
 else
-  if ! prompt "uninstall nvim from $OPTPATH/nvim-linux-x86-64? (y/N)" "n"; then
+  if ! prompt "uninstall nvim from $OPTPATH/nvim-linux-${ALTARCH_NVIM}? (y/N)" "n"; then
     echo "nvim uninstallation skipped"
   else
     echo "uninstalling nvim..."
-    rm -rf "$OPTPATH/nvim-linux-x86_64" &&
+    rm -rf "$OPTPATH/nvim-linux-${ALTARCH_NVIM}" &&
       rm -f "$LOCAL/bin/nvim" &&
       rm -rf "$LOCAL/share/nvim" &&
       rm -rf "$LOCAL/state/nvim" &&
-      echo "nvim uninstalled from $OPTPATH/nvim-linux-x86-64" ||
+      echo "nvim uninstalled from $OPTPATH/nvim-linux-${ALTARCH_NVIM}" ||
       echo "nvim uninstallation failed"
   fi
 fi
@@ -288,8 +306,8 @@ if [[ "$MODE" == "install" ]]; then
     echo "go installation skipped"
   else
     echo "installing go..."
-    wget https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz &&
-      tar -C "$LOCAL" -xzf go${GO_VERSION}.linux-amd64.tar.gz &&
+    wget https://go.dev/dl/go${GO_VERSION}.linux-${ALTARCH}.tar.gz &&
+      tar -C "$LOCAL" -xzf go${GO_VERSION}.linux-${ALTARCH}.tar.gz &&
       echo "go installed to $LOCAL/go" ||
       echo "go installation failed"
   fi

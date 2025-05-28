@@ -12,19 +12,19 @@ return {
 		"HiPhish/rainbow-delimiters.nvim",
 	},
 	{
-		"snacks.nvim",
+		"folke/snacks.nvim",
 		opts = function(_, opts)
 			local ignored = {
 				"tmp",
 				"temp",
 				"extern",
-				"legacy",
 				"build",
 				"node_modules",
 				".git",
 				".venv",
 				"venv",
 				".cache",
+				".pytest_cache",
 			}
 			return vim.tbl_deep_extend("force", opts or {}, {
 				bigfile = { enabled = false },
