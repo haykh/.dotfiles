@@ -76,23 +76,22 @@ let
         enable = true;
         defaultApplications = {
           "application/pdf" = "org.pwmt.zathura-pdf-mupdf.desktop";
+
           "x-scheme-handler/tg" = "org.telegram.desktop.desktop";
           "x-scheme-handler/tonsite" = "org.telegram.desktop.desktop";
           "x-scheme-handler/slack" = "slack.desktop";
-          "image/gif" = "oculante.desktop";
-          "image/png" = "oculante.desktop";
-          "image/jpeg" = "oculante.desktop";
-          "x-scheme-handler/mailto" = "thunderbird.desktop";
-        };
 
-        associations.added = {
-          "application/pdf" = "org.pwmt.zathura-pdf-mupdf.desktop";
-          "x-scheme-handler/tg" = "org.telegram.desktop.desktop";
-          "x-scheme-handler/tonsite" = "org.telegram.desktop.desktop";
           "image/gif" = "oculante.desktop";
           "image/png" = "oculante.desktop";
           "image/jpeg" = "oculante.desktop";
+
           "x-scheme-handler/mailto" = "thunderbird.desktop";
+
+          "text/html" = "zen.desktop";
+          "x-scheme-handler/http" = "zen.desktop";
+          "x-scheme-handler/https" = "zen.desktop";
+          "x-scheme-handler/about" = "zen.desktop";
+          "x-scheme-handler/unknown" = "zen.desktop";
         };
       };
     };
