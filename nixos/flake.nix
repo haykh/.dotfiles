@@ -4,13 +4,13 @@
 
   inputs = {
     nixpkgs = {
-      url = "nixpkgs/nixos-24.11";
+      url = "nixpkgs/nixos-25.05";
     };
     nixos-hardware = {
       url = "github:NixOS/nixos-hardware/master";
     };
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.11";
+      url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixos-wsl = {
@@ -71,6 +71,12 @@
             interface = "Capitaine Cursors";
           };
           wallpaper = "${dotfiles}/wallpapers/blueish-sunrise.jpg";
+        };
+        kdetheme = {
+          plasmaTheme = "Fluent-round-dark";
+          iconTheme = "Fluent-dark";
+          cursorTheme = "Capitaine Cursors";
+          kdedecoration2 = "__aurorae__svg__Fluent-round-dark";
         };
         bindings = {
           terminal = {
@@ -185,7 +191,7 @@
                   import ./home/home.nix {
                     inherit inputs cfg;
                     stateVersion = settings.stateVersion;
-                    configuration = import ./hosts/fw16/config.nix { inherit pkgs; };
+                    configuration = import ./hosts/fw16/config.nix { inherit cfg pkgs; };
                   }
                 );
               }

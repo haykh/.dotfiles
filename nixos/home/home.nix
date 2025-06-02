@@ -21,7 +21,11 @@ in
 
   home.sessionVariables = configuration.sessionVariables;
 
-  home.packages = configuration.packages "${cwd}/derivations";
+  home.packages =
+    configuration.packages
+    ++ builtins.map (
+      p: pkgs.callPackage "${cwd}/derivations/${p}.nix" { inherit pkgs; }
+    ) configuration.derivations;
 
   home.file = configuration.extraFiles config cfg;
 
