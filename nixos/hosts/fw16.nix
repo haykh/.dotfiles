@@ -27,8 +27,6 @@
   hardware = {
     cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
     # graphics = with pkgs; {
-    #   enable32Bit = true;
-    #   extraPackages = [ amdvlk ];
     #   extraPackages32 = [ driversi686Linux.amdvlk ];
     # };
 
@@ -48,6 +46,11 @@
       ];
     };
     keyboard.qmk.enable = true;
+
+    bluetooth = {
+      enable = true;
+      powerOnBoot = true;
+    };
   };
 
   services = {

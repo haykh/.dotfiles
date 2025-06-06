@@ -32,7 +32,10 @@
   oh-my-zsh = {
     enable = true;
     plugins = [
+      "rust"
+      "npm"
       "git"
+      "pip"
       "colorize"
       "colored-man-pages"
       "extract"

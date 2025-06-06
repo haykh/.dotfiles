@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ inputs, pkgs, ... }:
 
 {
 
@@ -15,25 +15,12 @@
 
     ".config/nvim".source = config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/nvim";
 
-    ".local/share/applications/llyfr.desktop".text = ''
-      [Desktop Entry]
-      Exec=env GDK_BACKEND=x11 QT_QPA_PLATFORM=xcb ~/.local/bin/llyfr ~/Documents/Literature/refs.bib
-      Name=llyfr
-      NoDisplay=true
-      StartupNotify=false
-      Type=Application
-      X-KDE-GlobalAccel-CommandShortcut=true
-    '';
-
-    ".local/share/applications/crifo.desktop".text = ''
-      [Desktop Entry]
-      Exec=env GDK_BACKEND=x11 QT_QPA_PLATFORM=xcb ~/.local/bin/crifo
-      Name=crifo
-      NoDisplay=true
-      StartupNotify=false
-      Type=Application
-      X-KDE-GlobalAccel-CommandShortcut=true
-    '';
+    # ".local/share/applications/kdeactionsslack.desktop".text = ''
+    #   [Desktop Entry]
+    #   Name=slack
+    #   Exec=${cfg.dotfiles}/scripts/kde-actions.sh slack
+    #   Type=Application
+    # '';
   };
 
   sessionVariables = {
@@ -48,6 +35,14 @@
     rclone
     cntr
     gnupg
+    libinput
+    libinput-gestures
+    ydotool
+    xdotool
+
+    # kde
+    kdePackages.sddm-kcm
+    wayland-utils
 
     # hardware controllers
     brightnessctl
@@ -63,6 +58,7 @@
     gcc
     wails
     go
+    gopls
     webkitgtk_4_0
     libgcc
 
@@ -94,9 +90,12 @@
     imagemagick
     chafa
     libqalculate
+    slides
+    has
 
     # apps
     ## graphics & media
+    unityhub
     blender-hip
     freecad
     gimp3-with-plugins
@@ -113,7 +112,6 @@
     protonvpn-gui
     proton-pass
     obsidian
-    # (pkgs.callPackage "${derivationsDir}/nogo.nix" { inherit pkgs; })
     gnome-text-editor
 
     ## science
@@ -124,7 +122,7 @@
     rocmPackages.clr
 
     ## web
-    # (pkgs.callPackage "${derivationsDir}/zen.nix" { inherit pkgs; })
+    inputs.thorium.packages.${pkgs.system}.thorium-avx2
     nextcloud-client
     slack
     zoom-us
@@ -164,6 +162,7 @@
   derivations = [
     "nogo"
     "zen"
+    "ktoggle"
   ];
 
   modules = {
@@ -189,13 +188,37 @@
     ssh-agent.enable = true;
   };
 
-  desktopapps = [
+  desktopEntries = [
+    "llyfr"
+    "crifo"
     "onlyoffice"
     "chromium"
+    "thorium"
     "slack"
     "vscode"
-    "mimeapps"
   ];
+
+  mimeApps = {
+    defaultApplications = {
+      "application/pdf" = "org.pwmt.zathura-pdf-mupdf.desktop";
+
+      "x-scheme-handler/tg" = "org.telegram.desktop.desktop";
+      "x-scheme-handler/tonsite" = "org.telegram.desktop.desktop";
+      "x-scheme-handler/slack" = "slack.desktop";
+
+      "image/gif" = "oculante.desktop";
+      "image/png" = "oculante.desktop";
+      "image/jpeg" = "oculante.desktop";
+
+      "x-scheme-handler/mailto" = "thunderbird.desktop";
+
+      "text/html" = "zen.desktop";
+      "x-scheme-handler/http" = "zen.desktop";
+      "x-scheme-handler/https" = "zen.desktop";
+      "x-scheme-handler/about" = "zen.desktop";
+      "x-scheme-handler/unknown" = "zen.desktop";
+    };
+  };
 
   extraConfigs = [
     "gtk"

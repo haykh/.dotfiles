@@ -13,6 +13,10 @@
 
 let
   cwd = builtins.path { path = ./.; };
+  all_desktop_entries = import ./desktop_entries.nix { inherit cfg; };
+  desktop_entries = builtins.map (name: all_desktop_entries.${name}) (
+    builtins.filter (name: builtins.hasAttr name all_desktop_entries) configuration.desktopEntries
+  );
 in
 {
   home.username = "${cfg.user}";
@@ -27,15 +31,17 @@ in
       p: pkgs.callPackage "${cwd}/derivations/${p}.nix" { inherit pkgs; }
     ) configuration.derivations;
 
-  home.file = configuration.extraFiles config cfg;
+  home.file =
+    (configuration.extraFiles config cfg)
+    // builtins.foldl' (a: b: a // b) { } desktop_entries;
 
-  imports =
-    [
-      (import ./desktopapps.nix { inherit cfg; } {
-        entries = configuration.desktopapps;
-      })
-    ]
-    ++ map (name: import "${cwd}/configs/${name}.nix" { inherit pkgs cfg; }) configuration.extraConfigs;
+  imports = map (
+    name: import "${cwd}/configs/${name}.nix" { inherit pkgs cfg; }
+  ) configuration.extraConfigs;
+
+  xdg.mimeApps = {
+    enable = true;
+  } // configuration.mimeApps;
 
   programs = (
     import ./modules.nix { inherit pkgs cfg; } {

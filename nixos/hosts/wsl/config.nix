@@ -115,9 +115,9 @@
     ssh-agent.enable = true;
   };
 
-  desktopapps = [
-    "mimeapps"
-  ];
+  desktopEntries = [ ];
+
+  mimeApps = { };
 
   extraConfigs = [ ];
 

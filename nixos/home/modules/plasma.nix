@@ -36,6 +36,21 @@
         };
       };
     }
+    {
+      description = "Thorium";
+      match = {
+        window-class = {
+          value = "Thorium-browser";
+          type = "substring";
+        };
+      };
+      apply = {
+        noborder = {
+          value = true;
+          apply = "initially";
+        };
+      };
+    }
   ];
 
   kwin = {
@@ -51,12 +66,18 @@
       "Activate Window Demanding Attention" = "";
       "Window Close" = "Meta+Q";
     };
-    "services/slack.desktop"."_launch" = "Meta+S";
+    # "services/slack.desktop"."_launch" = "Meta+S";
     "services/thunar.desktop"."_launch" = "Meta+E";
     "services/zen.desktop"."_launch" = "Meta+F";
     "services/com.mitchellh.ghostty.desktop"."_launch" = "Meta+T";
     "services/net.local.crifo.desktop"."_launch" = "Meta+Ctrl+C";
     "services/net.local.llyfr.desktop"."_launch" = "Meta+Ctrl+A";
+    "services/net.local.kdeactionsslack.desktop"."_launch" = "Meta+S";
+    "services/org.kde.krunner.desktop"."_launch" = [
+      "Search"
+      "Ctrl+Alt+Space"
+    ];
+    "services/org.kde.spectacle.desktop"."RectangularRegionScreenShot" = "Print";
   };
   configFile = {
     plasma-localerc.Formats.LANG = "en_US.UTF-8";
@@ -93,7 +114,7 @@
     };
     kwinrc = {
       Plugins.blurEnabled = true;
-      "Effect-blur".BlurStrength = 7;
+      Effect-blur.BlurStrength = 7;
 
       Plugins.dynamic_workspacesEnabled = true;
       Script-dynamic_workspaces."keepEmptyMiddleDesktops" = true;
