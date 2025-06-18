@@ -323,6 +323,18 @@ if [[ "$MODE" == "install" ]]; then
         echo "gopls installation failed"
     fi
   fi
+
+  # install lazygit
+  if [[ -d "$LOCAL/go" ]]; then
+    if ! prompt "install lazygit with go? (Y/n)" "y"; then
+      echo "lazygit installation skipped"
+    else
+      echo "installing lazygit..."
+      "$LOCAL/go/bin/go" install github.com/jesseduffield/lazygit@latest &&
+        echo "lazygit installed" ||
+        echo "lazygit installation failed"
+    fi
+  fi
 else
   if ! prompt "uninstall go from $LOCAL/go? (y/N)" "n"; then
     echo "go uninstallation skipped"

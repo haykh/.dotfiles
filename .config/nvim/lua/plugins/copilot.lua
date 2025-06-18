@@ -16,6 +16,13 @@ return {
 					accept = "<c-right>",
 				},
 			},
+			server_opts_overrides = {
+				settings = {
+					telemetry = {
+						telemetryLevel = "off",
+					},
+				},
+			},
 		},
 	},
 	{
