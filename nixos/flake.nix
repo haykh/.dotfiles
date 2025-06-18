@@ -56,21 +56,22 @@
               ];
             };
             system = settings.system;
+            specialArgs = {
+              inherit inputs cfg;
+              stateVersion = settings.stateVersion;
+              hostPlatform = settings.system;
+              hostname = "nixwrk";
+              user = cfg.user;
+              home = cfg.home;
+            };
             modules = [
               inputs.nixos-hardware.nixosModules.framework-16-7040-amd
-              (import ./hosts/fw16.nix {
-                stateVersion = settings.stateVersion;
-                hostPlatform = settings.system;
-                hostname = "nixwrk";
-              })
-              (import ./hosts/global.nix {
-                user = cfg.user;
-                home = cfg.home;
-              })
-              (import ./modules/kvm.nix { user = cfg.user; })
-              (import ./modules/locale.nix)
+              ./hosts/fw16.nix
+              ./hosts/global.nix
+              ./modules/kvm.nix
+              ./modules/locale.nix
               # (import ./modules/gnome.nix)
-              (import ./modules/plasma.nix)
+              ./modules/plasma.nix
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;
@@ -103,6 +104,14 @@
               config.cudaSupport = true;
             };
             system = settings.system;
+            specialArgs = {
+              inherit inputs;
+              stateVersion = settings.stateVersion;
+              hostPlatform = settings.system;
+              hostname = "nixwsl";
+              user = cfg.user;
+              home = cfg.home;
+            };
             modules = [
               nixos-wsl.nixosModules.default
               {
@@ -110,15 +119,8 @@
                 wsl.enable = true;
                 wsl.defaultUser = cfg.user;
               }
-              (import ./hosts/wsl.nix {
-                stateVersion = settings.stateVersion;
-                hostPlatform = settings.system;
-                hostname = "nixwsl";
-              })
-              (import ./hosts/global.nix {
-                user = cfg.user;
-                home = cfg.home;
-              })
+              ./hosts/wsl.nix
+              ./hosts/global.nix
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;

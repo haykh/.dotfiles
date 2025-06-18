@@ -6,12 +6,18 @@
     ".config/touchegg/touchegg.conf".source =
       config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/touchegg/touchegg.conf";
 
-    ".config/GIMP/3.0/themes/Photoshop".source =
-      config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/GIMP/3.0/themes/Photoshop";
-    ".config/GIMP/3.0/controllerrc".source =
-      config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/GIMP/3.0/controllerrc";
-    ".config/GIMP/3.0/shortcutsrc".source =
-      config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/GIMP/3.0/shortcutsrc";
+    ".config/GIMP/3.0/themes/Photoshop" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/GIMP/3.0/themes/Photoshop";
+      force = true;
+    };
+    ".config/GIMP/3.0/controllerrc" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/GIMP/3.0/controllerrc";
+      force = true;
+    };
+    ".config/GIMP/3.0/shortcutsrc" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/GIMP/3.0/shortcutsrc";
+      force = true;
+    };
 
     ".config/nvim".source = config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/nvim";
 
@@ -96,6 +102,7 @@
     # apps
     ## graphics & media
     unityhub
+    godot
     blender-hip
     freecad
     gimp3-with-plugins
@@ -196,6 +203,7 @@
     "thorium"
     "slack"
     "vscode"
+    "unity"
   ];
 
   mimeApps = {
@@ -217,6 +225,7 @@
       "x-scheme-handler/https" = "zen.desktop";
       "x-scheme-handler/about" = "zen.desktop";
       "x-scheme-handler/unknown" = "zen.desktop";
+      "x-scheme-handler/unityhub" = "unityhub.desktop";
     };
   };
 

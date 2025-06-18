@@ -2,12 +2,6 @@
   stateVersion,
   hostPlatform,
   hostname,
-}:
-
-{
-  config,
-  lib,
-  pkgs,
   ...
 }:
 

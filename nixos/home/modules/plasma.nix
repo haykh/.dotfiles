@@ -51,6 +51,36 @@
         };
       };
     }
+    {
+      description = "Unityhub";
+      match = {
+        window-class = {
+          value = "Unity";
+          type = "substring";
+        };
+      };
+      apply = {
+        noborder = {
+          value = true;
+          apply = "initially";
+        };
+      };
+    }
+    {
+      description = "Godot";
+      match = {
+        window-class = {
+          value = "Godot";
+          type = "substring";
+        };
+      };
+      apply = {
+        noborder = {
+          value = true;
+          apply = "force";
+        };
+      };
+    }
   ];
 
   kwin = {

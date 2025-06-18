@@ -1,4 +1,4 @@
-{ cfg, ... }:
+{ pkgs, cfg, ... }:
 
 {
 
@@ -90,6 +90,22 @@
       Comment=Access the Internet
       Categories=Network;WebBrowser;
       Terminal=false
+    '';
+  };
+
+  unity = {
+    ".local/share/applications/unityhub.desktop".text = ''
+      [Desktop Entry]
+      Name=Unity Hub
+      Exec=env GDK_SCALE=2 GDK_DPI_SCALE=0.5 ${pkgs.unityhub}/bin/unityhub %U
+      TryExec=${pkgs.unityhub}/bin/unityhub
+      Terminal=false
+      Type=Application
+      Icon=unityhub
+      StartupWMClass=unityhub
+      Comment=The Official Unity Hub
+      Categories=Development;
+      MimeType=x-scheme-handler/unityhub;
     '';
   };
 

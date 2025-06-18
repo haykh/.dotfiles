@@ -1,7 +1,7 @@
-{ home, user, ... }:
-
 {
   pkgs,
+  home,
+  user,
   ...
 }:
 

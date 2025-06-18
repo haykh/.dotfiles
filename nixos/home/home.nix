@@ -13,7 +13,7 @@
 
 let
   cwd = builtins.path { path = ./.; };
-  all_desktop_entries = import ./desktop_entries.nix { inherit cfg; };
+  all_desktop_entries = import ./desktop_entries.nix { inherit pkgs cfg; };
   desktop_entries = builtins.map (name: all_desktop_entries.${name}) (
     builtins.filter (name: builtins.hasAttr name all_desktop_entries) configuration.desktopEntries
   );

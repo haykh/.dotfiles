@@ -1,13 +1,10 @@
 {
-  stateVersion,
-  hostPlatform,
-  hostname,
-}:
-
-{
   config,
   lib,
   pkgs,
+  stateVersion,
+  hostPlatform,
+  hostname,
   ...
 }:
 
