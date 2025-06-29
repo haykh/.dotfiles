@@ -22,7 +22,7 @@
       inputs.home-manager.follows = "home-manager";
     };
     thorium = {
-      url = "https://flakehub.com/f/Rishabh5321/thorium_flake/0.1.59";
+      url = "https://flakehub.com/f/Rishabh5321/thorium_flake/0.1.69";
     };
   };
 
@@ -66,6 +66,8 @@
             };
             modules = [
               inputs.nixos-hardware.nixosModules.framework-16-7040-amd
+              ./hosts/fw16/disks.nix
+              ./hosts/fw16/boot.nix
               ./hosts/fw16.nix
               ./hosts/global.nix
               ./modules/kvm.nix

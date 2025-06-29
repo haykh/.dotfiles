@@ -11,7 +11,7 @@ rec {
   shell_aliases = {
     vi = "nvim";
     vim = "nvim";
-    ff = "fastfetch";
+    ff = "fastfetch --config examples/25";
     nixbuild = "sudo nixos-rebuild switch --flake ${dotfiles}/nixos#$(hostname)";
     nixupd = "nix flake update --flake ${dotfiles}/nixos";
     flakecfg = "$EDITOR ${dotfiles}/nixos/flake.nix";

@@ -91,7 +91,6 @@
     tldr
     ripgrep
     lazygit
-    fastfetch
     ffmpeg
     imagemagick
     chafa
@@ -130,6 +129,7 @@
 
     ## web
     inputs.thorium.packages.${pkgs.system}.thorium-avx2
+    freetube
     nextcloud-client
     slack
     zoom-us
@@ -180,6 +180,7 @@
     git = true;
     neovim = true;
     ssh = true;
+    fastfetch = true;
 
     plasma = true;
 

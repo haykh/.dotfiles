@@ -19,6 +19,7 @@ let
   );
 in
 {
+
   home.username = "${cfg.user}";
   home.homeDirectory = "${cfg.home}";
   home.stateVersion = "${stateVersion}";
@@ -43,13 +44,27 @@ in
     enable = true;
   } // configuration.mimeApps;
 
-  programs = (
-    import ./modules.nix { inherit pkgs cfg; } {
-      enable = configuration.modules // {
-        home-manager = true;
-      };
-    }
-  );
+  programs =
+    builtins.mapAttrs
+      (
+        prog: enable:
+        (
+          if (builtins.pathExists ("${cwd}/modules/${prog}.nix")) then
+            (import ("${cwd}/modules/${prog}.nix") { inherit pkgs cfg; })
+          else
+            { }
+        )
+        // {
+          inherit enable;
+        }
+      )
+      (
+        configuration.modules
+        // {
+          home-manager = true;
+        }
+      );
 
   services = configuration.services;
+
 }

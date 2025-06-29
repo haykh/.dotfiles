@@ -12,10 +12,6 @@
 
   system.stateVersion = stateVersion;
 
-  imports = [
-    ./fw16/disks.nix
-    ./fw16/boot.nix
-  ];
   nixpkgs.hostPlatform = hostPlatform;
 
   networking.useDHCP = lib.mkDefault true;

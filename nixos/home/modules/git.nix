@@ -20,5 +20,6 @@
       navigate = true;
     };
   };
+  lfs.enable = true;
 
 }
