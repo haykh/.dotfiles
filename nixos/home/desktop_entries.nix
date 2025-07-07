@@ -72,7 +72,7 @@
       [Desktop Entry]
       Name=Visual Studio Code
       GenericName=Text Editor
-      Exec=env GTK_THEME="${cfg.gtktheme.main.env}" code --profile "hayk" %F
+      Exec=env GTK_THEME="${cfg.gtktheme.main.env}" code --password-store=basic --profile "hayk" %F
       Icon=vscode
       Comment=Code Editing. Redefined.
       Categories=Utility;TextEditor;Development;IDE;

@@ -9,25 +9,28 @@
     EDITOR = "nvim";
   };
 
-  initContent = ''
-    export PATH=$HOME/.local/bin:$PATH
-    export EDITOR=nvim
+  initContent =
+    ''
+      export PATH=$HOME/.local/bin:$PATH
+      export EDITOR=nvim
 
-    # zstyle ':completion:*:default' list-colors "ow=30;44"
-    if [ -n "''${commands[fzf-share]}" ]; then
-      source "$(fzf-share)/key-bindings.zsh"
-      source "$(fzf-share)/completion.zsh"
-    fi
-    if [ -d "$HOME/.cargo" ]; then
-      export PATH=$HOME/.cargo/bin:$PATH
-    fi
+      # zstyle ':completion:*:default' list-colors "ow=30;44"
+      if [ -n "''${commands[fzf-share]}" ]; then
+        source "$(fzf-share)/key-bindings.zsh"
+        source "$(fzf-share)/completion.zsh"
+      fi
+      if [ -d "$HOME/.cargo" ]; then
+        export PATH=$HOME/.cargo/bin:$PATH
+      fi
 
-    fpath+=${cfg.dotfiles}/.zsh_functions
-    autoload -U ${cfg.dotfiles}/.zsh_functions/*
-    fpath+=$HOME/.zfunc
-    fpath+=$HOME/.zsh/functions
-    autoload compinit -Uz && compinit
-  '';
+      fpath+=${cfg.dotfiles}/.zsh_functions
+      autoload -U ${cfg.dotfiles}/.zsh_functions/*
+      fpath+=$HOME/.zfunc
+      fpath+=$HOME/.zsh/functions
+      autoload compinit -Uz && compinit
+    ''
+    + "\n"
+    + (pkgs.lib.concatStringsSep "\n\n" cfg.shell_functions);
 
   oh-my-zsh = {
     enable = true;

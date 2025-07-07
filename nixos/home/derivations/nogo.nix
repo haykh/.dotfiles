@@ -2,13 +2,13 @@
   pkgs ? import <nixpkgs> { },
 }:
 
-with pkgs;
-buildGoModule rec {
+pkgs.buildGoModule rec {
+
   pname = "nogo";
   version = "1.6.0";
   author = "haykh";
 
-  src = fetchFromGitHub {
+  src = pkgs.fetchFromGitHub {
     owner = "${author}";
     repo = "${pname}";
     rev = "v${version}";
@@ -20,7 +20,8 @@ buildGoModule rec {
   meta = {
     description = "go-based tool to do awesome stuff with notion";
     homepage = "https://github.com/${author}/nogo";
-    license = lib.licenses.bsd3;
+    license = pkgs.lib.licenses.bsd3;
     maintainers = [ author ];
   };
+
 }

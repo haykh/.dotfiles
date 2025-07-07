@@ -11,8 +11,8 @@ rec {
   shell_aliases = {
     vi = "nvim";
     vim = "nvim";
-    ff = "fastfetch --config examples/25";
-    nixbuild = "sudo nixos-rebuild switch --flake ${dotfiles}/nixos#$(hostname)";
+    ff = "fastfetch -l linux";
+    nixbuild = "rm -f ~/.gtkrc-2.0.bak && rm -f ~/.config/mimeapps.list.bak && sudo nixos-rebuild switch --flake ${dotfiles}/nixos#$(hostname)";
     nixupd = "nix flake update --flake ${dotfiles}/nixos";
     flakecfg = "$EDITOR ${dotfiles}/nixos/flake.nix";
     nixcfg = "$EDITOR ${dotfiles}/nixos/";
@@ -20,9 +20,20 @@ rec {
     ll = "ls --long --header --time-style=long-iso";
     lt = "ls --tree --level 2 --icons=always --color";
     ld = "ls --long --header --time-style=long-iso --total-size";
-    icat = "chafa -f kitty";
     rclone-reload = "systemctl --user restart mount-drives.service";
+    code = "GTK_THEME='${gtktheme.main.env}' code --password-store=basic --profile 'hayk'";
   };
+  shell_functions = [
+    ''
+      function icat() {
+        if [[ $TERM =~ 'ghostty' ]]; then 
+          chafa -f kitty "$1"
+        else 
+          chafa -f iterm "$1"
+        fi
+      }
+    ''
+  ];
   gtktheme = {
     accent = "#7295F6";
     main = {

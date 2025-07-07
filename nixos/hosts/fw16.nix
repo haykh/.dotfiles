@@ -44,6 +44,7 @@
       enable = true;
       powerOnBoot = true;
     };
+    sane.enable = true;
   };
 
   services = {
@@ -59,6 +60,20 @@
     '';
     fprintd.enable = true;
     power-profiles-daemon.enable = true;
+    printing = {
+      enable = true;
+      drivers = [
+        pkgs.gutenprint
+        pkgs.brlaser
+        pkgs.brgenml1lpr
+        pkgs.brgenml1cupswrapper
+      ];
+    };
+    avahi = {
+      enable = true;
+      nssmdns4 = true;
+      openFirewall = true;
+    };
   };
 
   environment.systemPackages = with pkgs; [
