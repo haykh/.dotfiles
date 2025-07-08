@@ -17,7 +17,7 @@ fi
 
 function unattended_prompt() {
   if [[ "$UNATTENDED" == true ]]; then
-    echo "$1"
+    echo "$2"
   else
     read -rp "$1 (default: $2): " response
     echo "${response:-$2}"
