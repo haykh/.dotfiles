@@ -8,6 +8,22 @@ NC='\033[0m'
 # select the architecture
 ARCH=$(uname -m)
 
+# check for unattended flag
+if [[ "$1" == "--unattended" ]]; then
+  UNATTENDED=true
+else
+  UNATTENDED=false
+fi
+
+function unattended_prompt() {
+  if [[ "$UNATTENDED" == true ]]; then
+    echo "$1"
+  else
+    read -rp "$1 (default: $2): " response
+    echo "${response:-$2}"
+  fi
+}
+
 if [[ "$ARCH" != "x86_64" && "$ARCH" != "aarch64" ]]; then
   echo "Unsupported architecture: $ARCH. Only x86_64 and aarch64 are supported."
   exit 1
@@ -25,15 +41,17 @@ fi
 
 # select the master directory
 printf "%bMaster directory%b " "${BLUE}" "${NC}"
-read -rp "(default: $HOME): " HOMEDIR
-HOMEDIR=${HOMEDIR:-$HOME}
+# read -rp "(default: $HOME): " HOMEDIR
+# HOMEDIR=${HOMEDIR:-$HOME}
+HOMEDIR=$(unattended_prompt "Enter the master directory" "$HOME")
 
 printf "Master directory is %b%b%b\n" "${RED}" "${HOMEDIR}" "${NC}"
 
 # select the shell
 printf "%bSelect the shell%b " "${BLUE}" "${NC}"
-read -rp "(default: zsh): " MYSHELL
-MYSHELL=${MYSHELL:-zsh}
+# read -rp "(default: zsh): " MYSHELL
+# MYSHELL=${MYSHELL:-zsh}
+MYSHELL=$(unattended_prompt "Enter the shell" "zsh")
 
 if [[ "$MYSHELL" != "zsh" && "$MYSHELL" != "bash" ]]; then
   echo "Unsupported shell: $MYSHELL. Only zsh and bash are supported."
@@ -44,8 +62,9 @@ printf "Shell selected to be %b%b%b\n" "${RED}" "${MYSHELL}" "${NC}"
 
 # mode
 printf "%bSelect the mode (install/uninstall)%b " "${BLUE}" "${NC}"
-read -rp "(default: install): " MODE
-MODE=${MODE:-install}
+# read -rp "(default: install): " MODE
+# MODE=${MODE:-install}
+MODE=$(unattended_prompt "Enter the mode (install/uninstall)" "install")
 
 if [[ "$MODE" != "install" && "$MODE" != "uninstall" ]]; then
   echo "Unsupported mode: $MODE. Only install and uninstall are supported."
@@ -81,8 +100,9 @@ function prompt() {
 
   printf "\n%b%b%b: " "${BLUE}" "${prompt}" "${NC}"
 
-  read -rp "" response
-  response=${response:-$default}
+  # read -rp "" response
+  # response=${response:-$default}
+  response=$(unattended_prompt "$prompt" "$default")
 
   if [[ "$response" =~ ^[Yy]$ ]]; then
     return 0
