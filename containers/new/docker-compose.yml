@@ -1,0 +1,9 @@
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile      
+    image: devenv:latest
+    container_name: dev
+    stdin_open: true
+    tty: true
