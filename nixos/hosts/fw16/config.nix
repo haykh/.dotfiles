@@ -21,6 +21,63 @@
 
     ".config/nvim".source = config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/nvim";
 
+    ".local/bin/wl-color-picker" = {
+      text = ''
+        #!/usr/bin/env bash
+        function pick() {
+          qdbus --literal org.kde.KWin.ScreenShot2 /ColorPicker org.kde.kwin.ColorPicker.pick | sed 's/^[^0-9]*//;s/[^0-9]*$//;'
+        }
+        function to_rgb() {
+          printf '#%02x%02x%02x' "$((0x$1 >> 16 & 0xff))" "$((0x$1 >> 8 & 0xff))" "$((0x$1 & 0xff))"
+        }
+        color="$(pick)"
+        if [ -z "$color" ]; then
+          echo "No color picked"
+          exit 1
+        fi
+        rgb=$(to_rgb "$color")
+        wl-copy "$rgb" && kdialog --passivepopup "$rgb" 3 --title "picked color" --icon 'color'
+      '';
+      executable = true;
+    };
+
+    ".local/bin/wl-color-chooser" = {
+      text = ''
+        #!/usr/bin/env bash
+        kdialog --getcolor | wl-copy
+      '';
+      executable = true;
+    };
+
+    ".local/bin/thunar-shim.py" = {
+      text = ''
+        import dbus
+        import dbus.service
+        import dbus.mainloop.glib
+        import subprocess
+        from gi.repository import GLib
+
+        class FileManager1(dbus.service.Object):
+            def __init__(self, bus):
+                bus_name = dbus.service.BusName('org.freedesktop.FileManager1', bus)
+                super().__init__(bus_name, '/org/freedesktop/FileManager1')
+
+            @dbus.service.method('org.freedesktop.FileManager1',
+                                in_signature='ass', out_signature="")
+            def ShowItems(self, uris, startup_id):
+                for uri in uris:
+                    path = uri.replace("file://", "")
+                    subprocess.Popen(["thunar", path])
+
+        if __name__ == '__main__':
+            dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
+            bus = dbus.SessionBus()
+            file_manager = FileManager1(bus)
+            loop = GLib.MainLoop()
+            loop.run()
+      '';
+    };
+
     # ".local/share/applications/kdeactionsslack.desktop".text = ''
     #   [Desktop Entry]
     #   Name=slack
@@ -48,6 +105,7 @@
 
     # kde
     kdePackages.sddm-kcm
+    kdePackages.kdialog
     wayland-utils
 
     # hardware controllers
@@ -62,11 +120,9 @@
     lua
     python312
     gcc
-    wails
+    libgcc
     go
     gopls
-    webkitgtk_4_0
-    libgcc
 
     # formatters & language servers
     ## nix
@@ -106,14 +162,13 @@
     freecad
     gimp3-with-plugins
     inkscape-with-extensions
+    libreoffice-qt6-fresh
     oculante
     tidal-hifi
 
     ## utils
-    onlyoffice-desktopeditors
     exhibit
-    flameshot
-    gpick
+    # flameshot
     rofimoji
     protonvpn-gui
     proton-pass
@@ -121,7 +176,7 @@
     gnome-text-editor
 
     ## science
-    jabref
+    # jabref
     paraview
 
     ## frameworks
@@ -129,8 +184,7 @@
 
     ## web
     inputs.thorium.packages.${pkgs.system}.thorium-avx2
-    freetube
-    nextcloud-client
+    inputs.zen-browser.packages.${pkgs.system}.zen-browser
     slack
     zoom-us
     protonmail-desktop
@@ -158,6 +212,11 @@
         ulem
         hyperref
         capt-of
+        ebgaramond
+        ebgaramond-maths
+        svn-prov
+        xkeyval
+        fontaxes
         ;
     })
 
@@ -168,8 +227,6 @@
 
   derivations = [
     "nogo"
-    "zen"
-    "ktoggle"
   ];
 
   modules = {
@@ -194,12 +251,14 @@
 
   services = {
     ssh-agent.enable = true;
+    kdeconnect.enable = true;
   };
 
   desktopEntries = [
+    "kdecolorpick"
+    "kdecolorchoose"
     "llyfr"
     "crifo"
-    "onlyoffice"
     "chromium"
     "thorium"
     "slack"
@@ -209,6 +268,7 @@
 
   mimeApps = {
     defaultApplications = {
+      "inode/directory" = "thunar.desktop";
       "application/pdf" = "org.pwmt.zathura-pdf-mupdf.desktop";
 
       "x-scheme-handler/tg" = "org.telegram.desktop.desktop";
@@ -232,6 +292,7 @@
 
   extraConfigs = [
     "gtk"
+    "thunar-shim"
     # "gnome"
   ];
 

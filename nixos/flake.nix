@@ -22,7 +22,12 @@
       inputs.home-manager.follows = "home-manager";
     };
     thorium = {
-      url = "https://flakehub.com/f/Rishabh5321/thorium_flake/0.1.69";
+      url = "https://flakehub.com/f/Rishabh5321/thorium_flake/0.1.78";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    zen-browser = {
+      url = "github:youwen5/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
@@ -33,6 +38,7 @@
       home-manager,
       plasma-manager,
       thorium,
+      zen-browser,
       ...
     }:
     let

@@ -2,6 +2,32 @@
 
 {
 
+  kdecolorpick = {
+    ".local/share/applications/kdecolorpick.desktop".text = ''
+      [Desktop Entry]
+      Exec=${cfg.home}/.local/bin/wl-color-picker
+      Name=wl-color-picker
+      Icon=color
+      NoDisplay=true
+      StartupNotify=false
+      Type=Application
+      X-KDE-GlobalAccel-CommandShortcut=true
+    '';
+  };
+
+  kdecolorchoose = {
+    ".local/share/applications/kdecolorchoose.desktop".text = ''
+      [Desktop Entry]
+      Exec=${cfg.home}/.local/bin/wl-color-chooser
+      Name=wl-color-chooser
+      Icon=color
+      NoDisplay=true
+      StartupNotify=false
+      Type=Application
+      X-KDE-GlobalAccel-CommandShortcut=true
+    '';
+  };
+
   llyfr = {
     ".local/share/applications/llyfr.desktop".text = ''
       [Desktop Entry]

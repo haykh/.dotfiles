@@ -17,6 +17,17 @@
   networking.useDHCP = lib.mkDefault true;
   networking.hostName = hostname;
 
+  # settings for KDE Connect
+  networking.firewall = rec {
+    allowedTCPPortRanges = [
+      {
+        from = 1714;
+        to = 1764;
+      }
+    ];
+    allowedUDPPortRanges = allowedTCPPortRanges;
+  };
+
   hardware = {
     cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
     # graphics = with pkgs; {
