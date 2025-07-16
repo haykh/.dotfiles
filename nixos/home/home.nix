@@ -17,6 +17,12 @@ let
   desktop_entries = builtins.map (name: all_desktop_entries.${name}) (
     builtins.filter (name: builtins.hasAttr name all_desktop_entries) configuration.desktopEntries
   );
+  user_services = builtins.listToAttrs (
+    builtins.map (v: {
+      name = v;
+      value = import "${cwd}/services/${v}.nix" { inherit pkgs cfg; };
+    }) configuration.userServices
+  );
 in
 {
 
@@ -39,6 +45,8 @@ in
   imports = map (
     name: import "${cwd}/configs/${name}.nix" { inherit pkgs cfg; }
   ) configuration.extraConfigs;
+
+  systemd.user.services = user_services;
 
   xdg.mimeApps = {
     enable = true;

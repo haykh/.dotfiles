@@ -292,8 +292,10 @@
 
   extraConfigs = [
     "gtk"
+  ];
+
+  userServices = [
     "thunar-shim"
-    # "gnome"
   ];
 
 }

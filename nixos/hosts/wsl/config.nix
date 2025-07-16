@@ -121,4 +121,6 @@
 
   extraConfigs = [ ];
 
+  userServices = [ ];
+
 }
