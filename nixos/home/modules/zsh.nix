@@ -9,6 +9,14 @@
     EDITOR = "nvim";
   };
 
+  history = {
+    size = 10000000;
+    share = true;
+    append = true;
+    extended = true;
+    ignoreAllDups = true;
+  };
+
   initContent =
     ''
       export PATH=$HOME/.local/bin:$PATH

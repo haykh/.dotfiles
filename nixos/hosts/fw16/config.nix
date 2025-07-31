@@ -1,5 +1,9 @@
 { inputs, pkgs, ... }:
 
+let
+  thoriumPkgs = inputs.thorium.packages.${pkgs.system};
+  zenPkgs = inputs.zen-browser.packages.${pkgs.system};
+in
 {
 
   extraFiles = config: cfg: {
@@ -28,7 +32,8 @@
           qdbus --literal org.kde.KWin.ScreenShot2 /ColorPicker org.kde.kwin.ColorPicker.pick | sed 's/^[^0-9]*//;s/[^0-9]*$//;'
         }
         function to_rgb() {
-          printf '#%02x%02x%02x' "$((0x$1 >> 16 & 0xff))" "$((0x$1 >> 8 & 0xff))" "$((0x$1 & 0xff))"
+          local argb=$(printf "%x" "$1")
+          printf '#%02x%02x%02x' "$((0x$argb >> 16 & 0xff))" "$((0x$argb >> 8 & 0xff))" "$((0x$argb & 0xff))"
         }
         color="$(pick)"
         if [ -z "$color" ]; then
@@ -47,35 +52,6 @@
         kdialog --getcolor | wl-copy
       '';
       executable = true;
-    };
-
-    ".local/bin/thunar-shim.py" = {
-      text = ''
-        import dbus
-        import dbus.service
-        import dbus.mainloop.glib
-        import subprocess
-        from gi.repository import GLib
-
-        class FileManager1(dbus.service.Object):
-            def __init__(self, bus):
-                bus_name = dbus.service.BusName('org.freedesktop.FileManager1', bus)
-                super().__init__(bus_name, '/org/freedesktop/FileManager1')
-
-            @dbus.service.method('org.freedesktop.FileManager1',
-                                in_signature='ass', out_signature="")
-            def ShowItems(self, uris, startup_id):
-                for uri in uris:
-                    path = uri.replace("file://", "")
-                    subprocess.Popen(["thunar", path])
-
-        if __name__ == '__main__':
-            dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
-            bus = dbus.SessionBus()
-            file_manager = FileManager1(bus)
-            loop = GLib.MainLoop()
-            loop.run()
-      '';
     };
 
     # ".local/share/applications/kdeactionsslack.desktop".text = ''
@@ -183,8 +159,8 @@
     rocmPackages.clr
 
     ## web
-    inputs.thorium.packages.${pkgs.system}.thorium-avx2
-    inputs.zen-browser.packages.${pkgs.system}.zen-browser
+    thoriumPkgs.thorium-avx2
+    zenPkgs.zen-browser
     slack
     zoom-us
     protonmail-desktop
@@ -294,8 +270,6 @@
     "gtk"
   ];
 
-  userServices = [
-    "thunar-shim"
-  ];
+  userServices = [ ];
 
 }
