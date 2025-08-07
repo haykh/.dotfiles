@@ -15,6 +15,7 @@
     };
     nixos-wsl = {
       url = "github:nix-community/NixOS-WSL/main";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     plasma-manager = {
       url = "github:nix-community/plasma-manager";
@@ -29,6 +30,10 @@
       url = "github:youwen5/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nogo = {
+      url = "github:haykh/nogo";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -36,9 +41,6 @@
       nixpkgs,
       nixos-wsl,
       home-manager,
-      plasma-manager,
-      thorium,
-      zen-browser,
       ...
     }:
     let
@@ -83,7 +85,7 @@
                 home-manager.useUserPackages = true;
                 home-manager.backupFileExtension = "bak";
                 home-manager.sharedModules = [
-                  plasma-manager.homeManagerModules.plasma-manager
+                  inputs.plasma-manager.homeManagerModules.plasma-manager
                 ];
                 home-manager.users.${cfg.user} = (
                   import ./home/home.nix {

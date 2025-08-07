@@ -5,7 +5,10 @@
   enableZshIntegration = true;
   settings = {
     theme = "GitHub-Dark-Default";
-    font-family = "MonaspiceKr Nerd Font";
+    font-family = [
+      "MonaspiceKr Nerd Font"
+      "Cascadia Code NF"
+    ];
     font-family-italic = "MonaspiceRn Nerd Font";
     font-style-italic = "MonaspiceRn NF";
     cursor-invert-fg-bg = true;

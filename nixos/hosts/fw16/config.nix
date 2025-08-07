@@ -3,6 +3,7 @@
 let
   thoriumPkgs = inputs.thorium.packages.${pkgs.system};
   zenPkgs = inputs.zen-browser.packages.${pkgs.system};
+  nogoPkgs = inputs.nogo.packages.${pkgs.system};
 in
 {
 
@@ -129,10 +130,10 @@ in
     libqalculate
     slides
     has
+    nogoPkgs.default
 
     # apps
     ## graphics & media
-    unityhub
     godot
     blender-hip
     freecad
@@ -144,7 +145,6 @@ in
 
     ## utils
     exhibit
-    # flameshot
     rofimoji
     protonvpn-gui
     proton-pass
@@ -152,7 +152,6 @@ in
     gnome-text-editor
 
     ## science
-    # jabref
     paraview
 
     ## frameworks
@@ -196,14 +195,13 @@ in
         ;
     })
 
+    cascadia-code
     nerd-fonts.monaspace
     nerd-fonts.blex-mono
     nerd-fonts.jetbrains-mono
   ];
 
-  derivations = [
-    "nogo"
-  ];
+  derivations = [ ];
 
   modules = {
     zsh = true;
@@ -220,7 +218,6 @@ in
     ghostty = true;
     mpv = true;
     rofi = true;
-    thunderbird = true;
     vscode = true;
     zathura = true;
   };
@@ -239,30 +236,27 @@ in
     "thorium"
     "slack"
     "vscode"
-    "unity"
   ];
 
   mimeApps = {
     defaultApplications = {
-      "inode/directory" = "thunar.desktop";
+      "inode/directory" = "org.kde.dolphin.desktop";
       "application/pdf" = "org.pwmt.zathura-pdf-mupdf.desktop";
 
       "x-scheme-handler/tg" = "org.telegram.desktop.desktop";
       "x-scheme-handler/tonsite" = "org.telegram.desktop.desktop";
       "x-scheme-handler/slack" = "slack.desktop";
+      "x-scheme-handler/terminal" = "ghostty.desktop";
 
       "image/gif" = "oculante.desktop";
       "image/png" = "oculante.desktop";
       "image/jpeg" = "oculante.desktop";
-
-      "x-scheme-handler/mailto" = "thunderbird.desktop";
 
       "text/html" = "zen.desktop";
       "x-scheme-handler/http" = "zen.desktop";
       "x-scheme-handler/https" = "zen.desktop";
       "x-scheme-handler/about" = "zen.desktop";
       "x-scheme-handler/unknown" = "zen.desktop";
-      "x-scheme-handler/unityhub" = "unityhub.desktop";
     };
   };
 

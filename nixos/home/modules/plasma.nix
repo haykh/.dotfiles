@@ -21,22 +21,6 @@
 
   window-rules = [
     {
-      description = "Thunar";
-      match = {
-        window-class = {
-          value = "thunar";
-          type = "substring";
-        };
-        window-types = [ "normal" ];
-      };
-      apply = {
-        noborder = {
-          value = true;
-          apply = "force";
-        };
-      };
-    }
-    {
       description = "Thorium";
       match = {
         window-class = {
@@ -97,7 +81,7 @@
       "Window Close" = "Meta+Q";
     };
     # "services/slack.desktop"."_launch" = "Meta+S";
-    "services/thunar.desktop"."_launch" = "Meta+E";
+    "services/dolphin.desktop"."_launch" = "Meta+E";
     "services/zen.desktop"."_launch" = "Meta+F";
     "services/com.mitchellh.ghostty.desktop"."_launch" = "Meta+T";
     "services/net.local.kdecolorpick.desktop"."_launch" = "Alt+Print";

@@ -1,5 +1,8 @@
-{ pkgs, ... }:
+{ inputs, pkgs, ... }:
 
+let
+  nogoPkgs = inputs.nogo.packages.${pkgs.system};
+in
 {
 
   extraFiles = config: cfg: {
@@ -70,6 +73,7 @@
     imagemagick
     chafa
     libqalculate
+    nogoPkgs.default
 
     wezterm
 
@@ -90,16 +94,13 @@
         ;
     })
 
-    (nerdfonts.override {
-      fonts = [
-        "Monaspace"
-        "IBMPlexMono"
-        "JetBrainsMono"
-      ];
-    })
+    cascadia-code
+    nerd-fonts.monaspace
+    nerd-fonts.blex-mono
+    nerd-fonts.jetbrains-mono
   ];
 
-  derivations = [ "nogo" ];
+  derivations = [ ];
 
   modules = {
     zsh = true;

@@ -56,7 +56,9 @@
     "nixos-wsl": {
       "inputs": {
         "flake-compat": "flake-compat",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": [
+          "nixpkgs"
+        ]
       },
       "locked": {
         "lastModified": 1753704990,
@@ -75,22 +77,6 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1753429684,
-        "narHash": "sha256-9h7+4/53cSfQ/uA3pSvCaBepmZaz/dLlLVJnbQ+SJjk=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "7fd36ee82c0275fb545775cc5e4d30542899511d",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs_2": {
-      "locked": {
         "lastModified": 1753749649,
         "narHash": "sha256-+jkEZxs7bfOKfBIk430K+tK9IvXlwzqQQnppC2ZKFj4=",
         "owner": "NixOS",
@@ -102,6 +88,26 @@
         "id": "nixpkgs",
         "ref": "nixos-25.05",
         "type": "indirect"
+      }
+    },
+    "nogo": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1754498106,
+        "narHash": "sha256-Xysy52A58vi55/hj0XscZq7Bo5wWq8vzelIUH9JUUhU=",
+        "owner": "haykh",
+        "repo": "nogo",
+        "rev": "a3bec2b39fbe22bbf6a34b0485dae7b4982a69d7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "haykh",
+        "repo": "nogo",
+        "type": "github"
       }
     },
     "plasma-manager": {
@@ -132,7 +138,8 @@
         "home-manager": "home-manager",
         "nixos-hardware": "nixos-hardware",
         "nixos-wsl": "nixos-wsl",
-        "nixpkgs": "nixpkgs_2",
+        "nixpkgs": "nixpkgs",
+        "nogo": "nogo",
         "plasma-manager": "plasma-manager",
         "thorium": "thorium",
         "zen-browser": "zen-browser"
