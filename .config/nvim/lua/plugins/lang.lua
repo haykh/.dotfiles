@@ -25,7 +25,7 @@ return {
 				},
 				svelte = {},
 				-- python
-				pyright = {},
+				basedpyright = {},
 				-- js, ts, html, css
 				ts_ls = {},
 				cssls = {},
@@ -100,9 +100,9 @@ return {
 			},
 			formatters = {
 				injected = { options = { ignore_errors = true } },
-        stylua = {
-          mason = false,
-        },
+				stylua = {
+					mason = false,
+				},
 				fprettify = {
             -- stylua: ignore
             prepend_args = {

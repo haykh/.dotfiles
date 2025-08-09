@@ -11,7 +11,6 @@
     kate
     elisa
   ];
-  programs.thunar.enable = true;
 
   xdg.portal = {
     enable = true;

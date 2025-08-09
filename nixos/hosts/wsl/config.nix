@@ -1,5 +1,8 @@
-{ pkgs, ... }:
+{ inputs, pkgs, ... }:
 
+let
+  nogoPkgs = inputs.nogo.packages.${pkgs.system};
+in
 {
 
   extraFiles = config: cfg: {
@@ -79,6 +82,7 @@
     chafa
     libqalculate
     gh
+    nogoPkgs.default
 
     wezterm
 
@@ -99,12 +103,13 @@
         ;
     })
 
+    cascadia-code
     nerd-fonts.monaspace
     nerd-fonts.blex-mono
     nerd-fonts.jetbrains-mono
   ];
 
-  derivations = [ "nogo" ];
+  derivations = [ ];
 
   modules = {
     zsh = true;
@@ -125,5 +130,7 @@
   mimeApps = { };
 
   extraConfigs = [ ];
+
+  userServices = [ ];
 
 }

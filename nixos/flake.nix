@@ -15,6 +15,7 @@
     };
     nixos-wsl = {
       url = "github:nix-community/NixOS-WSL/main";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     plasma-manager = {
       url = "github:nix-community/plasma-manager";
@@ -22,7 +23,16 @@
       inputs.home-manager.follows = "home-manager";
     };
     thorium = {
-      url = "https://flakehub.com/f/Rishabh5321/thorium_flake/0.1.69";
+      url = "https://flakehub.com/f/Rishabh5321/thorium_flake/0.1.78";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    zen-browser = {
+      url = "github:youwen5/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nogo = {
+      url = "github:haykh/nogo";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
@@ -31,8 +41,6 @@
       nixpkgs,
       nixos-wsl,
       home-manager,
-      plasma-manager,
-      thorium,
       ...
     }:
     let
@@ -51,9 +59,6 @@
             pkgs = import nixpkgs {
               system = settings.system;
               config.allowUnfree = true;
-              config.permittedInsecurePackages = [
-                "electron-33.4.11"
-              ];
             };
             system = settings.system;
             specialArgs = {
@@ -80,7 +85,7 @@
                 home-manager.useUserPackages = true;
                 home-manager.backupFileExtension = "bak";
                 home-manager.sharedModules = [
-                  plasma-manager.homeManagerModules.plasma-manager
+                  inputs.plasma-manager.homeManagerModules.plasma-manager
                 ];
                 home-manager.users.${cfg.user} = (
                   import ./home/home.nix {

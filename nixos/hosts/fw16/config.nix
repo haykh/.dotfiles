@@ -1,5 +1,10 @@
 { inputs, pkgs, ... }:
 
+let
+  thoriumPkgs = inputs.thorium.packages.${pkgs.system};
+  zenPkgs = inputs.zen-browser.packages.${pkgs.system};
+  nogoPkgs = inputs.nogo.packages.${pkgs.system};
+in
 {
 
   extraFiles = config: cfg: {
@@ -20,6 +25,35 @@
     };
 
     ".config/nvim".source = config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/nvim";
+
+    ".local/bin/wl-color-picker" = {
+      text = ''
+        #!/usr/bin/env bash
+        function pick() {
+          qdbus --literal org.kde.KWin.ScreenShot2 /ColorPicker org.kde.kwin.ColorPicker.pick | sed 's/^[^0-9]*//;s/[^0-9]*$//;'
+        }
+        function to_rgb() {
+          local argb=$(printf "%x" "$1")
+          printf '#%02x%02x%02x' "$((0x$argb >> 16 & 0xff))" "$((0x$argb >> 8 & 0xff))" "$((0x$argb & 0xff))"
+        }
+        color="$(pick)"
+        if [ -z "$color" ]; then
+          echo "No color picked"
+          exit 1
+        fi
+        rgb=$(to_rgb "$color")
+        wl-copy "$rgb" && kdialog --passivepopup "$rgb" 3 --title "picked color" --icon 'color'
+      '';
+      executable = true;
+    };
+
+    ".local/bin/wl-color-chooser" = {
+      text = ''
+        #!/usr/bin/env bash
+        kdialog --getcolor | wl-copy
+      '';
+      executable = true;
+    };
 
     # ".local/share/applications/kdeactionsslack.desktop".text = ''
     #   [Desktop Entry]
@@ -48,6 +82,7 @@
 
     # kde
     kdePackages.sddm-kcm
+    kdePackages.kdialog
     wayland-utils
 
     # hardware controllers
@@ -62,11 +97,9 @@
     lua
     python312
     gcc
-    wails
+    libgcc
     go
     gopls
-    webkitgtk_4_0
-    libgcc
 
     # formatters & language servers
     ## nix
@@ -97,23 +130,21 @@
     libqalculate
     slides
     has
+    nogoPkgs.default
 
     # apps
     ## graphics & media
-    unityhub
     godot
     blender-hip
     freecad
     gimp3-with-plugins
     inkscape-with-extensions
+    libreoffice-qt6-fresh
     oculante
     tidal-hifi
 
     ## utils
-    onlyoffice-desktopeditors
     exhibit
-    flameshot
-    gpick
     rofimoji
     protonvpn-gui
     proton-pass
@@ -121,16 +152,14 @@
     gnome-text-editor
 
     ## science
-    jabref
     paraview
 
     ## frameworks
     rocmPackages.clr
 
     ## web
-    inputs.thorium.packages.${pkgs.system}.thorium-avx2
-    freetube
-    nextcloud-client
+    thoriumPkgs.thorium-avx2
+    zenPkgs.zen-browser
     slack
     zoom-us
     protonmail-desktop
@@ -158,19 +187,21 @@
         ulem
         hyperref
         capt-of
+        ebgaramond
+        ebgaramond-maths
+        svn-prov
+        xkeyval
+        fontaxes
         ;
     })
 
+    cascadia-code
     nerd-fonts.monaspace
     nerd-fonts.blex-mono
     nerd-fonts.jetbrains-mono
   ];
 
-  derivations = [
-    "nogo"
-    "zen"
-    "ktoggle"
-  ];
+  derivations = [ ];
 
   modules = {
     zsh = true;
@@ -187,52 +218,52 @@
     ghostty = true;
     mpv = true;
     rofi = true;
-    thunderbird = true;
     vscode = true;
     zathura = true;
   };
 
   services = {
     ssh-agent.enable = true;
+    kdeconnect.enable = true;
   };
 
   desktopEntries = [
+    "kdecolorpick"
+    "kdecolorchoose"
     "llyfr"
     "crifo"
-    "onlyoffice"
     "chromium"
     "thorium"
     "slack"
     "vscode"
-    "unity"
   ];
 
   mimeApps = {
     defaultApplications = {
+      "inode/directory" = "org.kde.dolphin.desktop";
       "application/pdf" = "org.pwmt.zathura-pdf-mupdf.desktop";
 
       "x-scheme-handler/tg" = "org.telegram.desktop.desktop";
       "x-scheme-handler/tonsite" = "org.telegram.desktop.desktop";
       "x-scheme-handler/slack" = "slack.desktop";
+      "x-scheme-handler/terminal" = "ghostty.desktop";
 
       "image/gif" = "oculante.desktop";
       "image/png" = "oculante.desktop";
       "image/jpeg" = "oculante.desktop";
-
-      "x-scheme-handler/mailto" = "thunderbird.desktop";
 
       "text/html" = "zen.desktop";
       "x-scheme-handler/http" = "zen.desktop";
       "x-scheme-handler/https" = "zen.desktop";
       "x-scheme-handler/about" = "zen.desktop";
       "x-scheme-handler/unknown" = "zen.desktop";
-      "x-scheme-handler/unityhub" = "unityhub.desktop";
     };
   };
 
   extraConfigs = [
     "gtk"
-    # "gnome"
   ];
+
+  userServices = [ ];
 
 }

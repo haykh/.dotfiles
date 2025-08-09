@@ -1,18 +1,14 @@
-{ pkgs, ... }:
+{ ... }:
 
 {
 
   enableZshIntegration = true;
-  package = pkgs.ghostty.overrideAttrs (_: {
-    preBuild = ''
-      shopt -s globstar
-      sed -i 's/^const xev = @import("xev");$/const xev = @import("xev").Epoll;/' **/*.zig
-      shopt -u globstar
-    '';
-  });
   settings = {
     theme = "GitHub-Dark-Default";
-    font-family = "MonaspiceKr Nerd Font";
+    font-family = [
+      "MonaspiceKr Nerd Font"
+      "Cascadia Code NF"
+    ];
     font-family-italic = "MonaspiceRn Nerd Font";
     font-style-italic = "MonaspiceRn NF";
     cursor-invert-fg-bg = true;
