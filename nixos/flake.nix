@@ -103,7 +103,7 @@
             pkgs = import nixpkgs {
               system = settings.system;
               config.allowUnfree = true;
-              config.cudaSupport = true;
+              # config.cudaSupport = true;
             };
             system = settings.system;
             specialArgs = {
@@ -123,6 +123,7 @@
               }
               ./hosts/wsl.nix
               ./hosts/global.nix
+              { programs.nix-ld.enable = true; }
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;
