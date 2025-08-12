@@ -76,7 +76,6 @@ in
     tldr
     ripgrep
     lazygit
-    fastfetch
     ffmpeg
     imagemagick
     chafa
@@ -119,6 +118,7 @@ in
     git = true;
     neovim = true;
     ssh = true;
+    fastfetch = true;
   };
 
   services = {

@@ -138,7 +138,7 @@
                   import ./home/home.nix {
                     inherit inputs cfg;
                     stateVersion = settings.stateVersion;
-                    configuration = import ./hosts/wsl/config.nix { inherit pkgs; };
+                    configuration = import ./hosts/wsl/config.nix { inherit inputs pkgs; };
                   }
                 );
               }
