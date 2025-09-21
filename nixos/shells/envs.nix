@@ -53,7 +53,7 @@ let
   pythonPkgs = with pkgs; [
     python312
     black
-    pyright
+    basedpyright
     taplo
     vscode-langservers-extracted
   ];
@@ -111,23 +111,22 @@ let
       value = _vars.${varName};
     }) (builtins.attrNames _vars)
   );
-  preShellHook =
-    ''
-      RED='\033[0;31m'
-      GREEN='\033[0;32m'
-      BLUE='\033[0;34m'
-      NC='\033[0m'
-      export SHELL=$(which zsh)
-    ''
-    + (
-      if builtins.elem "web" env then
-        ''
-          npm set prefix $HOME/.npm
-          export PATH=$HOME/.npm/bin:$PATH
-        ''
-      else
-        ""
-    );
+  preShellHook = ''
+    RED='\033[0;31m'
+    GREEN='\033[0;32m'
+    BLUE='\033[0;34m'
+    NC='\033[0m'
+    export SHELL=$(which zsh)
+  ''
+  + (
+    if builtins.elem "web" env then
+      ''
+        npm set prefix $HOME/.npm
+        export PATH=$HOME/.npm/bin:$PATH
+      ''
+    else
+      ""
+  );
   postShellHook =
     { name, cmd }:
     ''
