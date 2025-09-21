@@ -91,6 +91,7 @@ in
     pamixer
 
     # compilers & managers
+    tree-sitter
     nodePackages.nodejs
     wineWowPackages.stable
     rustup

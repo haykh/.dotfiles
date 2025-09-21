@@ -89,7 +89,7 @@
                 home-manager.useUserPackages = true;
                 home-manager.backupFileExtension = "bak";
                 home-manager.sharedModules = [
-                  inputs.plasma-manager.homeManagerModules.plasma-manager
+                  inputs.plasma-manager.homeModules.plasma-manager
                 ];
                 home-manager.users.${cfg.user} = (
                   import ./home/home.nix {
