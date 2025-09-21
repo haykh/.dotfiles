@@ -4,6 +4,7 @@ let
   thoriumPkgs = inputs.thorium.packages.${pkgs.system};
   zenPkgs = inputs.zen-browser.packages.${pkgs.system};
   nogoPkgs = inputs.nogo.packages.${pkgs.system};
+  winappsPkgs = inputs.winapps.packages.${pkgs.system};
 in
 {
 
@@ -151,6 +152,10 @@ in
     obsidian
     gnome-text-editor
 
+    turbovnc
+    winappsPkgs.winapps
+    winappsPkgs.winapps-launcher
+
     ## science
     paraview
 
@@ -161,7 +166,6 @@ in
     thoriumPkgs.thorium-avx2
     zenPkgs.zen-browser
     slack
-    zoom-us
     protonmail-desktop
     telegram-desktop
     mullvad-browser

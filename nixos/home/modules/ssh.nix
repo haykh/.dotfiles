@@ -3,6 +3,7 @@
 {
 
   addKeysToAgent = "yes";
+  serverAliveInterval = 300;
   controlMaster = "auto";
   controlPersist = "yes";
   controlPath = "${cfg.home}/.ssh/sockets/%p-%h-%r";
@@ -49,7 +50,7 @@
     };
 
     non-pu = {
-      host = "frontera ginsburg insomnia";
+      host = "vista frontera ginsburg insomnia";
       forwardAgent = false;
       forwardX11 = false;
     };
@@ -57,6 +58,12 @@
     frontera = {
       host = "frontera";
       hostname = "frontera.tacc.utexas.edu";
+      user = "haykh";
+    };
+
+    vista = {
+      host = "vista";
+      hostname = "vista.tacc.utexas.edu";
       user = "haykh";
     };
 
