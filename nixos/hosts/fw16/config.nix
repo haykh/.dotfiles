@@ -182,6 +182,8 @@ in
       inherit (pkgs.texlive)
         scheme-basic
         dvisvgm
+        pgf
+        tikz-cd
         type1cm
         xcolor
         cm-super

@@ -83,6 +83,7 @@
               ./modules/locale.nix
               # (import ./modules/gnome.nix)
               ./modules/plasma.nix
+              { programs.nix-ld.enable = true; }
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;
