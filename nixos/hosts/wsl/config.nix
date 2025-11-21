@@ -37,6 +37,7 @@ in
     dbus
 
     # compilers & managers
+    tree-sitter
     cmake
     gnumake
     nodePackages.nodejs

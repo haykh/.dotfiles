@@ -27,11 +27,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     zen-browser = {
-      url = "github:youwen5/zen-browser-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:0xc000022070/zen-browser-flake";
+      # inputs.nixpkgs.follows = "nixpkgs";
     };
     nogo = {
       url = "github:haykh/nogo";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    winapps = {
+      url = "github:winapps-org/winapps";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -79,13 +83,14 @@
               ./modules/locale.nix
               # (import ./modules/gnome.nix)
               ./modules/plasma.nix
+              { programs.nix-ld.enable = true; }
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.backupFileExtension = "bak";
                 home-manager.sharedModules = [
-                  inputs.plasma-manager.homeManagerModules.plasma-manager
+                  inputs.plasma-manager.homeModules.plasma-manager
                 ];
                 home-manager.users.${cfg.user} = (
                   import ./home/home.nix {

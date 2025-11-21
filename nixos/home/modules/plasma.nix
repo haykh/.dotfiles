@@ -82,7 +82,7 @@
     };
     # "services/slack.desktop"."_launch" = "Meta+S";
     "services/dolphin.desktop"."_launch" = "Meta+E";
-    "services/zen.desktop"."_launch" = "Meta+F";
+    "services/zen-beta.desktop"."_launch" = "Meta+F";
     "services/com.mitchellh.ghostty.desktop"."_launch" = "Meta+T";
     "services/net.local.kdecolorpick.desktop"."_launch" = "Alt+Print";
     "services/net.local.kdecolorchoose.desktop"."_launch" = "Alt+Shift+Print";

@@ -22,6 +22,7 @@ rec {
     ld = "ls --long --header --time-style=long-iso --total-size";
     rclone-reload = "systemctl --user restart mount-drives.service";
     code = "GTK_THEME='${gtktheme.main.env}' code --password-store=basic --profile 'hayk'";
+    ofd = "dolphin --new-window \"$@\" 1>/dev/null 2>/dev/null & disown";
   };
   shell_functions = [
     ''

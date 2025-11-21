@@ -4,6 +4,7 @@ let
   thoriumPkgs = inputs.thorium.packages.${pkgs.system};
   zenPkgs = inputs.zen-browser.packages.${pkgs.system};
   nogoPkgs = inputs.nogo.packages.${pkgs.system};
+  winappsPkgs = inputs.winapps.packages.${pkgs.system};
 in
 {
 
@@ -79,6 +80,8 @@ in
     libinput-gestures
     ydotool
     xdotool
+    devenv
+    zip
 
     # kde
     kdePackages.sddm-kcm
@@ -90,6 +93,7 @@ in
     pamixer
 
     # compilers & managers
+    tree-sitter
     nodePackages.nodejs
     wineWowPackages.stable
     rustup
@@ -151,6 +155,10 @@ in
     obsidian
     gnome-text-editor
 
+    turbovnc
+    winappsPkgs.winapps
+    winappsPkgs.winapps-launcher
+
     ## science
     paraview
 
@@ -159,12 +167,12 @@ in
 
     ## web
     thoriumPkgs.thorium-avx2
-    zenPkgs.zen-browser
+    zenPkgs.default
     slack
-    zoom-us
     protonmail-desktop
     telegram-desktop
     mullvad-browser
+    ente-auth
 
     ## dev
     cutter
@@ -175,8 +183,14 @@ in
 
     (pkgs.texlive.combine {
       inherit (pkgs.texlive)
-        scheme-basic
+        scheme-medium
+        minted
+        xstring
+        framed
+        upquote
         dvisvgm
+        pgf
+        tikz-cd
         type1cm
         xcolor
         cm-super
@@ -252,11 +266,11 @@ in
       "image/png" = "oculante.desktop";
       "image/jpeg" = "oculante.desktop";
 
-      "text/html" = "zen.desktop";
-      "x-scheme-handler/http" = "zen.desktop";
-      "x-scheme-handler/https" = "zen.desktop";
-      "x-scheme-handler/about" = "zen.desktop";
-      "x-scheme-handler/unknown" = "zen.desktop";
+      "text/html" = "zen-beta.desktop";
+      "x-scheme-handler/http" = "zen-beta.desktop";
+      "x-scheme-handler/https" = "zen-beta.desktop";
+      "x-scheme-handler/about" = "zen-beta.desktop";
+      "x-scheme-handler/unknown" = "zen-beta.desktop";
     };
   };
 
