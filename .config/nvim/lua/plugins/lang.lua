@@ -4,12 +4,12 @@ return {
 		"neovim/nvim-lspconfig",
 		opts = {
 			diagnostics = {
-				underline = false,
+				underline = true,
 				signs = true,
 			},
-			setup = {
-				autostart = true,
-			},
+			-- setup = {
+			-- 	autostart = true,
+			-- },
 			servers = {
 				-- nasm
 				asm_lsp = {},
@@ -17,13 +17,12 @@ return {
 				fortls = {},
 				-- cpp & cmake
 				clangd = { autostart = false },
-				neocmake = {},
+				neocmake = { autostart = false },
 				-- glsl
 				glsl_analyzer = {},
 				glslls = {
 					mason = false,
 				},
-				svelte = {},
 				-- python
 				basedpyright = {},
 				-- js, ts, html, css
