@@ -12,7 +12,7 @@ return {
 			},
 			servers = {
 				-- nasm
-				asm_lsp = {},
+				-- asm_lsp = {},
 				-- fortran
 				fortls = {},
 				-- cpp & cmake
@@ -20,14 +20,12 @@ return {
 				neocmake = {},
 				-- glsl
 				glsl_analyzer = {},
-				glslls = {
-					mason = false,
-				},
-				svelte = {},
 				-- python
-				basedpyright = {},
+				pyright = {},
 				-- js, ts, html, css
-				ts_ls = {},
+				svelte = {},
+				eslint = {},
+				-- ts_ls = {},
 				cssls = {},
 				emmet_ls = {},
 				html = {},
@@ -60,14 +58,6 @@ return {
 				texlab = {},
 			},
 		},
-		setup = {
-			eslint = function()
-				-- automatically fix linting errors on save (but otherwise do not format the document)
-				vim.cmd([[
-          autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js EslintFixAll
-        ]])
-			end,
-		},
 	},
 	-- formatter
 	{
@@ -80,14 +70,14 @@ return {
 				cmake = { "cmake_format" },
 				glsl = { "clang-format" },
 				python = { "black" },
-				javascript = { "prettierd" },
-				typescript = { "prettierd" },
-				typescriptreact = { "prettierd" },
-				css = { "prettierd" },
-				html = { "prettierd" },
+				javascript = { "prettier" },
+				typescript = { "prettier" },
+				typescriptreact = { "prettier" },
+				css = { "prettier" },
+				html = { "prettier" },
 				toml = { "taplo" },
 				json = { "eslint_d" },
-				yaml = { "prettierd" },
+				yaml = { "prettier" },
 				-- markdown = { "mdformat" },
 				go = { "goimports", "gofmt" },
 				rust = { "rustfmt" },
@@ -104,23 +94,23 @@ return {
 					mason = false,
 				},
 				fprettify = {
-            -- stylua: ignore
-            prepend_args = {
-              "-i", "2",
-              "-w", "4",
-              "--whitespace-assignment", "true",
-              "--enable-decl",
-              "--whitespace-decl", "true",
-              "--whitespace-relational", "true",
-              "--whitespace-logical", "true",
-              "--whitespace-plusminus", "true",
-              "--whitespace-multdiv", "true",
-              "--whitespace-print", "true",
-              "--whitespace-type", "true",
-              "--whitespace-intrinsics", "true",
-              "--enable-replacements",
-              "-l", "1000",
-            },
+	           -- stylua: ignore
+	           prepend_args = {
+	             "-i", "2",
+	             "-w", "4",
+	             "--whitespace-assignment", "true",
+	             "--enable-decl",
+	             "--whitespace-decl", "true",
+	             "--whitespace-relational", "true",
+	             "--whitespace-logical", "true",
+	             "--whitespace-plusminus", "true",
+	             "--whitespace-multdiv", "true",
+	             "--whitespace-print", "true",
+	             "--whitespace-type", "true",
+	             "--whitespace-intrinsics", "true",
+	             "--enable-replacements",
+	             "-l", "1000",
+	           },
 				},
 			},
 		},
@@ -185,12 +175,11 @@ return {
 	-- comments
 	{
 		"folke/ts-comments.nvim",
-		opts = {
-			lang = {
-				rasi = "// %s",
-			},
-		},
+		-- opts = {
+		-- 	lang = {
+		-- 		rasi = "// %s",
+		-- 	},
+		-- },
 	},
 	-- additional languages
-	{ "elkowar/yuck.vim" },
 }
