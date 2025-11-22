@@ -10,7 +10,7 @@ let
     yaml-language-server
     markdown-oxide
     prettierd
-    eslint_d
+    eslint
     mdformat
     svelte-language-server
   ];

@@ -12,6 +12,11 @@
     "flakes"
   ];
 
+  nix.settings.trusted-users = [
+    "root"
+    user
+  ];
+
   nix.gc = {
     automatic = true;
     randomizedDelaySec = "45min";
