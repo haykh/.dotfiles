@@ -1,10 +1,10 @@
 { inputs, pkgs, ... }:
 
 let
-  thoriumPkgs = inputs.thorium.packages.${pkgs.system};
-  zenPkgs = inputs.zen-browser.packages.${pkgs.system};
-  nogoPkgs = inputs.nogo.packages.${pkgs.system};
-  winappsPkgs = inputs.winapps.packages.${pkgs.system};
+  thoriumPkgs = inputs.thorium.packages.${pkgs.stdenv.hostPlatform.system};
+  zenPkgs = inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system};
+  nogoPkgs = inputs.nogo.packages.${pkgs.stdenv.hostPlatform.system};
+  winappsPkgs = inputs.winapps.packages.${pkgs.stdenv.hostPlatform.system};
 in
 {
 
@@ -146,6 +146,7 @@ in
     libreoffice-qt6-fresh
     oculante
     tidal-hifi
+    affine
 
     ## utils
     exhibit
@@ -223,6 +224,7 @@ in
     eza = true;
     fzf = true;
     git = true;
+    delta = true;
     neovim = true;
     ssh = true;
     fastfetch = true;

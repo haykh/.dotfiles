@@ -2,20 +2,18 @@
   config,
   lib,
   pkgs,
-  stateVersion,
-  hostPlatform,
-  hostname,
   ...
 }:
 
 {
 
-  system.stateVersion = stateVersion;
+  # system.stateVersion = stateVersion;
+  # pkgs.stdenv.hostPlatform.system.stateVersion = stateVersion;
 
-  nixpkgs.hostPlatform = hostPlatform;
+  # nixpkgs.hostPlatform = hostPlatform;
 
   networking.useDHCP = lib.mkDefault true;
-  networking.hostName = hostname;
+  # networking.hostName = hostname;
 
   # settings for KDE Connect
   networking.firewall = rec {
@@ -38,11 +36,10 @@
       enable = true;
       enable32Bit = true;
       extraPackages = with pkgs; [
-        vaapiVdpau
+        libva-vdpau-driver
         libvdpau-va-gl
         mangohud
         gamescope
-        amdvlk
       ];
       extraPackages32 = with pkgs; [
         mangohud
@@ -92,7 +89,7 @@
 
     vulkan-tools
     clinfo
-    glxinfo
+    mesa-demos
     powertop
     nvtopPackages.amd
     lm_sensors

@@ -7,9 +7,6 @@ return {
 				underline = true,
 				signs = true,
 			},
-			-- setup = {
-			-- 	autostart = true,
-			-- },
 			servers = {
 				-- nasm
 				asm_lsp = {},
@@ -24,9 +21,10 @@ return {
 					mason = false,
 				},
 				-- python
-				basedpyright = {},
+				pyright = {},
 				-- js, ts, html, css
 				ts_ls = {},
+				eslint = {},
 				cssls = {},
 				emmet_ls = {},
 				html = {},
@@ -79,8 +77,8 @@ return {
 				cmake = { "cmake_format" },
 				glsl = { "clang-format" },
 				python = { "black" },
-				javascript = { "prettierd" },
-				typescript = { "prettierd" },
+				javascript = { "eslint_d" },
+				typescript = { "eslint_d" },
 				typescriptreact = { "prettierd" },
 				css = { "prettierd" },
 				html = { "prettierd" },

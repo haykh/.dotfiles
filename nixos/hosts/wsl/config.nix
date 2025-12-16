@@ -1,7 +1,7 @@
 { inputs, pkgs, ... }:
 
 let
-  nogoPkgs = inputs.nogo.packages.${pkgs.system};
+  nogoPkgs = inputs.nogo.packages.${pkgs.stdenv.hostPlatform.system};
 in
 {
 
