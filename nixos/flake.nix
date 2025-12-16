@@ -63,10 +63,6 @@
             pkgs = import nixpkgs {
               system = settings.system;
               config.allowUnfree = true;
-              # config.permittedInsecurePackages = [
-              #   "electron-36.9.5"
-              #   "electron-35.7.5"
-              # ];
             };
             system = settings.system;
             specialArgs = {
