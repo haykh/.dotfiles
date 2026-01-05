@@ -5,7 +5,6 @@ let
   zenPkgs = inputs.zen-browser.packages.${pkgs.system};
   nogoPkgs = inputs.nogo.packages.${pkgs.system};
   gobrainPkgs = inputs.gobrain.packages.${pkgs.system};
-  winappsPkgs = inputs.winapps.packages.${pkgs.system};
 in
 {
 
@@ -158,8 +157,6 @@ in
     gnome-text-editor
 
     turbovnc
-    winappsPkgs.winapps
-    winappsPkgs.winapps-launcher
 
     ## science
     paraview
