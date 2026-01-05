@@ -9,21 +9,21 @@ in
 {
 
   extraFiles = config: cfg: {
-    ".config/touchegg/touchegg.conf".source =
-      config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/touchegg/touchegg.conf";
-
-    ".config/GIMP/3.0/themes/Photoshop" = {
-      source = config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/GIMP/3.0/themes/Photoshop";
-      force = true;
-    };
-    ".config/GIMP/3.0/controllerrc" = {
-      source = config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/GIMP/3.0/controllerrc";
-      force = true;
-    };
-    ".config/GIMP/3.0/shortcutsrc" = {
-      source = config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/GIMP/3.0/shortcutsrc";
-      force = true;
-    };
+    # ".config/touchegg/touchegg.conf".source =
+    #   config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/touchegg/touchegg.conf";
+    #
+    # ".config/GIMP/3.0/themes/Photoshop" = {
+    #   source = config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/GIMP/3.0/themes/Photoshop";
+    #   force = true;
+    # };
+    # ".config/GIMP/3.0/controllerrc" = {
+    #   source = config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/GIMP/3.0/controllerrc";
+    #   force = true;
+    # };
+    # ".config/GIMP/3.0/shortcutsrc" = {
+    #   source = config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/GIMP/3.0/shortcutsrc";
+    #   force = true;
+    # };
 
     ".config/nvim".source = config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/nvim";
 
@@ -133,7 +133,7 @@ in
     chafa
     libqalculate
     slides
-    has
+    gource
     nogoPkgs.default
 
     # apps
