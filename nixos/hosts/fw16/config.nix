@@ -147,6 +147,7 @@ in
     libreoffice-qt6-fresh
     oculante
     tidal-hifi
+    affine
 
     ## utils
     exhibit
@@ -222,6 +223,7 @@ in
     eza = true;
     fzf = true;
     git = true;
+    delta = true;
     neovim = true;
     ssh = true;
     fastfetch = true;

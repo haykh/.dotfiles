@@ -33,6 +33,9 @@ rec {
           chafa -f iterm "$1"
         fi
       }
+      function ppass() {
+        pass-cli item view "pass://accounts/$1/password" | tr -d "[:space:]" | wl-copy
+      }
     ''
   ];
   gtktheme = {
