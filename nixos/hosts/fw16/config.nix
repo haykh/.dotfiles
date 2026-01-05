@@ -1,10 +1,10 @@
 { inputs, pkgs, ... }:
 
 let
-  thoriumPkgs = inputs.thorium.packages.${pkgs.stdenv.hostPlatform.system};
-  zenPkgs = inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system};
-  nogoPkgs = inputs.nogo.packages.${pkgs.stdenv.hostPlatform.system};
-  winappsPkgs = inputs.winapps.packages.${pkgs.stdenv.hostPlatform.system};
+  thoriumPkgs = inputs.thorium.packages.${pkgs.system};
+  zenPkgs = inputs.zen-browser.packages.${pkgs.system};
+  nogoPkgs = inputs.nogo.packages.${pkgs.system};
+  gobrainPkgs = inputs.gobrain.packages.${pkgs.system};
 in
 {
 
@@ -135,6 +135,7 @@ in
     slides
     gource
     nogoPkgs.default
+    gobrainPkgs.default
 
     # apps
     ## graphics & media
@@ -157,8 +158,6 @@ in
     gnome-text-editor
 
     turbovnc
-    winappsPkgs.winapps
-    winappsPkgs.winapps-launcher
 
     ## science
     paraview

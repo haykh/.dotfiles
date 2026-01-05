@@ -1,7 +1,8 @@
 { inputs, pkgs, ... }:
 
 let
-  nogoPkgs = inputs.nogo.packages.${pkgs.stdenv.hostPlatform.system};
+  nogoPkgs = inputs.nogo.packages.${pkgs.system};
+  gobrainPkgs = inputs.gobrain.packages.${pkgs.system};
 in
 {
 
@@ -83,6 +84,7 @@ in
     libqalculate
     gh
     nogoPkgs.default
+    gobrainPkgs.default
 
     wezterm
 
