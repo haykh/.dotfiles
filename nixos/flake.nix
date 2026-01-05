@@ -34,6 +34,10 @@
       url = "github:haykh/nogo";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    gobrain = {
+      url = "github:haykh/gobrain";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     winapps = {
       url = "github:winapps-org/winapps";
       inputs.nixpkgs.follows = "nixpkgs";

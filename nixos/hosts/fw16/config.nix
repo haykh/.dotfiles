@@ -4,6 +4,7 @@ let
   thoriumPkgs = inputs.thorium.packages.${pkgs.system};
   zenPkgs = inputs.zen-browser.packages.${pkgs.system};
   nogoPkgs = inputs.nogo.packages.${pkgs.system};
+  gobrainPkgs = inputs.gobrain.packages.${pkgs.system};
   winappsPkgs = inputs.winapps.packages.${pkgs.system};
 in
 {
@@ -135,6 +136,7 @@ in
     slides
     has
     nogoPkgs.default
+    gobrainPkgs.default
 
     # apps
     ## graphics & media
