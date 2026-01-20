@@ -80,19 +80,27 @@
       "Activate Window Demanding Attention" = "";
       "Window Close" = "Meta+Q";
     };
-    # "services/slack.desktop"."_launch" = "Meta+S";
+    "services/net.local.vicinae.desktop"."_launch" = "Ctrl+Alt+Space";
     "services/dolphin.desktop"."_launch" = "Meta+E";
     "services/zen-beta.desktop"."_launch" = "Meta+F";
     "services/com.mitchellh.ghostty.desktop"."_launch" = "Meta+T";
     "services/net.local.kdecolorpick.desktop"."_launch" = "Alt+Print";
     "services/net.local.kdecolorchoose.desktop"."_launch" = "Alt+Shift+Print";
-    "services/net.local.crifo.desktop"."_launch" = "Meta+Ctrl+C";
-    "services/net.local.llyfr.desktop"."_launch" = "Meta+Ctrl+A";
-    "services/org.kde.krunner.desktop"."_launch" = [
-      "Search"
-      "Ctrl+Alt+Space"
-    ];
+    # "services/net.local.crifo.desktop"."_launch" = "Meta+Ctrl+C";
+    # "services/net.local.llyfr.desktop"."_launch" = "Meta+Ctrl+A";
     "services/org.kde.spectacle.desktop"."RectangularRegionScreenShot" = "Print";
+  };
+  hotkeys.commands = {
+    launch-crifo = {
+      name = "Launch Crifo";
+      key = "Meta+Alt+C";
+      command = "env GDK_BACKEND=x11 QT_QPA_PLATFORM=xcb crifo";
+    };
+    launch-llyfr = {
+      name = "Launch Llyfr";
+      key = "Meta+Alt+A";
+      command = "env GDK_BACKEND=x11 QT_QPA_PLATFORM=xcb llyfr zathura ${cfg.home}/Documents/Literature/refs.bib";
+    };
   };
   configFile = {
     plasma-localerc.Formats.LANG = "en_US.UTF-8";

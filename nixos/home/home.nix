@@ -39,18 +39,18 @@ in
     ) configuration.derivations;
 
   home.file =
-    (configuration.extraFiles config cfg)
-    // builtins.foldl' (a: b: a // b) { } desktop_entries;
+    (configuration.extraFiles config cfg) // builtins.foldl' (a: b: a // b) { } desktop_entries;
 
-  imports = map (
-    name: import "${cwd}/configs/${name}.nix" { inherit pkgs cfg; }
-  ) configuration.extraConfigs;
+  imports =
+    map (name: import "${cwd}/configs/${name}.nix" { inherit pkgs cfg; }) configuration.extraConfigs
+    ++ configuration.extraImports;
 
   systemd.user.services = user_services;
 
   xdg.mimeApps = {
     enable = true;
-  } // configuration.mimeApps;
+  }
+  // configuration.mimeApps;
 
   programs =
     builtins.mapAttrs

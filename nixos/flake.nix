@@ -38,6 +38,22 @@
       url = "github:haykh/gobrain";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    crifo = {
+      url = "github:haykh/crifo";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    llyfr = {
+      url = "github:haykh/llyfr";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    vicinae = {
+      url = "github:vicinaehq/vicinae";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    vicinae-extensions = {
+      url = "github:vicinaehq/extensions";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

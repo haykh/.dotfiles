@@ -1,29 +1,30 @@
 { inputs, pkgs, ... }:
 
 let
-  thoriumPkgs = inputs.thorium.packages.${pkgs.system};
-  zenPkgs = inputs.zen-browser.packages.${pkgs.system};
-  nogoPkgs = inputs.nogo.packages.${pkgs.system};
-  gobrainPkgs = inputs.gobrain.packages.${pkgs.system};
+  system = pkgs.stdenv.hostPlatform.system;
+
+  thoriumPkgs = inputs.thorium.packages.${system};
+  zenPkgs = inputs.zen-browser.packages.${system};
+  nogoPkgs = inputs.nogo.packages.${system};
+  gobrainPkgs = inputs.gobrain.packages.${system};
+  llyfrPkgs = inputs.llyfr.packages.${system};
+  crifoPkgs = inputs.crifo.packages.${system};
+
+  opensslInject = pkgs.writeText "inject-openssl.cmake" ''
+    find_package(OpenSSL REQUIRED)
+  '';
+
+  vicinaePatched = inputs.vicinae.packages.${pkgs.system}.default.overrideAttrs (old: {
+    buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.openssl ];
+
+    cmakeFlags = (old.cmakeFlags or [ ]) ++ [
+      "-DCMAKE_PROJECT_INCLUDE_BEFORE=${opensslInject}"
+    ];
+  });
 in
 {
 
   extraFiles = config: cfg: {
-    # ".config/touchegg/touchegg.conf".source =
-    #   config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/touchegg/touchegg.conf";
-    #
-    # ".config/GIMP/3.0/themes/Photoshop" = {
-    #   source = config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/GIMP/3.0/themes/Photoshop";
-    #   force = true;
-    # };
-    # ".config/GIMP/3.0/controllerrc" = {
-    #   source = config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/GIMP/3.0/controllerrc";
-    #   force = true;
-    # };
-    # ".config/GIMP/3.0/shortcutsrc" = {
-    #   source = config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/GIMP/3.0/shortcutsrc";
-    #   force = true;
-    # };
 
     ".config/nvim".source = config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/nvim";
 
@@ -56,12 +57,6 @@ in
       executable = true;
     };
 
-    # ".local/share/applications/kdeactionsslack.desktop".text = ''
-    #   [Desktop Entry]
-    #   Name=slack
-    #   Exec=${cfg.dotfiles}/scripts/kde-actions.sh slack
-    #   Type=Application
-    # '';
   };
 
   sessionVariables = {
@@ -82,6 +77,7 @@ in
     xdotool
     devenv
     zip
+    pulseaudio
 
     # kde
     kdePackages.sddm-kcm
@@ -136,6 +132,8 @@ in
     gource
     nogoPkgs.default
     gobrainPkgs.default
+    llyfrPkgs.default
+    crifoPkgs.default
 
     # apps
     ## graphics & media
@@ -240,11 +238,43 @@ in
   services = {
     ssh-agent.enable = true;
     kdeconnect.enable = true;
+    vicinae = {
+      enable = true;
+      systemd = {
+        enable = true;
+        autoStart = true;
+        environment = {
+          USE_LAYER_SHELL = 1;
+        };
+      };
+      settings = {
+        close_on_focus_loss = true;
+        font = {
+          normal = {
+            size = 12;
+          };
+        };
+        layer_shell = {
+          enabled = true;
+        };
+        favorites = [ ];
+      };
+      extensions = with inputs.vicinae-extensions.packages.${pkgs.stdenv.hostPlatform.system}; [
+        bluetooth
+        nix
+        power-profile
+        ssh
+        process-manager
+        pulseaudio
+      ];
+      package = vicinaePatched;
+    };
   };
 
   desktopEntries = [
     "kdecolorpick"
     "kdecolorchoose"
+    "vicinae"
     "llyfr"
     "crifo"
     "chromium"
@@ -256,7 +286,7 @@ in
   mimeApps = {
     defaultApplications = {
       "inode/directory" = "org.kde.dolphin.desktop";
-      "application/pdf" = "org.pwmt.zathura-pdf-mupdf.desktop";
+      "application/pdf" = "org.pwmt.zathura.desktop";
 
       "x-scheme-handler/tg" = "org.telegram.desktop.desktop";
       "x-scheme-handler/tonsite" = "org.telegram.desktop.desktop";
@@ -278,6 +308,8 @@ in
   extraConfigs = [
     "gtk"
   ];
+
+  extraImports = [ inputs.vicinae.homeManagerModules.default ];
 
   userServices = [ ];
 

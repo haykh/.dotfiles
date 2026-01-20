@@ -7,13 +7,7 @@
 
 {
 
-  # system.stateVersion = stateVersion;
-  # pkgs.stdenv.hostPlatform.system.stateVersion = stateVersion;
-
-  # nixpkgs.hostPlatform = hostPlatform;
-
   networking.useDHCP = lib.mkDefault true;
-  # networking.hostName = hostname;
 
   # settings for KDE Connect
   networking.firewall = rec {
@@ -28,9 +22,6 @@
 
   hardware = {
     cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-    # graphics = with pkgs; {
-    #   extraPackages32 = [ driversi686Linux.amdvlk ];
-    # };
 
     graphics = {
       enable = true;
@@ -62,7 +53,7 @@
     fwupd.enable = true;
     udev.packages = [ pkgs.via ];
     # prevent wake up in backpack
-    udev.extraRules = ''
+    udev.extraRules = lib.mkAfter ''
       SUBSYSTEM=="usb", DRIVERS=="usb", ATTRS{idVendor}=="32ac", ATTRS{idProduct}=="0012", ATTR{power/wakeup}="disabled", ATTR{driver/1-1.1.1.4/power/wakeup}="disabled"
       SUBSYSTEM=="usb", DRIVERS=="usb", ATTRS{idVendor}=="32ac", ATTRS{idProduct}=="0014", ATTR{power/wakeup}="disabled", ATTR{driver/1-1.1.1.4/power/wakeup}="disabled"
     '';
