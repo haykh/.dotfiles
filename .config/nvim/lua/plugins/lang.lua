@@ -28,7 +28,7 @@ return {
 				-- js, ts, html, css
 				svelte = {},
 				eslint = {},
-				-- ts_ls = {},
+				ts_ls = {},
 				cssls = {},
 				emmet_ls = {},
 				html = {},
@@ -135,6 +135,7 @@ return {
 				"glsl",
 				"hyprlang",
 				"javascript",
+				"typescript",
 				"json",
 				"jsonc",
 				"jq",

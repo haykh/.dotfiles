@@ -140,6 +140,12 @@ if command -v gh &>/dev/null; then
   }
 fi
 
+if command -v pass-cli &>/dev/null; then
+  function ppass() {
+    pass-cli item view "pass://accounts/$1/password" | tr -d "[:space:]" | xclip
+  }
+fi
+
 if command -v fastfetch &>/dev/null; then
   alias ff='fastfetch'
 fi
