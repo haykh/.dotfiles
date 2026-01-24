@@ -2,14 +2,17 @@
 
 {
 
-  addKeysToAgent = "yes";
-  serverAliveInterval = 300;
-  controlMaster = "auto";
-  controlPersist = "yes";
-  controlPath = "${cfg.home}/.ssh/sockets/%p-%h-%r";
-  forwardAgent = true;
-
+  enableDefaultConfig = false;
   matchBlocks = {
+    "*" = {
+      addKeysToAgent = "yes";
+      forwardAgent = true;
+      controlPersist = "yes";
+      controlMaster = "auto";
+      controlPath = "${cfg.home}/.ssh/sockets/%p-%h-%r";
+      serverAliveInterval = 300;
+    };
+
     pu-global = {
       host = "tigress* stellar*";
       user = "hakobyan";

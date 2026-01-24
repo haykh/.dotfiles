@@ -28,25 +28,12 @@
     '';
   };
 
-  llyfr = {
-    ".local/share/applications/llyfr.desktop".text = ''
+  vicinae = {
+    ".local/share/applications/vicinae.desktop".text = ''
       [Desktop Entry]
-      Exec=env GDK_BACKEND=x11 QT_QPA_PLATFORM=xcb ${cfg.home}/.local/bin/llyfr ~/Documents/Literature/refs.bib
-      Name=llyfr
-      Icon=applications-education-symbolic
-      NoDisplay=true
-      StartupNotify=false
-      Type=Application
-      X-KDE-GlobalAccel-CommandShortcut=true
-    '';
-  };
-
-  crifo = {
-    ".local/share/applications/crifo.desktop".text = ''
-      [Desktop Entry]
-      Exec=env GDK_BACKEND=x11 QT_QPA_PLATFORM=xcb ${cfg.home}/.local/bin/crifo
-      Name=crifo
-      Icon=folder-calculate
+      Exec=/etc/profiles/per-user/${cfg.user}/bin/vicinae toggle
+      Name=vicinae
+      Icon=vicinae
       NoDisplay=true
       StartupNotify=false
       Type=Application

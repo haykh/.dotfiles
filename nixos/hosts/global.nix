@@ -77,9 +77,6 @@
       docker
       docker-compose
 
-      # browser
-      ungoogled-chromium
-
     ];
   };
 

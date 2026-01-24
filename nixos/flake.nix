@@ -4,13 +4,13 @@
 
   inputs = {
     nixpkgs = {
-      url = "nixpkgs/nixos-25.05";
+      url = "nixpkgs/nixos-25.11";
     };
     nixos-hardware = {
       url = "github:NixOS/nixos-hardware/master";
     };
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixos-wsl = {
@@ -28,14 +28,30 @@
     };
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
-      # inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     nogo = {
       url = "github:haykh/nogo";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    winapps = {
-      url = "github:winapps-org/winapps";
+    gobrain = {
+      url = "github:haykh/gobrain";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    crifo = {
+      url = "github:haykh/crifo";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    llyfr = {
+      url = "github:haykh/llyfr";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    vicinae = {
+      url = "github:vicinaehq/vicinae";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    vicinae-extensions = {
+      url = "github:vicinaehq/extensions";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -67,9 +83,6 @@
             system = settings.system;
             specialArgs = {
               inherit inputs cfg;
-              stateVersion = settings.stateVersion;
-              hostPlatform = settings.system;
-              hostname = "nixwrk";
               user = cfg.user;
               home = cfg.home;
             };
@@ -78,12 +91,17 @@
               ./hosts/fw16/disks.nix
               ./hosts/fw16/boot.nix
               ./hosts/fw16.nix
+              {
+                system.stateVersion = settings.stateVersion;
+                nixpkgs.hostPlatform = settings.system;
+                programs.nix-ld.enable = true;
+                networking.hostName = "nixwrk";
+              }
               ./hosts/global.nix
               ./modules/kvm.nix
               ./modules/locale.nix
               # (import ./modules/gnome.nix)
               ./modules/plasma.nix
-              { programs.nix-ld.enable = true; }
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;
@@ -118,9 +136,6 @@
             system = settings.system;
             specialArgs = {
               inherit inputs;
-              stateVersion = settings.stateVersion;
-              hostPlatform = settings.system;
-              hostname = "nixwsl";
               user = cfg.user;
               home = cfg.home;
             };
@@ -128,10 +143,11 @@
               nixos-wsl.nixosModules.default
               {
                 system.stateVersion = settings.stateVersion;
+                nixpkgs.hostPlatform = settings.system;
                 wsl.enable = true;
                 wsl.defaultUser = cfg.user;
+                networking.hostName = "nixwsl";
               }
-              ./hosts/wsl.nix
               ./hosts/global.nix
               { programs.nix-ld.enable = true; }
               home-manager.nixosModules.home-manager

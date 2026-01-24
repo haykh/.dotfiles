@@ -4,7 +4,7 @@
 
   enableZshIntegration = true;
   settings = {
-    theme = "GitHub-Dark-Default";
+    theme = "GitHub Dark Default";
     font-family = [
       "MonaspiceKr Nerd Font"
       "Cascadia Code NF"

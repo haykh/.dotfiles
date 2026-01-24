@@ -26,7 +26,7 @@ let
 
   cppPkgs = with pkgs; [
     zlib
-    llvmPackages_19.libcxxClang
+    libgcc
     clang-tools
     cmake
     neocmakelsp
