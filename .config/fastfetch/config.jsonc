@@ -1,0 +1,211 @@
+{
+  "display": {
+    "constants": [
+      "┌",
+      "└",
+      "│"
+    ],
+    "key": {
+      "width": 15
+    },
+    "separator": ""
+  },
+  "logo": {
+    "padding": {
+      "top": 2
+    }
+  },
+  "modules": [
+    {
+      "format": "{$1}",
+      "outputColor": "blue",
+      "type": "custom"
+    },
+    {
+      "key": "{$3} {icon} os",
+      "keyColor": "blue",
+      "keyIcon": "󱄅",
+      "type": "os"
+    },
+    {
+      "key": "{$3} {icon} kernel",
+      "keyColor": "blue",
+      "type": "kernel"
+    },
+    {
+      "key": "{$3} {icon} pkgs",
+      "keyColor": "blue",
+      "type": "packages"
+    },
+    {
+      "key": "{$3} {icon} bios",
+      "keyColor": "blue",
+      "type": "bios"
+    },
+    {
+      "format": "{~0}",
+      "key": "{$3} {icon} params",
+      "keyColor": "blue",
+      "keyIcon": "",
+      "text": "cat /proc/cmdline | awk '{for(i=1;i<=NF;i++) if($i !~ /^init=/ && $i !~ /^initrd=/) printf \"%s \", $i}'",
+      "type": "command"
+    },
+    {
+      "format": "{$2}",
+      "outputColor": "blue",
+      "type": "custom"
+    },
+    {
+      "format": "{$1}",
+      "outputColor": "yellow",
+      "type": "custom"
+    },
+    {
+      "key": "{$3} {icon} cpu",
+      "keyColor": "yellow",
+      "type": "cpu"
+    },
+    {
+      "key": "{$3} {icon} ram",
+      "keyColor": "yellow",
+      "type": "memory"
+    },
+    {
+      "key": "{$3} {icon} swap",
+      "keyColor": "yellow",
+      "type": "swap"
+    },
+    {
+      "key": "{$3} {icon} bat",
+      "keyColor": "yellow",
+      "type": "battery"
+    },
+    {
+      "folders": "/",
+      "key": "{$3} {icon} /",
+      "keyColor": "yellow",
+      "type": "disk"
+    },
+    {
+      "folders": "/home",
+      "key": "{$3} {icon} /home",
+      "keyColor": "yellow",
+      "type": "disk"
+    },
+    {
+      "format": "{$2}",
+      "outputColor": "yellow",
+      "type": "custom"
+    },
+    {
+      "format": "{$1}",
+      "outputColor": "red",
+      "type": "custom"
+    },
+    {
+      "hideType": "discrete",
+      "key": "{$3} {icon} gpu",
+      "keyColor": "red",
+      "type": "gpu"
+    },
+    {
+      "hideType": "integrated",
+      "key": "{$3} {icon} gpu",
+      "keyColor": "red",
+      "type": "gpu"
+    },
+    {
+      "compactType": "original-with-refresh-rate",
+      "key": "{$3} {icon} res",
+      "keyColor": "red",
+      "type": "display"
+    },
+    {
+      "key": "{$3} {icon} de",
+      "keyColor": "red",
+      "type": "de"
+    },
+    {
+      "key": "{$3} {icon} wm",
+      "keyColor": "red",
+      "type": "wm"
+    },
+    {
+      "key": "{$3} {icon} opengl",
+      "keyColor": "red",
+      "type": "opengl"
+    },
+    {
+      "key": "{$3} {icon} vulkan",
+      "keyColor": "red",
+      "type": "vulkan"
+    },
+    {
+      "format": "{$2}",
+      "outputColor": "red",
+      "type": "custom"
+    },
+    {
+      "format": "{$1}",
+      "outputColor": "green",
+      "type": "custom"
+    },
+    {
+      "key": "{$3} {icon} term",
+      "keyColor": "green",
+      "type": "terminal"
+    },
+    {
+      "key": "{$3} {icon} editor",
+      "keyColor": "green",
+      "type": "editor"
+    },
+    {
+      "format": "{~1}",
+      "key": "{$3} {icon} nodejs",
+      "keyColor": "green",
+      "keyIcon": "",
+      "text": "node --version",
+      "type": "command"
+    },
+    {
+      "format": "{~0}",
+      "key": "{$3} {icon} npm",
+      "keyColor": "green",
+      "keyIcon": "",
+      "text": "npm -v",
+      "type": "command"
+    },
+    {
+      "format": "{~2}",
+      "key": "{$3} {icon} go",
+      "keyColor": "green",
+      "keyIcon": "",
+      "text": "go version | cut -d' ' -f3",
+      "type": "command"
+    },
+    {
+      "format": "{~0}",
+      "key": "{$3} {icon} gcc",
+      "keyColor": "green",
+      "keyIcon": "",
+      "text": "gcc --version | head -n 1 | cut -d' ' -f3",
+      "type": "command"
+    },
+    {
+      "format": "{~0}",
+      "key": "{$3} {icon} py",
+      "keyColor": "green",
+      "keyIcon": "",
+      "text": "python3 --version | cut -d' ' -f2",
+      "type": "command"
+    },
+    {
+      "format": "{$2}",
+      "outputColor": "green",
+      "type": "custom"
+    },
+    "break",
+    "colors"
+  ]
+}
