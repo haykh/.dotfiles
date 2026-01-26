@@ -9,7 +9,7 @@ return {
 			},
 			servers = {
 				-- nasm
-				asm_lsp = {},
+				-- asm_lsp = {},
 				-- fortran
 				fortls = {},
 				-- cpp & cmake
@@ -23,6 +23,8 @@ return {
 				-- python
 				pyright = {},
 				-- js, ts, html, css
+				svelte = {},
+				eslint = {},
 				ts_ls = {},
 				eslint = {},
 				cssls = {},
@@ -57,14 +59,6 @@ return {
 				texlab = {},
 			},
 		},
-		setup = {
-			eslint = function()
-				-- automatically fix linting errors on save (but otherwise do not format the document)
-				vim.cmd([[
-          autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js EslintFixAll
-        ]])
-			end,
-		},
 	},
 	-- formatter
 	{
@@ -84,7 +78,7 @@ return {
 				html = { "prettierd" },
 				toml = { "taplo" },
 				json = { "eslint_d" },
-				yaml = { "prettierd" },
+				yaml = { "prettier" },
 				-- markdown = { "mdformat" },
 				go = { "goimports", "gofmt" },
 				rust = { "rustfmt" },
@@ -101,23 +95,23 @@ return {
 					mason = false,
 				},
 				fprettify = {
-            -- stylua: ignore
-            prepend_args = {
-              "-i", "2",
-              "-w", "4",
-              "--whitespace-assignment", "true",
-              "--enable-decl",
-              "--whitespace-decl", "true",
-              "--whitespace-relational", "true",
-              "--whitespace-logical", "true",
-              "--whitespace-plusminus", "true",
-              "--whitespace-multdiv", "true",
-              "--whitespace-print", "true",
-              "--whitespace-type", "true",
-              "--whitespace-intrinsics", "true",
-              "--enable-replacements",
-              "-l", "1000",
-            },
+	           -- stylua: ignore
+	           prepend_args = {
+	             "-i", "2",
+	             "-w", "4",
+	             "--whitespace-assignment", "true",
+	             "--enable-decl",
+	             "--whitespace-decl", "true",
+	             "--whitespace-relational", "true",
+	             "--whitespace-logical", "true",
+	             "--whitespace-plusminus", "true",
+	             "--whitespace-multdiv", "true",
+	             "--whitespace-print", "true",
+	             "--whitespace-type", "true",
+	             "--whitespace-intrinsics", "true",
+	             "--enable-replacements",
+	             "-l", "1000",
+	           },
 				},
 			},
 		},
@@ -139,6 +133,7 @@ return {
 				"glsl",
 				"hyprlang",
 				"javascript",
+				"typescript",
 				"json",
 				"jsonc",
 				"jq",
@@ -182,12 +177,11 @@ return {
 	-- comments
 	{
 		"folke/ts-comments.nvim",
-		opts = {
-			lang = {
-				rasi = "// %s",
-			},
-		},
+		-- opts = {
+		-- 	lang = {
+		-- 		rasi = "// %s",
+		-- 	},
+		-- },
 	},
 	-- additional languages
-	{ "elkowar/yuck.vim" },
 }

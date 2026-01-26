@@ -12,6 +12,6 @@ return {
 	{ "rafamadriz/friendly-snippets", enabled = false },
 	{ "nvim-mini/mini.pairs", enabled = false },
 	{ "nvim-mini/mini.ai", enabled = false },
-	{ "mason-org/mason.nvim", version = "^1.0.0", enabled = nonnixos() },
-	{ "mason-org/mason-lspconfig.nvim", version = "^1.0.0", enabled = nonnixos() },
+	{ "mason-org/mason.nvim", enabled = nonnixos() },
+	{ "mason-org/mason-lspconfig.nvim", enabled = nonnixos() },
 }
