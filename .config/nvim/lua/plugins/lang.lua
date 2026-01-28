@@ -24,7 +24,6 @@ return {
 				pyright = {},
 				-- js, ts, html, css
 				svelte = {},
-				eslint = {},
 				ts_ls = {},
 				eslint = {},
 				cssls = {},
