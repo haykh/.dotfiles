@@ -130,6 +130,7 @@ in
     libqalculate
     slides
     gource
+    highlight
     nogoPkgs.default
     gobrainPkgs.default
     llyfrPkgs.default
@@ -179,6 +180,7 @@ in
     heroic
     steam-run
 
+    tex-fmt
     (pkgs.texlive.combine {
       inherit (pkgs.texlive)
         scheme-medium
