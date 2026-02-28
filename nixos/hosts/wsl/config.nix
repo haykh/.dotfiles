@@ -116,6 +116,7 @@ in
   modules = {
     zsh = true;
     starship = true;
+    delta = true;
     eza = true;
     fzf = true;
     git = true;

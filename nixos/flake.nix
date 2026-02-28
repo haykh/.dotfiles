@@ -54,6 +54,10 @@
       url = "github:vicinaehq/extensions";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    tombi = {
+      url = "github:tombi-toml/tombi";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

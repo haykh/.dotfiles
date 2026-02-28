@@ -9,6 +9,7 @@ let
   gobrainPkgs = inputs.gobrain.packages.${system};
   llyfrPkgs = inputs.llyfr.packages.${system};
   crifoPkgs = inputs.crifo.packages.${system};
+  tombiPkgs = inputs.tombi.packages.${system};
 
   opensslInject = pkgs.writeText "inject-openssl.cmake" ''
     find_package(OpenSSL REQUIRED)
@@ -111,6 +112,8 @@ in
     ## shell
     shfmt
     bash-language-server
+    ## toml
+    tombiPkgs.default
 
     # shell
     fd

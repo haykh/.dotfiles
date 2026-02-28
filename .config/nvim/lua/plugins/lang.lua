@@ -24,7 +24,6 @@ return {
 				pyright = {},
 				-- js, ts, html, css
 				svelte = {},
-				eslint = {},
 				ts_ls = {},
 				eslint = {},
 				cssls = {},
@@ -34,6 +33,7 @@ return {
 				taplo = {},
 				jsonls = {},
 				yamlls = {},
+				tombi = {},
 				-- markdown
 				markdown_oxide = {},
 				-- go
@@ -76,7 +76,7 @@ return {
 				typescriptreact = { "prettierd" },
 				css = { "prettierd" },
 				html = { "prettierd" },
-				toml = { "taplo" },
+				toml = { "tombi" },
 				json = { "eslint_d" },
 				yaml = { "prettier" },
 				-- markdown = { "mdformat" },
