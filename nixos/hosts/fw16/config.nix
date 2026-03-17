@@ -156,8 +156,11 @@ in
     rofimoji
     protonvpn-gui
     proton-pass
-    obsidian
     gnome-text-editor
+    kdePackages.kio-gdrive
+    kdePackages.kaccounts-providers
+    kdePackages.kaccounts-integration
+    kdePackages.signond
 
     turbovnc
 
@@ -265,7 +268,6 @@ in
         favorites = [ ];
       };
       extensions = with inputs.vicinae-extensions.packages.${pkgs.stdenv.hostPlatform.system}; [
-        bluetooth
         nix
         power-profile
         ssh
