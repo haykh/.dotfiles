@@ -33,6 +33,7 @@ return {
 				taplo = {},
 				jsonls = {},
 				yamlls = {},
+				-- tombi = {},
 				-- markdown
 				markdown_oxide = {},
 				-- go

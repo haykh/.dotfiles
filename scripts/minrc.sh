@@ -49,9 +49,11 @@ printf "Master directory is %b%b%b\n" "${RED}" "${HOMEDIR}" "${NC}"
 
 # select the shell
 printf "%bSelect the shell%b " "${BLUE}" "${NC}"
-# read -rp "(default: zsh): " MYSHELL
-# MYSHELL=${MYSHELL:-zsh}
-MYSHELL=$(unattended_prompt "Enter the shell" "zsh")
+default_shell="zsh"
+if [[ -n "$SHELL" ]]; then
+  default_shell=$(basename "$SHELL")
+fi
+MYSHELL=$(unattended_prompt "Enter the shell" "$default_shell")
 
 if [[ "$MYSHELL" != "zsh" && "$MYSHELL" != "bash" ]]; then
   echo "Unsupported shell: $MYSHELL. Only zsh and bash are supported."
@@ -82,7 +84,7 @@ OPTPATH=$HOMEDIR/opt
 
 FZF_VERSION=0.61.1
 PIPX_VERSION=1.7.1
-NVIM_VERSION=0.11.1
+NVIM_VERSION=0.11.6
 GO_VERSION=1.24.2
 
 mkdir -p "$TEMPDIR" && cd "$TEMPDIR" || exit 1
@@ -94,7 +96,7 @@ if [[ "$MODE" == "install" && "$MYSHELL" == "zsh" ]]; then
 fi
 
 function prompt() {
-  local prompt="\033[0;34m$1\033[0m"
+  local prompt="$1"
   local default="$2"
   local response
 
@@ -195,18 +197,33 @@ if [[ "$MYSHELL" == "zsh" ]]; then
 else
   # install omb
   if [[ "$MODE" == "install" ]]; then
-    if ! prompt "install oh-my-bash + ble.sh $HOMEDIR/.oh-my-bash? (Y/n)" "y"; then
-      echo "oh-my-bash + ble.sh installation skipped"
+    if ! prompt "install oh-my-bash $HOMEDIR/.oh-my-bash? (Y/n)" "y"; then
+      echo "oh-my-bash installation skipped"
     else
-      echo "installing oh-my-bash + ble.sh..."
+      echo "installing oh-my-bash..."
       OSH="${HOMEDIR}/.oh-my-bash" bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)" --unattended &&
-        git clone --recursive --depth 1 --shallow-submodules https://github.com/akinomyoga/ble.sh.git &&
+        echo "oh-my-bash installed" ||
+        echo "oh-my-bash installation failed"
+    fi
+    if ! prompt "ble.sh $LOCAL/share/blesh? (Y/n)" "y"; then
+      echo "ble.sh installation skipped"
+    else
+      echo "installing ble.sh..."
+      git clone --recursive --depth 1 --shallow-submodules https://github.com/akinomyoga/ble.sh.git &&
         make -C ble.sh install PREFIX="$LOCAL" &&
         rm -rf ble.sh &&
-        echo "oh-my-bash & ble.sh installed" ||
-        echo "oh-my-bash & ble.sh installation failed"
+        echo "ble.sh installed" ||
+        echo "ble.sh installation failed"
     fi
   else
+    if ! prompt "uninstall ble.sh from $LOCAL/share/blesh? (y/N)" "n"; then
+      echo "ble.sh uninstallation skipped"
+    else
+      echo "uninstalling ble.sh..."
+      rm -rf "$LOCAL/share/blesh" &&
+        echo "ble.sh uninstalled from $LOCAL/share/blesh" ||
+        echo "ble.sh uninstallation failed"
+    fi
     if ! prompt "uninstall oh-my-bash from $HOMEDIR/.oh-my-bash? (y/N)" "n"; then
       echo "oh-my-bash uninstallation skipped"
     else
@@ -535,24 +552,42 @@ completions=(
 
 source $HOMEDIR/.oh-my-bash/oh-my-bash.sh
 
-source $LOCAL/share/blesh/ble.sh
-eval "\$(starship init bash)"
-eval "\$(fzf --bash)"
+if [ -d "$LOCAL/share/blesh" ]; then
+  source $LOCAL/share/blesh/ble.sh
+fi
 
-alias -- cat='bat -pp --theme=TwoDark'
-alias -- eza='eza --icons always --color always --git -a '\''--sort=type'\'''
-alias -- la='eza -a'
-alias -- ld='ls --long --header --time-style=long-iso --total-size'
-alias -- ll='ls --long --header --time-style=long-iso'
-alias -- lla='eza -la'
-alias -- ls=eza
-alias -- lt='ls --tree --level 2 --icons=always --color'
-alias -- vi=nvim
-alias -- vim=nvim
-export EDITOR=nvim
+if command -v starship &> /dev/null; then
+  eval "\$(starship init bash)"
+fi 
 
-export PYTHON=$PYTHONEXEC
-alias -- pipx="$PYTHONEXEC $LOCAL/bin/pipx.pyz"
+if command -v fzf &> /dev/null; then
+  eval "\$(fzf --bash)"
+fi
+
+if command -v bat &> /dev/null; then
+  alias -- cat='bat -pp --theme=TwoDark'
+fi
+if command -v eza &> /dev/null; then
+  alias -- eza='eza --icons always --color always --git -a '\''--sort=type'\'''
+  alias -- ld='ls --long --header --time-style=long-iso --total-size'
+  alias -- ll='ls --long --header --time-style=long-iso'
+  alias -- lla='eza -la'
+  alias -- ls=eza
+  alias -- lt='ls --tree --level 2 --icons=always --color'
+fi
+if command -v eza &> /dev/null; then
+  alias -- la='eza -a'
+fi
+if command -v nvim &> /dev/null; then
+  alias -- vi=nvim
+  alias -- vim=nvim
+  export EDITOR=nvim
+fi
+
+if [ -f "$LOCAL/bin/pipx.pyz" ]; then
+  export PYTHON=$PYTHONEXEC
+  alias -- pipx="$PYTHONEXEC $LOCAL/bin/pipx.pyz"
+fi
 
 alias -- sque="squeue --start -u \$USER"
 EOF

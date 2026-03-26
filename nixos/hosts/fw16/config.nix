@@ -9,6 +9,7 @@ let
   gobrainPkgs = inputs.gobrain.packages.${system};
   llyfrPkgs = inputs.llyfr.packages.${system};
   crifoPkgs = inputs.crifo.packages.${system};
+  tombiPkgs = inputs.tombi.packages.${system};
 
   opensslInject = pkgs.writeText "inject-openssl.cmake" ''
     find_package(OpenSSL REQUIRED)
@@ -111,6 +112,8 @@ in
     ## shell
     shfmt
     bash-language-server
+    ## toml
+    tombiPkgs.default
 
     # shell
     fd
@@ -130,6 +133,7 @@ in
     libqalculate
     slides
     gource
+    highlight
     nogoPkgs.default
     gobrainPkgs.default
     llyfrPkgs.default
@@ -152,8 +156,11 @@ in
     rofimoji
     protonvpn-gui
     proton-pass
-    obsidian
     gnome-text-editor
+    kdePackages.kio-gdrive
+    kdePackages.kaccounts-providers
+    kdePackages.kaccounts-integration
+    kdePackages.signond
 
     turbovnc
 
@@ -179,6 +186,7 @@ in
     heroic
     steam-run
 
+    tex-fmt
     (pkgs.texlive.combine {
       inherit (pkgs.texlive)
         scheme-medium
@@ -260,7 +268,6 @@ in
         favorites = [ ];
       };
       extensions = with inputs.vicinae-extensions.packages.${pkgs.stdenv.hostPlatform.system}; [
-        bluetooth
         nix
         power-profile
         ssh
