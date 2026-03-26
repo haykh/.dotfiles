@@ -26,62 +26,86 @@ return {
 		},
 	},
 	{
-		"CopilotC-Nvim/CopilotChat.nvim",
-		branch = "canary",
-		dependencies = {
-			{ "zbirenbaum/copilot.lua" },
-			{ "nvim-lua/plenary.nvim" },
-		},
+		"coder/claudecode.nvim",
+		dependencies = { "folke/snacks.nvim" },
+		config = true,
 		keys = {
-			{ "<leader>a", "", desc = "+ai", mode = { "n", "v" } },
+			{ "<leader>ai", nil, desc = "AI/Claude Code" },
+			{ "<leader>ac", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude" },
+			{ "<leader>af", "<cmd>ClaudeCodeFocus<cr>", desc = "Focus Claude" },
+			{ "<leader>ar", "<cmd>ClaudeCode --resume<cr>", desc = "Resume Claude" },
+			{ "<leader>aC", "<cmd>ClaudeCode --continue<cr>", desc = "Continue Claude" },
+			{ "<leader>am", "<cmd>ClaudeCodeSelectModel<cr>", desc = "Select Claude model" },
+			{ "<leader>ab", "<cmd>ClaudeCodeAdd %<cr>", desc = "Add current buffer" },
+			{ "<leader>as", "<cmd>ClaudeCodeSend<cr>", mode = "v", desc = "Send to Claude" },
 			{
-				"<leader>ai",
-				function()
-					local input = vim.fn.input("help!")
-					if input ~= "" then
-						require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
-					end
-				end,
-				desc = "quick ask in copilot chat",
+				"<leader>as",
+				"<cmd>ClaudeCodeTreeAdd<cr>",
+				desc = "Add file",
+				ft = { "NvimTree", "neo-tree", "oil", "minifiles", "netrw" },
 			},
-			{
-				"<leader>aa",
-				function()
-					return require("CopilotChat").toggle()
-				end,
-				desc = "toggle copilot chat",
-				mode = { "n", "v" },
-			},
-			{
-				"<leader>ax",
-				function()
-					return require("CopilotChat").reset()
-				end,
-				desc = "clean copilot chat",
-				mode = { "n", "v" },
-			},
-		},
-		opts = {
-			show_help = false,
-			auto_insert_mode = true,
-			window = {
-				layout = "float",
-				width = 0.6,
-				height = 0.7,
-				relative = "editor",
-				border = "rounded",
-				row = 0,
-				col = 1000,
-				title = "copilot chat",
-				footer = nil,
-				zindex = 1,
-			},
-			question_header = " @" .. (vim.env.USER or "usr") .. " ",
-			answer_header = " overlord",
-			selection = function(source)
-				local select = require("CopilotChat.select")
-				return select.visual(source) or select.buffer(source)
-			end,
+			-- Diff management
+			{ "<leader>aa", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
+			{ "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
 		},
 	},
+	-- {
+	-- 	"CopilotC-Nvim/CopilotChat.nvim",
+	-- 	branch = "canary",
+	-- 	dependencies = {
+	-- 		{ "zbirenbaum/copilot.lua" },
+	-- 		{ "nvim-lua/plenary.nvim" },
+	-- 	},
+	-- 	keys = {
+	-- 		{ "<leader>a", "", desc = "+ai", mode = { "n", "v" } },
+	-- 		{
+	-- 			"<leader>ai",
+	-- 			function()
+	-- 				local input = vim.fn.input("help!")
+	-- 				if input ~= "" then
+	-- 					require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
+	-- 				end
+	-- 			end,
+	-- 			desc = "quick ask in copilot chat",
+	-- 		},
+	-- 		{
+	-- 			"<leader>aa",
+	-- 			function()
+	-- 				return require("CopilotChat").toggle()
+	-- 			end,
+	-- 			desc = "toggle copilot chat",
+	-- 			mode = { "n", "v" },
+	-- 		},
+	-- 		{
+	-- 			"<leader>ax",
+	-- 			function()
+	-- 				return require("CopilotChat").reset()
+	-- 			end,
+	-- 			desc = "clean copilot chat",
+	-- 			mode = { "n", "v" },
+	-- 		},
+	-- 	},
+	-- 	opts = {
+	-- 		show_help = false,
+	-- 		auto_insert_mode = true,
+	-- 		window = {
+	-- 			layout = "float",
+	-- 			width = 0.6,
+	-- 			height = 0.7,
+	-- 			relative = "editor",
+	-- 			border = "rounded",
+	-- 			row = 0,
+	-- 			col = 1000,
+	-- 			title = "copilot chat",
+	-- 			footer = nil,
+	-- 			zindex = 1,
+	-- 		},
+	-- 		question_header = " @" .. (vim.env.USER or "usr") .. " ",
+	-- 		answer_header = " overlord",
+	-- 		selection = function(source)
+	-- 			local select = require("CopilotChat.select")
+	-- 			return select.visual(source) or select.buffer(source)
+	-- 		end,
+	-- 	},
+	-- },
 }

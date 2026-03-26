@@ -9,7 +9,7 @@ return {
 			},
 			servers = {
 				-- nasm
-				-- asm_lsp = {},
+				asm_lsp = {},
 				-- fortran
 				fortls = {},
 				-- cpp & cmake
@@ -87,6 +87,7 @@ return {
 				bash = { "shfmt" },
 				zsh = { "shfmt" },
 				nix = { "nixfmt" },
+				asm = { "asmfmt" },
 			},
 			formatters = {
 				injected = { options = { ignore_errors = true } },
