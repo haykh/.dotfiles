@@ -56,3 +56,11 @@ vim.keymap.set("n", "<leader>ld", function()
 		vim.notify("No non-Copilot LSP clients running", vim.log.levels.INFO)
 	end
 end, { desc = "Stop all LSPs except Copilot" })
+
+vim.keymap.set("n", "<leader>rp", function()
+	Snacks.terminal("python " .. vim.fn.expand("%") .. "; read")
+end, { desc = "Run Python file" })
+
+vim.keymap.set("n", "<leader>rc", function()
+	Snacks.terminal("cc " .. vim.fn.expand("%") .. " -o main && ./main; read")
+end, { desc = "Run Python file" })
