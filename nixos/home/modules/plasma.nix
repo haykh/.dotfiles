@@ -86,8 +86,6 @@
     "services/com.mitchellh.ghostty.desktop"."_launch" = "Meta+T";
     "services/net.local.kdecolorpick.desktop"."_launch" = "Alt+Print";
     "services/net.local.kdecolorchoose.desktop"."_launch" = "Alt+Shift+Print";
-    # "services/net.local.crifo.desktop"."_launch" = "Meta+Ctrl+C";
-    # "services/net.local.llyfr.desktop"."_launch" = "Meta+Ctrl+A";
     "services/org.kde.spectacle.desktop"."RectangularRegionScreenShot" = "Print";
   };
   hotkeys.commands = {
@@ -169,9 +167,6 @@
     };
     plasmarc = {
       Theme.name = cfg.kdetheme.plasmaTheme;
-    };
-    plasmanotifyrc = {
-      "Applications/thunderbird".Seen = true;
     };
   };
 
