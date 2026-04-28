@@ -63,4 +63,12 @@ end, { desc = "Run Python file" })
 
 vim.keymap.set("n", "<leader>rc", function()
 	Snacks.terminal("cc " .. vim.fn.expand("%") .. " -o main && ./main; read")
-end, { desc = "Run Python file" })
+end, { desc = "Compile and run C code" })
+
+vim.keymap.set("n", "<leader>cm", function()
+	Snacks.terminal("cmake --build build -j16; read", { win = { position = "bottom" } })
+end, { desc = "Compile with CMake" })
+
+vim.keymap.set("n", "<leader>ce", function()
+	Snacks.terminal("./run.sh; read", { win = { position = "bottom" } })
+end, { desc = "Execute a script in run.sh" })

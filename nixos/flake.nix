@@ -48,7 +48,6 @@
     };
     vicinae = {
       url = "github:vicinaehq/vicinae";
-      # inputs.nixpkgs.follows = "nixpkgs";
     };
     vicinae-extensions = {
       url = "github:vicinaehq/extensions";
@@ -57,6 +56,9 @@
     tombi = {
       url = "github:tombi-toml/tombi";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    claude-code = {
+      url = "github:sadjow/claude-code-nix";
     };
   };
 
@@ -100,6 +102,7 @@
                 nixpkgs.hostPlatform = settings.system;
                 programs.nix-ld.enable = true;
                 networking.hostName = "nixwrk";
+                nixpkgs.overlays = [ inputs.claude-code.overlays.default ];
               }
               ./hosts/global.nix
               ./modules/kvm.nix

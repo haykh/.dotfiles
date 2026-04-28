@@ -138,6 +138,7 @@ in
     gobrainPkgs.default
     llyfrPkgs.default
     crifoPkgs.default
+    claude-code
 
     # apps
     ## graphics & media
@@ -150,6 +151,7 @@ in
     oculante
     tidal-hifi
     affine
+    turbovnc
 
     ## utils
     exhibit
