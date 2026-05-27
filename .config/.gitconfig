@@ -1,3 +1,24 @@
 [user]
+	name = hayk
 	email = haykh.astro@gmail.com
-	name = haykh
+[core]
+	pager = delta
+[include]
+  path = "/home/hayk/.dotfiles/.config/themes.gitconfig"
+[interactive]
+  diffFilter = "delta --color-only"
+[delta]
+  features = "arctic-fox"
+  navigate = true
+  side-by-side = true
+[merge]
+	conflictStyle = zdiff3
+[init]
+  defaultBranch = master
+[filter "lfs"]
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+[pull]
+	rebase = false

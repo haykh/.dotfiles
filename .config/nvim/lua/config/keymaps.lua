@@ -58,11 +58,11 @@ vim.keymap.set("n", "<leader>ld", function()
 end, { desc = "Stop all LSPs except Copilot" })
 
 vim.keymap.set("n", "<leader>rp", function()
-	Snacks.terminal("python " .. vim.fn.expand("%") .. "; read")
+	Snacks.terminal("python " .. vim.fn.expand("%") .. "; read", { win = { position = "bottom" } })
 end, { desc = "Run Python file" })
 
 vim.keymap.set("n", "<leader>rc", function()
-	Snacks.terminal("cc " .. vim.fn.expand("%") .. " -o main && ./main; read")
+	Snacks.terminal("cc " .. vim.fn.expand("%") .. " -o main && ./main; read", { win = { position = "bottom" } })
 end, { desc = "Compile and run C code" })
 
 vim.keymap.set("n", "<leader>cm", function()
