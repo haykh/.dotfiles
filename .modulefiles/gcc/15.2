@@ -1,0 +1,35 @@
+#%Module1.0#####################################################################
+
+proc ModulesHelp { } {
+    puts stderr "Loads GCC 15"
+}
+
+module-whatis "GCC 15"
+
+conflict gcc
+
+set root        /usr
+set bindir      $root/bin
+set wrapperdir  /opt/gcc/15/bin
+
+setenv GCC_VERSION 15
+setenv CC  $bindir/gcc-15
+setenv CXX $bindir/g++-15
+setenv FC  $bindir/gfortran-15
+setenv F77 $bindir/gfortran-15
+setenv F90 $bindir/gfortran-15
+setenv CPP "$bindir/gcc-15 -E"
+
+setenv AR     $bindir/gcc-ar-15
+setenv NM     $bindir/gcc-nm-15
+setenv RANLIB $bindir/gcc-ranlib-15
+
+if { [file isdirectory $wrapperdir] } {
+    prepend-path PATH $wrapperdir
+} else {
+    if { [info commands set-alias] ne "" } {
+        set-alias gcc      "$bindir/gcc-15"
+        set-alias g++      "$bindir/g++-15"
+        set-alias gfortran "$bindir/gfortran-15"
+    }
+}

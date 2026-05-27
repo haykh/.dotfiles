@@ -1,0 +1,23 @@
+#%Module1.0
+
+proc ModulesHelp {} {
+  puts stderr "NVIDIA CUDA Toolkit 12.9"
+}
+
+module-whatis "NVIDIA CUDA Toolkit 12.9"
+
+set             version         12.9
+set             root            /usr/local/cuda-$version
+setenv          CUDA_HOME       $root
+setenv          CUDA_LIB        $root/lib64
+setenv          CUDA_INCLUDE    $root/include
+prepend-path    PATH            $root/bin
+prepend-path    CPATH           $root/include
+prepend-path    LD_LIBRARY_PATH $root/lib64
+prepend-path    LIBRARY_PATH    $root/lib64
+prepend-path    LD_LIBRARY_PATH $root/extras/CUPTI/lib64
+prepend-path    LIBRARY_PATH    $root/extras/CUPTI/lib64
+prepend-path    MANPATH         $root/doc/man
+prepend-path    PKG_CONFIG_PATH $root/pkgconfig
+
+conflict cuda

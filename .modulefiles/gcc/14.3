@@ -1,0 +1,35 @@
+#%Module1.0#####################################################################
+
+proc ModulesHelp { } {
+    puts stderr "Loads GCC 14"
+}
+
+module-whatis "GCC 14"
+
+conflict gcc
+
+set root        /usr
+set bindir      $root/bin
+set wrapperdir  /opt/gcc/14/bin
+
+setenv GCC_VERSION 14
+setenv CC  $bindir/gcc-14
+setenv CXX $bindir/g++-14
+setenv FC  $bindir/gfortran-14
+setenv F77 $bindir/gfortran-14
+setenv F90 $bindir/gfortran-14
+setenv CPP "$bindir/gcc-14 -E"
+
+setenv AR     $bindir/gcc-ar-14
+setenv NM     $bindir/gcc-nm-14
+setenv RANLIB $bindir/gcc-ranlib-14
+
+if { [file isdirectory $wrapperdir] } {
+    prepend-path PATH $wrapperdir
+} else {
+    if { [info commands set-alias] ne "" } {
+        set-alias gcc      "$bindir/gcc-14"
+        set-alias g++      "$bindir/g++-14"
+        set-alias gfortran "$bindir/gfortran-14"
+    }
+}
