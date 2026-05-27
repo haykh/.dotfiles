@@ -90,6 +90,9 @@ if [ -d "$HOME/spack/" ]; then
 fi
 
 # Aliases . . . . . . . . . . .
+if [ -d "$HOME/.cargo" ]; then
+  export PATH=$HOME/.cargo/bin:$PATH
+fi
 
 if command -v nvim &>/dev/null; then
   export EDITOR=nvim
@@ -105,14 +108,11 @@ if command -v ranger &>/dev/null; then
 fi
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-  if [ -f "/etc/arch-release" ]; then
-    if command -v bat &>/dev/null; then
-      alias cat='bat -pp --theme=TwoDark'
-    fi
-  else
-    if command -v batcat &>/dev/null; then
-      alias cat='batcat -pp --theme=TwoDark'
-    fi
+  if command -v bat &>/dev/null; then
+    alias cat='bat -pp --theme=TwoDark'
+  fi
+  if command -v batcat &>/dev/null; then
+    alias cat='batcat -pp --theme=TwoDark'
   fi
 elif [[ "$OSTYPE" == "darwin"* ]]; then
   if command -v bat &>/dev/null; then
@@ -125,10 +125,6 @@ if command -v eza &>/dev/null; then
   alias ll='EXA_ICON_SPACING=1 eza -a --long --icons --header --sort=type --git --time-style=long-iso'
   alias lt='EXA_ICON_SPACING=1 eza -a --icons --sort=type --tree --level 2 --icons --color'
   alias ld='EXA_ICON_SPACING=1 eza -a --long --icons --header --sort=type --git --time-style=long-iso --total-size'
-fi
-
-if [ -d "$HOME/.cargo" ]; then
-  export PATH=$HOME/.cargo/bin:$PATH
 fi
 
 if command -v gh &>/dev/null; then
