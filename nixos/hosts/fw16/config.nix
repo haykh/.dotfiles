@@ -5,17 +5,13 @@ let
 
   thoriumPkgs = inputs.thorium.packages.${system};
   zenPkgs = inputs.zen-browser.packages.${system};
-  nogoPkgs = inputs.nogo.packages.${system};
   gobrainPkgs = inputs.gobrain.packages.${system};
-  llyfrPkgs = inputs.llyfr.packages.${system};
-  crifoPkgs = inputs.crifo.packages.${system};
-  tombiPkgs = inputs.tombi.packages.${system};
 
   opensslInject = pkgs.writeText "inject-openssl.cmake" ''
     find_package(OpenSSL REQUIRED)
   '';
 
-  vicinaePatched = inputs.vicinae.packages.${pkgs.system}.default.overrideAttrs (old: {
+  vicinaePatched = inputs.vicinae.packages.${system}.default.overrideAttrs (old: {
     buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.openssl ];
 
     cmakeFlags = (old.cmakeFlags or [ ]) ++ [
@@ -27,7 +23,12 @@ in
 
   extraFiles = config: cfg: {
 
-    ".config/nvim".source = config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/nvim";
+    ".config/nvim/lua".source = config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/nvim/lua";
+    ".config/nvim/queries".source = config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/nvim/queries";
+    ".config/nvim/lazy-lock.json".source = config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/nvim/lazy-lock.json";
+    ".config/nvim/lazyvim.json".source = config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/nvim/lazyvim.json";
+    # ".config/nvim".source = config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/nvim";
+    # lua   queries   init.lua   lazy-lock.json   lazyvim.json
 
     ".local/bin/wl-color-picker" = {
       text = ''
@@ -78,7 +79,6 @@ in
     xdotool
     devenv
     zip
-    pulseaudio
 
     # kde
     kdePackages.sddm-kcm
@@ -91,20 +91,20 @@ in
 
     # compilers & managers
     tree-sitter
-    nodePackages.nodejs
-    wineWowPackages.stable
+    nodejs
+    wineWow64Packages.stable
     rustup
     luajitPackages.luarocks
     lua
-    python312
+    python314
     gcc
     libgcc
     go
-    gopls
+    racket
 
     # formatters & language servers
     ## nix
-    nixfmt-rfc-style
+    nixfmt
     nil
     ## lua
     stylua
@@ -113,7 +113,9 @@ in
     shfmt
     bash-language-server
     ## toml
-    tombiPkgs.default
+    # tombiPkgs.default
+    ## go
+    gopls
 
     # shell
     fd
@@ -134,35 +136,27 @@ in
     slides
     gource
     highlight
-    nogoPkgs.default
     gobrainPkgs.default
-    llyfrPkgs.default
-    crifoPkgs.default
     claude-code
 
     # apps
     ## graphics & media
     godot
-    blender-hip
+    pkgsRocm.blender
     freecad
     gimp3-with-plugins
     inkscape-with-extensions
     libreoffice-qt6-fresh
     oculante
     tidal-hifi
-    affine
     turbovnc
 
     ## utils
     exhibit
-    rofimoji
-    protonvpn-gui
+    proton-vpn
     proton-pass
+    portaudio
     gnome-text-editor
-    kdePackages.kio-gdrive
-    kdePackages.kaccounts-providers
-    kdePackages.kaccounts-integration
-    kdePackages.signond
 
     turbovnc
 
@@ -178,8 +172,6 @@ in
     slack
     protonmail-desktop
     telegram-desktop
-    mullvad-browser
-    ente-auth
 
     ## dev
     cutter
@@ -188,6 +180,7 @@ in
     heroic
     steam-run
 
+    ## latex
     tex-fmt
     (pkgs.texlive.combine {
       inherit (pkgs.texlive)
@@ -240,14 +233,13 @@ in
 
     ghostty = true;
     mpv = true;
-    rofi = true;
+    # rofi = true;
     vscode = true;
     zathura = true;
   };
 
   services = {
     ssh-agent.enable = true;
-    kdeconnect.enable = true;
     vicinae = {
       enable = true;
       systemd = {
@@ -274,7 +266,6 @@ in
         power-profile
         ssh
         process-manager
-        pulseaudio
       ];
       package = vicinaePatched;
     };

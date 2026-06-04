@@ -30,6 +30,7 @@
     pipewire = {
       enable = true;
       alsa.enable = true;
+      alsa.support32Bit = true;
       pulse.enable = true;
     };
     libinput.enable = true;
@@ -76,7 +77,6 @@
       # system
       docker
       docker-compose
-
     ];
   };
 

@@ -3,8 +3,12 @@
 {
 
   defaultEditor = true;
+  withRuby = true;
+  withPython3 = true;
   extraLuaPackages = ps: [ ps.magick ];
   extraPackages = [ pkgs.imagemagick ];
-  plugins = [ pkgs.vimPlugins.nvim-treesitter.withAllGrammars ];
+  initLua = ''
+    require("config.lazy")
+  '';
 
 }

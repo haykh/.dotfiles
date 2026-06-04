@@ -3,7 +3,7 @@
 {
 
   enableDefaultConfig = false;
-  matchBlocks = {
+  settings = {
     "*" = {
       addKeysToAgent = "yes";
       forwardAgent = true;
@@ -25,7 +25,7 @@
     };
 
     pu-main = {
-      host = "stellar* tigressdata*";
+      host = "stellar* tigressdata* della*";
       proxyJump = "tigressgateway.princeton.edu";
       proxyCommand = "ssh tigressgateway -W %h:%p";
       forwardX11 = true;
@@ -45,6 +45,21 @@
     stellar = {
       host = "stellar.princeton.edu stellar";
       hostname = "stellar.princeton.edu";
+    };
+
+    della = {
+      host = "della.princeton.edu della";
+      hostname = "della.princeton.edu";
+    };
+
+    della-gpu = {
+      host = "della-gpu.princeton.edu della-gpu";
+      hostname = "della-gpu.princeton.edu";
+    };
+
+    della-vis2 = {
+      host = "della-vis2.princeton.edu della-vis2";
+      hostname = "della-vis2.princeton.edu";
     };
 
     stellar-amd = {

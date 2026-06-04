@@ -2,7 +2,7 @@
 
 let
   webPkgs = with pkgs; [
-    nodePackages.nodejs
+    nodejs
     vscode-langservers-extracted
     emmet-ls
     typescript-language-server

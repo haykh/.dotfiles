@@ -3,6 +3,12 @@
 {
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
+  # boot.kernelPatches = [
+  #   {
+  #     name = "btmtk-fix-wmt-event-size";
+  #     patch = ./patches/btmtk-fix-wmt-event-size.patch;
+  #   }
+  # ];
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 

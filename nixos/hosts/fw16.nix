@@ -8,18 +8,6 @@
 {
 
   networking.useDHCP = lib.mkDefault true;
-
-  # settings for KDE Connect
-  networking.firewall = rec {
-    allowedTCPPortRanges = [
-      {
-        from = 1714;
-        to = 1764;
-      }
-    ];
-    allowedUDPPortRanges = allowedTCPPortRanges;
-  };
-
   hardware = {
     cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
@@ -37,6 +25,7 @@
         gamescope
       ];
     };
+
     keyboard.qmk.enable = true;
 
     bluetooth = {
@@ -44,6 +33,8 @@
       powerOnBoot = true;
     };
     sane.enable = true;
+
+    framework.enableKmod = true;
   };
 
   services = {

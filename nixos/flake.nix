@@ -4,13 +4,13 @@
 
   inputs = {
     nixpkgs = {
-      url = "nixpkgs/nixos-25.11";
+      url = "nixpkgs/nixos-26.05";
     };
     nixos-hardware = {
       url = "github:NixOS/nixos-hardware/master";
     };
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixos-wsl = {
@@ -27,34 +27,30 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     zen-browser = {
-      url = "github:0xc000022070/zen-browser-flake";
+      url = "github:youwen5/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nogo = {
-      url = "github:haykh/nogo";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # nogo = {
+    #   url = "github:haykh/nogo";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
     gobrain = {
       url = "github:haykh/gobrain";
-      inputs.nixpkgs.follows = "nixpkgs";
+      # inputs.nixpkgs.follows = "nixpkgs";
     };
-    crifo = {
-      url = "github:haykh/crifo";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    llyfr = {
-      url = "github:haykh/llyfr";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # crifo = {
+    #   url = "github:haykh/crifo";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
+    # llyfr = {
+    #   url = "github:haykh/llyfr";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
     vicinae = {
       url = "github:vicinaehq/vicinae";
     };
     vicinae-extensions = {
       url = "github:vicinaehq/extensions";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    tombi = {
-      url = "github:tombi-toml/tombi";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     claude-code = {

@@ -1,8 +1,9 @@
 { inputs, pkgs, ... }:
 
 let
-  nogoPkgs = inputs.nogo.packages.${pkgs.system};
-  gobrainPkgs = inputs.gobrain.packages.${pkgs.system};
+  system = pkgs.stdenv.hostPlatform.system;
+  nogoPkgs = inputs.nogo.packages.${system};
+  gobrainPkgs = inputs.gobrain.packages.${system};
 in
 {
 
@@ -41,7 +42,7 @@ in
     tree-sitter
     cmake
     gnumake
-    nodePackages.nodejs
+    nodejs
     rustup
     luajitPackages.luarocks
     # older lua compatible with certain nvim plugins

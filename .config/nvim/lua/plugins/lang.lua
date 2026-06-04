@@ -57,6 +57,8 @@ return {
 				dockerls = {},
 				-- tex
 				texlab = {},
+				-- racket
+				racket_langserver = {},
 			},
 		},
 	},
@@ -154,6 +156,7 @@ return {
 				"xml",
 				"yaml",
 				"nix",
+				"racket",
 			},
 		},
 		-- config = function(_, opts)
