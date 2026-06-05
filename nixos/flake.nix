@@ -30,22 +30,9 @@
       url = "github:youwen5/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # nogo = {
-    #   url = "github:haykh/nogo";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
     gobrain = {
       url = "github:haykh/gobrain";
-      # inputs.nixpkgs.follows = "nixpkgs";
     };
-    # crifo = {
-    #   url = "github:haykh/crifo";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
-    # llyfr = {
-    #   url = "github:haykh/llyfr";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
     vicinae = {
       url = "github:vicinaehq/vicinae";
     };
@@ -53,9 +40,6 @@
       url = "github:vicinaehq/extensions";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # claude-code = {
-    #   url = "github:sadjow/claude-code-nix";
-    # };
   };
 
   outputs =
@@ -98,9 +82,6 @@
                 nixpkgs.hostPlatform = settings.system;
                 programs.nix-ld.enable = true;
                 networking.hostName = "nixwrk";
-                # nixpkgs.overlays = [
-                #   inputs.claude-code.overlays.default
-                # ];
               }
               ./hosts/global.nix
               ./modules/kvm.nix

@@ -30,8 +30,6 @@ in
       config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/nvim/lazy-lock.json";
     ".config/nvim/lazyvim.json".source =
       config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/nvim/lazyvim.json";
-    # ".config/nvim".source = config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/nvim";
-    # lua   queries   init.lua   lazy-lock.json   lazyvim.json
 
     ".local/bin/wl-color-picker" = {
       text = ''
@@ -314,6 +312,9 @@ in
 
   extraImports = [ inputs.vicinae.homeManagerModules.default ];
 
-  userServices = [ "drives" "literature-sync" ];
+  userServices = [
+    "drives"
+    "literature-sync"
+  ];
 
 }
