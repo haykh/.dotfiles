@@ -53,9 +53,9 @@
       url = "github:vicinaehq/extensions";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    claude-code = {
-      url = "github:sadjow/claude-code-nix";
-    };
+    # claude-code = {
+    #   url = "github:sadjow/claude-code-nix";
+    # };
   };
 
   outputs =
@@ -98,7 +98,9 @@
                 nixpkgs.hostPlatform = settings.system;
                 programs.nix-ld.enable = true;
                 networking.hostName = "nixwrk";
-                nixpkgs.overlays = [ inputs.claude-code.overlays.default ];
+                # nixpkgs.overlays = [
+                #   inputs.claude-code.overlays.default
+                # ];
               }
               ./hosts/global.nix
               ./modules/kvm.nix

@@ -1,16 +1,20 @@
-{ pkgs, config, ... }:
+{ pkgs, cfg, ... }:
 
 let
-  home = config.home.homeDirectory;
+  home = cfg.home;
 in
 {
 
   Unit = {
     Description = "Mount all remote drives";
     After = [ "network-online.target" ];
+    StartLimitIntervalSec = 600;
+    StartLimitBurst = 20;
   };
   Service = {
     Type = "forking";
+    Restart = "on-failure";
+    RestartSec = 15;
     ExecStartPre = "${pkgs.writeShellScript "rClonePre" ''
       remotes=$(${pkgs.rclone}/bin/rclone --config=${home}/.config/rclone/rclone.conf listremotes)
       for remote in $remotes; do
@@ -24,7 +28,6 @@ in
         name=$(/usr/bin/env echo "$remote" | /usr/bin/env sed "s/://g")
         ${pkgs.rclone}/bin/rclone --config=${home}/.config/rclone/rclone.conf --vfs-cache-mode writes --ignore-checksum mount "$remote" "$name" &
       done
-      ${pkgs.rclone}/bin/rclone sync GDrive:docs/Literature/ ${home}/Documents/Literature
     ''}";
     ExecStop = "${pkgs.writeShellScript "rCloneStop" ''
       remotes=$(${pkgs.rclone}/bin/rclone --config=${home}/.config/rclone/rclone.conf listremotes)

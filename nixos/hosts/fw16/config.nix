@@ -24,9 +24,12 @@ in
   extraFiles = config: cfg: {
 
     ".config/nvim/lua".source = config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/nvim/lua";
-    ".config/nvim/queries".source = config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/nvim/queries";
-    ".config/nvim/lazy-lock.json".source = config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/nvim/lazy-lock.json";
-    ".config/nvim/lazyvim.json".source = config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/nvim/lazyvim.json";
+    ".config/nvim/queries".source =
+      config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/nvim/queries";
+    ".config/nvim/lazy-lock.json".source =
+      config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/nvim/lazy-lock.json";
+    ".config/nvim/lazyvim.json".source =
+      config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/nvim/lazyvim.json";
     # ".config/nvim".source = config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/nvim";
     # lua   queries   init.lua   lazy-lock.json   lazyvim.json
 
@@ -34,7 +37,7 @@ in
       text = ''
         #!/usr/bin/env bash
         function pick() {
-          qdbus --literal org.kde.KWin.ScreenShot2 /ColorPicker org.kde.kwin.ColorPicker.pick | sed 's/^[^0-9]*//;s/[^0-9]*$//;'
+          busctl --user call org.kde.KWin.ScreenShot2 /ColorPicker org.kde.kwin.ColorPicker pick | awk '{print $2}'
         }
         function to_rgb() {
           local argb=$(printf "%x" "$1")
@@ -311,6 +314,6 @@ in
 
   extraImports = [ inputs.vicinae.homeManagerModules.default ];
 
-  userServices = [ ];
+  userServices = [ "drives" "literature-sync" ];
 
 }

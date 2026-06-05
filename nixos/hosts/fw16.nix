@@ -66,6 +66,7 @@
     };
   };
 
+  environment.etc."wpa_supplicant/eduroam-ca.cer".source = ./eduroam-ca.cer;
   environment.systemPackages = with pkgs; [
     amdgpu_top
 
