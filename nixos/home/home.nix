@@ -41,8 +41,16 @@ in
   home.file =
     (configuration.extraFiles config cfg) // builtins.foldl' (a: b: a // b) { } desktop_entries;
 
+  _module.args = { inherit cfg; };
+
   imports =
-    map (name: import "${cwd}/configs/${name}.nix" { inherit pkgs cfg; }) configuration.extraConfigs
+    (
+      if configuration ? desktop && configuration.desktop != null then
+        [ (./desktops + "/${configuration.desktop}") ]
+      else
+        [ ]
+    )
+    ++ map (name: import "${cwd}/configs/${name}.nix" { inherit pkgs cfg; }) configuration.extraConfigs
     ++ configuration.extraImports;
 
   systemd.user.services = user_services;

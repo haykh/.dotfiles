@@ -21,6 +21,11 @@ let
 in
 {
 
+  # Desktop environment for this host. Flip between "hyprland" and "plasma"
+  # to switch — picks both the system module (modules/<desktop>.nix) and the
+  # home-manager bundle (home/desktops/<desktop>/).
+  desktop = "hyprland";
+
   extraFiles = config: cfg: {
 
     ".config/nvim/lua".source = config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/nvim/lua";
@@ -229,8 +234,6 @@ in
     neovim = true;
     ssh = true;
     fastfetch = true;
-
-    plasma = true;
 
     ghostty = true;
     mpv = true;

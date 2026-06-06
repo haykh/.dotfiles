@@ -10,8 +10,8 @@
       url = "github:NixOS/nixos-hardware/master";
     };
     home-manager = {
-      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/home-manager/release-26.05";
     };
     nixos-wsl = {
       url = "github:nix-community/NixOS-WSL/main";
@@ -40,6 +40,9 @@
       url = "github:vicinaehq/extensions";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    claude-code = {
+      url = "github:sadjow/claude-code-nix";
+    };
   };
 
   outputs =
@@ -60,12 +63,14 @@
               stateVersion = "24.11";
               system = "x86_64-linux";
             };
-          in
-          nixpkgs.lib.nixosSystem rec {
             pkgs = import nixpkgs {
               system = settings.system;
               config.allowUnfree = true;
             };
+            configuration = import ./hosts/fw16/config.nix { inherit inputs cfg pkgs; };
+          in
+          nixpkgs.lib.nixosSystem {
+            inherit pkgs;
             system = settings.system;
             specialArgs = {
               inherit inputs cfg;
@@ -86,8 +91,10 @@
               ./hosts/global.nix
               ./modules/kvm.nix
               ./modules/locale.nix
-              # (import ./modules/gnome.nix)
-              ./modules/plasma.nix
+              (./modules + "/${configuration.desktop}.nix")
+              {
+                nixpkgs.overlays = [ inputs.claude-code.overlays.default ];
+              }
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;
@@ -98,9 +105,8 @@
                 ];
                 home-manager.users.${cfg.user} = (
                   import ./home/home.nix {
-                    inherit inputs cfg;
+                    inherit inputs cfg configuration;
                     stateVersion = settings.stateVersion;
-                    configuration = import ./hosts/fw16/config.nix { inherit inputs cfg pkgs; };
                   }
                 );
               }

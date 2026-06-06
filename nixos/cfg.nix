@@ -12,7 +12,7 @@ rec {
     vi = "nvim";
     vim = "nvim";
     ff = "fastfetch -l linux";
-    nixbuild = "rm -f ~/.gtkrc-2.0.bak && rm -f ~/.config/mimeapps.list.bak && sudo nixos-rebuild switch --flake ${dotfiles}/nixos#$(hostname)";
+    nixbuild = "rm -f ~/.gtkrc-2.0.bak ~/.config/mimeapps.list.bak ~/.local/share/applications/slack.desktop.bak && sudo nixos-rebuild switch --flake ${dotfiles}/nixos#$(hostname)";
     nixupd = "nix flake update --flake ${dotfiles}/nixos";
     flakecfg = "$EDITOR ${dotfiles}/nixos/flake.nix";
     nixcfg = "$EDITOR ${dotfiles}/nixos/";
