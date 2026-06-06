@@ -43,6 +43,10 @@
     claude-code = {
       url = "github:sadjow/claude-code-nix";
     };
+    pixie-sddm = {
+      url = "github:xCaptaiN09/pixie-sddm";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

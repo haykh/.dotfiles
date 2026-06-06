@@ -30,8 +30,6 @@
 
     # audio mixer (waybar pulseaudio on-click)
     pavucontrol
-
-    nautilus
   ];
 
 }

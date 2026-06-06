@@ -1,4 +1,9 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  inputs,
+  cfg,
+  ...
+}:
 
 {
 
@@ -11,17 +16,25 @@
   programs.hyprlock.enable = true;
   security.pam.services.hyprlock = { };
 
+  programs.thunar = {
+    enable = true;
+    plugins = with pkgs; [
+      thunar-volman
+      thunar-archive-plugin
+    ];
+  };
+  services.gvfs.enable = true;
+  services.tumbler.enable = true;
+
   services.displayManager.sddm = {
     enable = true;
-    # SDDM greeter runs under X11 — Wayland greeter fails to reclaim the
-    # display after a Wayland user session exits on AMD, leaving the kernel
-    # TTY (USB-C / amdgpu noise) visible instead of the login screen.
-    # User sessions remain Wayland via defaultSession below.
-    wayland.enable = false;
-    # To use the "pixie" SDDM theme, place a derivation in environment.systemPackages
-    # that installs the theme to $out/share/sddm/themes/pixie/ and set:
-    #   services.displayManager.sddm.theme = "pixie";
-    # See e.g. https://github.com/NixOS/nixpkgs/blob/master/pkgs/data/themes/sddm-sugar-dark
+    theme = "pixie";
+    package = pkgs.kdePackages.sddm;
+    extraPackages = with pkgs.kdePackages; [
+      qtsvg
+      qtdeclarative
+      qt5compat
+    ];
   };
   services.displayManager.defaultSession = "hyprland-uwsm";
 
@@ -44,6 +57,13 @@
   environment.systemPackages = with pkgs; [
     hyprpolkitagent
     qt6.qtwayland
+
+    (inputs.pixie-sddm.packages.${pkgs.stdenv.hostPlatform.system}.pixie-sddm.override {
+      accentColor = cfg.gtktheme.accent;
+      autoColor = true;
+      fontFamily = "MonaspiceKr Nerd Font";
+      fontSize = 14;
+    })
   ];
 
 }

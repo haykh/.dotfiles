@@ -115,10 +115,6 @@ in
     # Lua config (hyprland.lua). hyprlang is deprecated as of Hyprland 0.55.
     configType = "lua";
 
-    # Workspace overview plugin disabled — hyprlandPlugins.hyprspace in
-    # nixpkgs 26.05 fails to build against the current pkgs.hyprland (header
-    # path mismatch). To re-enable, add `hyprwm/hyprland-plugins` as a flake
-    # input and match the system hyprland to the plugin flake's hyprland.
     plugins = [ ];
 
     settings = {
@@ -265,7 +261,7 @@ in
       # `hyprctl clients | grep -E 'class|title'` while the app is open.
       window_rule = [
         (floatingCentered "ghostty" "^(com\\.mitchellh\\.ghostty)$")
-        (floatingCentered "nautilus" "^(org\\.gnome\\.Nautilus|nautilus)$")
+        (floatingCentered "thunar" "^([Tt]hunar)$")
         (floatingCentered "zen" "^zen.*")
         (floatingCentered "thorium" "^[Tt]horium.*")
 
@@ -285,10 +281,6 @@ in
             "monitor_w * 0.8"
             "monitor_h * 0.8"
           ];
-          move = [
-            "monitor_w * 0.1"
-            "monitor_h * 0.08"
-          ];
         }
       ];
 
@@ -297,7 +289,7 @@ in
         # apps
         (bind "SUPER + T" "hl.dsp.exec_cmd(\"ghostty\")")
         (bind "SUPER + F" "hl.dsp.exec_cmd(\"zen\")")
-        (bind "SUPER + E" "hl.dsp.exec_cmd(\"nautilus\")")
+        (bind "SUPER + E" "hl.dsp.exec_cmd(\"thunar\")")
         (bind "SUPER + S" "hl.dsp.exec_cmd(\"${slackScratchpad}\")")
         (bind "CTRL + ALT + SPACE" "hl.dsp.exec_cmd(\"vicinae toggle\")")
 
@@ -321,9 +313,12 @@ in
         # color picker
         (bind "CTRL + Print" "hl.dsp.exec_cmd(\"${pkgs.hyprpicker}/bin/hyprpicker -a\")")
 
-        # mouse drag / resize ({ mouse = true })
+        # mouse drag ({ mouse = true }): SUPER+left moves, SUPER+right resizes
+        # (mouse), and SUPER+SHIFT+left resizes — the left-button variant is
+        # the practical one on a trackpad, where holding right + dragging is awkward.
         (bindO "SUPER + mouse:272" "hl.dsp.window.drag()" { mouse = true; })
         (bindO "SUPER + mouse:273" "hl.dsp.window.resize()" { mouse = true; })
+        (bindO "SUPER + SHIFT + mouse:272" "hl.dsp.window.resize()" { mouse = true; })
 
         # volume / brightness — locked (work on lockscreen) + repeating
         (bindO "XF86AudioRaiseVolume" "hl.dsp.exec_cmd(\"${pkgs.pamixer}/bin/pamixer -i 5\")" {

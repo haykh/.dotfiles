@@ -289,7 +289,7 @@ in
 
   mimeApps = {
     defaultApplications = {
-      "inode/directory" = "org.kde.dolphin.desktop";
+      "inode/directory" = "thunar.desktop";
       "application/pdf" = "org.pwmt.zathura.desktop";
 
       "x-scheme-handler/tg" = "org.telegram.desktop.desktop";
