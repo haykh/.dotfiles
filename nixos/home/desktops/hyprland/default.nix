@@ -4,10 +4,8 @@
 
   imports = [
     ./hyprland.nix
-    ./hyprpaper.nix
     ./hyprlock.nix
-    ./dunst.nix
-    ./waybar.nix
+    ./noctalia.nix
     ./swayidle.nix
   ];
 

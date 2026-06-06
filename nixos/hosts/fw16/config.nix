@@ -160,6 +160,7 @@ in
     ## utils
     exhibit
     proton-vpn
+    proton-vpn-cli
     proton-pass
     portaudio
     gnome-text-editor

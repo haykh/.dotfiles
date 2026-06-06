@@ -21,7 +21,6 @@
       "ctrl+shift+-=new_split:down"
       "ctrl+shift+]=goto_split:right"
       "ctrl+shift+[=goto_split:left"
-      "super+w=toggle_tab_overview"
     ];
   };
 

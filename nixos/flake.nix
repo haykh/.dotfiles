@@ -47,6 +47,12 @@
       url = "github:xCaptaiN09/pixie-sddm";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Noctalia (Quickshell-based bar/shell, replaces waybar). Intentionally NOT
+    # following nixpkgs: it requires a newer Quickshell than nixos-26.05 ships,
+    # so it uses its own (unstable) nixpkgs for the shell + quickshell.
+    noctalia = {
+      url = "github:noctalia-dev/noctalia-shell";
+    };
   };
 
   outputs =
@@ -104,6 +110,10 @@
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.backupFileExtension = "bak";
+                # specialArgs (unlike _module.args) are usable in `imports`,
+                # which the desktop bundles need to import flake-provided
+                # home modules (e.g. noctalia).
+                home-manager.extraSpecialArgs = { inherit inputs cfg; };
                 home-manager.sharedModules = [
                   inputs.plasma-manager.homeModules.plasma-manager
                 ];
@@ -151,6 +161,7 @@
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.backupFileExtension = "bak";
+                home-manager.extraSpecialArgs = { inherit inputs cfg; };
                 home-manager.users.${cfg.user} = (
                   import ./home/home.nix {
                     inherit inputs cfg;

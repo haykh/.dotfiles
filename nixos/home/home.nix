@@ -41,8 +41,6 @@ in
   home.file =
     (configuration.extraFiles config cfg) // builtins.foldl' (a: b: a // b) { } desktop_entries;
 
-  _module.args = { inherit cfg; };
-
   imports =
     (
       if configuration ? desktop && configuration.desktop != null then

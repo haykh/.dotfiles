@@ -6,74 +6,8 @@
 }:
 
 let
-  inherit (lib.generators) mkLuaInline;
-
-  # Each top-level `settings.<name>` becomes one or more `hl.<name>(...)` calls.
-  # Lists generate one call per element. `_args` entries become multi-arg calls,
-  # and `mkLuaInline` values are emitted as raw Lua (needed for dispatchers,
-  # which are function calls rather than data).
-
-  # hl.bind(keys, dispatcher [, opts])
-  bind = keys: dispatcher: {
-    _args = [
-      keys
-      (mkLuaInline dispatcher)
-    ];
-  };
-  bindO = keys: dispatcher: opts: {
-    _args = [
-      keys
-      (mkLuaInline dispatcher)
-      opts
-    ];
-  };
-
-  # hl.env(name, value)
-  envVar = name: value: {
-    _args = [
-      name
-      value
-    ];
-  };
-
-  # hl.curve(name, spec)
-  curve = name: spec: {
-    _args = [
-      name
-      (mkLuaInline spec)
-    ];
-  };
-
-  # 60% × 80% floating + centered window rule for a class regex.
-  floatingCentered = name: classRegex: {
-    inherit name;
-    match.class = classRegex;
-    float = true;
-    size = [
-      "monitor_w * 0.6"
-      "monitor_h * 0.8"
-    ];
-    center = true;
-  };
-
-  # Floating panel anchored to the top-right corner (tray control apps).
-  # Percentages keep it scale-independent; 2% top clears the waybar.
-  floatingTopRight = name: classRegex: {
-    inherit name;
-    match.class = classRegex;
-    float = true;
-    size = [
-      "monitor_w * 0.33"
-      "monitor_h * 0.55"
-    ];
-    move = [
-      "monitor_w * 0.66"
-      "monitor_h * 0.03"
-    ];
-  };
-
   # Slack scratchpad: if a Slack window exists, toggle its special workspace
-  # (show/hide); otherwise launch it. The window_rule below routes Slack to
+  # (show/hide); otherwise launch it. The window rule below routes Slack to
   # special:slack non-silently, so the first launch reveals it automatically.
   slackScratchpad = pkgs.writeShellScript "slack-scratchpad" ''
     if ${pkgs.hyprland}/bin/hyprctl clients -j \
@@ -83,13 +17,21 @@ let
       slack >/dev/null 2>&1 &
     fi
   '';
+  telegramScratchpad = pkgs.writeShellScript "telegram-scratchpad" ''
+    if ${pkgs.hyprland}/bin/hyprctl clients -j \
+      | ${pkgs.jq}/bin/jq -e 'any(.[]; .class | test("(?i)^org.telegram.desktop$"))' >/dev/null; then
+      ${pkgs.hyprland}/bin/hyprctl dispatch togglespecialworkspace telegram
+    else
+      Telegram >/dev/null 2>&1 &
+    fi
+  '';
 
   # Super + 1..5 → focus workspace N; Super + Shift + 1..5 → move window to N.
   workspaceBinds =
     lib.concatMap
       (n: [
-        (bind "SUPER + ${toString n}" "hl.dsp.focus({ workspace = ${toString n} })")
-        (bind "SUPER + SHIFT + ${toString n}" "hl.dsp.window.move({ workspace = ${toString n} })")
+        "SUPER, ${toString n}, workspace, ${toString n}"
+        "SUPER SHIFT, ${toString n}, movetoworkspace, ${toString n}"
       ])
       [
         1
@@ -98,6 +40,29 @@ let
         4
         5
       ];
+
+  floatCenter = name: class: ''
+    windowrule {
+      name = ${name}
+      match {
+        class = ${class}
+      }
+      float = on
+      size = (monitor_w*0.6) (monitor_h*0.8)
+      center = on
+    }
+  '';
+  topRight = name: class: ''
+    windowrule {
+      name = ${name}
+      match {
+        class = ${class}
+      }
+      float = on
+      size = (monitor_w*0.33) (monitor_h*0.55)
+      move = (monitor_w*0.66) (monitor_h*0.03)
+    }
+  '';
 in
 {
 
@@ -112,268 +77,205 @@ in
     xwayland.enable = false;
     systemd.enable = true;
 
-    # Lua config (hyprland.lua). hyprlang is deprecated as of Hyprland 0.55.
-    configType = "lua";
+    # hyprlang config. NOT lua: lua configType makes Hyprland interpret the
+    # dispatch IPC socket as lua, which breaks every external tool that sends
+    # plain dispatches (Noctalia, scripts, `hyprctl dispatch workspace 2`, …).
+    configType = "hyprlang";
 
     plugins = [ ];
 
     settings = {
 
-      # hl.monitor(...) — one per entry. Scale 1.25 matches the FW16 panel.
       monitor = [
-        {
-          output = "eDP-1";
-          mode = "highrr";
-          position = "auto";
-          scale = 1.25;
-        }
-        {
-          output = "";
-          mode = "preferred";
-          position = "auto";
-          scale = 1.25;
-        }
+        "eDP-1,highrr,auto,1.25"
+        ",preferred,auto,1.25"
       ];
 
-      # hl.config({...}) — all the static "look and feel" settings.
-      config = {
-        general = {
-          gaps_in = 5;
-          gaps_out = 8;
-          border_size = 1;
-          resize_on_border = true;
-          col = {
-            active_border = "rgb(9cb9dd)";
-            inactive_border = "rgb(131d2b)";
-          };
-          layout = "dwindle";
-        };
-
-        decoration = {
-          rounding = 10;
-          blur = {
-            enabled = true;
-            size = 4;
-            passes = 4;
-            new_optimizations = true;
-            noise = 0.02;
-            ignore_opacity = true;
-            popups = true;
-          };
-        };
-
-        animations.enabled = true;
-
-        dwindle.preserve_split = true;
-
-        misc = {
-          disable_hyprland_logo = true;
-          vrr = 1;
-        };
-
-        input = {
-          kb_layout = "us,ru";
-          kb_variant = ",phonetic";
-          kb_options = "grp:win_space_toggle";
-          numlock_by_default = true;
-          follow_mouse = 1;
-          touchpad = {
-            natural_scroll = true;
-            scroll_factor = 0.2;
-          };
-        };
-
-        xwayland.force_zero_scaling = true;
+      general = {
+        gaps_in = 5;
+        gaps_out = 8;
+        border_size = 1;
+        resize_on_border = true;
+        "col.active_border" = "rgb(9cb9dd)";
+        "col.inactive_border" = "rgb(131d2b)";
+        layout = "dwindle";
       };
 
-      # hl.curve(name, {...}) — bezier control points {x,y} pairs.
-      curve = [
-        (curve "easeInOut" "{ type = \"bezier\", points = { { 0.42, 0.0 }, { 0.58, 1.0 } } }")
-        (curve "overshot" "{ type = \"bezier\", points = { { 0.05, 0.9 }, { 0.1, 1.1 } } }")
-      ];
-
-      # hl.animation({...}) — leaf/speed/curve. Ported from the old hyprlang block.
-      animation = [
-        {
-          leaf = "windows";
+      decoration = {
+        rounding = 10;
+        blur = {
           enabled = true;
-          speed = 3;
-          bezier = "overshot";
-          style = "slide top";
-        }
-        {
-          leaf = "windowsOut";
-          enabled = true;
-          speed = 3;
-          bezier = "overshot";
-          style = "slide top";
-        }
-        {
-          leaf = "border";
-          enabled = true;
-          speed = 3;
-          bezier = "overshot";
-        }
-        {
-          leaf = "fade";
-          enabled = true;
-          speed = 3;
-          bezier = "easeInOut";
-        }
-        {
-          leaf = "workspaces";
-          enabled = true;
-          speed = 3;
-          bezier = "overshot";
-          style = "slide";
-        }
-        {
-          leaf = "specialWorkspace";
-          enabled = true;
-          speed = 3;
-          bezier = "overshot";
-          style = "slidefadevert 50%";
-        }
-        {
-          leaf = "layersIn";
-          enabled = true;
-          speed = 2;
-          bezier = "easeInOut";
-          style = "slide";
-        }
-        {
-          leaf = "layersOut";
-          enabled = true;
-          speed = 1;
-          bezier = "easeInOut";
-          style = "slide";
-        }
-      ];
-
-      # hl.gesture({...}) — 4-finger horizontal swipe switches workspaces.
-      gesture = {
-        fingers = 4;
-        direction = "horizontal";
-        action = "workspace";
+          size = 4;
+          passes = 4;
+          new_optimizations = true;
+          noise = 0.02;
+          ignore_opacity = true;
+          popups = true;
+        };
       };
 
-      # hl.window_rule({...}). Confirm class strings with
-      # `hyprctl clients | grep -E 'class|title'` while the app is open.
-      window_rule = [
-        (floatingCentered "ghostty" "^(com\\.mitchellh\\.ghostty)$")
-        (floatingCentered "thunar" "^([Tt]hunar)$")
-        (floatingCentered "zen" "^zen.*")
-        (floatingCentered "thorium" "^[Tt]horium.*")
+      animations = {
+        enabled = true;
+        bezier = [
+          "easeInOut, 0.42, 0.0, 0.58, 1.0"
+          "overshot, 0.05, 0.9, 0.1, 1.1"
+        ];
+        animation = [
+          "windows, 1, 3, overshot, slide top"
+          "windowsOut, 1, 3, overshot, slide top"
+          "border, 1, 3, overshot"
+          "fade, 1, 3, easeInOut"
+          "workspaces, 1, 3, overshot, slide"
+          "specialWorkspace, 1, 3, overshot, slidefadevert 50%"
+          "layersIn, 1, 2, easeInOut, fade"
+          "layersOut, 1, 1, easeInOut, fade"
+        ];
+      };
 
-        # tray control panels → floating, top-right
-        (floatingTopRight "pavucontrol" "^(org\\.pulseaudio\\.pavucontrol|pavucontrol)$")
-        (floatingTopRight "blueman" "^(\\.blueman-manager-wrapped|blueman-manager)$")
-        (floatingTopRight "nm-editor" "^(nm-connection-editor)$")
+      dwindle.preserve_split = true;
 
-        # Slack scratchpad — lives on the special:slack workspace (toggled by
-        # Super+S). Non-silent so the first launch reveals it automatically.
-        {
-          name = "slack";
-          match.class = "^([Ss]lack)$";
-          workspace = "special:slack";
-          float = true;
-          size = [
-            "monitor_w * 0.8"
-            "monitor_h * 0.8"
-          ];
-        }
+      misc = {
+        disable_hyprland_logo = true;
+        vrr = 1;
+      };
+
+      input = {
+        kb_layout = "us,ru";
+        kb_variant = ",phonetic";
+        kb_options = "grp:win_space_toggle";
+        numlock_by_default = true;
+        follow_mouse = 1;
+        touchpad = {
+          natural_scroll = true;
+          scroll_factor = 0.2;
+        };
+      };
+
+      xwayland.force_zero_scaling = true;
+
+      # 4-finger horizontal swipe switches workspaces (Hyprland 0.55 syntax).
+      gesture = "4, horizontal, workspace";
+
+      env = [
+        "XCURSOR_THEME,${cfg.gtktheme.cursor.interface}"
+        "XCURSOR_SIZE,32"
+        "GDK_BACKEND,wayland,x11"
+        "QT_QPA_PLATFORM,wayland;xcb"
+        "SDL_VIDEODRIVER,wayland"
+        "CLUTTER_BACKEND,wayland"
+        "ELECTRON_OZONE_PLATFORM_HINT,auto"
       ];
 
-      # hl.bind(...) — keys, then a dispatcher (raw Lua), optionally opts.
+      exec-once = [
+        "${pkgs.networkmanagerapplet}/bin/nm-applet --indicator"
+        "${pkgs.blueman}/bin/blueman-applet"
+        "${pkgs.wl-clipboard}/bin/wl-paste --watch ${pkgs.cliphist}/bin/cliphist store"
+        "systemctl --user start hyprpolkitagent"
+        # Launch Noctalia via `uwsm app` so it runs in a proper systemd scope
+        # with the full session environment — a bare exec-once races the env
+        # propagation and starts without WAYLAND_DISPLAY → invisible bar.
+        "uwsm app -- noctalia-shell"
+        # Noctalia owns the wallpaper (hyprpaper removed). Set it on every output
+        # once its IPC is up (the sleep waits for startup).
+        "${pkgs.bash}/bin/bash -c 'sleep 3; for m in $(${pkgs.hyprland}/bin/hyprctl monitors -j | ${pkgs.jq}/bin/jq -r \".[].name\"); do noctalia-shell ipc call wallpaper set \"${cfg.gtktheme.wallpaper}\" \"$m\"; done'"
+      ];
+
       bind = [
         # apps
-        (bind "SUPER + T" "hl.dsp.exec_cmd(\"ghostty\")")
-        (bind "SUPER + F" "hl.dsp.exec_cmd(\"zen\")")
-        (bind "SUPER + E" "hl.dsp.exec_cmd(\"thunar\")")
-        (bind "SUPER + S" "hl.dsp.exec_cmd(\"${slackScratchpad}\")")
-        (bind "CTRL + ALT + SPACE" "hl.dsp.exec_cmd(\"vicinae toggle\")")
+        "SUPER, T, exec, ghostty"
+        "SUPER, F, exec, zen"
+        "SUPER, E, exec, thunar"
+        "SUPER, S, exec, ${slackScratchpad}"
+        "SUPER, G, exec, ${telegramScratchpad}"
+        "CTRL ALT, SPACE, exec, vicinae toggle"
 
         # window management
-        (bind "SUPER + Q" "hl.dsp.window.close()")
-        (bind "SUPER + V" "hl.dsp.window.float({ action = \"toggle\" })")
-        (bind "SUPER + SHIFT + V" "hl.dsp.window.fullscreen()")
-        (bind "SUPER + L" "hl.dsp.exec_cmd(\"hyprlock\")")
-        (bind "SUPER + SHIFT + E" "hl.dsp.exit()")
+        "SUPER, Q, killactive"
+        "SUPER, V, togglefloating"
+        "SUPER SHIFT, V, fullscreen"
+        "SUPER, L, exec, hyprlock"
+        "SUPER SHIFT, E, exit"
+        # Noctalia workspace-overview plugin (toggle via its IPC).
+        "SUPER, W, exec, noctalia-shell ipc call plugin:workspace-overview toggle"
 
         # focus (vim keys)
-        (bind "SUPER + h" "hl.dsp.focus({ direction = \"left\" })")
-        (bind "SUPER + l" "hl.dsp.focus({ direction = \"right\" })")
-        (bind "SUPER + k" "hl.dsp.focus({ direction = \"up\" })")
-        (bind "SUPER + j" "hl.dsp.focus({ direction = \"down\" })")
+        "SUPER, h, movefocus, l"
+        "SUPER, l, movefocus, r"
+        "SUPER, k, movefocus, u"
+        "SUPER, j, movefocus, d"
 
         # screenshots: grim + slurp + swappy
-        (bind "Print" "hl.dsp.exec_cmd([[${pkgs.grim}/bin/grim -g \"$(${pkgs.slurp}/bin/slurp)\" - | ${pkgs.swappy}/bin/swappy -f -]])")
-        (bind "SHIFT + Print" "hl.dsp.exec_cmd([[${pkgs.grim}/bin/grim - | ${pkgs.swappy}/bin/swappy -f -]])")
+        '', Print, exec, ${pkgs.grim}/bin/grim -g "$(${pkgs.slurp}/bin/slurp)" - | ${pkgs.swappy}/bin/swappy -f -''
+        "SHIFT, Print, exec, ${pkgs.grim}/bin/grim - | ${pkgs.swappy}/bin/swappy -f -"
 
         # color picker
-        (bind "CTRL + Print" "hl.dsp.exec_cmd(\"${pkgs.hyprpicker}/bin/hyprpicker -a\")")
-
-        # mouse drag ({ mouse = true }): SUPER+left moves, SUPER+right resizes
-        # (mouse), and SUPER+SHIFT+left resizes — the left-button variant is
-        # the practical one on a trackpad, where holding right + dragging is awkward.
-        (bindO "SUPER + mouse:272" "hl.dsp.window.drag()" { mouse = true; })
-        (bindO "SUPER + mouse:273" "hl.dsp.window.resize()" { mouse = true; })
-        (bindO "SUPER + SHIFT + mouse:272" "hl.dsp.window.resize()" { mouse = true; })
-
-        # volume / brightness — locked (work on lockscreen) + repeating
-        (bindO "XF86AudioRaiseVolume" "hl.dsp.exec_cmd(\"${pkgs.pamixer}/bin/pamixer -i 5\")" {
-          locked = true;
-          repeating = true;
-        })
-        (bindO "XF86AudioLowerVolume" "hl.dsp.exec_cmd(\"${pkgs.pamixer}/bin/pamixer -d 5\")" {
-          locked = true;
-          repeating = true;
-        })
-        (bindO "XF86MonBrightnessUp" "hl.dsp.exec_cmd(\"${pkgs.brightnessctl}/bin/brightnessctl set 10%+\")"
-          {
-            locked = true;
-            repeating = true;
-          }
-        )
-        (bindO "XF86MonBrightnessDown"
-          "hl.dsp.exec_cmd(\"${pkgs.brightnessctl}/bin/brightnessctl set 10%-\")"
-          {
-            locked = true;
-            repeating = true;
-          }
-        )
-        (bindO "XF86AudioMute" "hl.dsp.exec_cmd(\"${pkgs.pamixer}/bin/pamixer -t\")" {
-          locked = true;
-        })
+        "CTRL, Print, exec, ${pkgs.hyprpicker}/bin/hyprpicker -a"
       ]
       ++ workspaceBinds;
 
-      # hl.env(name, value)
-      env = [
-        (envVar "XCURSOR_THEME" cfg.gtktheme.cursor.interface)
-        (envVar "XCURSOR_SIZE" "32")
-        (envVar "GDK_BACKEND" "wayland,x11")
-        (envVar "QT_QPA_PLATFORM" "wayland;xcb")
-        (envVar "SDL_VIDEODRIVER" "wayland")
-        (envVar "CLUTTER_BACKEND" "wayland")
-        (envVar "ELECTRON_OZONE_PLATFORM_HINT" "auto")
+      # SUPER+left moves, SUPER+right resizes (mouse), SUPER+SHIFT+left resizes
+      # (the trackpad-friendly variant — holding right + dragging is awkward).
+      bindm = [
+        "SUPER, mouse:272, movewindow"
+        "SUPER, mouse:273, resizewindow"
+        "SUPER SHIFT, mouse:272, resizewindow"
+      ];
+
+      # volume / brightness — locked (work on lockscreen) + repeating
+      bindel = [
+        ", XF86AudioRaiseVolume, exec, ${pkgs.pamixer}/bin/pamixer -i 5"
+        ", XF86AudioLowerVolume, exec, ${pkgs.pamixer}/bin/pamixer -d 5"
+        ", XF86MonBrightnessUp, exec, ${pkgs.brightnessctl}/bin/brightnessctl set 10%+"
+        ", XF86MonBrightnessDown, exec, ${pkgs.brightnessctl}/bin/brightnessctl set 10%-"
+      ];
+      bindl = [
+        ", XF86AudioMute, exec, ${pkgs.pamixer}/bin/pamixer -t"
       ];
     };
 
-    # Startup programs. The module already emits an hl.on("hyprland.start", …)
-    # for the systemd activation + plugins; this adds a second subscriber for
-    # our own autostart (subscribers stack, they don't conflict).
+    # Window rules + Noctalia blur layer rule as raw hyprlang. Confirm class
+    # strings with `hyprctl clients | grep -E 'class|title'` while open.
     extraConfig = ''
-      hl.on("hyprland.start", function()
-        hl.exec_cmd("${pkgs.networkmanagerapplet}/bin/nm-applet --indicator")
-        hl.exec_cmd("${pkgs.blueman}/bin/blueman-applet")
-        hl.exec_cmd([[${pkgs.wl-clipboard}/bin/wl-paste --watch ${pkgs.cliphist}/bin/cliphist store]])
-        hl.exec_cmd("systemctl --user start hyprpolkitagent")
-        -- hyprpaper 0.8.4's config-file wallpaper assignment is broken; drive it
-        -- over IPC once the compositor is up. The sleep avoids binding before
-        -- hyprpaper finishes loading the image (which flickers).
-        hl.exec_cmd([[${pkgs.bash}/bin/bash -c 'sleep 2; for m in $(${pkgs.hyprland}/bin/hyprctl monitors -j | ${pkgs.jq}/bin/jq -r ".[].name"); do ${pkgs.hyprland}/bin/hyprctl hyprpaper wallpaper "$m,${cfg.gtktheme.wallpaper}"; done']])
-      end)
+      ${floatCenter "ghostty" "^(com\\.mitchellh\\.ghostty)$"}
+      ${floatCenter "thunar" "^([Tt]hunar)$"}
+      ${floatCenter "zen" "^zen.*"}
+      ${floatCenter "thorium" "^[Tt]horium.*"}
+
+      ${topRight "pavucontrol" "^(org\\.pulseaudio\\.pavucontrol|pavucontrol)$"}
+      ${topRight "blueman" "^(\\.blueman-manager-wrapped|blueman-manager)$"}
+      ${topRight "nm-editor" "^(nm-connection-editor)$"}
+
+      # Slack scratchpad — lives on special:slack (toggled by Super+S).
+      # Non-silent so the first launch reveals it automatically.
+      windowrule {
+        name = slack
+        match {
+          class = ^([Ss]lack)$
+        }
+        workspace = special:slack
+        float = on
+        size = (monitor_w*0.8) (monitor_h*0.85)
+      }
+      windowrule {
+        name = telegram
+        match {
+          class = ^(org\.telegram\.desktop)$
+        }
+        workspace = special:telegram
+        float = on
+        size = (monitor_w*0.8) (monitor_h*0.85)
+      }
+
+      # Blur Noctalia's bar/panel background layers (per Noctalia's docs).
+      layerrule {
+        name = noctalia
+        match {
+          namespace = noctalia-background-.*$
+        }
+        ignore_alpha = 0.5
+        blur = true
+        blur_popups = true
+      }
     '';
 
   };
