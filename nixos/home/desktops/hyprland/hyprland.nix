@@ -193,7 +193,7 @@ in
         "SUPER, Q, killactive"
         "SUPER, V, togglefloating"
         "SUPER SHIFT, V, fullscreen"
-        "SUPER, L, exec, hyprlock"
+        "SUPER, L, exec, noctalia-shell ipc call lockScreen lock"
         "SUPER SHIFT, E, exit"
         # Noctalia workspace-overview plugin (toggle via its IPC).
         "SUPER, W, exec, noctalia-shell ipc call plugin:workspace-overview toggle"

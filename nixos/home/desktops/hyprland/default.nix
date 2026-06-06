@@ -4,7 +4,7 @@
 
   imports = [
     ./hyprland.nix
-    ./hyprlock.nix
+    # ./hyprlock.nix  # Noctalia provides the lockscreen (lockScreen IPC).
     ./noctalia.nix
     ./swayidle.nix
   ];

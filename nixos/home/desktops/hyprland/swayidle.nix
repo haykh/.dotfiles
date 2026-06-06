@@ -1,18 +1,28 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 
+let
+  # Full path — swayidle runs as a systemd user service with a minimal PATH,
+  # and a failed lock-before-sleep would suspend unlocked.
+  lock = "${lib.getExe config.programs.noctalia-shell.package} ipc call lockScreen lock";
+in
 {
 
   services.swayidle = {
     enable = true;
 
     events = {
-      before-sleep = "${pkgs.hyprlock}/bin/hyprlock";
+      before-sleep = lock;
     };
 
     timeouts = [
       {
         timeout = 300;
-        command = "${pkgs.hyprlock}/bin/hyprlock";
+        command = lock;
       }
       {
         timeout = 600;
