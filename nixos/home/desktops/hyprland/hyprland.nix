@@ -6,25 +6,20 @@
 }:
 
 let
-  # Slack scratchpad: if a Slack window exists, toggle its special workspace
-  # (show/hide); otherwise launch it. The window rule below routes Slack to
-  # special:slack non-silently, so the first launch reveals it automatically.
-  slackScratchpad = pkgs.writeShellScript "slack-scratchpad" ''
-    if ${pkgs.hyprland}/bin/hyprctl clients -j \
-      | ${pkgs.jq}/bin/jq -e 'any(.[]; .class | test("(?i)^slack$"))' >/dev/null; then
-      ${pkgs.hyprland}/bin/hyprctl dispatch togglespecialworkspace slack
-    else
-      slack >/dev/null 2>&1 &
-    fi
-  '';
-  telegramScratchpad = pkgs.writeShellScript "telegram-scratchpad" ''
-    if ${pkgs.hyprland}/bin/hyprctl clients -j \
-      | ${pkgs.jq}/bin/jq -e 'any(.[]; .class | test("(?i)^org.telegram.desktop$"))' >/dev/null; then
-      ${pkgs.hyprland}/bin/hyprctl dispatch togglespecialworkspace telegram
-    else
-      Telegram >/dev/null 2>&1 &
-    fi
-  '';
+  makeScratchpad =
+    appName: classRegex: launchCmd:
+    pkgs.writeShellScript "scratchpad-${appName}" ''
+      if ${pkgs.hyprland}/bin/hyprctl clients -j \
+        | ${pkgs.jq}/bin/jq -e 'any(.[]; .class | test("(?i)${classRegex}"))' >/dev/null; then
+        ${pkgs.hyprland}/bin/hyprctl dispatch togglespecialworkspace ${appName}
+      else
+        ${launchCmd} >/dev/null 2>&1 &
+      fi
+    '';
+
+  slackScratchpad = makeScratchpad "slack" "^([Ss]lack)$" "slack";
+  telegramScratchpad = makeScratchpad "telegram" "^(org.telegram.desktop)$" "Telegram";
+  tidalScratchpad = makeScratchpad "tidal" "^(tidal-hifi)$" "tidal-hifi";
 
   # Super + 1..5 → focus workspace N; Super + Shift + 1..5 → move window to N.
   workspaceBinds =
@@ -61,6 +56,16 @@ let
       float = on
       size = (monitor_w*0.33) (monitor_h*0.55)
       move = (monitor_w*0.66) (monitor_h*0.03)
+    }
+  '';
+  specialWorkspace = name: class: ''
+    windowrule {
+      name = ${name}
+      match {
+        class = ${class}
+      }
+      float = on
+      size = (monitor_w*0.8) (monitor_h*0.85)
     }
   '';
 in
@@ -153,7 +158,6 @@ in
 
       xwayland.force_zero_scaling = true;
 
-      # 4-finger horizontal swipe switches workspaces (Hyprland 0.55 syntax).
       gesture = "4, horizontal, workspace";
 
       env = [
@@ -171,9 +175,6 @@ in
         "${pkgs.blueman}/bin/blueman-applet"
         "${pkgs.wl-clipboard}/bin/wl-paste --watch ${pkgs.cliphist}/bin/cliphist store"
         "systemctl --user start hyprpolkitagent"
-        # Launch Noctalia via `uwsm app` so it runs in a proper systemd scope
-        # with the full session environment — a bare exec-once races the env
-        # propagation and starts without WAYLAND_DISPLAY → invisible bar.
         "uwsm app -- noctalia-shell"
         # Noctalia owns the wallpaper (hyprpaper removed). Set it on every output
         # once its IPC is up (the sleep waits for startup).
@@ -187,22 +188,26 @@ in
         "SUPER, E, exec, thunar"
         "SUPER, S, exec, ${slackScratchpad}"
         "SUPER, G, exec, ${telegramScratchpad}"
+        "SUPER, M, exec, ${tidalScratchpad}"
         "CTRL ALT, SPACE, exec, vicinae toggle"
 
         # window management
         "SUPER, Q, killactive"
         "SUPER, V, togglefloating"
         "SUPER SHIFT, V, fullscreen"
+        # Resize the (floating) active window to 90% x 90% of the monitor + center.
+        "SUPER, equal, resizeactive, exact 90% 90%"
+        "SUPER, equal, centerwindow"
         "SUPER, L, exec, noctalia-shell ipc call lockScreen lock"
         "SUPER SHIFT, E, exit"
         # Noctalia workspace-overview plugin (toggle via its IPC).
         "SUPER, W, exec, noctalia-shell ipc call plugin:workspace-overview toggle"
 
         # focus (vim keys)
-        "SUPER, h, movefocus, l"
-        "SUPER, l, movefocus, r"
-        "SUPER, k, movefocus, u"
-        "SUPER, j, movefocus, d"
+        "CTRL SHIFT, H, movefocus, l"
+        "CTRL SHIFT, L, movefocus, r"
+        "CTRL SHIFT, K, movefocus, u"
+        "CTRL SHIFT, J, movefocus, d"
 
         # screenshots: grim + slurp + swappy
         '', Print, exec, ${pkgs.grim}/bin/grim -g "$(${pkgs.slurp}/bin/slurp)" - | ${pkgs.swappy}/bin/swappy -f -''
@@ -233,8 +238,6 @@ in
       ];
     };
 
-    # Window rules + Noctalia blur layer rule as raw hyprlang. Confirm class
-    # strings with `hyprctl clients | grep -E 'class|title'` while open.
     extraConfig = ''
       ${floatCenter "ghostty" "^(com\\.mitchellh\\.ghostty)$"}
       ${floatCenter "thunar" "^([Tt]hunar)$"}
@@ -245,28 +248,10 @@ in
       ${topRight "blueman" "^(\\.blueman-manager-wrapped|blueman-manager)$"}
       ${topRight "nm-editor" "^(nm-connection-editor)$"}
 
-      # Slack scratchpad — lives on special:slack (toggled by Super+S).
-      # Non-silent so the first launch reveals it automatically.
-      windowrule {
-        name = slack
-        match {
-          class = ^([Ss]lack)$
-        }
-        workspace = special:slack
-        float = on
-        size = (monitor_w*0.8) (monitor_h*0.85)
-      }
-      windowrule {
-        name = telegram
-        match {
-          class = ^(org\.telegram\.desktop)$
-        }
-        workspace = special:telegram
-        float = on
-        size = (monitor_w*0.8) (monitor_h*0.85)
-      }
+      ${specialWorkspace "slack" "^([Ss]lack)$"}
+      ${specialWorkspace "telegram" "^(org\\.telegram\\.desktop)$"}
+      ${specialWorkspace "tidal" "^(tidal-hifi)$"}
 
-      # Blur Noctalia's bar/panel background layers (per Noctalia's docs).
       layerrule {
         name = noctalia
         match {

@@ -23,6 +23,7 @@ rec {
     rclone-reload = "systemctl --user restart mount-drives.service";
     code = "GTK_THEME='${gtktheme.main.env}' code --password-store=basic --profile 'hayk'";
     ofd = "thunar \"$@\" 1>/dev/null 2>/dev/null & disown";
+    nmtui = "NEWT_COLORS='root=black,black;window=black,black;border=white,black;listbox=white,black;label=blue,black;checkbox=red,black;title=green,black;button=white,red;actsellistbox=white,red;actlistbox=white,gray;compactbutton=white,gray;actcheckbox=white,blue;entry=lightgray,black;textbox=blue,black' nmtui";
   };
   shell_functions = [
     ''
@@ -35,6 +36,14 @@ rec {
       }
       function ppass() {
         pass-cli item view "pass://accounts/$1/password" | tr -d "[:space:]" | wl-copy
+      }
+      # nixenv [shell]: pin a devShell to the current dir via direnv.
+      # Defaults to the "default" shell; e.g. `nixenv py`, `nixenv cuda-cpp`.
+      function nixenv() {
+        local shell="''${1:-default}"
+        echo "use flake ${dotfiles}/nixos#''${shell}" > .envrc
+        direnv allow
+        echo "pinned ''${shell} devShell to $(pwd)/.envrc"
       }
     ''
   ];

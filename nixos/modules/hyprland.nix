@@ -64,6 +64,7 @@
 
     (inputs.pixie-sddm.packages.${pkgs.stdenv.hostPlatform.system}.pixie-sddm.override {
       accentColor = cfg.gtktheme.accent;
+      avatar = ../home/assets/h.jpg;
       autoColor = true;
       fontFamily = "MonaspiceKr Nerd Font";
       fontSize = 14;

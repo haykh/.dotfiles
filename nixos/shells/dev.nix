@@ -18,13 +18,13 @@ in
 pkgs.mkShell (
   env.envVars
   // {
-    name = "${name}-env";
+    name = "${if lang == null then name else (pkgs.lib.strings.replaceStrings [ "," ] [ "-" ] lang)}";
     nativeBuildInputs = env.nativeBuildInputs;
 
     shellHook = ''
       ${env.preShellHook}
       echo -e "${name} nix-shell activated ${
-        if lang == null then '''' else ''with ''\${BLUE}${lang}''\${NC}''
+        if lang == null then "" else ''with ''\${BLUE}${lang}''\${NC}''
       }"
     '';
   }

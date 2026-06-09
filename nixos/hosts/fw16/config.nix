@@ -36,40 +36,43 @@ in
     ".config/nvim/lazyvim.json".source =
       config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/nvim/lazyvim.json";
 
-    ".local/bin/wl-color-picker" = {
-      text = ''
-        #!/usr/bin/env bash
-        function pick() {
-          busctl --user call org.kde.KWin.ScreenShot2 /ColorPicker org.kde.kwin.ColorPicker pick | awk '{print $2}'
-        }
-        function to_rgb() {
-          local argb=$(printf "%x" "$1")
-          printf '#%02x%02x%02x' "$((0x$argb >> 16 & 0xff))" "$((0x$argb >> 8 & 0xff))" "$((0x$argb & 0xff))"
-        }
-        color="$(pick)"
-        if [ -z "$color" ]; then
-          echo "No color picked"
-          exit 1
-        fi
-        rgb=$(to_rgb "$color")
-        wl-copy "$rgb" && kdialog --passivepopup "$rgb" 3 --title "picked color" --icon 'color'
-      '';
-      executable = true;
-    };
-
-    ".local/bin/wl-color-chooser" = {
-      text = ''
-        #!/usr/bin/env bash
-        kdialog --getcolor | wl-copy
-      '';
-      executable = true;
-    };
+    # ".local/bin/wl-color-picker" = {
+    #   text = ''
+    #     #!/usr/bin/env bash
+    #     function pick() {
+    #       busctl --user call org.kde.KWin.ScreenShot2 /ColorPicker org.kde.kwin.ColorPicker pick | awk '{print $2}'
+    #     }
+    #     function to_rgb() {
+    #       local argb=$(printf "%x" "$1")
+    #       printf '#%02x%02x%02x' "$((0x$argb >> 16 & 0xff))" "$((0x$argb >> 8 & 0xff))" "$((0x$argb & 0xff))"
+    #     }
+    #     color="$(pick)"
+    #     if [ -z "$color" ]; then
+    #       echo "No color picked"
+    #       exit 1
+    #     fi
+    #     rgb=$(to_rgb "$color")
+    #     wl-copy "$rgb" && kdialog --passivepopup "$rgb" 3 --title "picked color" --icon 'color'
+    #   '';
+    #   executable = true;
+    # };
+    #
+    # ".local/bin/wl-color-chooser" = {
+    #   text = ''
+    #     #!/usr/bin/env bash
+    #     kdialog --getcolor | wl-copy
+    #   '';
+    #   executable = true;
+    # };
 
   };
 
   sessionVariables = {
     NIXOS_OZONE_WL = "1";
     EDITOR = "nvim";
+    # libudev.pc lives in udev's dev output; expose it so pkg-config can find
+    # libudev for Rust crates like serialport -> libudev-sys.
+    PKG_CONFIG_PATH = "${pkgs.udev.dev}/lib/pkgconfig";
   };
 
   packages = with pkgs; [
@@ -85,10 +88,12 @@ in
     xdotool
     devenv
     zip
+    pkg-config
+    udev
 
     # kde
-    kdePackages.sddm-kcm
-    kdePackages.kdialog
+    # kdePackages.sddm-kcm
+    # kdePackages.kdialog
     wayland-utils
 
     # hardware controllers
@@ -232,6 +237,7 @@ in
     fzf = true;
     git = true;
     delta = true;
+    direnv = true;
     neovim = true;
     ssh = true;
     fastfetch = true;
@@ -277,11 +283,11 @@ in
   };
 
   desktopEntries = [
-    "kdecolorpick"
-    "kdecolorchoose"
+    # "kdecolorpick"
+    # "kdecolorchoose"
     "vicinae"
-    "llyfr"
-    "crifo"
+    # "llyfr"
+    # "crifo"
     "chromium"
     "thorium"
     "slack"
@@ -317,7 +323,6 @@ in
   extraImports = [ inputs.vicinae.homeManagerModules.default ];
 
   userServices = [
-    "drives"
     "literature-sync"
   ];
 

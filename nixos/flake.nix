@@ -64,6 +64,17 @@
     }:
     let
       cfg = import ./cfg.nix { };
+      devSystem = "x86_64-linux";
+      devPkgs = import nixpkgs {
+        system = devSystem;
+        config.allowUnfree = true;
+      };
+      mkDev =
+        lang:
+        import ./shells/dev.nix {
+          pkgs = devPkgs;
+          inherit lang;
+        };
     in
     {
       nixosConfigurations = {
@@ -172,6 +183,26 @@
               }
             ];
           };
+      };
+
+      devShells.${devSystem} = {
+        default = mkDev null;
+
+        # single-language shells (see shells/envs.nix for available envs)
+        go = mkDev "go";
+        cpp = mkDev "cpp";
+        gl = mkDev "gl";
+        python = mkDev "python";
+        cuda = mkDev "cuda";
+        rocm = mkDev "rocm";
+        asm = mkDev "asm";
+        rust = mkDev "rust";
+
+        # common combinations
+        py-cpp = mkDev "py,cpp";
+        web = mkDev "web,gl,go";
+        cuda-cpp = mkDev "cuda,cpp";
+        rocm-cpp = mkDev "rocm,cpp";
       };
     };
 

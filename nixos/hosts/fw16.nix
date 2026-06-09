@@ -8,6 +8,9 @@
 {
 
   networking.useDHCP = lib.mkDefault true;
+
+  # Resume-from-hibernate target (the swap partition from hosts/fw16/disks.nix).
+  boot.resumeDevice = "/dev/disk/by-uuid/a17262c5-574b-4311-b688-656167afbf9a";
   hardware = {
     cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
@@ -50,6 +53,17 @@
     '';
     fprintd.enable = true;
     power-profiles-daemon.enable = true;
+
+    # Power button (single press) hibernates; lid close suspends. A long press
+    # still powers off. Hibernate uses the swap partition (boot.resumeDevice
+    # below) — note swap (~30G) < RAM (38G), so hibernate can fail if in-use
+    # memory exceeds the swap size.
+    logind.settings.Login = {
+      HandlePowerKey = "hibernate";
+      HandlePowerKeyLongPress = "poweroff";
+      HandleLidSwitch = "suspend";
+      HandleLidSwitchExternalPower = "suspend";
+    };
     printing = {
       enable = true;
       drivers = [

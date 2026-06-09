@@ -24,6 +24,15 @@
   };
 
   networking.networkmanager.enable = true;
+  # Don't let NetworkManager manage docker/container virtual interfaces.
+  # Otherwise NM tracks docker0 and may try to activate wifi profiles on it
+  # ("No suitable device found ... docker0"), which breaks connecting/forgetting
+  # networks from UIs (e.g. Noctalia) that don't pin the device explicitly.
+  networking.networkmanager.unmanaged = [
+    "interface-name:docker*"
+    "interface-name:veth*"
+    "interface-name:br-*"
+  ];
   services.xserver.enable = true;
 
   services = {
@@ -56,6 +65,9 @@
         "wheel"
         "docker"
         "kvm"
+        # Grants NetworkManager connection management without per-action polkit
+        # prompts — needed for managing wifi from Noctalia's UI.
+        "networkmanager"
       ];
     };
   };
