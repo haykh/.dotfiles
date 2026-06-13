@@ -6,6 +6,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  boot.resumeDevice = "/dev/disk/by-uuid/a17262c5-574b-4311-b688-656167afbf9a";
   boot.initrd.availableKernelModules = [
     "nvme"
     "xhci_pci"

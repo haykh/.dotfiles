@@ -267,18 +267,6 @@ in
     };
   };
 
-  desktopEntries = [
-    # "kdecolorpick"
-    # "kdecolorchoose"
-    # "vicinae"
-    # "llyfr"
-    # "crifo"
-    "chromium"
-    "thorium"
-    "slack"
-    "vscode"
-  ];
-
   mimeApps = {
     defaultApplications = {
       "inode/directory" = "thunar.desktop";

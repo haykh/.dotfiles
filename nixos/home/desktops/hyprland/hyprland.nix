@@ -17,9 +17,21 @@ let
       fi
     '';
 
+  makeScratchpadElectron =
+    appName: title: launchCmd:
+    pkgs.writeShellScript "scratchpad-${appName}" ''
+      if ${pkgs.hyprland}/bin/hyprctl clients -j \
+        | ${pkgs.jq}/bin/jq -e 'any(.[]; (.class=="electron") and (.title="${title}"))' >/dev/null; then
+        ${pkgs.hyprland}/bin/hyprctl dispatch togglespecialworkspace ${appName}
+      else
+        ${launchCmd} >/dev/null 2>&1 &
+      fi
+    '';
+
   slackScratchpad = makeScratchpad "slack" "^([Ss]lack)$" "slack";
   telegramScratchpad = makeScratchpad "telegram" "^(org.telegram.desktop)$" "Telegram";
   tidalScratchpad = makeScratchpad "tidal" "^(tidal-hifi)$" "tidal-hifi";
+  filenScratchpad = makeScratchpadElectron "filen" "Filen" "filen-desktop";
 
   workspaceBinds =
     lib.concatMap
@@ -62,6 +74,18 @@ let
       name = ${name}
       match {
         class = ${class}
+      }
+      workspace = special:${name}
+      float = on
+      size = (monitor_w*0.8) (monitor_h*0.85)
+    }
+  '';
+  specialWorkspaceElectron = name: title: ''
+    windowrule {
+      name = ${name}
+      match {
+        class = electron
+        title = ${title}
       }
       workspace = special:${name}
       float = on
@@ -175,10 +199,7 @@ in
         "${pkgs.blueman}/bin/blueman-applet"
         "${pkgs.wl-clipboard}/bin/wl-paste --watch ${pkgs.cliphist}/bin/cliphist store"
         "systemctl --user start hyprpolkitagent"
-        "uwsm app -- noctalia-shell"
-        # Noctalia owns the wallpaper (hyprpaper removed). Set it on every output
-        # once its IPC is up (the sleep waits for startup).
-        # "${pkgs.bash}/bin/bash -c 'sleep 3; for m in $(${pkgs.hyprland}/bin/hyprctl monitors -j | ${pkgs.jq}/bin/jq -r \".[].name\"); do noctalia-shell ipc call wallpaper set \"${cfg.gtktheme.wallpaper}\" \"$m\"; done'"
+        "uwsm app -- noctalia"
       ];
 
       bind = [
@@ -189,16 +210,16 @@ in
         "SUPER, S, exec, ${slackScratchpad}"
         "SUPER, G, exec, ${telegramScratchpad}"
         "SUPER, M, exec, ${tidalScratchpad}"
+        "SUPER, D, exec, ${filenScratchpad}"
         "CTRL ALT, SPACE, exec, vicinae toggle"
 
         # window management
         "SUPER, Q, killactive"
         "SUPER, V, togglefloating"
         "SUPER SHIFT, V, fullscreen"
-        # Resize the (floating) active window to 90% x 90% of the monitor + center.
         "SUPER, equal, resizeactive, exact 90% 90%"
         "SUPER, equal, centerwindow"
-        "SUPER, L, exec, noctalia-shell ipc call lockScreen lock"
+        "SUPER, L, exec, noctalia msg session lock"
         "SUPER SHIFT, E, exit"
 
         # focus (vim keys)
@@ -207,8 +228,7 @@ in
         "CTRL SHIFT, K, movefocus, u"
         "CTRL SHIFT, J, movefocus, d"
 
-        # screenshots: grim capture → satty editor (Ctrl+C copies, Ctrl+S saves
-        # to ~/Pictures/Screenshots). Print = region, Shift+Print = full screen.
+        # screenshots
         '', Print, exec, ${pkgs.grim}/bin/grim -g "$(${pkgs.slurp}/bin/slurp)" - | ${pkgs.satty}/bin/satty -f - --copy-command ${pkgs.wl-clipboard}/bin/wl-copy --output-filename "$HOME/Pictures/Screenshots/$(date +%Y%m%d-%H%M%S).png"''
         ''SHIFT, Print, exec, ${pkgs.grim}/bin/grim - | ${pkgs.satty}/bin/satty -f - --copy-command ${pkgs.wl-clipboard}/bin/wl-copy --output-filename "$HOME/Pictures/Screenshots/$(date +%Y%m%d-%H%M%S).png"''
 
@@ -260,6 +280,7 @@ in
       ${specialWorkspace "slack" "^([Ss]lack)$"}
       ${specialWorkspace "telegram" "^(org\\.telegram\\.desktop)$"}
       ${specialWorkspace "tidal" "^(tidal-hifi)$"}
+      ${specialWorkspaceElectron "filen" "^(Filen)$"}
 
       layerrule {
         name = noctalia

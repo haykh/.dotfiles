@@ -9,8 +9,6 @@
 
   networking.useDHCP = lib.mkDefault true;
 
-  # Resume-from-hibernate target (the swap partition from hosts/fw16/disks.nix).
-  boot.resumeDevice = "/dev/disk/by-uuid/a17262c5-574b-4311-b688-656167afbf9a";
   hardware = {
     cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 

@@ -130,7 +130,7 @@ in
     ssh-agent.enable = true;
   };
 
-  desktopEntries = [ ];
+  # desktopEntries = [ ];
 
   mimeApps = { };
 

@@ -28,9 +28,6 @@
   };
   services.gvfs.enable = true;
   services.tumbler.enable = true;
-
-  # Noctalia reads battery / power info via UPower (not enabled by default
-  # outside full desktop environments).
   services.upower.enable = true;
 
   services.displayManager.sddm = {

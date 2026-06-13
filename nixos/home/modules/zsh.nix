@@ -19,8 +19,6 @@
 
   initContent = ''
     export PATH=$HOME/.local/bin:$PATH
-    export EDITOR=nvim
-    export PROTON_PASS_KEY_PROVIDER=fs
 
     # zstyle ':completion:*:default' list-colors "ow=30;44"
     if [ -n "''${commands[fzf-share]}" ]; then
@@ -38,7 +36,13 @@
     autoload compinit -Uz && compinit
   ''
   + "\n"
-  + (pkgs.lib.concatStringsSep "\n\n" cfg.shell_functions);
+  + (pkgs.lib.concatStringsSep "\n\n" (
+    pkgs.lib.attrsets.mapAttrsToList (name: body: "export ${name}=\"${body}\"") cfg.envvars
+  ))
+  + "\n"
+  + (pkgs.lib.concatStringsSep "\n\n" (
+    pkgs.lib.attrsets.mapAttrsToList (name: body: "function ${name}() {\n${body}}") cfg.shell_functions
+  ));
 
   oh-my-zsh = {
     enable = true;

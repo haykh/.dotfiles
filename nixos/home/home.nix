@@ -13,10 +13,10 @@
 
 let
   cwd = builtins.path { path = ./.; };
-  all_desktop_entries = import ./desktop_entries.nix { inherit pkgs cfg; };
-  desktop_entries = builtins.map (name: all_desktop_entries.${name}) (
-    builtins.filter (name: builtins.hasAttr name all_desktop_entries) configuration.desktopEntries
-  );
+  # all_desktop_entries = import ./desktop_entries.nix { inherit pkgs cfg; };
+  # desktop_entries = builtins.map (name: all_desktop_entries.${name}) (
+  #   builtins.filter (name: builtins.hasAttr name all_desktop_entries) configuration.desktopEntries
+  # );
   user_services = builtins.listToAttrs (
     builtins.map (v: {
       name = v;
@@ -38,8 +38,8 @@ in
       p: pkgs.callPackage "${cwd}/derivations/${p}.nix" { inherit pkgs; }
     ) configuration.derivations;
 
-  home.file =
-    (configuration.extraFiles config cfg) // builtins.foldl' (a: b: a // b) { } desktop_entries;
+  home.file = (configuration.extraFiles config cfg);
+  # // builtins.foldl' (a: b: a // b) { } desktop_entries;
 
   imports =
     (

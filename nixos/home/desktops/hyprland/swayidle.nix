@@ -6,9 +6,7 @@
 }:
 
 let
-  # Full path — swayidle runs as a systemd user service with a minimal PATH,
-  # and a failed lock-before-sleep would suspend unlocked.
-  lock = "${lib.getExe config.programs.noctalia-shell.package} ipc call lockScreen lock";
+  lock = "${lib.getExe config.programs.noctalia.package} msg session lock";
 in
 {
 
