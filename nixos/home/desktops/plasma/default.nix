@@ -92,18 +92,6 @@
       "services/net.local.kdecolorchoose.desktop"."_launch" = "Alt+Shift+Print";
       "services/org.kde.spectacle.desktop"."RectangularRegionScreenShot" = "Print";
     };
-    hotkeys.commands = {
-      launch-crifo = {
-        name = "Launch Crifo";
-        key = "Meta+Alt+C";
-        command = "env GDK_BACKEND=x11 QT_QPA_PLATFORM=xcb crifo";
-      };
-      launch-llyfr = {
-        name = "Launch Llyfr";
-        key = "Meta+Alt+A";
-        command = "env GDK_BACKEND=x11 QT_QPA_PLATFORM=xcb llyfr zathura ${cfg.home}/Documents/Literature/refs.bib";
-      };
-    };
     configFile = {
       plasma-localerc.Formats.LANG = "en_US.UTF-8";
       kcminputrc = {

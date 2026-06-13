@@ -39,8 +39,8 @@
               fill = "surface_variant";
               id = "g1";
               members = [
-                "caffeine"
                 "battery"
+                "caffeine"
               ];
               opacity = 1.0;
               padding = 6.0;

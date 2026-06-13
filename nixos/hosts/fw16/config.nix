@@ -297,8 +297,6 @@ in
 
   extraImports = [ inputs.vicinae.homeManagerModules.default ];
 
-  userServices = [
-    "literature-sync"
-  ];
+  userServices = [ ];
 
 }
