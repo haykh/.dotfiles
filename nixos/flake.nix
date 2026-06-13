@@ -2,6 +2,19 @@
 
   description = "master flake";
 
+  nixConfig = {
+    extra-substituters = [
+      "https://hyprland.cachix.org"
+      "https://noctalia.cachix.org"
+      "https://vicinae.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+      "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
+      "vicinae.cachix.org-1:1kDrfienkGHPYbkpNj1mWTr7Fm1+zcenzgTizIcI3oc="
+    ];
+  };
+
   inputs = {
     nixpkgs = {
       url = "nixpkgs/nixos-26.05";
@@ -43,13 +56,17 @@
     claude-code = {
       url = "github:sadjow/claude-code-nix";
     };
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
+    };
+    hyprland-plugins = {
+      url = "github:hyprwm/hyprland-plugins";
+      inputs.hyprland.follows = "hyprland";
+    };
     pixie-sddm = {
       url = "github:xCaptaiN09/pixie-sddm";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # Noctalia (Quickshell-based bar/shell, replaces waybar). Intentionally NOT
-    # following nixpkgs: it requires a newer Quickshell than nixos-26.05 ships,
-    # so it uses its own (unstable) nixpkgs for the shell + quickshell.
     noctalia = {
       url = "github:noctalia-dev/noctalia-shell";
     };

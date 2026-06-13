@@ -4,7 +4,6 @@
 
   imports = [
     ./hyprland.nix
-    # ./hyprlock.nix  # Noctalia provides the lockscreen (lockScreen IPC).
     ./noctalia.nix
     ./swayidle.nix
   ];
@@ -26,8 +25,11 @@
     networkmanagerapplet
     blueman
 
-    # audio mixer (waybar pulseaudio on-click)
+    # audio mixer
     pavucontrol
+
+    # media key control
+    playerctl
   ];
 
 }

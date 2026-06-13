@@ -68,6 +68,7 @@
         # Grants NetworkManager connection management without per-action polkit
         # prompts — needed for managing wifi from Noctalia's UI.
         "networkmanager"
+        "dialout"
       ];
     };
   };

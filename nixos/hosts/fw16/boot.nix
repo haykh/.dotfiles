@@ -21,7 +21,7 @@
     "kvm-amd"
   ];
   boot.extraModulePackages = [ ];
-  boot.kernelParams = pkgs.lib.mkAfter [
-    "amdgpu.dcdebugmask=0x410"
-  ];
+  # boot.kernelParams = pkgs.lib.mkAfter [
+  #   "amdgpu.dcdebugmask=0x410"
+  # ];
 }

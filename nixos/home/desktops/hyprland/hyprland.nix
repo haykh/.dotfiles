@@ -64,6 +64,7 @@ let
       match {
         class = ${class}
       }
+      workspace = special:${name}
       float = on
       size = (monitor_w*0.8) (monitor_h*0.85)
     }
@@ -178,7 +179,7 @@ in
         "uwsm app -- noctalia-shell"
         # Noctalia owns the wallpaper (hyprpaper removed). Set it on every output
         # once its IPC is up (the sleep waits for startup).
-        "${pkgs.bash}/bin/bash -c 'sleep 3; for m in $(${pkgs.hyprland}/bin/hyprctl monitors -j | ${pkgs.jq}/bin/jq -r \".[].name\"); do noctalia-shell ipc call wallpaper set \"${cfg.gtktheme.wallpaper}\" \"$m\"; done'"
+        # "${pkgs.bash}/bin/bash -c 'sleep 3; for m in $(${pkgs.hyprland}/bin/hyprctl monitors -j | ${pkgs.jq}/bin/jq -r \".[].name\"); do noctalia-shell ipc call wallpaper set \"${cfg.gtktheme.wallpaper}\" \"$m\"; done'"
       ];
 
       bind = [
@@ -235,6 +236,11 @@ in
       ];
       bindl = [
         ", XF86AudioMute, exec, ${pkgs.pamixer}/bin/pamixer -t"
+        # media keys (MPRIS via playerctl) — locked so they work on lockscreen
+        ", XF86AudioPlay, exec, ${pkgs.playerctl}/bin/playerctl play-pause"
+        ", XF86AudioPause, exec, ${pkgs.playerctl}/bin/playerctl play-pause"
+        ", XF86AudioNext, exec, ${pkgs.playerctl}/bin/playerctl next"
+        ", XF86AudioPrev, exec, ${pkgs.playerctl}/bin/playerctl previous"
       ];
     };
 

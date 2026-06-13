@@ -6,24 +6,9 @@ let
   thoriumPkgs = inputs.thorium.packages.${system};
   zenPkgs = inputs.zen-browser.packages.${system};
   gobrainPkgs = inputs.gobrain.packages.${system};
-
-  opensslInject = pkgs.writeText "inject-openssl.cmake" ''
-    find_package(OpenSSL REQUIRED)
-  '';
-
-  vicinaePatched = inputs.vicinae.packages.${system}.default.overrideAttrs (old: {
-    buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.openssl ];
-
-    cmakeFlags = (old.cmakeFlags or [ ]) ++ [
-      "-DCMAKE_PROJECT_INCLUDE_BEFORE=${opensslInject}"
-    ];
-  });
 in
 {
 
-  # Desktop environment for this host. Flip between "hyprland" and "plasma"
-  # to switch — picks both the system module (modules/<desktop>.nix) and the
-  # home-manager bundle (home/desktops/<desktop>/).
   desktop = "hyprland";
 
   extraFiles = config: cfg: {
@@ -167,6 +152,7 @@ in
     proton-vpn
     proton-vpn-cli
     proton-pass
+    filen-desktop
     portaudio
     gnome-text-editor
 
@@ -244,7 +230,6 @@ in
 
     ghostty = true;
     mpv = true;
-    # rofi = true;
     vscode = true;
     zathura = true;
   };
@@ -278,14 +263,14 @@ in
         ssh
         process-manager
       ];
-      package = vicinaePatched;
+      package = inputs.vicinae.packages.${system}.default;
     };
   };
 
   desktopEntries = [
     # "kdecolorpick"
     # "kdecolorchoose"
-    "vicinae"
+    # "vicinae"
     # "llyfr"
     # "crifo"
     "chromium"
