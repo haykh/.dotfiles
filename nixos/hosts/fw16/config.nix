@@ -101,7 +101,7 @@ in
     # formatters & language servers
     ## nix
     nixfmt
-    nil
+    nixd
     ## lua
     stylua
     lua-language-server
@@ -155,6 +155,7 @@ in
     filen-desktop
     portaudio
     gnome-text-editor
+    mathematica
 
     turbovnc
 

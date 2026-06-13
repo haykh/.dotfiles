@@ -49,9 +49,7 @@ return {
 				-- hyprlang
 				hyprls = {},
 				-- nix
-				nil_ls = {
-					mason = false,
-				},
+				nixd = {},
 				-- docker
 				docker_compose_language_service = {},
 				dockerls = {},

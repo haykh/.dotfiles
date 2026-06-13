@@ -272,6 +272,7 @@ in
       ${floatCenter "zathura" "org.pwmt.zathura"}
       ${floatCenter "text-editor" "org.gnome.TextEditor"}
       ${floatCenter "mpv" "mpv"}
+      ${floatCenter "wolfram" "^(com.wolfram.Wolfram\\..*)"}
 
       ${topRight "pavucontrol" "^(org\\.pulseaudio\\.pavucontrol|pavucontrol)$"}
       ${topRight "blueman" "^(\\.blueman-manager-wrapped|blueman-manager)$"}
