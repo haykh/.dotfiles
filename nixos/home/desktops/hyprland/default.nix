@@ -9,10 +9,10 @@
   ];
 
   home.packages = with pkgs; [
-    # screenshots
+    # screenshots (grim capture + slurp region + satty annotate)
     grim
     slurp
-    swappy
+    satty
 
     # clipboard
     wl-clipboard
@@ -31,5 +31,8 @@
     # media key control
     playerctl
   ];
+
+  # Ensure the screenshot save folder exists (satty --output-filename target).
+  home.file."Pictures/Screenshots/.keep".text = "";
 
 }

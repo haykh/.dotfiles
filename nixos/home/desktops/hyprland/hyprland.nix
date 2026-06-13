@@ -21,7 +21,6 @@ let
   telegramScratchpad = makeScratchpad "telegram" "^(org.telegram.desktop)$" "Telegram";
   tidalScratchpad = makeScratchpad "tidal" "^(tidal-hifi)$" "tidal-hifi";
 
-  # Super + 1..5 → focus workspace N; Super + Shift + 1..5 → move window to N.
   workspaceBinds =
     lib.concatMap
       (n: [
@@ -201,8 +200,6 @@ in
         "SUPER, equal, centerwindow"
         "SUPER, L, exec, noctalia-shell ipc call lockScreen lock"
         "SUPER SHIFT, E, exit"
-        # Noctalia workspace-overview plugin (toggle via its IPC).
-        "SUPER, W, exec, noctalia-shell ipc call plugin:workspace-overview toggle"
 
         # focus (vim keys)
         "CTRL SHIFT, H, movefocus, l"
@@ -210,9 +207,10 @@ in
         "CTRL SHIFT, K, movefocus, u"
         "CTRL SHIFT, J, movefocus, d"
 
-        # screenshots: grim + slurp + swappy
-        '', Print, exec, ${pkgs.grim}/bin/grim -g "$(${pkgs.slurp}/bin/slurp)" - | ${pkgs.swappy}/bin/swappy -f -''
-        "SHIFT, Print, exec, ${pkgs.grim}/bin/grim - | ${pkgs.swappy}/bin/swappy -f -"
+        # screenshots: grim capture → satty editor (Ctrl+C copies, Ctrl+S saves
+        # to ~/Pictures/Screenshots). Print = region, Shift+Print = full screen.
+        '', Print, exec, ${pkgs.grim}/bin/grim -g "$(${pkgs.slurp}/bin/slurp)" - | ${pkgs.satty}/bin/satty -f - --copy-command ${pkgs.wl-clipboard}/bin/wl-copy --output-filename "$HOME/Pictures/Screenshots/$(date +%Y%m%d-%H%M%S).png"''
+        ''SHIFT, Print, exec, ${pkgs.grim}/bin/grim - | ${pkgs.satty}/bin/satty -f - --copy-command ${pkgs.wl-clipboard}/bin/wl-copy --output-filename "$HOME/Pictures/Screenshots/$(date +%Y%m%d-%H%M%S).png"''
 
         # color picker
         "CTRL, Print, exec, ${pkgs.hyprpicker}/bin/hyprpicker -a"
@@ -249,6 +247,11 @@ in
       ${floatCenter "thunar" "^([Tt]hunar)$"}
       ${floatCenter "zen" "^zen.*"}
       ${floatCenter "thorium" "^[Tt]horium.*"}
+      ${floatCenter "satty" "com.gabm.satty"}
+      ${floatCenter "oculante" "oculante"}
+      ${floatCenter "zathura" "org.pwmt.zathura"}
+      ${floatCenter "text-editor" "org.gnome.TextEditor"}
+      ${floatCenter "mpv" "mpv"}
 
       ${topRight "pavucontrol" "^(org\\.pulseaudio\\.pavucontrol|pavucontrol)$"}
       ${topRight "blueman" "^(\\.blueman-manager-wrapped|blueman-manager)$"}

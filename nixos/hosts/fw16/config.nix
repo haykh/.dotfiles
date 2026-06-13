@@ -293,6 +293,8 @@ in
       "image/png" = "oculante.desktop";
       "image/jpeg" = "oculante.desktop";
 
+      "text/plain" = "org.gnome.TextEditor.desktop";
+      "text/markdown" = "org.gnome.TextEditor.desktop";
       "text/html" = "zen-beta.desktop";
       "x-scheme-handler/http" = "zen-beta.desktop";
       "x-scheme-handler/https" = "zen-beta.desktop";

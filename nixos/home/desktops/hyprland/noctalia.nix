@@ -17,10 +17,6 @@
         }
       ];
       states = {
-        workspace-overview = {
-          enabled = true;
-          sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
-        };
         protonvpn = {
           enabled = true;
           sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";

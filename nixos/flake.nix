@@ -138,13 +138,10 @@
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.backupFileExtension = "bak";
-                # specialArgs (unlike _module.args) are usable in `imports`,
-                # which the desktop bundles need to import flake-provided
-                # home modules (e.g. noctalia).
                 home-manager.extraSpecialArgs = { inherit inputs cfg; };
-                home-manager.sharedModules = [
-                  inputs.plasma-manager.homeModules.plasma-manager
-                ];
+                # home-manager.sharedModules = [
+                #   inputs.plasma-manager.homeModules.plasma-manager
+                # ];
                 home-manager.users.${cfg.user} = (
                   import ./home/home.nix {
                     inherit inputs cfg configuration;
@@ -216,7 +213,7 @@
         rust = mkDev "rust";
 
         # common combinations
-        py-cpp = mkDev "py,cpp";
+        py-cpp = mkDev "python,cpp";
         web = mkDev "web,gl,go";
         cuda-cpp = mkDev "cuda,cpp";
         rocm-cpp = mkDev "rocm,cpp";
