@@ -33,19 +33,10 @@ let
   tidalScratchpad = makeScratchpad "tidal" "^(tidal-hifi)$" "tidal-hifi";
   filenScratchpad = makeScratchpadElectron "filen" "Filen" "filen-desktop";
 
-  workspaceBinds =
-    lib.concatMap
-      (n: [
-        "SUPER, ${toString n}, workspace, ${toString n}"
-        "SUPER SHIFT, ${toString n}, movetoworkspace, ${toString n}"
-      ])
-      [
-        1
-        2
-        3
-        4
-        5
-      ];
+  workspaceBinds = lib.concatMap (n: [
+    "SUPER, ${toString n}, workspace, ${toString n}"
+    "SUPER SHIFT, ${toString n}, movetoworkspace, ${toString n}"
+  ]) (pkgs.lib.range 1 9);
 
   floatCenter = name: class: ''
     windowrule {
@@ -67,6 +58,19 @@ let
       float = on
       size = (monitor_w*0.33) (monitor_h*0.55)
       move = (monitor_w*0.66) (monitor_h*0.03)
+    }
+  '';
+  pictureInPicture = name: title: class: ''
+    windowrule {
+      name = ${name}
+      match {
+        class = ${class}
+        title = ${title}
+      }
+      pin = on 
+      float = on
+      size = (monitor_w*0.25) (monitor_h*0.27)
+      move = (monitor_w*0.74) (monitor_h*0.04)
     }
   '';
   specialWorkspace = name: class: ''
@@ -273,6 +277,8 @@ in
       ${floatCenter "text-editor" "org.gnome.TextEditor"}
       ${floatCenter "mpv" "mpv"}
       ${floatCenter "wolfram" "^(com.wolfram.Wolfram\\..*)"}
+
+      ${pictureInPicture "pip" "Picture-in-Picture" "zen"}
 
       ${topRight "pavucontrol" "^(org\\.pulseaudio\\.pavucontrol|pavucontrol)$"}
       ${topRight "blueman" "^(\\.blueman-manager-wrapped|blueman-manager)$"}

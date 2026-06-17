@@ -6,12 +6,15 @@
 
   programs.noctalia = {
     enable = true;
+    systemd.enable = true;
 
     settings = {
+      launch_apps_as_systemd_services = true;
       bar = {
         default = {
           background_opacity = 0.75;
           center = [
+            "cat"
             "clock"
             "weather"
           ];
@@ -80,7 +83,6 @@
           "lockscreen-login-box@eDP-1"
           "lockscreen-widget-0000000000000001"
           "lockscreen-widget-0000000000000002"
-          "lockscreen-widget-0000000000000003"
         ];
         grid = {
           cell_size = 16;
@@ -131,24 +133,13 @@
               background = false;
             };
           };
-          lockscreen-widget-0000000000000003 = {
-            box_height = 0.0;
-            box_width = 0.0;
-            cx = 1024.0;
-            cy = 640.0;
-            output = "eDP-1";
-            rotation = 0.0;
-            type = "fancy_audio_visualizer";
-            settings = {
-              background = false;
-              fade_when_idle = false;
-              visualization_mode = "wave";
-            };
-          };
         };
       };
       nightlight = {
         enabled = true;
+      };
+      plugins = {
+        enabled = [ "noctalia/bongocat" ];
       };
       shell = {
         ui_scale = 1.1;
@@ -178,8 +169,18 @@
         };
       };
       widget = {
+        audio_visualizer = {
+          bands = 64;
+          mirrored = false;
+          show_when_idle = true;
+          width = 128.0;
+        };
         brightness = {
           show_label = false;
+        };
+        cat = {
+          input_device = "/dev/input/event7";
+          type = "noctalia/bongocat:cat";
         };
         clock = {
           format = "{:%l:%M%P @ %d %h}";
