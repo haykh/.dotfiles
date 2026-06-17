@@ -24,6 +24,10 @@
   };
 
   networking.networkmanager.enable = true;
+  # Proton VPN's app connects by importing an OpenVPN config into NetworkManager.
+  # Without the NM OpenVPN plugin, the import raises NotImplementedError and the
+  # app shows "unexpected error occurred". WireGuard support is native to NM.
+  networking.networkmanager.plugins = [ pkgs.networkmanager-openvpn ];
   # Don't let NetworkManager manage docker/container virtual interfaces.
   # Otherwise NM tracks docker0 and may try to activate wifi profiles on it
   # ("No suitable device found ... docker0"), which breaks connecting/forgetting
@@ -67,6 +71,7 @@
         "kvm"
         "networkmanager"
         "dialout"
+        "input"
       ];
     };
   };
