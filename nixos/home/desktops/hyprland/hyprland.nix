@@ -49,6 +49,18 @@ let
       center = on
     }
   '';
+  floatCenterTitled = name: title: class: ''
+    windowrule {
+      name = ${name}
+      match {
+        class = ${class}
+        title = ${title}
+      }
+      float = on
+      size = (monitor_w*0.6) (monitor_h*0.8)
+      center = on
+    }
+  '';
   topRight = name: class: ''
     windowrule {
       name = ${name}
@@ -58,6 +70,17 @@ let
       float = on
       size = (monitor_w*0.33) (monitor_h*0.55)
       move = (monitor_w*0.66) (monitor_h*0.03)
+    }
+  '';
+  floatCenterDialog = name: class: title: ''
+    windowrule {
+      name = ${name}
+      match {
+        class = ${class}
+        title = ${title}
+      }
+      float = on
+      center = on
     }
   '';
   pictureInPicture = name: title: class: ''
@@ -268,7 +291,6 @@ in
 
     extraConfig = ''
       ${floatCenter "ghostty" "^(com\\.mitchellh\\.ghostty)$"}
-      ${floatCenter "thunar" "^([Tt]hunar)$"}
       ${floatCenter "zen" "^zen.*"}
       ${floatCenter "thorium" "^[Tt]horium.*"}
       ${floatCenter "satty" "com.gabm.satty"}
@@ -277,6 +299,16 @@ in
       ${floatCenter "text-editor" "org.gnome.TextEditor"}
       ${floatCenter "mpv" "mpv"}
       ${floatCenter "wolfram" "^(com.wolfram.Wolfram\\..*)"}
+
+      ${floatCenterTitled "thunar" "^(.* - Thunar)$" "^([Tt]hunar)$"}
+      ${floatCenterDialog "thunar-progress" "^([Tt]hunar)$" "^(File Operation Progress)$"}
+      ${floatCenterDialog "thunar-rename" "^([Tt]hunar)$" "^(Rename.*)$"}
+      ${floatCenterDialog "thunar-confirm-replace" "^([Tt]hunar)$" "^(Confirm to replace files)$"}
+      ${floatCenterDialog "thunar-attention" "^([Tt]hunar)$" "^(Attention)$"}
+      ${floatCenterDialog "thunar-properties" "^([Tt]hunar)$" "^(.*Properties)$"}
+      ${floatCenterDialog "thunar-create" "^([Tt]hunar)$" "^(Create.*)$"}
+      ${floatCenterDialog "thunar-trash" "^([Tt]hunar)$" "^(Trash)$"}
+      ${floatCenterDialog "thunar-auth" "^([Tt]hunar)$" "^(Authentication)$"}
 
       ${pictureInPicture "pip" "Picture-in-Picture" "zen"}
 

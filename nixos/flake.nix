@@ -35,10 +35,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
-    thorium = {
-      url = "https://flakehub.com/f/Rishabh5321/thorium_flake/0.1.78";
+    custom-packages = {
+      url = "github:Rishabh5321/custom-packages-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # thorium = {
+    #   url = "https://flakehub.com/f/Rishabh5321/thorium_flake/0.1.78";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
     zen-browser = {
       url = "github:youwen5/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";

@@ -3,7 +3,8 @@
 let
   system = pkgs.stdenv.hostPlatform.system;
 
-  thoriumPkgs = inputs.thorium.packages.${system};
+  # thoriumPkgs = inputs.thorium.packages.${system};
+  thoriumPkgs = inputs.custom-packages.packages.${system}.thorium-avx2;
   zenPkgs = inputs.zen-browser.packages.${system};
   gobrainPkgs = inputs.gobrain.packages.${system};
 in
@@ -167,7 +168,7 @@ in
     rocmPackages.clr
 
     ## web
-    thoriumPkgs.thorium-avx2
+    thoriumPkgs
     zenPkgs.default
     slack
     protonmail-desktop
@@ -277,6 +278,13 @@ in
       "image/gif" = "oculante.desktop";
       "image/png" = "oculante.desktop";
       "image/jpeg" = "oculante.desktop";
+      "image/bmp" = "oculante.desktop";
+      "image/tiff" = "oculante.desktop";
+      "image/webp" = "oculante.desktop";
+      "image/jp2" = "oculante.desktop";
+      "image/jpeg2000" = "oculante.desktop";
+      "image/jpx" = "oculante.desktop";
+      "image/svg+xml" = "oculante.desktop";
 
       "text/plain" = "org.gnome.TextEditor.desktop";
       "text/markdown" = "org.gnome.TextEditor.desktop";

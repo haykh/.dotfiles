@@ -5,7 +5,7 @@
   imports = [
     ./hyprland.nix
     ./noctalia.nix
-    ./swayidle.nix
+    ./hypridle.nix
   ];
 
   home.packages = with pkgs; [

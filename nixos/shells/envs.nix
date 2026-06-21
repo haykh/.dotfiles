@@ -44,7 +44,7 @@ let
   pythonPkgs = with pkgs; [
     python3
     black
-    basedpyright
+    pyright
     taplo
     vscode-langservers-extracted
   ];
@@ -99,7 +99,7 @@ let
     );
   };
   envVars = builtins.listToAttrs (
-    builtins.map (varName: {
+    map (varName: {
       name = varName;
       value = _vars.${varName};
     }) (builtins.attrNames _vars)

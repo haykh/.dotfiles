@@ -52,6 +52,26 @@
         "type": "github"
       }
     },
+    "custom-packages": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1781814628,
+        "narHash": "sha256-GuwOK/zVBPJhd5DkkqHwvp5yhZlZBTffLhqwkmzKC3M=",
+        "owner": "Rishabh5321",
+        "repo": "custom-packages-flake",
+        "rev": "952b08d35ada196f129ef225531b95b6e3bcaa59",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Rishabh5321",
+        "repo": "custom-packages-flake",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -799,6 +819,7 @@
     "root": {
       "inputs": {
         "claude-code": "claude-code",
+        "custom-packages": "custom-packages",
         "gobrain": "gobrain",
         "home-manager": "home-manager",
         "hyprland": "hyprland",
@@ -809,7 +830,6 @@
         "noctalia": "noctalia",
         "pixie-sddm": "pixie-sddm",
         "plasma-manager": "plasma-manager",
-        "thorium": "thorium",
         "vicinae": "vicinae",
         "vicinae-extensions": "vicinae-extensions",
         "zen-browser": "zen-browser"
@@ -903,25 +923,6 @@
         "owner": "nix-systems",
         "repo": "default",
         "type": "github"
-      }
-    },
-    "thorium": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1765380249,
-        "narHash": "sha256-BrI+xI7ZWtC6nGz4kQBMIA7jnhnk26/NCI8IKhPYgqA=",
-        "rev": "c4396a11121aff909fd3832825e21b2c764abb73",
-        "revCount": 145,
-        "type": "tarball",
-        "url": "https://api.flakehub.com/f/pinned/Rishabh5321/thorium_flake/0.1.145%2Brev-c4396a11121aff909fd3832825e21b2c764abb73/019b08e3-e00b-71d8-ba48-6690310848ac/source.tar.gz"
-      },
-      "original": {
-        "type": "tarball",
-        "url": "https://flakehub.com/f/Rishabh5321/thorium_flake/0.1.78"
       }
     },
     "vicinae": {
