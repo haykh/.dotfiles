@@ -4,7 +4,18 @@ let
   system = pkgs.stdenv.hostPlatform.system;
 
   # thoriumPkgs = inputs.thorium.packages.${system};
-  thoriumPkgs = inputs.custom-packages.packages.${system}.thorium-avx2;
+  # Wrap thorium so it always runs under Wayland/Ozone, no matter how it's
+  # launched. The package's .desktop calls the bare `thorium` (resolved from
+  # PATH), so wrapping this binary covers the CLI and every app launcher.
+  thoriumPkgs = pkgs.symlinkJoin {
+    name = "thorium-wayland";
+    paths = [ inputs.custom-packages.packages.${system}.thorium-avx2 ];
+    nativeBuildInputs = [ pkgs.makeWrapper ];
+    postBuild = ''
+      wrapProgram $out/bin/thorium \
+        --add-flags "--enable-features=UseOzonePlatform --ozone-platform=wayland"
+    '';
+  };
   zenPkgs = inputs.zen-browser.packages.${system};
   gobrainPkgs = inputs.gobrain.packages.${system};
 in
@@ -265,6 +276,8 @@ in
         power-profile
         ssh
         process-manager
+        hypr
+        nerdfont-search
       ];
       package = inputs.vicinae.packages.${system}.default;
     };
