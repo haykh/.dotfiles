@@ -1,3 +1,12 @@
+-- Force-kill LSP servers on exit so a non-compliant one can't orphan and eat CPU
+vim.api.nvim_create_autocmd("VimLeavePre", {
+	callback = function()
+		for _, client in ipairs(vim.lsp.get_clients()) do
+			client:stop(true) -- force = SIGKILL, don't wait for graceful shutdown
+		end
+	end,
+})
+
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = {
 		"bash",

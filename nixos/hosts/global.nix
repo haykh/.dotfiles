@@ -17,6 +17,23 @@
     user
   ];
 
+  # Binary caches for flake inputs (vicinae, hyprland, noctalia, codex). These
+  # mirror flake.nix's nixConfig.extra-substituters, but declaring them at the
+  # system level means they're always used without needing --accept-flake-config.
+  # Without these, e.g. vicinae extensions are built locally (npm fetches) and fail.
+  nix.settings.extra-substituters = [
+    "https://hyprland.cachix.org"
+    "https://noctalia.cachix.org"
+    "https://vicinae.cachix.org"
+    "https://codex-cli.cachix.org"
+  ];
+  nix.settings.extra-trusted-public-keys = [
+    "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+    "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
+    "vicinae.cachix.org-1:1kDrfienkGHPYbkpNj1mWTr7Fm1+zcenzgTizIcI3oc="
+    "codex-cli.cachix.org-1:1Br3H1hHoRYG22n//cGKJOk3cQXgYobUel6O8DgSing="
+  ];
+
   nix.gc = {
     automatic = true;
     randomizedDelaySec = "45min";

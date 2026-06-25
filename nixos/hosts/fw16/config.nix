@@ -3,10 +3,6 @@
 let
   system = pkgs.stdenv.hostPlatform.system;
 
-  # thoriumPkgs = inputs.thorium.packages.${system};
-  # Wrap thorium so it always runs under Wayland/Ozone, no matter how it's
-  # launched. The package's .desktop calls the bare `thorium` (resolved from
-  # PATH), so wrapping this binary covers the CLI and every app launcher.
   thoriumPkgs = pkgs.symlinkJoin {
     name = "thorium-wayland";
     paths = [ inputs.custom-packages.packages.${system}.thorium-avx2 ];
@@ -16,6 +12,7 @@ let
         --add-flags "--enable-features=UseOzonePlatform --ozone-platform=wayland"
     '';
   };
+  codexPkgs = inputs.codex-cli.packages.${system};
   zenPkgs = inputs.zen-browser.packages.${system};
   gobrainPkgs = inputs.gobrain.packages.${system};
 in
@@ -32,6 +29,10 @@ in
       config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/nvim/lazy-lock.json";
     ".config/nvim/lazyvim.json".source =
       config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/nvim/lazyvim.json";
+
+    ".local/share/oculante/config.json".text = builtins.toJSON {
+      fit_image_on_window_resize = true;
+    };
 
     # ".local/bin/wl-color-picker" = {
     #   text = ''
@@ -145,8 +146,10 @@ in
     slides
     gource
     highlight
+    glow
     gobrainPkgs.default
     claude-code
+    codexPkgs.default
 
     # apps
     ## graphics & media
@@ -246,41 +249,42 @@ in
     mpv = true;
     vscode = true;
     zathura = true;
+    vicinae = true;
   };
 
   services = {
     ssh-agent.enable = true;
-    vicinae = {
-      enable = true;
-      systemd = {
-        enable = true;
-        autoStart = true;
-        environment = {
-          USE_LAYER_SHELL = 1;
-        };
-      };
-      settings = {
-        close_on_focus_loss = true;
-        font = {
-          normal = {
-            size = 12;
-          };
-        };
-        layer_shell = {
-          enabled = true;
-        };
-        favorites = [ ];
-      };
-      extensions = with inputs.vicinae-extensions.packages.${pkgs.stdenv.hostPlatform.system}; [
-        nix
-        power-profile
-        ssh
-        process-manager
-        hypr
-        nerdfont-search
-      ];
-      package = inputs.vicinae.packages.${system}.default;
-    };
+    # vicinae = {
+    #   enable = true;
+    #   systemd = {
+    #     enable = true;
+    #     autoStart = true;
+    #     environment = {
+    #       USE_LAYER_SHELL = 1;
+    #     };
+    #   };
+    #   settings = {
+    #     close_on_focus_loss = true;
+    #     font = {
+    #       normal = {
+    #         size = 12;
+    #       };
+    #     };
+    #     layer_shell = {
+    #       enabled = true;
+    #     };
+    #     favorites = [ ];
+    #   };
+    #   extensions = with inputs.vicinae-extensions.packages.${pkgs.stdenv.hostPlatform.system}; [
+    #     nix
+    #     power-profile
+    #     ssh
+    #     process-manager
+    #     hypr
+    #     nerdfont-search
+    #   ];
+    #   package = inputs.vicinae.packages.${system}.default;
+    # };
   };
 
   mimeApps = {

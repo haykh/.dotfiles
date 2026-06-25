@@ -43,8 +43,8 @@ let
 
   pythonPkgs = with pkgs; [
     python3
-    black
-    pyright
+    ruff
+    pyrefly
     taplo
     vscode-langservers-extracted
   ];

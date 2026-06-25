@@ -7,11 +7,13 @@
       "https://hyprland.cachix.org"
       "https://noctalia.cachix.org"
       "https://vicinae.cachix.org"
+      "https://codex-cli.cachix.org"
     ];
     extra-trusted-public-keys = [
       "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
       "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
       "vicinae.cachix.org-1:1kDrfienkGHPYbkpNj1mWTr7Fm1+zcenzgTizIcI3oc="
+      "codex-cli.cachix.org-1:1Br3H1hHoRYG22n//cGKJOk3cQXgYobUel6O8DgSing="
     ];
   };
 
@@ -39,10 +41,6 @@
       url = "github:Rishabh5321/custom-packages-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # thorium = {
-    #   url = "https://flakehub.com/f/Rishabh5321/thorium_flake/0.1.78";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
     zen-browser = {
       url = "github:youwen5/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -59,6 +57,9 @@
     };
     claude-code = {
       url = "github:sadjow/claude-code-nix";
+    };
+    codex-cli = {
+      url = "github:sadjow/codex-cli-nix";
     };
     hyprland = {
       url = "github:hyprwm/Hyprland";
@@ -108,6 +109,24 @@
             pkgs = import nixpkgs {
               system = settings.system;
               config.allowUnfree = true;
+              overlays = [
+                # openblas' checkPhase (ctest) hangs only in the 32-bit build that
+                # services.pipewire.alsa.support32Bit pulls in via pkgsi686Linux.
+                # Disable the self-tests for that 32-bit variant ONLY. Overriding
+                # the top-level openblas would change its hash and force a rebuild
+                # of the entire numpy/scipy/blas/paraview stack from source (cache
+                # miss); scoping to pkgsi686Linux keeps the native 64-bit openblas
+                # (and all its dependents) on the official binary cache.
+                # support32Bit stays enabled.
+                # https://discourse.nixos.org/t/openblas-i686-linux-hangs-in-checkphase-on-zblat3/78487
+                (final: prev: {
+                  pkgsi686Linux = prev.pkgsi686Linux.extend (
+                    final686: prev686: {
+                      openblas = prev686.openblas.overrideAttrs (_: { doCheck = false; });
+                    }
+                  );
+                })
+              ];
             };
             configuration = import ./hosts/fw16/config.nix { inherit inputs cfg pkgs; };
           in

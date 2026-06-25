@@ -18,7 +18,7 @@ let
   #   builtins.filter (name: builtins.hasAttr name all_desktop_entries) configuration.desktopEntries
   # );
   user_services = builtins.listToAttrs (
-    builtins.map (v: {
+    map (v: {
       name = v;
       value = import "${cwd}/services/${v}.nix" { inherit pkgs cfg; };
     }) configuration.userServices
@@ -34,7 +34,7 @@ in
 
   home.packages =
     configuration.packages
-    ++ builtins.map (
+    ++ map (
       p: pkgs.callPackage "${cwd}/derivations/${p}.nix" { inherit pkgs; }
     ) configuration.derivations;
 
@@ -63,8 +63,8 @@ in
       (
         prog: enable:
         (
-          if (builtins.pathExists ("${cwd}/modules/${prog}.nix")) then
-            (import ("${cwd}/modules/${prog}.nix") { inherit pkgs cfg; })
+          if builtins.pathExists "${cwd}/modules/${prog}.nix" then
+            (import "${cwd}/modules/${prog}.nix" { inherit pkgs inputs cfg; })
           else
             { }
         )
