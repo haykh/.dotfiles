@@ -105,27 +105,19 @@
             system = "x86_64-linux";
             config.allowUnfree = true;
             overlays = [
-              # openblas' checkPhase (ctest) hangs only in the 32-bit build that
+              # openblas checkPhase (ctest) hangs only in the 32-bit build that
               # services.pipewire.alsa.support32Bit pulls in via pkgsi686Linux.
-              # Disable the self-tests for that 32-bit variant ONLY. Overriding
-              # the top-level openblas would change its hash and force a rebuild
-              # of the entire numpy/scipy/blas/paraview stack from source (cache
-              # miss); scoping to pkgsi686Linux keeps the native 64-bit openblas
-              # (and all its dependents) on the official binary cache.
-              # support32Bit stays enabled.
               # https://discourse.nixos.org/t/openblas-i686-linux-hangs-in-checkphase-on-zblat3/78487
               (final: prev: {
                 pkgsi686Linux = prev.pkgsi686Linux.extend (
                   final686: prev686: {
-                    openblas = prev686.openblas.overrideAttrs (_: { doCheck = false; });
+                    openblas = prev686.openblas.overrideAttrs (_: {
+                      doCheck = false;
+                    });
                   }
                 );
               })
 
-              # claude-code overlay. Kept here (rather than a `nixpkgs.overlays`
-              # module) so it lands on the same pkgs that home-manager consumes
-              # via home-manager.useGlobalPkgs — that path reads the pkgs passed
-              # to nixosSystem, not config.nixpkgs.pkgs.
               inputs.claude-code.overlays.default
             ];
           };
