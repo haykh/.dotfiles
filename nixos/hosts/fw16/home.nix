@@ -38,7 +38,6 @@ in
   my.programs.fzf.enable = true;
   my.programs.git.enable = true;
   my.programs.delta.enable = true;
-  my.programs.direnv.enable = true;
   my.programs.neovim.enable = true;
   my.programs.ssh.enable = true;
   my.programs.fastfetch.enable = true;

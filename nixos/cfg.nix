@@ -38,14 +38,6 @@ rec {
     ppass = ''
       pass-cli item view "pass://accounts/$1/password" | tr -d "[:space:]" | wl-copy
     '';
-    # nixenv [shell]: pin a devShell to the current dir via direnv.
-    # Defaults to the "default" shell; e.g. `nixenv py`, `nixenv cuda-cpp`.
-    nixenv = ''
-      local shell="''${1:-default}"
-      echo "use flake ${dotfiles}/nixos#''${shell}" > .envrc
-      direnv allow
-      echo "pinned ''${shell} devShell to $(pwd)/.envrc"
-    '';
   };
   gtktheme = {
     accent = "#7295F6";
