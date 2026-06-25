@@ -1,0 +1,44 @@
+{
+  config,
+  lib,
+  ...
+}:
+
+let
+  this = config.my.programs.ghostty;
+in
+{
+
+  options.my.programs.ghostty.enable = lib.mkEnableOption "ghostty";
+
+  config = lib.mkIf this.enable {
+
+    programs.ghostty = {
+      enable = true;
+
+      enableZshIntegration = true;
+      settings = {
+        theme = "GitHub Dark Default";
+        font-family = [
+          "MonaspiceKr Nerd Font"
+          "Cascadia Code NF"
+        ];
+        font-family-italic = "MonaspiceRn Nerd Font";
+        font-style-italic = "MonaspiceRn NF";
+        cursor-invert-fg-bg = true;
+        cursor-opacity = 0.75;
+        window-decoration = "none";
+        background-opacity = 0.9;
+        background-blur = true;
+        keybind = [
+          "ctrl+shift+|=new_split:right"
+          "ctrl+shift+-=new_split:down"
+          "ctrl+shift+]=goto_split:right"
+          "ctrl+shift+[=goto_split:left"
+        ];
+      };
+    };
+
+  };
+
+}

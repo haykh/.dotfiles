@@ -80,166 +80,66 @@
   outputs =
     inputs@{
       nixpkgs,
-      nixos-wsl,
-      home-manager,
       ...
     }:
     let
       cfg = import ./cfg.nix { };
-      devSystem = "x86_64-linux";
-      devPkgs = import nixpkgs {
-        system = devSystem;
-        config.allowUnfree = true;
-      };
-      mkDev =
-        lang:
-        import ./shells/dev.nix {
-          pkgs = devPkgs;
-          inherit lang;
+
+      mkSystem =
+        { pkgs, modules }:
+        nixpkgs.lib.nixosSystem {
+          inherit pkgs;
+          system = pkgs.stdenv.hostPlatform.system;
+          specialArgs = {
+            inherit inputs cfg;
+            user = cfg.user;
+            home = cfg.home;
+          };
+          inherit modules;
         };
     in
     {
       nixosConfigurations = {
-        nixwrk =
-          let
-            settings = {
-              stateVersion = "24.11";
-              system = "x86_64-linux";
-            };
-            pkgs = import nixpkgs {
-              system = settings.system;
-              config.allowUnfree = true;
-              overlays = [
-                # openblas' checkPhase (ctest) hangs only in the 32-bit build that
-                # services.pipewire.alsa.support32Bit pulls in via pkgsi686Linux.
-                # Disable the self-tests for that 32-bit variant ONLY. Overriding
-                # the top-level openblas would change its hash and force a rebuild
-                # of the entire numpy/scipy/blas/paraview stack from source (cache
-                # miss); scoping to pkgsi686Linux keeps the native 64-bit openblas
-                # (and all its dependents) on the official binary cache.
-                # support32Bit stays enabled.
-                # https://discourse.nixos.org/t/openblas-i686-linux-hangs-in-checkphase-on-zblat3/78487
-                (final: prev: {
-                  pkgsi686Linux = prev.pkgsi686Linux.extend (
-                    final686: prev686: {
-                      openblas = prev686.openblas.overrideAttrs (_: { doCheck = false; });
-                    }
-                  );
-                })
-              ];
-            };
-            configuration = import ./hosts/fw16/config.nix { inherit inputs cfg pkgs; };
-          in
-          nixpkgs.lib.nixosSystem {
-            inherit pkgs;
-            system = settings.system;
-            specialArgs = {
-              inherit inputs cfg;
-              user = cfg.user;
-              home = cfg.home;
-            };
-            modules = [
-              inputs.nixos-hardware.nixosModules.framework-16-7040-amd
-              ./hosts/fw16/disks.nix
-              ./hosts/fw16/boot.nix
-              ./hosts/fw16.nix
-              {
-                system.stateVersion = settings.stateVersion;
-                nixpkgs.hostPlatform = settings.system;
-                programs.nix-ld.enable = true;
-                networking.hostName = "nixwrk";
-              }
-              ./hosts/global.nix
-              ./modules/kvm.nix
-              ./modules/locale.nix
-              (./modules + "/${configuration.desktop}.nix")
-              {
-                nixpkgs.overlays = [ inputs.claude-code.overlays.default ];
-              }
-              home-manager.nixosModules.home-manager
-              {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                home-manager.backupFileExtension = "bak";
-                home-manager.extraSpecialArgs = { inherit inputs cfg; };
-                # home-manager.sharedModules = [
-                #   inputs.plasma-manager.homeModules.plasma-manager
-                # ];
-                home-manager.users.${cfg.user} = (
-                  import ./home/home.nix {
-                    inherit inputs cfg configuration;
-                    stateVersion = settings.stateVersion;
+        nixwrk = mkSystem {
+          pkgs = import nixpkgs {
+            system = "x86_64-linux";
+            config.allowUnfree = true;
+            overlays = [
+              # openblas' checkPhase (ctest) hangs only in the 32-bit build that
+              # services.pipewire.alsa.support32Bit pulls in via pkgsi686Linux.
+              # Disable the self-tests for that 32-bit variant ONLY. Overriding
+              # the top-level openblas would change its hash and force a rebuild
+              # of the entire numpy/scipy/blas/paraview stack from source (cache
+              # miss); scoping to pkgsi686Linux keeps the native 64-bit openblas
+              # (and all its dependents) on the official binary cache.
+              # support32Bit stays enabled.
+              # https://discourse.nixos.org/t/openblas-i686-linux-hangs-in-checkphase-on-zblat3/78487
+              (final: prev: {
+                pkgsi686Linux = prev.pkgsi686Linux.extend (
+                  final686: prev686: {
+                    openblas = prev686.openblas.overrideAttrs (_: { doCheck = false; });
                   }
                 );
-              }
+              })
+
+              # claude-code overlay. Kept here (rather than a `nixpkgs.overlays`
+              # module) so it lands on the same pkgs that home-manager consumes
+              # via home-manager.useGlobalPkgs — that path reads the pkgs passed
+              # to nixosSystem, not config.nixpkgs.pkgs.
+              inputs.claude-code.overlays.default
             ];
           };
-        nixwsl =
-          let
-            settings = {
-              stateVersion = "24.11";
-              system = "x86_64-linux";
-            };
-          in
-          nixpkgs.lib.nixosSystem rec {
-            pkgs = import nixpkgs {
-              system = settings.system;
-              config.allowUnfree = true;
-              # config.cudaSupport = true;
-            };
-            system = settings.system;
-            specialArgs = {
-              inherit inputs;
-              user = cfg.user;
-              home = cfg.home;
-            };
-            modules = [
-              nixos-wsl.nixosModules.default
-              {
-                system.stateVersion = settings.stateVersion;
-                nixpkgs.hostPlatform = settings.system;
-                wsl.enable = true;
-                wsl.defaultUser = cfg.user;
-                networking.hostName = "nixwsl";
-              }
-              ./hosts/global.nix
-              { programs.nix-ld.enable = true; }
-              home-manager.nixosModules.home-manager
-              {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                home-manager.backupFileExtension = "bak";
-                home-manager.extraSpecialArgs = { inherit inputs cfg; };
-                home-manager.users.${cfg.user} = (
-                  import ./home/home.nix {
-                    inherit inputs cfg;
-                    stateVersion = settings.stateVersion;
-                    configuration = import ./hosts/wsl/config.nix { inherit inputs pkgs; };
-                  }
-                );
-              }
-            ];
+          modules = [ ./hosts/fw16 ];
+        };
+
+        nixwsl = mkSystem {
+          pkgs = import nixpkgs {
+            system = "x86_64-linux";
+            config.allowUnfree = true;
+            # config.cudaSupport = true;
           };
-      };
-
-      devShells.${devSystem} = {
-        default = mkDev null;
-
-        # single-language shells (see shells/envs.nix for available envs)
-        go = mkDev "go";
-        cpp = mkDev "cpp";
-        gl = mkDev "gl";
-        python = mkDev "python";
-        cuda = mkDev "cuda";
-        rocm = mkDev "rocm";
-        asm = mkDev "asm";
-        rust = mkDev "rust";
-
-        # common combinations
-        py-cpp = mkDev "python,cpp";
-        web = mkDev "web,gl,go";
-        cuda-cpp = mkDev "cuda,cpp";
-        rocm-cpp = mkDev "rocm,cpp";
+          modules = [ ./hosts/wsl ];
+        };
       };
     };
 

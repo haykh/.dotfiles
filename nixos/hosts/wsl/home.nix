@@ -1,0 +1,136 @@
+{
+  config,
+  pkgs,
+  cfg,
+  inputs,
+  ...
+}:
+
+let
+  system = pkgs.stdenv.hostPlatform.system;
+  nogoPkgs = inputs.nogo.packages.${system};
+  gobrainPkgs = inputs.gobrain.packages.${system};
+in
+{
+
+  imports = [
+    ../../modules/home # generic programs / configs / services
+  ];
+
+  # home modules enabled on this host
+  my.programs.zsh.enable = true;
+  my.programs.starship.enable = true;
+  my.programs.delta.enable = true;
+  my.programs.eza.enable = true;
+  my.programs.fzf.enable = true;
+  my.programs.git.enable = true;
+  my.programs.neovim.enable = true;
+  my.programs.ssh.enable = true;
+  my.programs.fastfetch.enable = true;
+
+  home.sessionVariables = {
+    EDITOR = "nvim";
+    # CUDA_PATH = "${pkgs.cudaPackages.cudatoolkit}";
+    LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
+      "/usr/lib/wsl"
+      # "${pkgs.cudaPackages.cudatoolkit}"
+      # "${pkgs.linuxPackages.nvidia_x11}"
+      "${pkgs.stdenv.cc.cc}"
+      "${pkgs.zlib}"
+    ];
+    # EXTRA_LDFLAGS = "-L/lib -L${pkgs.linuxPackages.nvidia_x11}/lib";
+    EXTRA_CCFLAGS = "-I/usr/include";
+  };
+
+  home.packages = with pkgs; [
+    # system
+    rclone
+    gnupg
+    zlib
+    glib
+    libGL
+    fontconfig
+    xorg.libX11
+    libxkbcommon
+    freetype
+    dbus
+
+    # compilers & managers
+    tree-sitter
+    cmake
+    gnumake
+    nodejs
+    rustup
+    luajitPackages.luarocks
+    # older lua compatible with certain nvim plugins
+    lua51Packages.lua
+    python312
+    libgcc
+    gcc
+
+    # formatters & language servers
+    ## nix
+    nixfmt-rfc-style
+    nil
+    ## lua
+    stylua
+    lua-language-server
+    ## shell
+    shfmt
+    bash-language-server
+
+    # cuda
+    # linuxPackages.nvidia_x11
+    # cudaPackages.cudatoolkit
+    # cudaPackages.cuda_cudart
+
+    # shell
+    fd
+    bc
+    jq
+    wget
+    curl
+    unzip
+    fzf
+    bat
+    tldr
+    ripgrep
+    lazygit
+    ffmpeg
+    imagemagick
+    chafa
+    libqalculate
+    gh
+    nogoPkgs.default
+    gobrainPkgs.default
+
+    wezterm
+
+    (pkgs.texlive.combine {
+      inherit (pkgs.texlive)
+        scheme-basic
+        dvisvgm
+        type1cm
+        xcolor
+        cm-super
+        underscore
+        dvipng
+        wrapfig
+        amsmath
+        ulem
+        hyperref
+        capt-of
+        ;
+    })
+
+    cascadia-code
+    nerd-fonts.monaspace
+    nerd-fonts.blex-mono
+    nerd-fonts.jetbrains-mono
+  ];
+
+  home.file.".config/nvim".source = config.lib.file.mkOutOfStoreSymlink "${cfg.dotfiles}/.config/nvim";
+
+  services.ssh-agent.enable = true;
+
+}
