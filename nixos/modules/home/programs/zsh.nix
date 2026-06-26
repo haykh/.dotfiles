@@ -50,6 +50,13 @@ in
         fpath+=$HOME/.zfunc
         fpath+=$HOME/.zsh/functions
         autoload compinit -Uz && compinit
+
+        # devenv's native-zsh integration hardcodes a "(devenv) " PROMPT prefix
+        # (.devenv/zsh/.zshrc) after sourcing this file; strip it each render
+        # since starship's nix_shell module already shows the devenv env.
+        autoload -Uz add-zsh-hook
+        _strip_devenv_prompt() { PROMPT="''${PROMPT#\(devenv\) }" }
+        add-zsh-hook precmd _strip_devenv_prompt
       ''
       + "\n"
       + (pkgs.lib.concatStringsSep "\n\n" (
