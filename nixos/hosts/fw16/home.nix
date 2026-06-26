@@ -46,6 +46,7 @@ in
   my.programs.vscode.enable = true;
   my.programs.zathura.enable = true;
   my.programs.vicinae.enable = true;
+  my.programs.yazi.enable = true;
   my.configs.gtk.enable = true;
 
   home.sessionVariables = {

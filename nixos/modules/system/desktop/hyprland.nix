@@ -33,6 +33,7 @@ in
       plugins = with pkgs; [
         thunar-volman
         thunar-archive-plugin
+        thunar-vcs-plugin
       ];
     };
     services.gvfs.enable = true;
@@ -42,6 +43,15 @@ in
     services.displayManager.sddm = {
       enable = true;
       theme = "pixie";
+      wayland = {
+        enable = true;
+      };
+      settings = {
+        Theme = {
+          CursorTheme = cfg.gtktheme.cursor.interface;
+          CursorSize = 32;
+        };
+      };
       package = pkgs.kdePackages.sddm;
       extraPackages = with pkgs.kdePackages; [
         qtsvg
@@ -68,10 +78,12 @@ in
     };
 
     environment.systemPackages = with pkgs; [
+      file-roller
       hyprpolkitagent
       qt6.qtwayland
 
       (inputs.pixie-sddm.packages.${pkgs.stdenv.hostPlatform.system}.pixie-sddm.override {
+        background = ../../../assets/wallpaper.jpg;
         accentColor = cfg.gtktheme.accent;
         avatar = ../../../assets/h.jpg;
         autoColor = true;
