@@ -22,6 +22,7 @@ let
   codexPkgs = inputs.codex-cli.packages.${system};
   zenPkgs = inputs.zen-browser.packages.${system};
   gobrainPkgs = inputs.gobrain.packages.${system};
+  toml2nixPkgs = inputs.toml2nix.packages.${system};
 in
 {
 
@@ -134,6 +135,7 @@ in
     gobrainPkgs.default
     claude-code
     codexPkgs.default
+    toml2nixPkgs.default
 
     # apps
     ## graphics & media
@@ -156,6 +158,7 @@ in
     portaudio
     gnome-text-editor
     mathematica
+    sniffnet
 
     turbovnc
 
