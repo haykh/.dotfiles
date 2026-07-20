@@ -195,6 +195,16 @@ in
         vrr = 1;
       };
 
+      cursor = {
+        # Hardware cursors live on a separate display-controller overlay plane
+        # and never enter the framebuffer, so PipeWire/xdg-portal screen capture
+        # (Zoom, OBS, etc.) records without the cursor. `2` = auto: keep hardware
+        # cursors normally, fall back to a software cursor only while a screencast
+        # is active — so the cursor shows up in shares without a perf cost the
+        # rest of the time. Set to `true` if a share still drops the cursor.
+        no_hardware_cursors = 2;
+      };
+
       input = {
         kb_layout = "us,ru";
         kb_variant = ",phonetic";
@@ -280,6 +290,15 @@ in
         ", XF86MonBrightnessDown, exec, ${pkgs.brightnessctl}/bin/brightnessctl set 10%-"
       ];
       bindl = [
+        # Lid: turn the internal panel off on close, back on when opened.
+        # logind treats an external monitor as "docked" (HandleLidSwitchDocked
+        # defaults to ignore), so with a monitor connected the machine won't
+        # suspend — this just blanks eDP-1. With no external monitor, logind
+        # still suspends per services.logind, so eDP-1 returns on resume.
+        # Device name comes from `hyprctl devices` (usually "Lid Switch").
+        '', switch:on:Lid Switch, exec, ${pkgs.hyprland}/bin/hyprctl keyword monitor "eDP-1, disable"''
+        '', switch:off:Lid Switch, exec, ${pkgs.hyprland}/bin/hyprctl keyword monitor "eDP-1, highrr, auto, 1.25"''
+
         ", XF86AudioMute, exec, ${pkgs.pamixer}/bin/pamixer -t"
         # media keys (MPRIS via playerctl) — locked so they work on lockscreen
         ", XF86AudioPlay, exec, ${pkgs.playerctl}/bin/playerctl play-pause"

@@ -179,7 +179,7 @@
           show_label = false;
         };
         cat = {
-          input_device = "/dev/input/event7";
+          input_devices = [ ];
           type = "noctalia/bongocat:cat";
         };
         clock = {
