@@ -9,7 +9,6 @@
     systemd.enable = true;
 
     settings = {
-      launch_apps_as_systemd_services = true;
       bar = {
         default = {
           background_opacity = 0.75;
@@ -80,9 +79,11 @@
         enabled = true;
         schema_version = 2;
         widget_order = [
+          "lockscreen-login-box@DP-3"
           "lockscreen-login-box@eDP-1"
           "lockscreen-widget-0000000000000001"
           "lockscreen-widget-0000000000000002"
+          "lockscreen-widget-0000000000000003"
         ];
         grid = {
           cell_size = 16;
@@ -90,21 +91,58 @@
           visible = true;
         };
         widget = {
-          "lockscreen-login-box@eDP-1" = {
-            box_height = 0.0;
-            box_width = 0.0;
-            cx = 1024.0;
-            cy = 1143.0;
-            output = "eDP-1";
+          "lockscreen-login-box@DP-3" = {
+            box_height = 196.0;
+            box_width = 720.0;
+            cx = 1536.0;
+            cy = 1609.0;
+            output = "DP-3";
+            placement_height = 0.0;
+            placement_width = 0.0;
             rotation = 0.0;
             type = "login_box";
             settings = {
               background_color = "surface_variant";
               background_opacity = 0.88;
               background_radius = 12.0;
+              center_password_text = false;
               input_opacity = 1.0;
               input_radius = 6.0;
+              layout = "regular";
+              show_caps_lock = true;
+              show_keyboard_layout = true;
               show_login_button = true;
+              show_media = true;
+              show_session_buttons = true;
+              show_unlock_hint = true;
+              show_weather = true;
+            };
+          };
+          "lockscreen-login-box@eDP-1" = {
+            box_height = 196.0;
+            box_width = 720.0;
+            cx = 1024.0;
+            cy = 1143.0;
+            output = "eDP-1";
+            placement_height = 1280.0;
+            placement_width = 2048.0;
+            rotation = 0.0;
+            type = "login_box";
+            settings = {
+              background_color = "surface_variant";
+              background_opacity = 0.88;
+              background_radius = 12.0;
+              center_password_text = false;
+              input_opacity = 1.0;
+              input_radius = 6.0;
+              layout = "compact";
+              show_caps_lock = true;
+              show_keyboard_layout = true;
+              show_login_button = true;
+              show_media = true;
+              show_session_buttons = true;
+              show_unlock_hint = true;
+              show_weather = false;
             };
           };
           lockscreen-widget-0000000000000001 = {
@@ -113,6 +151,8 @@
             cx = 1024.0;
             cy = 968.0;
             output = "eDP-1";
+            placement_height = 1280.0;
+            placement_width = 2048.0;
             rotation = 0.0;
             type = "clock";
             settings = {
@@ -127,10 +167,28 @@
             cx = 1024.0;
             cy = 1056.0;
             output = "eDP-1";
+            placement_height = 1280.0;
+            placement_width = 2048.0;
             rotation = 0.0;
             type = "weather";
             settings = {
               background = false;
+            };
+          };
+          lockscreen-widget-0000000000000003 = {
+            box_height = 0.0;
+            box_width = 0.0;
+            cx = 1024.0;
+            cy = 640.0;
+            output = "eDP-1";
+            placement_height = 1280.0;
+            placement_width = 2048.0;
+            rotation = 0.0;
+            type = "fancy_audio_visualizer";
+            settings = {
+              background = false;
+              fade_when_idle = false;
+              visualization_mode = "wave";
             };
           };
         };
@@ -142,7 +200,7 @@
         enabled = [ "noctalia/bongocat" ];
       };
       shell = {
-        ui_scale = 1.1;
+        launch_apps_as_systemd_services = true;
         panel = {
           open_near_click_control_center = true;
           transparency_mode = "glass";
@@ -186,7 +244,7 @@
           format = "{:%l:%M%P @ %d %h}";
         };
         cpu = {
-          display = "text";
+          show_value = true;
           stat = "cpu_temp";
         };
         media = {
@@ -197,11 +255,12 @@
           show_label = false;
         };
         ram = {
-          display = "text";
+          show_value = true;
         };
         sysmon = {
           capsule = true;
-          display = "graph";
+          visualization = "graph";
+          show_value = true;
         };
         tray = {
           capsule = true;
