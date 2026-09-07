@@ -33,6 +33,26 @@ let
   tidalScratchpad = makeScratchpad "tidal" "^(tidal-hifi)$" "tidal-hifi";
   filenScratchpad = makeScratchpadElectron "filen" "Filen" "filen-desktop";
 
+  # Lid handlers. Only blank the internal panel when an external monitor is
+  # connected (dock mode). If eDP-1 is the sole output we must NOT disable it —
+  # doing so leaves Hyprland with no output as logind suspends and the panel
+  # fails to relight on resume. In that case do nothing and let logind suspend.
+  lidClose = pkgs.writeShellScript "lid-close" ''
+    if ${pkgs.hyprland}/bin/hyprctl monitors -j \
+      | ${pkgs.jq}/bin/jq -e 'any(.[]; .name != "eDP-1")' >/dev/null; then
+      ${pkgs.hyprland}/bin/hyprctl keyword monitor "eDP-1, disable"
+    fi
+  '';
+  # Re-enable eDP-1 on open only if it is currently off (i.e. we disabled it for
+  # dock mode). This keeps a normal suspend/resume from re-initialising the
+  # output, which can retrigger the amdgpu DCN resume glitch.
+  lidOpen = pkgs.writeShellScript "lid-open" ''
+    if ! ${pkgs.hyprland}/bin/hyprctl monitors -j \
+      | ${pkgs.jq}/bin/jq -e 'any(.[]; .name == "eDP-1")' >/dev/null; then
+      ${pkgs.hyprland}/bin/hyprctl keyword monitor "eDP-1, highrr, auto, 1.25"
+    fi
+  '';
+
   workspaceBinds = lib.concatMap (n: [
     "SUPER, ${toString n}, workspace, ${toString n}"
     "SUPER SHIFT, ${toString n}, movetoworkspace, ${toString n}"
@@ -296,8 +316,8 @@ in
         # suspend — this just blanks eDP-1. With no external monitor, logind
         # still suspends per services.logind, so eDP-1 returns on resume.
         # Device name comes from `hyprctl devices` (usually "Lid Switch").
-        '', switch:on:Lid Switch, exec, ${pkgs.hyprland}/bin/hyprctl keyword monitor "eDP-1, disable"''
-        '', switch:off:Lid Switch, exec, ${pkgs.hyprland}/bin/hyprctl keyword monitor "eDP-1, highrr, auto, 1.25"''
+        '', switch:on:Lid Switch, exec, ${lidClose}''
+        '', switch:off:Lid Switch, exec, ${lidOpen}''
 
         ", XF86AudioMute, exec, ${pkgs.pamixer}/bin/pamixer -t"
         # media keys (MPRIS via playerctl) — locked so they work on lockscreen

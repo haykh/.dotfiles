@@ -116,6 +116,7 @@ in
     fd
     bc
     jq
+    lsof
     wget
     curl
     unzip

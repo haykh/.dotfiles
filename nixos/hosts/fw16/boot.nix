@@ -22,6 +22,10 @@
     "kvm-amd"
   ];
   boot.extraModulePackages = [ ];
+  # Disable PSR (0x10) and Panel Replay (0x400) on the DCN 3.1 display engine.
+  # Without this the panel intermittently fails to relight after suspend/DPMS,
+  # logging "REG_WAIT timeout ... dcn31_program_compbuf_size" — a known
+  # Framework 16 AMD (Phoenix) resume bug. Costs a little idle battery.
   # boot.kernelParams = pkgs.lib.mkAfter [
   #   "amdgpu.dcdebugmask=0x410"
   # ];
