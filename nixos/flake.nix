@@ -116,17 +116,6 @@
             system = "x86_64-linux";
             config.allowUnfree = true;
             overlays = [
-              # https://discourse.nixos.org/t/openblas-i686-linux-hangs-in-checkphase-on-zblat3/78487
-              (final: prev: {
-                pkgsi686Linux = prev.pkgsi686Linux.extend (
-                  final686: prev686: {
-                    openblas = prev686.openblas.overrideAttrs (_: {
-                      doCheck = false;
-                    });
-                  }
-                );
-              })
-
               # nixpkgs#447287
               (
                 final: prev:
