@@ -195,13 +195,14 @@ in
         bezier = [
           "easeInOut, 0.42, 0.0, 0.58, 1.0"
           "overshot, 0.05, 0.9, 0.1, 1.1"
+          "wspaceSlide, 0.25, 1, 0.5, 1"
         ];
         animation = [
           "windows, 1, 3, overshot, slide top"
           "windowsOut, 1, 3, overshot, slide top"
           "border, 1, 3, overshot"
           "fade, 1, 3, easeInOut"
-          "workspaces, 1, 3, overshot, slide"
+          "workspaces, 1, 3, wspaceSlide, slide"
           "specialWorkspace, 1, 3, overshot, slidefadevert 50%"
           "layersIn, 1, 2, easeInOut, fade"
           "layersOut, 1, 1, easeInOut, fade"
@@ -316,8 +317,8 @@ in
         # suspend — this just blanks eDP-1. With no external monitor, logind
         # still suspends per services.logind, so eDP-1 returns on resume.
         # Device name comes from `hyprctl devices` (usually "Lid Switch").
-        '', switch:on:Lid Switch, exec, ${lidClose}''
-        '', switch:off:Lid Switch, exec, ${lidOpen}''
+        ", switch:on:Lid Switch, exec, ${lidClose}"
+        ", switch:off:Lid Switch, exec, ${lidOpen}"
 
         ", XF86AudioMute, exec, ${pkgs.pamixer}/bin/pamixer -t"
         # media keys (MPRIS via playerctl) — locked so they work on lockscreen
