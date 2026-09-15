@@ -83,7 +83,6 @@
           "lockscreen-login-box@eDP-1"
           "lockscreen-widget-0000000000000001"
           "lockscreen-widget-0000000000000002"
-          "lockscreen-widget-0000000000000003"
         ];
         grid = {
           cell_size = 16;
@@ -149,7 +148,7 @@
             box_height = 80.0;
             box_width = 432.0;
             cx = 1024.0;
-            cy = 968.0;
+            cy = 768.0;
             output = "eDP-1";
             placement_height = 1280.0;
             placement_width = 2048.0;
@@ -165,7 +164,7 @@
             box_height = 64.0;
             box_width = 224.0;
             cx = 1024.0;
-            cy = 1056.0;
+            cy = 856.0;
             output = "eDP-1";
             placement_height = 1280.0;
             placement_width = 2048.0;
@@ -173,22 +172,6 @@
             type = "weather";
             settings = {
               background = false;
-            };
-          };
-          lockscreen-widget-0000000000000003 = {
-            box_height = 0.0;
-            box_width = 0.0;
-            cx = 1024.0;
-            cy = 640.0;
-            output = "eDP-1";
-            placement_height = 1280.0;
-            placement_width = 2048.0;
-            rotation = 0.0;
-            type = "fancy_audio_visualizer";
-            settings = {
-              background = false;
-              fade_when_idle = false;
-              visualization_mode = "wave";
             };
           };
         };
@@ -237,7 +220,11 @@
           show_label = false;
         };
         cat = {
-          input_devices = [ ];
+          # evtest-readable keyboards, matched by glob so hotplugging works:
+          # the built-in Framework keyboard module, any USB/dongle keyboard,
+          # and Bluetooth ones via the by-id symlink from the udev rule in
+          # hosts/fw16/hardware.nix. Needs `evtest` and membership of `input`.
+          input_devices = [ "/dev/input/by-id/*-event-kbd" ];
           type = "noctalia/bongocat:cat";
         };
         clock = {
