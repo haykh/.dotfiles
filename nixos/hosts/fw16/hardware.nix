@@ -48,6 +48,25 @@
     };
     fwupd.enable = true;
     udev.packages = [ pkgs.via ];
+
+    # Bluetooth keyboards attach as virtual `uhid` devices, so udev mints no
+    # /dev/input/by-id or by-path symlink for them at all. Noctalia's bongocat
+    # widget only accepts paths under those two directories (or a bare
+    # /dev/input/eventN, whose number shifts between boots), so give every
+    # Bluetooth keyboard a stable by-id link keyed on its HID vendor/product.
+    # Wired and USB-dongle keyboards already get one from udev's own rules.
+    # The vendor/product live on the parent inputN device, and $attr{} does not
+    # reliably reach a parent for a nested path like id/vendor, so stash them
+    # on the parent (where ATTR{} is its own attribute) and import them on the
+    # event node. ID_BUS/ID_INPUT_KEYBOARD are only set on the event node, so
+    # the parent rule filters on bustype 0005 (BUS_BLUETOOTH) instead. The
+    # third rule keeps a symlink appearing even if the import comes up empty.
+    udev.extraRules = ''
+      ACTION=="add|change", SUBSYSTEM=="input", KERNEL=="input*", ATTR{id/bustype}=="0005", ENV{BT_KBD_ID}="$attr{id/vendor}_$attr{id/product}"
+      ACTION=="add|change", SUBSYSTEM=="input", KERNEL=="event*", ENV{ID_BUS}=="bluetooth", ENV{ID_INPUT_KEYBOARD}=="1", IMPORT{parent}="BT_KBD_ID"
+      ACTION=="add|change", SUBSYSTEM=="input", KERNEL=="event*", ENV{ID_BUS}=="bluetooth", ENV{ID_INPUT_KEYBOARD}=="1", ENV{BT_KBD_ID}=="", ENV{BT_KBD_ID}="unknown"
+      ACTION=="add|change", SUBSYSTEM=="input", KERNEL=="event*", ENV{ID_BUS}=="bluetooth", ENV{ID_INPUT_KEYBOARD}=="1", SYMLINK+="input/by-id/bluetooth-$env{BT_KBD_ID}-event-kbd"
+    '';
     # prevent wake up in backpack
     # udev.extraRules = lib.mkAfter ''
     #   SUBSYSTEM=="usb", DRIVERS=="usb", ATTRS{idVendor}=="32ac", ATTRS{idProduct}=="0012", ATTR{power/wakeup}="disabled", ATTR{driver/1-1.1.1.4/power/wakeup}="disabled"
