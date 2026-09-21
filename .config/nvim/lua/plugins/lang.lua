@@ -40,7 +40,7 @@ return {
 				taplo = {},
 				jsonls = {},
 				yamlls = {},
-				-- tombi = {},
+				tombi = {},
 				-- markdown
 				markdown_oxide = {},
 				-- go
@@ -92,7 +92,7 @@ return {
 				typescriptreact = { "prettierd" },
 				css = { "prettierd" },
 				html = { "prettierd" },
-				toml = { "taplo" },
+				toml = { "tombi" },
 				json = { "eslint_d", "prettierd" },
 				yaml = { "prettierd" },
 				-- markdown = { "mdformat" },
