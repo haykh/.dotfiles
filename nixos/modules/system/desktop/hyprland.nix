@@ -48,7 +48,7 @@ in
       };
       settings = {
         Theme = {
-          CursorTheme = cfg.gtktheme.cursor.interface;
+          CursorTheme = cfg.theme.cursor.interface;
           CursorSize = 32;
         };
       };
@@ -84,7 +84,7 @@ in
 
       (inputs.pixie-sddm.packages.${pkgs.stdenv.hostPlatform.system}.pixie-sddm.override {
         background = ../../../assets/wallpaper.jpg;
-        accentColor = cfg.gtktheme.accent;
+        accentColor = cfg.theme.accent;
         avatar = ../../../assets/h.jpg;
         autoColor = true;
         fontFamily = "MonaspiceKr Nerd Font";

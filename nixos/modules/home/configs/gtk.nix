@@ -31,12 +31,12 @@ in
       # set, so they fell back to Adwaita.
       theme = themeAttr;
       iconTheme = {
-        name = cfg.gtktheme.icon.interface;
-        package = pkgs.${cfg.gtktheme.icon.pkg};
+        name = cfg.theme.icon.interface;
+        package = pkgs.${cfg.theme.icon.pkg};
       };
       cursorTheme = {
-        name = cfg.gtktheme.cursor.interface;
-        package = pkgs.${cfg.gtktheme.cursor.pkg};
+        name = cfg.theme.cursor.interface;
+        package = pkgs.${cfg.theme.cursor.pkg};
         size = 32;
       };
 

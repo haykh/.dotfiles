@@ -14,7 +14,7 @@
 
       background = [
         {
-          path = cfg.gtktheme.wallpaper;
+          path = cfg.theme.wallpaper;
           blur_passes = 3;
           blur_size = 8;
           contrast = 0.9;

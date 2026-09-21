@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ cfg, inputs, ... }:
 
 {
 
@@ -201,12 +201,12 @@
         };
       };
       wallpaper = {
-        directory = "/home/hayk/.dotfiles/wallpapers";
+        directory = "${cfg.dotfiles}/wallpapers";
         default = {
-          path = "/home/hayk/.dotfiles/wallpapers/blueish-sunrise.jpg";
+          path = cfg.theme.wallpaper;
         };
         last = {
-          path = "/home/hayk/.dotfiles/wallpapers/blueish-sunrise.jpg";
+          path = cfg.theme.wallpaper;
         };
       };
       widget = {

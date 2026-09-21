@@ -39,22 +39,24 @@ rec {
       pass-cli item view "pass://accounts/$1/password" | tr -d "[:space:]" | wl-copy
     '';
   };
-  gtktheme = {
+  theme = {
     accent = "#7295F6";
-    main = {
-      pkg = "fluent-gtk-theme";
-      interface = "Fluent-Dark";
-      env = "Fluent:dark";
+    cursor = {
+      pkg = "capitaine-cursors-themed";
+      interface = "Capitaine Cursors";
     };
     icon = {
       pkg = "fluent-icon-theme";
       interface = "Fluent-dark";
     };
-    cursor = {
-      pkg = "capitaine-cursors-themed";
-      interface = "Capitaine Cursors";
-    };
     wallpaper = "${dotfiles}/wallpapers/blueish-sunrise.jpg";
+  };
+  gtktheme = {
+    main = {
+      pkg = "fluent-gtk-theme";
+      interface = "Fluent-Dark";
+      env = "Fluent:dark";
+    };
   };
   kdetheme = {
     plasmaTheme = "Fluent-round-dark";

@@ -243,7 +243,7 @@ in
       gesture = "4, horizontal, workspace";
 
       env = [
-        "XCURSOR_THEME,${cfg.gtktheme.cursor.interface}"
+        "XCURSOR_THEME,${cfg.theme.cursor.interface}"
         "XCURSOR_SIZE,32"
         "GDK_BACKEND,wayland,x11"
         "QT_QPA_PLATFORM,wayland;xcb"
