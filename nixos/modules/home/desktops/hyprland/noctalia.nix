@@ -1,5 +1,92 @@
-{ cfg, inputs, ... }:
+{
+  cfg,
+  inputs,
+  lib,
+  ...
+}:
 
+let
+  # Internal-panel lock screen widgets. The panel's connector name flips
+  # between eDP-1 and eDP-2 depending on GPU enumeration order, so emit a
+  # copy for each.
+  laptopWidgets =
+    {
+      output,
+      clockId,
+      weatherId,
+    }:
+    {
+      "lockscreen-login-box@${output}" = {
+        box_height = 196.0;
+        box_width = 720.0;
+        cx = 1024.0;
+        cy = 1143.0;
+        inherit output;
+        placement_height = 1280.0;
+        placement_width = 2048.0;
+        rotation = 0.0;
+        type = "login_box";
+        settings = {
+          background_color = "surface_variant";
+          background_opacity = 0.88;
+          background_radius = 12.0;
+          center_password_text = false;
+          input_opacity = 1.0;
+          input_radius = 6.0;
+          layout = "compact";
+          show_caps_lock = true;
+          show_keyboard_layout = true;
+          show_login_button = true;
+          show_media = true;
+          show_session_buttons = true;
+          show_unlock_hint = true;
+          show_weather = false;
+        };
+      };
+      "${clockId}" = {
+        box_height = 80.0;
+        box_width = 432.0;
+        cx = 1024.0;
+        cy = 768.0;
+        inherit output;
+        placement_height = 1280.0;
+        placement_width = 2048.0;
+        rotation = 0.0;
+        type = "clock";
+        settings = {
+          background = false;
+          format = "{:%l:%M%P @ %d %h}";
+          shadow = true;
+        };
+      };
+      "${weatherId}" = {
+        box_height = 64.0;
+        box_width = 224.0;
+        cx = 1024.0;
+        cy = 856.0;
+        inherit output;
+        placement_height = 1280.0;
+        placement_width = 2048.0;
+        rotation = 0.0;
+        type = "weather";
+        settings = {
+          background = false;
+        };
+      };
+    };
+  laptopOutputs = [
+    {
+      output = "eDP-1";
+      clockId = "lockscreen-widget-0000000000000001";
+      weatherId = "lockscreen-widget-0000000000000002";
+    }
+    {
+      output = "eDP-2";
+      clockId = "lockscreen-widget-0000000000000003";
+      weatherId = "lockscreen-widget-0000000000000004";
+    }
+  ];
+in
 {
 
   imports = [ inputs.noctalia.homeModules.default ];
@@ -80,10 +167,12 @@
         schema_version = 2;
         widget_order = [
           "lockscreen-login-box@DP-3"
-          "lockscreen-login-box@eDP-1"
-          "lockscreen-widget-0000000000000001"
-          "lockscreen-widget-0000000000000002"
-        ];
+        ]
+        ++ lib.concatMap (o: [
+          "lockscreen-login-box@${o.output}"
+          o.clockId
+          o.weatherId
+        ]) laptopOutputs;
         grid = {
           cell_size = 16;
           major_interval = 4;
@@ -117,64 +206,8 @@
               show_weather = true;
             };
           };
-          "lockscreen-login-box@eDP-1" = {
-            box_height = 196.0;
-            box_width = 720.0;
-            cx = 1024.0;
-            cy = 1143.0;
-            output = "eDP-1";
-            placement_height = 1280.0;
-            placement_width = 2048.0;
-            rotation = 0.0;
-            type = "login_box";
-            settings = {
-              background_color = "surface_variant";
-              background_opacity = 0.88;
-              background_radius = 12.0;
-              center_password_text = false;
-              input_opacity = 1.0;
-              input_radius = 6.0;
-              layout = "compact";
-              show_caps_lock = true;
-              show_keyboard_layout = true;
-              show_login_button = true;
-              show_media = true;
-              show_session_buttons = true;
-              show_unlock_hint = true;
-              show_weather = false;
-            };
-          };
-          lockscreen-widget-0000000000000001 = {
-            box_height = 80.0;
-            box_width = 432.0;
-            cx = 1024.0;
-            cy = 768.0;
-            output = "eDP-1";
-            placement_height = 1280.0;
-            placement_width = 2048.0;
-            rotation = 0.0;
-            type = "clock";
-            settings = {
-              background = false;
-              format = "{:%l:%M%P @ %d %h}";
-              shadow = true;
-            };
-          };
-          lockscreen-widget-0000000000000002 = {
-            box_height = 64.0;
-            box_width = 224.0;
-            cx = 1024.0;
-            cy = 856.0;
-            output = "eDP-1";
-            placement_height = 1280.0;
-            placement_width = 2048.0;
-            rotation = 0.0;
-            type = "weather";
-            settings = {
-              background = false;
-            };
-          };
-        };
+        }
+        // lib.mergeAttrsList (map laptopWidgets laptopOutputs);
       };
       nightlight = {
         enabled = true;

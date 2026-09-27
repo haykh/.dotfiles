@@ -33,23 +33,28 @@ let
   tidalScratchpad = makeScratchpad "tidal" "^(tidal-hifi)$" "tidal-hifi";
   filenScratchpad = makeScratchpadElectron "filen" "Filen" "filen-desktop";
 
+  # Internal panel. The connector name flips between eDP-1 and eDP-2 depending
+  # on GPU enumeration order, so match it by EDID description instead.
+  internalPanel = "desc:BOE 0x0BC9";
+
   # Lid handlers. Only blank the internal panel when an external monitor is
-  # connected (dock mode). If eDP-1 is the sole output we must NOT disable it —
-  # doing so leaves Hyprland with no output as logind suspends and the panel
-  # fails to relight on resume. In that case do nothing and let logind suspend.
+  # connected (dock mode). If the panel is the sole output we must NOT disable
+  # it — doing so leaves Hyprland with no output as logind suspends and the
+  # panel fails to relight on resume. In that case do nothing and let logind
+  # suspend.
   lidClose = pkgs.writeShellScript "lid-close" ''
     if ${pkgs.hyprland}/bin/hyprctl monitors -j \
-      | ${pkgs.jq}/bin/jq -e 'any(.[]; .name != "eDP-1")' >/dev/null; then
-      ${pkgs.hyprland}/bin/hyprctl keyword monitor "eDP-1, disable"
+      | ${pkgs.jq}/bin/jq -e 'any(.[]; .name | startswith("eDP") | not)' >/dev/null; then
+      ${pkgs.hyprland}/bin/hyprctl keyword monitor "${internalPanel}, disable"
     fi
   '';
-  # Re-enable eDP-1 on open only if it is currently off (i.e. we disabled it for
-  # dock mode). This keeps a normal suspend/resume from re-initialising the
-  # output, which can retrigger the amdgpu DCN resume glitch.
+  # Re-enable the panel on open only if it is currently off (i.e. we disabled
+  # it for dock mode). This keeps a normal suspend/resume from re-initialising
+  # the output, which can retrigger the amdgpu DCN resume glitch.
   lidOpen = pkgs.writeShellScript "lid-open" ''
     if ! ${pkgs.hyprland}/bin/hyprctl monitors -j \
-      | ${pkgs.jq}/bin/jq -e 'any(.[]; .name == "eDP-1")' >/dev/null; then
-      ${pkgs.hyprland}/bin/hyprctl keyword monitor "eDP-1, highrr, auto, 1.25"
+      | ${pkgs.jq}/bin/jq -e 'any(.[]; .name | startswith("eDP"))' >/dev/null; then
+      ${pkgs.hyprland}/bin/hyprctl keyword monitor "${internalPanel}, highrr, auto, 1.25"
     fi
   '';
 
@@ -163,7 +168,7 @@ in
     settings = {
 
       monitor = [
-        "eDP-1,highrr,auto,1.25"
+        "${internalPanel},highrr,auto,1.25"
         ",preferred,auto,1.25"
       ];
 
@@ -314,8 +319,8 @@ in
         # Lid: turn the internal panel off on close, back on when opened.
         # logind treats an external monitor as "docked" (HandleLidSwitchDocked
         # defaults to ignore), so with a monitor connected the machine won't
-        # suspend — this just blanks eDP-1. With no external monitor, logind
-        # still suspends per services.logind, so eDP-1 returns on resume.
+        # suspend — this just blanks the internal panel. With no external monitor, logind
+        # still suspends per services.logind, so the panel returns on resume.
         # Device name comes from `hyprctl devices` (usually "Lid Switch").
         ", switch:on:Lid Switch, exec, ${lidClose}"
         ", switch:off:Lid Switch, exec, ${lidOpen}"

@@ -18,7 +18,11 @@ rec {
     vi = "nvim";
     vim = "nvim";
     ff = "fastfetch -l linux";
-    nixbuild = "sudo nixos-rebuild switch --flake ${dotfiles}/nixos#$(hostname)";
+    # --accept-flake-config: flake.nix's nixConfig duplicates the substituters
+    # already in nix.settings (see modules/system/global.nix). Without this, nix
+    # asks *root* to approve them and silently blocks on the prompt, which the
+    # progress bar paints over -- it looks like a hang on "querying ... cachix.org".
+    nixbuild = "sudo nixos-rebuild switch --flake ${dotfiles}/nixos#$(hostname) --accept-flake-config";
     nixupd = "nix flake update --flake ${dotfiles}/nixos";
     nixcfg = "$EDITOR ${dotfiles}/nixos/";
     cat = "bat -pp --theme=TwoDark";

@@ -17,6 +17,13 @@
     user
   ];
 
+  # Don't let one slow/unreachable substituter stall the whole build: nix's
+  # stalled-download-timeout defaults to 300s, and fallback=false turns a cache
+  # failure into a hard error instead of a local build.
+  nix.settings.connect-timeout = 5;
+  nix.settings.stalled-download-timeout = 20;
+  nix.settings.fallback = true;
+
   # Binary caches for flake inputs (vicinae, hyprland, noctalia, codex). These
   # mirror flake.nix's nixConfig.extra-substituters, but declaring them at the
   # system level means they're always used without needing --accept-flake-config.
