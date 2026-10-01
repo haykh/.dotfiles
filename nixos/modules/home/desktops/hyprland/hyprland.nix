@@ -169,7 +169,9 @@ in
 
       monitor = [
         "${internalPanel},highrr,auto,1.25"
-        ",preferred,auto,1.25"
+        # highres = max resolution, then max refresh rate at that resolution.
+        # `preferred` would follow the EDID, which often advertises 60Hz.
+        ",highres,auto,1.25"
       ];
 
       general = {
