@@ -23,6 +23,7 @@ let
   zenPkgs = inputs.zen-browser.packages.${system};
   gobrainPkgs = inputs.gobrain.packages.${system};
   toml2nixPkgs = inputs.toml2nix.packages.${system};
+  devenvPkgs = inputs.devenv.packages.${system};
 in
 {
 
@@ -69,7 +70,7 @@ in
     libinput-gestures
     ydotool
     xdotool
-    devenv
+    devenvPkgs.devenv
     zip
     pkg-config
     udev
