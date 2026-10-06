@@ -73,6 +73,12 @@
       url = "github:hyprwm/hyprland-plugins";
       inputs.hyprland.follows = "hyprland";
     };
+    # hyprexpo was dropped from hyprland-plugins; this is the maintained fork.
+    # The hyprland-git branch tracks Hyprland master (which we follow).
+    hyprexpo = {
+      url = "github:sandwichfarm/hyprexpo/hyprland-git";
+      inputs.hyprland.follows = "hyprland";
+    };
     pixie-sddm = {
       url = "github:xCaptaiN09/pixie-sddm";
       inputs.nixpkgs.follows = "nixpkgs";

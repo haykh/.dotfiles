@@ -26,6 +26,7 @@ in
     ./noctalia.nix
     ./hypridle.nix
     ./minimize.nix
+    ./hyprexpo.nix
   ];
 
   home.packages = with pkgs; [

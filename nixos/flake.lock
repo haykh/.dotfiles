@@ -436,6 +436,32 @@
         "type": "github"
       }
     },
+    "hyprexpo": {
+      "inputs": {
+        "hyprland": [
+          "hyprland"
+        ],
+        "nixpkgs": [
+          "hyprexpo",
+          "hyprland",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1791128942,
+        "narHash": "sha256-V4vnx85EaegNBgbOsKhgXwTuIn67jAG0iumFDOJC84g=",
+        "owner": "sandwichfarm",
+        "repo": "hyprexpo",
+        "rev": "6e98b08981feb0206ff542e834c863440ca951da",
+        "type": "github"
+      },
+      "original": {
+        "owner": "sandwichfarm",
+        "ref": "hyprland-git",
+        "repo": "hyprexpo",
+        "type": "github"
+      }
+    },
     "hyprgraphics": {
       "inputs": {
         "hyprutils": [
@@ -1178,6 +1204,7 @@
         "devenv": "devenv",
         "gobrain": "gobrain",
         "home-manager": "home-manager",
+        "hyprexpo": "hyprexpo",
         "hyprland": "hyprland",
         "hyprland-plugins": "hyprland-plugins",
         "nixos-hardware": "nixos-hardware",
