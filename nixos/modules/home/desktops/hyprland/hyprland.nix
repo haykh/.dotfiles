@@ -69,7 +69,7 @@ let
     (floatCenter "zathura" "org.pwmt.zathura")
     (floatCenter "text-editor" "org.gnome.TextEditor")
     (floatCenter "mpv" "mpv")
-    (floatCenter "wolfram" "^(com.wolfram.Wolfram\\..*)")
+    (floatCenterDialog "wolfram" "^(com.wolfram.Wolfram\\..*)" ".*")
 
     (floatCenterTitled "thunar" "^(.* - Thunar)$" "^([Tt]hunar)$")
     (floatCenterDialog "thunar-progress" "^([Tt]hunar)$" "^(File Operation Progress)$")
@@ -157,7 +157,6 @@ in
         hl.exec_cmd(${lua "${pkgs.blueman}/bin/blueman-applet"})
         hl.exec_cmd(${lua "${pkgs.wl-clipboard}/bin/wl-paste --watch ${pkgs.cliphist}/bin/cliphist store"})
         hl.exec_cmd("systemctl --user start hyprpolkitagent")
-        hl.exec_cmd("uwsm app -- noctalia")
       end)
 
       -----------------------

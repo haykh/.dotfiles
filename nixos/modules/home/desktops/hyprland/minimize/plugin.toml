@@ -1,0 +1,22 @@
+# Bar widget listing windows minimized to Hyprland's special:minimized
+# workspace. Click an icon to restore that window (floating, centered) onto the
+# current workspace; click the capsule itself to peek at all of them.
+#
+# Installed as a local plugin (~/.local/share/noctalia/plugins/minimized) by
+# ../minimize.nix, whose Hyprland Lua defines the `Minimize` functions this
+# widget calls.
+
+id = "hayk/minimized"
+name = "Minimized Windows"
+version = "1.0.0"
+plugin_api = 32
+author = "hayk"
+license = "MIT"
+dependencies = []
+icon = "app-window"
+description = "Shows Hyprland windows minimized to special:minimized and restores them on click."
+tags = ["hyprland", "bar"]
+
+[[widget]]
+id = "minimized"
+entry = "widget.luau"

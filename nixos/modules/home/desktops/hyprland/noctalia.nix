@@ -119,6 +119,7 @@ in
           scale = 1.2;
           start = [
             "workspaces"
+            "minimized"
             "media"
             "audio_visualizer"
           ];
@@ -213,7 +214,10 @@ in
         enabled = true;
       };
       plugins = {
-        enabled = [ "noctalia/bongocat" ];
+        enabled = [
+          "noctalia/bongocat"
+          "hayk/minimized" # local plugin, see ./minimize.nix
+        ];
       };
       shell = {
         launch_apps_as_systemd_services = true;
@@ -259,6 +263,9 @@ in
           # hosts/fw16/hardware.nix. Needs `evtest` and membership of `input`.
           input_devices = [ "/dev/input/by-id/*-event-kbd" ];
           type = "noctalia/bongocat:cat";
+        };
+        minimized = {
+          type = "hayk/minimized:minimized";
         };
         clock = {
           format = "{:%l:%M%P @ %d %h}";
