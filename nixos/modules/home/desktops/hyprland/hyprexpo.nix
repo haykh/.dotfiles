@@ -44,19 +44,20 @@ in
       hl.config({
         plugin = {
           hyprexpo = {
-            columns = 3,
-            gaps_in = 5,
-            gaps_out = 0,
-            bg_col = "rgb(131d2b)",
-            workspace_method = "center current",
+            dynamic_grid = 1,
+            fill_gaps = 0,
+            mru_sort = 0,
             gesture_distance = 300,
+            label_pos = "top_right",
+            label_size = 48,
             cancel_key = "escape",
+            bg_col = "rgb(131d2b)",
             keynav_enable = 1,
           },
         },
       })
 
-      hl.bind("SUPER + W", function() hl.plugin.hyprexpo.expo("toggle") end)
+      hl.bind("SUPER + W", function() hl.plugin.hyprexpo.expo("toggle all") end)
 
       hl.plugin.hyprexpo.gesture({ fingers = 4, direction = "up", action = "expo" })
       hl.plugin.hyprexpo.gesture({ fingers = 4, direction = "down", action = "cancel" })

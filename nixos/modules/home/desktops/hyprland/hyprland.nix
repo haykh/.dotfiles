@@ -125,7 +125,10 @@ in
       ------------------
 
       local internalPanel = ${lua internalPanel}
-      local internalMode = { output = internalPanel, mode = "highrr", position = "auto", scale = "1.25" }
+      -- `disabled = false` matters: a runtime hl.monitor() updates the output's
+      -- existing rule rather than replacing it, so lidOpen would otherwise
+      -- keep the `disabled = true` that lidClose set.
+      local internalMode = { output = internalPanel, mode = "highrr", position = "auto", scale = "1.25", disabled = false }
 
       hl.monitor(internalMode)
       -- Desk Dells (same model, so match by serial). Positions are in logical
@@ -218,6 +221,8 @@ in
           kb_options = "grp:win_space_toggle",
           numlock_by_default = true,
           follow_mouse = 1,
+          sensitivity = -0.3,
+          accel_profile = "flat",
           touchpad = {
             natural_scroll = true,
             scroll_factor = 0.2,
@@ -228,6 +233,17 @@ in
           force_zero_scaling = true,
         },
       })
+
+      -- recover the settings for the touchpad
+      for _, d in ipairs(hl.get_devices()) do
+        if d.type == "pointer" and d.name:find("touchpad") then
+          hl.device({
+            name = d.name,
+            sensitivity = 0.0,
+            accel_profile = "adaptive",
+          })
+        end
+      end
 
       hl.curve("easeInOut", { type = "bezier", points = { { 0.42, 0.0 }, { 0.58, 1.0 } } })
       hl.curve("overshot", { type = "bezier", points = { { 0.05, 0.9 }, { 0.1, 1.1 } } })
@@ -297,6 +313,20 @@ in
         if not hasInternal() then
           hl.monitor(internalMode)
         end
+      end
+
+      local function lidClosed()
+        local f = io.open("/proc/acpi/button/lid/LID0/state")
+        if not f then return false end
+        local s = f:read("*a")
+        f:close()
+        return s:find("closed") ~= nil
+      end
+
+      -- Same dock-mode rule as the lid switch: only blank the panel if an
+      -- external output exists, so we never end up with no outputs.
+      local function syncLid()
+        if lidClosed() then lidClose() end
       end
 
       -- Resize the active window to 90% of the monitor (logical px) and center it.
@@ -369,6 +399,9 @@ in
       local locked = { locked = true }
       hl.bind("switch:on:Lid Switch", lidClose, locked)
       hl.bind("switch:off:Lid Switch", lidOpen, locked)
+      hl.on("hyprland.start", syncLid)     -- logging in with the lid already shut
+      hl.on("config.reloaded", syncLid)    -- undoes the hl.monitor(internalMode) above
+      hl.on("monitor.added", syncLid)      -- docking while the lid is closed
 
       hl.bind("XF86AudioMute", hl.dsp.exec_cmd(${lua "${pkgs.pamixer}/bin/pamixer -t"}), locked)
       -- media keys (MPRIS via playerctl) — locked so they work on lockscreen

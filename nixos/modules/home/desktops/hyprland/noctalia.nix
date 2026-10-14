@@ -163,6 +163,9 @@ in
       location = {
         auto_locate = true;
       };
+      lockscreen = {
+        transition_duration = 0;
+      };
       lockscreen_widgets = {
         enabled = true;
         schema_version = 2;

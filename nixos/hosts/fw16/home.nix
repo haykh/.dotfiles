@@ -75,6 +75,7 @@ in
     pkg-config
     udev
     evtest
+    systemd-manager-tui
 
     # kde
     # kdePackages.sddm-kcm
@@ -84,6 +85,7 @@ in
     # hardware controllers
     brightnessctl
     pamixer
+    portaudio
 
     # compilers & managers
     tree-sitter
@@ -157,7 +159,6 @@ in
     proton-vpn-cli
     proton-pass
     filen-desktop
-    portaudio
     gnome-text-editor
     (mathematica.override {
       versionInfo = {

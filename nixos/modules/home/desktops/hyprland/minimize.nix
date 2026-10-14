@@ -34,6 +34,13 @@
       hl.exec_cmd("noctalia msg plugin hayk/minimized:minimized all refresh " .. (closing or ""))
     end
 
+    -- Minimized windows by address, so unrelated window events don't spawn a
+    -- bar refresh.
+    local parked = {}
+    for _, w in ipairs(minimizedWindows()) do
+      parked[w.address] = true
+    end
+
     local function overlayOpen()
       local special = hl.get_active_special_workspace()
       return special ~= nil and special.name == minimizedWs
@@ -63,6 +70,9 @@
       local sel = "address:" .. address
       local w = hl.get_window(sel)
       if w == nil then
+        -- Already gone; drop the stale bar icon that was clicked.
+        parked[address] = nil
+        refreshBar()
         return
       end
       -- Close the overlay first so the window lands on the regular workspace.
@@ -112,13 +122,7 @@
     end)
 
     -- Keep the bar in sync with every way a window enters or leaves the
-    -- minimized workspace (our dispatches above included). `parked` tracks
-    -- the minimized windows so unrelated moves don't spawn a refresh.
-    local parked = {}
-    for _, w in ipairs(minimizedWindows()) do
-      parked[w.address] = true
-    end
-
+    -- minimized workspace (our dispatches above included).
     hl.on("window.move_to_workspace", function(w, ws)
       if ws.name == minimizedWs then
         parked[w.address] = true
@@ -133,6 +137,21 @@
       if parked[w.address] then
         parked[w.address] = nil
         refreshBar(w.address)
+      end
+    end)
+
+    -- Some apps (e.g. Mathematica on quit) destroy windows without a
+    -- window.close. The window is gone by now, so sweep for missing ones.
+    hl.on("window.destroy", function()
+      local changed = false
+      for address in pairs(parked) do
+        if hl.get_window("address:" .. address) == nil then
+          parked[address] = nil
+          changed = true
+        end
+      end
+      if changed then
+        refreshBar()
       end
     end)
   '';

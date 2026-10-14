@@ -101,6 +101,11 @@
     };
   };
 
+  # noctalia's lockscreen authenticates passwords via the `login` PAM service
+  # and handles the fingerprint itself over D-Bus. With pam_fprintd in that
+  # stack, a typed password only succeeds after fprintd's ~30s timeout.
+  security.pam.services.login.fprintAuth = false;
+
   environment.etc."wpa_supplicant/eduroam-ca.cer".source = ../../assets/eduroam-ca.cer;
   environment.systemPackages = with pkgs; [
     amdgpu_top
