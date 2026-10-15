@@ -17,40 +17,35 @@
     user
   ];
 
-  # Don't let one slow/unreachable substituter stall the whole build: nix's
-  # stalled-download-timeout defaults to 300s, and fallback=false turns a cache
-  # failure into a hard error instead of a local build.
   nix.settings.connect-timeout = 5;
   nix.settings.stalled-download-timeout = 20;
   nix.settings.fallback = true;
 
-  # Binary caches for flake inputs (vicinae, hyprland, noctalia, codex). These
-  # mirror flake.nix's nixConfig.extra-substituters, but declaring them at the
-  # system level means they're always used without needing --accept-flake-config.
-  # Without these, e.g. vicinae extensions are built locally (npm fetches) and fail.
   nix.settings.extra-substituters = [
     "https://hyprland.cachix.org"
     "https://noctalia.cachix.org"
     "https://vicinae.cachix.org"
     "https://codex-cli.cachix.org"
+    "https://devenv.cachix.org"
   ];
   nix.settings.extra-trusted-public-keys = [
     "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
     "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
     "vicinae.cachix.org-1:1kDrfienkGHPYbkpNj1mWTr7Fm1+zcenzgTizIcI3oc="
     "codex-cli.cachix.org-1:1Br3H1hHoRYG22n//cGKJOk3cQXgYobUel6O8DgSing="
+    "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
   ];
+
+  nix.settings.keep-outputs = true;
 
   nix.gc = {
     automatic = true;
+    dates = "weekly";
     randomizedDelaySec = "45min";
     options = "--delete-older-than 30d";
   };
 
   networking.networkmanager.enable = true;
-  # Proton VPN's app connects by importing an OpenVPN config into NetworkManager.
-  # Without the NM OpenVPN plugin, the import raises NotImplementedError and the
-  # app shows "unexpected error occurred". WireGuard support is native to NM.
   networking.networkmanager.plugins = [ pkgs.networkmanager-openvpn ];
   # Don't let NetworkManager manage docker/container virtual interfaces.
   # Otherwise NM tracks docker0 and may try to activate wifi profiles on it

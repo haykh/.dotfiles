@@ -231,6 +231,26 @@ in
         screen_corners = {
           enabled = true;
         };
+        # Noctalia has no built-in hibernate action; defining the list
+        # replaces the defaults, so the stock five are restated here.
+        session.actions = [
+          { action = "lock"; shortcut = "1"; }
+          { action = "logout"; shortcut = "2"; }
+          { action = "lock_and_suspend"; shortcut = "3"; }
+          {
+            action = "command";
+            label = "Hibernate";
+            glyph = "hibernate";
+            command = "systemctl hibernate";
+            shortcut = "4";
+          }
+          { action = "reboot"; shortcut = "5"; }
+          {
+            action = "shutdown";
+            variant = "destructive";
+            shortcut = "6";
+          }
+        ];
       };
       theme = {
         source = "wallpaper";
