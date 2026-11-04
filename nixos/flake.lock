@@ -851,6 +851,26 @@
         "type": "github"
       }
     },
+    "nix-craftapps": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1793769822,
+        "narHash": "sha256-XI2PjNf+0ER6l/jb3H+8D1LQ86SUxYtz0JcUGznkn1I=",
+        "owner": "olafkfreund",
+        "repo": "nix-craftapps",
+        "rev": "39517def9e0fedb065d3696bc1901c67b27288b1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "olafkfreund",
+        "repo": "nix-craftapps",
+        "type": "github"
+      }
+    },
     "nixd": {
       "inputs": {
         "flake-parts": [
@@ -1207,6 +1227,7 @@
         "hyprexpo": "hyprexpo",
         "hyprland": "hyprland",
         "hyprland-plugins": "hyprland-plugins",
+        "nix-craftapps": "nix-craftapps",
         "nixos-hardware": "nixos-hardware",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs_7",

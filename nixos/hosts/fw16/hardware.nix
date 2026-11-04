@@ -66,6 +66,13 @@
       ACTION=="add|change", SUBSYSTEM=="input", KERNEL=="event*", ENV{ID_BUS}=="bluetooth", ENV{ID_INPUT_KEYBOARD}=="1", IMPORT{parent}="BT_KBD_ID"
       ACTION=="add|change", SUBSYSTEM=="input", KERNEL=="event*", ENV{ID_BUS}=="bluetooth", ENV{ID_INPUT_KEYBOARD}=="1", ENV{BT_KBD_ID}=="", ENV{BT_KBD_ID}="unknown"
       ACTION=="add|change", SUBSYSTEM=="input", KERNEL=="event*", ENV{ID_BUS}=="bluetooth", ENV{ID_INPUT_KEYBOARD}=="1", SYMLINK+="input/by-id/bluetooth-$env{BT_KBD_ID}-event-kbd"
+
+      # The dGPU (0000:03:00.0) misses DisplayPort hotplug while runtime-suspended
+      # in D3cold, so a monitor plugged into its rear port stays undetected.
+      # Reading its config space runtime-resumes it, and amdgpu re-probes its
+      # connectors on resume (an active display then keeps it awake). USB-C
+      # monitors and docks enumerate their USB hub on plug, so poke it then.
+      ACTION=="add", SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", RUN+="${pkgs.coreutils}/bin/dd if=/sys/bus/pci/devices/0000:03:00.0/config of=/dev/null bs=64 count=1 status=none"
     '';
     # prevent wake up in backpack
     # udev.extraRules = lib.mkAfter ''
@@ -75,15 +82,17 @@
     fprintd.enable = true;
     power-profiles-daemon.enable = true;
 
-    # Power button (single press) hibernates; lid close suspends. A long press
+    # Power button (single press) hibernates; lid close suspends, then
+    # hibernates after HibernateDelaySec (s2idle sometimes fails to reach the
+    # deepest state after undocking and keeps the machine warm). A long press
     # still powers off. Hibernate uses the swap partition (boot.resumeDevice
     # below) — note swap (~30G) < RAM (38G), so hibernate can fail if in-use
     # memory exceeds the swap size.
     logind.settings.Login = {
       HandlePowerKey = "hibernate";
       HandlePowerKeyLongPress = "poweroff";
-      HandleLidSwitch = "suspend";
-      HandleLidSwitchExternalPower = "suspend";
+      HandleLidSwitch = "suspend-then-hibernate";
+      HandleLidSwitchExternalPower = "suspend-then-hibernate";
     };
     printing = {
       enable = true;
@@ -104,6 +113,9 @@
   # noctalia's lockscreen authenticates passwords via the `login` PAM service
   # and handles the fingerprint itself over D-Bus. With pam_fprintd in that
   # stack, a typed password only succeeds after fprintd's ~30s timeout.
+  # Delay before a lid-close suspend gives way to hibernate (see logind above).
+  systemd.sleep.settings.Sleep.HibernateDelaySec = "30min";
+
   security.pam.services.login.fprintAuth = false;
 
   environment.etc."wpa_supplicant/eduroam-ca.cer".source = ../../assets/eduroam-ca.cer;

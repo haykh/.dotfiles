@@ -31,7 +31,6 @@ in
         };
       };
       settings = {
-        close_on_focus_loss = true;
         font = {
           normal = {
             size = 12;
@@ -39,6 +38,8 @@ in
         };
         layer_shell = {
           enabled = true;
+          keyboard_interactivity = "exclusive";
+          layer = "overlay";
         };
         favorites = [ ];
       };

@@ -19,6 +19,38 @@ let
         --add-flags "--enable-features=UseOzonePlatform --ozone-platform=wayland"
     '';
   };
+  # Cycles+HIP segfaults on device init: blender loads OSL's libclang-cpp 19
+  # first, which interposes vague-linkage symbols (pass vtables) of ROCm's
+  # libLLVM 22 when comgr compiles clr's blit kernels. A copy of libLLVM 22
+  # flagged DT_SYMBOLIC (replacing its FLAGS_1=NODELETE entry) binds to itself.
+  rocmLlvm = pkgs.pkgsRocm.rocmPackages.llvm.llvm.lib;
+  rocmLlvmSymbolic =
+    pkgs.runCommand "libLLVM-rocm-symbolic" { nativeBuildInputs = [ pkgs.python3 ]; }
+      ''
+        mkdir -p $out/lib
+        install -m644 ${rocmLlvm}/lib/libLLVM.so.* $out/lib/
+        python3 - $out/lib/libLLVM.so.*.* <<'EOF'
+        import struct, sys
+        p = sys.argv[1]; b = bytearray(open(p, 'rb').read())
+        shoff, = struct.unpack_from('<Q', b, 0x28)
+        shentsize, shnum = struct.unpack_from('<HH', b, 0x3A)
+        for i in range(shnum):
+            o = shoff + i * shentsize
+            if struct.unpack_from('<I', b, o + 4)[0] == 6:  # SHT_DYNAMIC
+                off, size = struct.unpack_from('<QQ', b, o + 0x18)
+        tags = [struct.unpack_from('<q', b, off + j)[0] for j in range(0, size, 16)]
+        struct.pack_into('<qQ', b, off + 16 * tags.index(0x6ffffffb), 16, 0)  # FLAGS_1 -> SYMBOLIC
+        open(p, 'wb').write(b)
+        EOF
+      '';
+  blenderPkgs = pkgs.symlinkJoin {
+    name = "blender-rocm";
+    paths = [ pkgs.pkgsRocm.blender ];
+    nativeBuildInputs = [ pkgs.makeWrapper ];
+    postBuild = ''
+      wrapProgram $out/bin/blender --prefix LD_LIBRARY_PATH : ${rocmLlvmSymbolic}/lib
+    '';
+  };
   codexPkgs = inputs.codex-cli.packages.${system};
   zenPkgs = inputs.zen-browser.packages.${system};
   gobrainPkgs = inputs.gobrain.packages.${system};
@@ -144,11 +176,8 @@ in
     # apps
     ## graphics & media
     godot
-    pkgsRocm.blender
+    blenderPkgs
     freecad
-    gimp3-with-plugins
-    inkscape-with-extensions
-    libreoffice-qt6-fresh
     oculante
     tidal-hifi
     turbovnc
@@ -170,6 +199,22 @@ in
       };
     })
     sniffnet
+    # (appimageTools.wrapType2 rec {
+    #   pname = "pdfcraft";
+    #   version = "0.14.0";
+    #   src = fetchurl {
+    #     url = "https://github.com/storytold/pdfcraft/releases/download/v${version}/pdfcraft-${version}-linux-x86_64.AppImage";
+    #     hash = "sha256-oRUTLrmqXu1RCk6FqleFyB5mkHaSA0FVBqGkst0BEZA=";
+    #   };
+    #   extraInstallCommands =
+    #     let
+    #       contents = appimageTools.extract { inherit pname version src; };
+    #     in
+    #     ''
+    #       mkdir -p $out/share
+    #       cp -r ${contents}/usr/share/applications ${contents}/usr/share/icons $out/share/
+    #     '';
+    # })
 
     turbovnc
 

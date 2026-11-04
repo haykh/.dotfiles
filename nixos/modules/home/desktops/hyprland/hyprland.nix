@@ -425,6 +425,21 @@ in
           blur_popups = true;
         }
       })
+      hl.layer_rule(${
+        lua {
+          name = "vicinae-blur";
+          match.namespace = "vicinae";
+          blur = true;
+          ignore_alpha = 0;
+        }
+      })
+      hl.layer_rule(${
+        lua {
+          name = "vicinae-no-animation";
+          match.namespace = "vicinae";
+          no_anim = true;
+        }
+      })
     '';
 
   };

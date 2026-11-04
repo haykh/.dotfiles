@@ -13,6 +13,7 @@
     ./hardware.nix
     ../../modules/system
     inputs.home-manager.nixosModules.home-manager
+    inputs.nix-craftapps.nixosModules.default
   ];
 
   system.stateVersion = "24.11";
@@ -24,6 +25,16 @@
   my.locale.enable = true;
   my.virtualisation.kvm.enable = true;
   my.desktops.hyprland.enable = true;
+
+  programs.craftapps = {
+    enable = true;
+    apps.pdfcraft.enable = true;
+    apps.photocraft.enable = true;
+    apps.deckcraft.enable = true;
+    apps.wordcraft.enable = true;
+    apps.figcraft.enable = true;
+    apps.gridcraft.enable = true;
+  };
 
   home-manager = {
     useGlobalPkgs = true;
