@@ -139,6 +139,22 @@ in
       -- `preferred` would follow the EDID, which often advertises 60Hz.
       hl.monitor({ output = "", mode = "highres", position = "auto", scale = "1.25" })
 
+      -- Since Hyprland 0.57 (aquamarine eac1b82, kernel 7.3), frame pacing goes
+      -- stale after a DPMS off/on cycle: animations stutter with VRR on and drop
+      -- to ~1 fps with it off. Turning VRR off and back on re-commits the output
+      -- and recovers it. hypridle calls this after every screen-on (see
+      -- hypridle.nix); it is global so `hyprctl eval 'kickVRR()'` can reach it.
+      -- The delays keep the commits from racing the DPMS-on page flip.
+      local vrrMode = 1
+      function kickVRR()
+        hl.timer(function()
+          hl.config({ misc = { vrr = 0 } })
+          hl.timer(function()
+            hl.config({ misc = { vrr = vrrMode } })
+          end, { timeout = 250, type = "oneshot" })
+        end, { timeout = 500, type = "oneshot" })
+      end
+
       ---------------------
       ---- ENVIRONMENT ----
       ---------------------
@@ -202,7 +218,7 @@ in
 
         misc = {
           disable_hyprland_logo = true,
-          vrr = 1,
+          vrr = vrrMode,
         },
 
         cursor = {
