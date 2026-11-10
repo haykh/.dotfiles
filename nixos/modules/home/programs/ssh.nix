@@ -14,6 +14,11 @@ in
 
   config = lib.mkIf this.enable {
 
+    # controlPath below lives here; if it's missing, ssh exits right after auth
+    home.activation.sshSocketsDir = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      run install -d -m 700 "${cfg.home}/.ssh/sockets"
+    '';
+
     programs.ssh = {
       enable = true;
 
@@ -119,6 +124,21 @@ in
           port = 61022;
           forwardX11 = true;
           forwardX11Trusted = true;
+        };
+
+        # Flatiron nodes via the gateway: `ssh worker5244`, or Remote-SSH -> worker5244
+        # (attr name is the Host pattern; a `host = ...` key would start a new block)
+        "worker* rustyamd* rusty" = {
+          user = "hhakobyan";
+          proxyJump = "flatiron";
+        };
+
+        # whichever node my first running Slurm job is on
+        rusty-job = {
+          user = "hhakobyan";
+          proxyCommand = "ssh flatiron -W \"$(ssh rusty 'scontrol show hostnames $(squeue --me -h -t R -o %%N | head -1) | head -1')\":22";
+          hostKeyAlias = "rusty"; # all Flatiron nodes share rusty's host key, so verify against it
+          controlMaster = "no"; # don't reuse a master pointing at a previous job's node
         };
 
         perlmutter = {

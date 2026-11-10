@@ -20,30 +20,18 @@ return {
 			colorscheme = "github_dark_default",
 		},
 	},
-	-- git
-	{
-		"lewis6991/gitsigns.nvim",
-		config = function()
-			require("gitsigns").setup()
-			require("scrollbar.handlers.gitsigns").setup()
-		end,
-	},
 	-- scrollbar
 	{
 		"petertriho/nvim-scrollbar",
+		branch = "refactor/v2",
 		lazy = false,
 		opts = {
-			handle = {
-				text = " ",
+			scrollbar = {
+				thumb = {
+					text = " ",
+				},
 			},
-			marks = {
-				Search = { text = { ">", ">" } },
-				Error = { text = { "-", "=" } },
-				Warn = { text = { "-", "=" } },
-				Info = { text = { "-", "=" } },
-				Hint = { text = { "-", "=" } },
-				Misc = { text = { "-", "=" } },
-			},
+			providers = { gitsigns = true, search = true },
 		},
 	},
 	-- tabs
