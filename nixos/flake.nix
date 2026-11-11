@@ -43,6 +43,10 @@
     claude-code = {
       url = "github:sadjow/claude-code-nix";
     };
+    claude-desktop-nix = {
+      url = "github:tomsch/claude-desktop-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     codex-cli = {
       url = "github:sadjow/codex-cli-nix";
     };

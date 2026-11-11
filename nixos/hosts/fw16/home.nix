@@ -52,6 +52,7 @@ let
     '';
   };
   codexPkgs = inputs.codex-cli.packages.${system};
+  claudeDesktopPkgs = inputs.claude-desktop-nix.packages.${system};
   zenPkgs = inputs.zen-browser.packages.${system};
   gobrainPkgs = inputs.gobrain.packages.${system};
   toml2nixPkgs = inputs.toml2nix.packages.${system};
@@ -169,9 +170,9 @@ in
     highlight
     glow
     gobrainPkgs.default
+    toml2nixPkgs.default
     claude-code
     codexPkgs.default
-    toml2nixPkgs.default
 
     # apps
     ## graphics & media
@@ -189,6 +190,32 @@ in
     proton-pass
     filen-desktop
     gnome-text-editor
+    sniffnet
+    turbovnc
+    claudeDesktopPkgs.default
+    (appimageTools.wrapType2 rec {
+      pname = "omacal";
+      version = "6.3.0";
+      src = fetchurl {
+        url = "https://github.com/x3me/omacal/releases/download/v${version}/omacal_amd64.AppImage";
+        hash = "sha256-zAsBzDYigpJVIGkGm+UT04ugmHO26kWnjaYLUu0P2rM=";
+      };
+      # The AppImage bundles an old GLib that can't load the system dconf module, so
+      # GTK fell back to default settings (Adwaita cursor at 24px). Read settings
+      # (cursor theme/size, theme, dark mode) through xdg-desktop-portal instead.
+      profile = "export GTK_USE_PORTAL=1";
+      extraInstallCommands =
+        let
+          contents = appimageTools.extract { inherit pname version src; };
+        in
+        ''
+          mkdir -p $out/share
+          cp -r ${contents}/usr/share/applications ${contents}/usr/share/icons $out/share/
+        '';
+    })
+
+    ## science
+    paraview
     (mathematica.override {
       versionInfo = {
         version = "15.0.1";
@@ -198,28 +225,6 @@ in
         installer = "Wolfram_15.0.1.sh";
       };
     })
-    sniffnet
-    # (appimageTools.wrapType2 rec {
-    #   pname = "pdfcraft";
-    #   version = "0.14.0";
-    #   src = fetchurl {
-    #     url = "https://github.com/storytold/pdfcraft/releases/download/v${version}/pdfcraft-${version}-linux-x86_64.AppImage";
-    #     hash = "sha256-oRUTLrmqXu1RCk6FqleFyB5mkHaSA0FVBqGkst0BEZA=";
-    #   };
-    #   extraInstallCommands =
-    #     let
-    #       contents = appimageTools.extract { inherit pname version src; };
-    #     in
-    #     ''
-    #       mkdir -p $out/share
-    #       cp -r ${contents}/usr/share/applications ${contents}/usr/share/icons $out/share/
-    #     '';
-    # })
-
-    turbovnc
-
-    ## science
-    paraview
 
     ## frameworks
     rocmPackages.clr

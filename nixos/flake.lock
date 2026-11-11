@@ -52,6 +52,26 @@
         "type": "github"
       }
     },
+    "claude-desktop-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1794273045,
+        "narHash": "sha256-gi9k4pGXWvs6Ra6WgQiZMv+x+fzBnjTJa7czqrCv1Hc=",
+        "owner": "tomsch",
+        "repo": "claude-desktop-nix",
+        "rev": "5d5039e910ef290603c5ce5f33ef0d826750ed63",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tomsch",
+        "repo": "claude-desktop-nix",
+        "type": "github"
+      }
+    },
     "codex-cli": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -1153,6 +1173,7 @@
     "root": {
       "inputs": {
         "claude-code": "claude-code",
+        "claude-desktop-nix": "claude-desktop-nix",
         "codex-cli": "codex-cli",
         "custom-packages": "custom-packages",
         "devenv": "devenv",
