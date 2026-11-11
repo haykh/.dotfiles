@@ -25,13 +25,6 @@ let
     size = "monitor_w*0.6 monitor_h*0.8";
     center = true;
   };
-  floatCenterTitled = name: title: class: {
-    inherit name;
-    match = { inherit class title; };
-    float = true;
-    size = "monitor_w*0.6 monitor_h*0.8";
-    center = true;
-  };
   floatCenterDialog = name: class: title: {
     inherit name;
     match = { inherit class title; };
@@ -71,15 +64,7 @@ let
     (floatCenter "mpv" "mpv")
     (floatCenterDialog "wolfram" "^(com.wolfram.Wolfram\\..*)" ".*")
 
-    (floatCenterTitled "thunar" "^(.* - Thunar)$" "^([Tt]hunar)$")
-    (floatCenterDialog "thunar-progress" "^([Tt]hunar)$" "^(File Operation Progress)$")
-    (floatCenterDialog "thunar-rename" "^([Tt]hunar)$" "^(Rename.*)$")
-    (floatCenterDialog "thunar-confirm-replace" "^([Tt]hunar)$" "^(Confirm to replace files)$")
-    (floatCenterDialog "thunar-attention" "^([Tt]hunar)$" "^(Attention)$")
-    (floatCenterDialog "thunar-properties" "^([Tt]hunar)$" "^(.*Properties)$")
-    (floatCenterDialog "thunar-create" "^([Tt]hunar)$" "^(Create.*)$")
-    (floatCenterDialog "thunar-trash" "^([Tt]hunar)$" "^(Trash)$")
-    (floatCenterDialog "thunar-auth" "^([Tt]hunar)$" "^(Authentication)$")
+    (floatCenter "hyprfm" "^(hyprfm)$")
 
     (pictureInPicture "pip" "Picture-in-Picture" "zen")
 
@@ -166,6 +151,8 @@ in
       hl.env("SDL_VIDEODRIVER", "wayland")
       hl.env("CLUTTER_BACKEND", "wayland")
       hl.env("ELECTRON_OZONE_PLATFORM_HINT", "auto")
+      -- hyprfm's "Open in Terminal" launches $TERMINAL (defaults to kitty)
+      hl.env("TERMINAL", "ghostty")
 
       -------------------
       ---- AUTOSTART ----
@@ -359,7 +346,7 @@ in
       -- apps
       hl.bind("SUPER + T", hl.dsp.exec_cmd("ghostty"))
       hl.bind("SUPER + F", hl.dsp.exec_cmd("zen"))
-      hl.bind("SUPER + E", hl.dsp.exec_cmd("thunar"))
+      hl.bind("SUPER + E", hl.dsp.exec_cmd("hyprfm"))
       hl.bind("SUPER + S", scratchpad("slack", function(w) return w.class:lower() == "slack" end, "slack"))
       hl.bind("SUPER + G", scratchpad("telegram", function(w) return w.class == "org.telegram.desktop" end, "Telegram"))
       hl.bind("SUPER + M", scratchpad("tidal", function(w) return w.class == "tidal-hifi" end, "tidal-hifi"))

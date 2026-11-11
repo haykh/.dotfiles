@@ -325,7 +325,7 @@ in
   };
 
   xdg.mimeApps.defaultApplications = {
-    "inode/directory" = "thunar.desktop";
+    "inode/directory" = "io.github.soyeb_jim285.HyprFM.desktop";
     "application/pdf" = "org.pwmt.zathura.desktop";
 
     "image/gif" = "oculante.desktop";

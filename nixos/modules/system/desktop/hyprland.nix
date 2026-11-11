@@ -9,6 +9,18 @@
 
 let
   desktop = config.my.desktops.hyprland;
+
+  # hyprfm detects gvfs backends (trash, MTP, AFC, gphoto2) by probing FHS
+  # paths like /usr/share/gvfs/mounts/*.mount, which don't exist on NixOS, so
+  # it reports "GVFS backend missing" and hides MTP/AFC devices. Point those
+  # probes at the gvfs package. The leading quote keeps the Flatpak
+  # "/run/host/usr/share/gvfs" candidates untouched.
+  hyprfm = inputs.hyprfm.packages.${pkgs.stdenv.hostPlatform.system}.hyprfm.overrideAttrs (old: {
+    postPatch = (old.postPatch or "") + ''
+      substituteInPlace src/services/dependencychecker.cpp src/models/devicemodel.cpp \
+        --replace-fail '"/usr/share/gvfs/' '"${config.services.gvfs.package}/share/gvfs/'
+    '';
+  });
 in
 {
 
@@ -28,14 +40,6 @@ in
     programs.hyprlock.enable = true;
     security.pam.services.hyprlock = { };
 
-    programs.thunar = {
-      enable = true;
-      plugins = with pkgs; [
-        thunar-volman
-        thunar-archive-plugin
-        thunar-vcs-plugin
-      ];
-    };
     services.gvfs.enable = true;
     services.tumbler.enable = true;
     services.upower.enable = true;
@@ -80,6 +84,7 @@ in
     environment.systemPackages = with pkgs; [
       file-roller
       hyprpolkitagent
+      hyprfm
       qt6.qtwayland
 
       (inputs.pixie-sddm.packages.${pkgs.stdenv.hostPlatform.system}.pixie-sddm.override {

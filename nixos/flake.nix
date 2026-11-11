@@ -79,6 +79,10 @@
       url = "github:olafkfreund/nix-craftapps";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    hyprfm = {
+      url = "github:soyeb-jim285/hyprfm";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

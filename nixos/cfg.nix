@@ -25,7 +25,7 @@ rec {
     ll = "ls --long --header --time-style=long-iso";
     lt = "ls --tree --level 2 --icons=always --color";
     ld = "ls --long --header --time-style=long-iso --total-size";
-    ofd = "thunar \"$@\" 1>/dev/null 2>/dev/null & disown";
+    ofd = "hyprfm \"$@\" 1>/dev/null 2>/dev/null & disown";
     gpuon = "cat /sys/bus/pci/devices/0000:03:00.0/config > /dev/null";
   };
   shell_functions = {

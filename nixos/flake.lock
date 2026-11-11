@@ -448,6 +448,28 @@
         "type": "github"
       }
     },
+    "hyprfm": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "quill": "quill",
+        "quill-icons": "quill-icons"
+      },
+      "locked": {
+        "lastModified": 1793730039,
+        "narHash": "sha256-JEfJzDA5uTMDv7Q/Cgc2o9R0CtbJYFN90JPe1NxBUCY=",
+        "owner": "soyeb-jim285",
+        "repo": "hyprfm",
+        "rev": "e930b3cb729d4a685ae6df9d0b5f036a8cdcf06f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "soyeb-jim285",
+        "repo": "hyprfm",
+        "type": "github"
+      }
+    },
     "hyprgraphics": {
       "inputs": {
         "hyprutils": [
@@ -1170,6 +1192,40 @@
         "type": "github"
       }
     },
+    "quill": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793427375,
+        "narHash": "sha256-ySCOy8qdcr0kijmWsF0JPPFZ4NPYMRHtQSR2Yk7Dw1E=",
+        "owner": "soyeb-jim285",
+        "repo": "quill",
+        "rev": "1fe3afd493838b9799ee056a7367cfd5cdc185fd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "soyeb-jim285",
+        "repo": "quill",
+        "rev": "1fe3afd493838b9799ee056a7367cfd5cdc185fd",
+        "type": "github"
+      }
+    },
+    "quill-icons": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1787955508,
+        "narHash": "sha256-NFUw1NlCAh48O7rpHyjU33C3DAhhSaGFDjLzi3DKJEk=",
+        "owner": "soyeb-jim285",
+        "repo": "quill-icons",
+        "rev": "69b653672ece8652cfef52c1c228abe9e2c4fce0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "soyeb-jim285",
+        "repo": "quill-icons",
+        "rev": "69b653672ece8652cfef52c1c228abe9e2c4fce0",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "claude-code": "claude-code",
@@ -1180,6 +1236,7 @@
         "gobrain": "gobrain",
         "home-manager": "home-manager",
         "hyprexpo": "hyprexpo",
+        "hyprfm": "hyprfm",
         "hyprland": "hyprland",
         "hyprland-plugins": "hyprland-plugins",
         "nix-craftapps": "nix-craftapps",
