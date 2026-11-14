@@ -1,4 +1,13 @@
-{ pkgs, osConfig, ... }:
+{
+  lib,
+  pkgs,
+  osConfig,
+  ...
+}:
+
+# Hyprland desktop (home side). Active only when the host enables
+# my.desktops.hyprland (modules/system/desktop/hyprland.nix); the rest of the
+# time it stays in the tree, inert, so switching back is a one-line change.
 
 let
   # Wraps hyprland-share-picker: a selection made within the last 20s is
@@ -23,51 +32,26 @@ in
 
   imports = [
     ./hyprland.nix
-    ./noctalia.nix
     ./hypridle.nix
     ./minimize.nix
-    ./hyprexpo.nix
   ];
 
-  home.packages = with pkgs; [
-    # screenshots (grim capture + slurp region + satty annotate)
-    grim
-    slurp
-    satty
+  config = lib.mkIf osConfig.my.desktops.hyprland.enable {
 
-    # clipboard
-    wl-clipboard
-    cliphist
+    # Electron/Chromium screen share (Slack, etc.) opens several portal sessions
+    # per share. Sessions that carry a restore token skip the picker, which
+    # xdph's picker only hands out when its "allow restore token" box is ticked,
+    # so tick it by default. Slack's own source picker still opens ~3 fresh
+    # sessions without a token per share, so the picker is also wrapped to reuse
+    # the last selection for a few seconds instead of prompting again.
+    # xdph still reads hyprlang, independent of Hyprland's Lua config.
+    xdg.configFile."hypr/xdph.conf".text = ''
+      screencopy {
+        allow_token_by_default = true
+        custom_picker_binary = ${sharePicker}
+      }
+    '';
 
-    # color picker
-    hyprpicker
-
-    # tray applets
-    networkmanagerapplet
-    blueman
-
-    # audio mixer
-    pavucontrol
-
-    # media key control
-    playerctl
-  ];
-
-  # Ensure the screenshot save folder exists (satty --output-filename target).
-  home.file."Pictures/Screenshots/.keep".text = "";
-
-  # Electron/Chromium screen share (Slack, etc.) opens several portal sessions
-  # per share. Sessions that carry a restore token skip the picker, which
-  # xdph's picker only hands out when its "allow restore token" box is ticked,
-  # so tick it by default. Slack's own source picker still opens ~3 fresh
-  # sessions without a token per share, so the picker is also wrapped to reuse
-  # the last selection for a few seconds instead of prompting again.
-  # xdph still reads hyprlang, independent of Hyprland's Lua config.
-  xdg.configFile."hypr/xdph.conf".text = ''
-    screencopy {
-      allow_token_by_default = true
-      custom_picker_binary = ${sharePicker}
-    }
-  '';
+  };
 
 }

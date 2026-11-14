@@ -2,6 +2,7 @@
   pkgs,
   cfg,
   lib,
+  osConfig,
   ...
 }:
 
@@ -83,367 +84,371 @@ let
 in
 {
 
-  wayland.windowManager.hyprland = {
-    enable = true;
-    # Use the system-installed hyprland (programs.hyprland in modules/hyprland.nix).
-    # Avoids a duplicate hyprland in home.packages and prevents pkgs.xwayland
-    # from being pulled into the user env, which collides with turbovnc's
-    # share/man/man1/Xserver.1.gz.
-    package = null;
-    portalPackage = null;
-    xwayland.enable = false;
-    systemd.enable = true;
+  config = lib.mkIf osConfig.my.desktops.hyprland.enable {
 
-    # Lua config (Hyprland >= 0.56). Note that `hyprctl dispatch` then takes Lua
-    # (`hyprctl dispatch 'hl.dsp.focus({ workspace = 2 })'`), not the old
-    # `dispatch workspace 2` syntax; `hyprctl keyword` is gone (use `eval`).
-    # Noctalia detects the Lua config and sends hl.dsp.* dispatches itself.
-    configType = "lua";
+    wayland.windowManager.hyprland = {
+      enable = true;
+      # Use the system-installed hyprland (programs.hyprland in modules/hyprland.nix).
+      # Avoids a duplicate hyprland in home.packages and prevents pkgs.xwayland
+      # from being pulled into the user env, which collides with turbovnc's
+      # share/man/man1/Xserver.1.gz.
+      package = null;
+      portalPackage = null;
+      xwayland.enable = false;
+      systemd.enable = true;
 
-    plugins = [ ];
+      # Lua config (Hyprland >= 0.56). Note that `hyprctl dispatch` then takes Lua
+      # (`hyprctl dispatch 'hl.dsp.focus({ workspace = 2 })'`), not the old
+      # `dispatch workspace 2` syntax; `hyprctl keyword` is gone (use `eval`).
+      # Noctalia detects the Lua config and sends hl.dsp.* dispatches itself.
+      configType = "lua";
 
-    # Written as plain Lua rather than via `settings`: HM renders `settings`
-    # sections alphabetically, which would put hl.animation before hl.curve.
-    extraConfig = ''
-      ------------------
-      ---- MONITORS ----
-      ------------------
+      plugins = [ ];
 
-      local internalPanel = ${lua internalPanel}
-      -- `disabled = false` matters: a runtime hl.monitor() updates the output's
-      -- existing rule rather than replacing it, so lidOpen would otherwise
-      -- keep the `disabled = true` that lidClose set.
-      local internalMode = { output = internalPanel, mode = "highrr", position = "auto", scale = "1.25", disabled = false }
+      # Written as plain Lua rather than via `settings`: HM renders `settings`
+      # sections alphabetically, which would put hl.animation before hl.curve.
+      extraConfig = ''
+        ------------------
+        ---- MONITORS ----
+        ------------------
 
-      hl.monitor(internalMode)
-      -- Desk Dells (same model, so match by serial). Positions are in logical
-      -- px: 3840 / 1.25 = 3072, so the right one starts at x=3072.
-      hl.monitor({ output = "desc:Dell Inc. DELL U3223QE CTS50P3", mode = "highres", position = "0x0", scale = "1.25" })
-      hl.monitor({ output = "desc:Dell Inc. DELL U3223QE GMJJXN3", mode = "highres", position = "3072x0", scale = "1.25" })
-      -- highres = max resolution, then max refresh rate at that resolution.
-      -- `preferred` would follow the EDID, which often advertises 60Hz.
-      hl.monitor({ output = "", mode = "highres", position = "auto", scale = "1.25" })
+        local internalPanel = ${lua internalPanel}
+        -- `disabled = false` matters: a runtime hl.monitor() updates the output's
+        -- existing rule rather than replacing it, so lidOpen would otherwise
+        -- keep the `disabled = true` that lidClose set.
+        local internalMode = { output = internalPanel, mode = "highrr", position = "auto", scale = "1.25", disabled = false }
 
-      -- Since Hyprland 0.57 (aquamarine eac1b82, kernel 7.3), frame pacing goes
-      -- stale after a DPMS off/on cycle: animations stutter with VRR on and drop
-      -- to ~1 fps with it off. Turning VRR off and back on re-commits the output
-      -- and recovers it. hypridle calls this after every screen-on (see
-      -- hypridle.nix); it is global so `hyprctl eval 'kickVRR()'` can reach it.
-      -- The delays keep the commits from racing the DPMS-on page flip.
-      local vrrMode = 1
-      function kickVRR()
-        hl.timer(function()
-          hl.config({ misc = { vrr = 0 } })
+        hl.monitor(internalMode)
+        -- Desk Dells (same model, so match by serial). Positions are in logical
+        -- px: 3840 / 1.25 = 3072, so the right one starts at x=3072.
+        hl.monitor({ output = "desc:Dell Inc. DELL U3223QE CTS50P3", mode = "highres", position = "0x0", scale = "1.25" })
+        hl.monitor({ output = "desc:Dell Inc. DELL U3223QE GMJJXN3", mode = "highres", position = "3072x0", scale = "1.25" })
+        -- highres = max resolution, then max refresh rate at that resolution.
+        -- `preferred` would follow the EDID, which often advertises 60Hz.
+        hl.monitor({ output = "", mode = "highres", position = "auto", scale = "1.25" })
+
+        -- Since Hyprland 0.57 (aquamarine eac1b82, kernel 7.3), frame pacing goes
+        -- stale after a DPMS off/on cycle: animations stutter with VRR on and drop
+        -- to ~1 fps with it off. Turning VRR off and back on re-commits the output
+        -- and recovers it. hypridle calls this after every screen-on (see
+        -- hypridle.nix); it is global so `hyprctl eval 'kickVRR()'` can reach it.
+        -- The delays keep the commits from racing the DPMS-on page flip.
+        local vrrMode = 1
+        function kickVRR()
           hl.timer(function()
-            hl.config({ misc = { vrr = vrrMode } })
-          end, { timeout = 250, type = "oneshot" })
-        end, { timeout = 500, type = "oneshot" })
-      end
-
-      ---------------------
-      ---- ENVIRONMENT ----
-      ---------------------
-
-      hl.env("XCURSOR_THEME", ${lua cfg.theme.cursor.interface})
-      hl.env("XCURSOR_SIZE", "32")
-      hl.env("GDK_BACKEND", "wayland,x11")
-      hl.env("QT_QPA_PLATFORM", "wayland;xcb")
-      hl.env("SDL_VIDEODRIVER", "wayland")
-      hl.env("CLUTTER_BACKEND", "wayland")
-      hl.env("ELECTRON_OZONE_PLATFORM_HINT", "auto")
-      -- hyprfm's "Open in Terminal" launches $TERMINAL (defaults to kitty)
-      hl.env("TERMINAL", "ghostty")
-
-      -------------------
-      ---- AUTOSTART ----
-      -------------------
-
-      hl.on("hyprland.start", function()
-        hl.exec_cmd(${lua "${pkgs.networkmanagerapplet}/bin/nm-applet --indicator"})
-        hl.exec_cmd(${lua "${pkgs.blueman}/bin/blueman-applet"})
-        hl.exec_cmd(${lua "${pkgs.wl-clipboard}/bin/wl-paste --watch ${pkgs.cliphist}/bin/cliphist store"})
-        hl.exec_cmd("systemctl --user start hyprpolkitagent")
-      end)
-
-      -----------------------
-      ---- LOOK AND FEEL ----
-      -----------------------
-
-      hl.config({
-        general = {
-          gaps_in = 5,
-          gaps_out = 8,
-          border_size = 1,
-          resize_on_border = true,
-          col = {
-            active_border = "rgb(9cb9dd)",
-            inactive_border = "rgb(131d2b)",
-          },
-          layout = "dwindle",
-        },
-
-        decoration = {
-          rounding = 10,
-          blur = {
-            enabled = true,
-            size = 4,
-            passes = 4,
-            new_optimizations = true,
-            noise = 0.02,
-            ignore_opacity = true,
-            popups = true,
-          },
-        },
-
-        animations = {
-          enabled = true,
-        },
-
-        dwindle = {
-          preserve_split = true,
-        },
-
-        misc = {
-          disable_hyprland_logo = true,
-          vrr = vrrMode,
-        },
-
-        cursor = {
-          -- Hardware cursors live on a separate display-controller overlay plane
-          -- and never enter the framebuffer, so PipeWire/xdg-portal screen capture
-          -- (Zoom, OBS, etc.) records without the cursor. `2` = auto: keep hardware
-          -- cursors normally, fall back to a software cursor only while a screencast
-          -- is active — so the cursor shows up in shares without a perf cost the
-          -- rest of the time. Set to `true` if a share still drops the cursor.
-          no_hardware_cursors = 2,
-        },
-
-        input = {
-          kb_layout = "us,ru",
-          kb_variant = ",phonetic",
-          kb_options = "grp:win_space_toggle",
-          numlock_by_default = true,
-          follow_mouse = 1,
-          sensitivity = -0.3,
-          accel_profile = "flat",
-          touchpad = {
-            natural_scroll = true,
-            scroll_factor = 0.2,
-          },
-        },
-
-        xwayland = {
-          force_zero_scaling = true,
-        },
-      })
-
-      -- recover the settings for the touchpad
-      for _, d in ipairs(hl.get_devices()) do
-        if d.type == "pointer" and d.name:find("touchpad") then
-          hl.device({
-            name = d.name,
-            sensitivity = 0.0,
-            accel_profile = "adaptive",
-          })
+            hl.config({ misc = { vrr = 0 } })
+            hl.timer(function()
+              hl.config({ misc = { vrr = vrrMode } })
+            end, { timeout = 250, type = "oneshot" })
+          end, { timeout = 500, type = "oneshot" })
         end
-      end
 
-      hl.curve("easeInOut", { type = "bezier", points = { { 0.42, 0.0 }, { 0.58, 1.0 } } })
-      hl.curve("overshot", { type = "bezier", points = { { 0.05, 0.9 }, { 0.1, 1.1 } } })
-      hl.curve("wspaceSlide", { type = "bezier", points = { { 0.25, 1 }, { 0.5, 1 } } })
+        ---------------------
+        ---- ENVIRONMENT ----
+        ---------------------
 
-      hl.animation({ leaf = "windows", enabled = true, speed = 3, bezier = "overshot", style = "slide top" })
-      hl.animation({ leaf = "windowsOut", enabled = true, speed = 3, bezier = "overshot", style = "slide top" })
-      hl.animation({ leaf = "border", enabled = true, speed = 3, bezier = "overshot" })
-      hl.animation({ leaf = "fade", enabled = true, speed = 3, bezier = "easeInOut" })
-      hl.animation({ leaf = "workspaces", enabled = true, speed = 3, bezier = "wspaceSlide", style = "slide" })
-      hl.animation({ leaf = "specialWorkspace", enabled = true, speed = 3, bezier = "overshot", style = "slidefadevert 50%" })
-      hl.animation({ leaf = "layersIn", enabled = true, speed = 2, bezier = "easeInOut", style = "fade" })
-      hl.animation({ leaf = "layersOut", enabled = true, speed = 1, bezier = "easeInOut", style = "fade" })
+        hl.env("XCURSOR_THEME", ${lua cfg.theme.cursor.interface})
+        hl.env("XCURSOR_SIZE", "32")
+        hl.env("GDK_BACKEND", "wayland,x11")
+        hl.env("QT_QPA_PLATFORM", "wayland;xcb")
+        hl.env("SDL_VIDEODRIVER", "wayland")
+        hl.env("CLUTTER_BACKEND", "wayland")
+        hl.env("ELECTRON_OZONE_PLATFORM_HINT", "auto")
+        -- hyprfm's "Open in Terminal" launches $TERMINAL (defaults to kitty)
+        hl.env("TERMINAL", "ghostty")
 
-      hl.gesture({ fingers = 4, direction = "horizontal", action = "workspace" })
+        -------------------
+        ---- AUTOSTART ----
+        -------------------
 
-      -------------------
-      ---- FUNCTIONS ----
-      -------------------
+        hl.on("hyprland.start", function()
+          hl.exec_cmd(${lua "${pkgs.networkmanagerapplet}/bin/nm-applet --indicator"})
+          hl.exec_cmd(${lua "${pkgs.blueman}/bin/blueman-applet"})
+          hl.exec_cmd(${lua "${pkgs.wl-clipboard}/bin/wl-paste --watch ${pkgs.cliphist}/bin/cliphist store"})
+          hl.exec_cmd("systemctl --user start hyprpolkitagent")
+        end)
 
-      -- Toggle the app's special workspace if it is running, otherwise launch it.
-      local function scratchpad(name, matches, cmd)
-        return function()
-          for _, w in ipairs(hl.get_windows()) do
-            if matches(w) then
-              hl.dispatch(hl.dsp.workspace.toggle_special(name))
-              return
+        -----------------------
+        ---- LOOK AND FEEL ----
+        -----------------------
+
+        hl.config({
+          general = {
+            gaps_in = 5,
+            gaps_out = 8,
+            border_size = 1,
+            resize_on_border = true,
+            col = {
+              active_border = "rgb(9cb9dd)",
+              inactive_border = "rgb(131d2b)",
+            },
+            layout = "dwindle",
+          },
+
+          decoration = {
+            rounding = 10,
+            blur = {
+              enabled = true,
+              size = 4,
+              passes = 4,
+              new_optimizations = true,
+              noise = 0.02,
+              ignore_opacity = true,
+              popups = true,
+            },
+          },
+
+          animations = {
+            enabled = true,
+          },
+
+          dwindle = {
+            preserve_split = true,
+          },
+
+          misc = {
+            disable_hyprland_logo = true,
+            vrr = vrrMode,
+          },
+
+          cursor = {
+            -- Hardware cursors live on a separate display-controller overlay plane
+            -- and never enter the framebuffer, so PipeWire/xdg-portal screen capture
+            -- (Zoom, OBS, etc.) records without the cursor. `2` = auto: keep hardware
+            -- cursors normally, fall back to a software cursor only while a screencast
+            -- is active — so the cursor shows up in shares without a perf cost the
+            -- rest of the time. Set to `true` if a share still drops the cursor.
+            no_hardware_cursors = 2,
+          },
+
+          input = {
+            kb_layout = "us,ru",
+            kb_variant = ",phonetic",
+            kb_options = "grp:win_space_toggle",
+            numlock_by_default = true,
+            follow_mouse = 1,
+            sensitivity = -0.3,
+            accel_profile = "flat",
+            touchpad = {
+              natural_scroll = true,
+              scroll_factor = 0.2,
+            },
+          },
+
+          xwayland = {
+            force_zero_scaling = true,
+          },
+        })
+
+        -- recover the settings for the touchpad
+        for _, d in ipairs(hl.get_devices()) do
+          if d.type == "pointer" and d.name:find("touchpad") then
+            hl.device({
+              name = d.name,
+              sensitivity = 0.0,
+              accel_profile = "adaptive",
+            })
+          end
+        end
+
+        hl.curve("easeInOut", { type = "bezier", points = { { 0.42, 0.0 }, { 0.58, 1.0 } } })
+        hl.curve("overshot", { type = "bezier", points = { { 0.05, 0.9 }, { 0.1, 1.1 } } })
+        hl.curve("wspaceSlide", { type = "bezier", points = { { 0.25, 1 }, { 0.5, 1 } } })
+
+        hl.animation({ leaf = "windows", enabled = true, speed = 3, bezier = "overshot", style = "slide top" })
+        hl.animation({ leaf = "windowsOut", enabled = true, speed = 3, bezier = "overshot", style = "slide top" })
+        hl.animation({ leaf = "border", enabled = true, speed = 3, bezier = "overshot" })
+        hl.animation({ leaf = "fade", enabled = true, speed = 3, bezier = "easeInOut" })
+        hl.animation({ leaf = "workspaces", enabled = true, speed = 3, bezier = "wspaceSlide", style = "slide" })
+        hl.animation({ leaf = "specialWorkspace", enabled = true, speed = 3, bezier = "overshot", style = "slidefadevert 50%" })
+        hl.animation({ leaf = "layersIn", enabled = true, speed = 2, bezier = "easeInOut", style = "fade" })
+        hl.animation({ leaf = "layersOut", enabled = true, speed = 1, bezier = "easeInOut", style = "fade" })
+
+        hl.gesture({ fingers = 4, direction = "horizontal", action = "workspace" })
+
+        -------------------
+        ---- FUNCTIONS ----
+        -------------------
+
+        -- Toggle the app's special workspace if it is running, otherwise launch it.
+        local function scratchpad(name, matches, cmd)
+          return function()
+            for _, w in ipairs(hl.get_windows()) do
+              if matches(w) then
+                hl.dispatch(hl.dsp.workspace.toggle_special(name))
+                return
+              end
+            end
+            hl.dispatch(hl.dsp.exec_cmd(cmd))
+          end
+        end
+
+        local function hasInternal()
+          for _, m in ipairs(hl.get_monitors()) do
+            if m.name:find("^eDP") then
+              return true
             end
           end
-          hl.dispatch(hl.dsp.exec_cmd(cmd))
+          return false
         end
-      end
 
-      local function hasInternal()
-        for _, m in ipairs(hl.get_monitors()) do
-          if m.name:find("^eDP") then
-            return true
+        local function hasExternal()
+          for _, m in ipairs(hl.get_monitors()) do
+            if not m.name:find("^eDP") then
+              return true
+            end
+          end
+          return false
+        end
+
+        -- Lid handlers. Only blank the internal panel when an external monitor is
+        -- connected (dock mode). If the panel is the sole output we must NOT disable
+        -- it — doing so leaves Hyprland with no output as logind suspends and the
+        -- panel fails to relight on resume. In that case do nothing and let logind
+        -- suspend.
+        local function lidClose()
+          if hasExternal() then
+            hl.monitor({ output = internalPanel, disabled = true })
           end
         end
-        return false
-      end
 
-      local function hasExternal()
-        for _, m in ipairs(hl.get_monitors()) do
-          if not m.name:find("^eDP") then
-            return true
+        -- Re-enable the panel on open only if it is currently off (i.e. we disabled
+        -- it for dock mode). This keeps a normal suspend/resume from re-initialising
+        -- the output, which can retrigger the amdgpu DCN resume glitch.
+        local function lidOpen()
+          if not hasInternal() then
+            hl.monitor(internalMode)
           end
         end
-        return false
-      end
 
-      -- Lid handlers. Only blank the internal panel when an external monitor is
-      -- connected (dock mode). If the panel is the sole output we must NOT disable
-      -- it — doing so leaves Hyprland with no output as logind suspends and the
-      -- panel fails to relight on resume. In that case do nothing and let logind
-      -- suspend.
-      local function lidClose()
-        if hasExternal() then
-          hl.monitor({ output = internalPanel, disabled = true })
+        local function lidClosed()
+          local f = io.open("/proc/acpi/button/lid/LID0/state")
+          if not f then return false end
+          local s = f:read("*a")
+          f:close()
+          return s:find("closed") ~= nil
         end
-      end
 
-      -- Re-enable the panel on open only if it is currently off (i.e. we disabled
-      -- it for dock mode). This keeps a normal suspend/resume from re-initialising
-      -- the output, which can retrigger the amdgpu DCN resume glitch.
-      local function lidOpen()
-        if not hasInternal() then
-          hl.monitor(internalMode)
+        -- Same dock-mode rule as the lid switch: only blank the panel if an
+        -- external output exists, so we never end up with no outputs.
+        local function syncLid()
+          if lidClosed() then lidClose() end
         end
-      end
 
-      local function lidClosed()
-        local f = io.open("/proc/acpi/button/lid/LID0/state")
-        if not f then return false end
-        local s = f:read("*a")
-        f:close()
-        return s:find("closed") ~= nil
-      end
+        -- Resize the active window to 90% of the monitor (logical px) and center it.
+        local function bigCenter()
+          local m = hl.get_active_monitor()
+          hl.dispatch(hl.dsp.window.resize({ x = m.width / m.scale * 0.9, y = m.height / m.scale * 0.9 }))
+          hl.dispatch(hl.dsp.window.center())
+        end
 
-      -- Same dock-mode rule as the lid switch: only blank the panel if an
-      -- external output exists, so we never end up with no outputs.
-      local function syncLid()
-        if lidClosed() then lidClose() end
-      end
+        ---------------
+        ---- BINDS ----
+        ---------------
 
-      -- Resize the active window to 90% of the monitor (logical px) and center it.
-      local function bigCenter()
-        local m = hl.get_active_monitor()
-        hl.dispatch(hl.dsp.window.resize({ x = m.width / m.scale * 0.9, y = m.height / m.scale * 0.9 }))
-        hl.dispatch(hl.dsp.window.center())
-      end
+        -- apps
+        hl.bind("SUPER + T", hl.dsp.exec_cmd("ghostty"))
+        hl.bind("SUPER + F", hl.dsp.exec_cmd("zen"))
+        hl.bind("SUPER + E", hl.dsp.exec_cmd("hyprfm"))
+        hl.bind("SUPER + S", scratchpad("slack", function(w) return w.class:lower() == "slack" end, "slack"))
+        hl.bind("SUPER + G", scratchpad("telegram", function(w) return w.class == "org.telegram.desktop" end, "Telegram"))
+        hl.bind("SUPER + M", scratchpad("tidal", function(w) return w.class == "tidal-hifi" end, "tidal-hifi"))
+        hl.bind("SUPER + D", scratchpad("filen", function(w) return w.class == "electron" and w.title == "Filen" end, "filen-desktop"))
+        hl.bind("CTRL + ALT + SPACE", hl.dsp.exec_cmd("vicinae toggle"))
 
-      ---------------
-      ---- BINDS ----
-      ---------------
+        -- window management
+        hl.bind("SUPER + Q", hl.dsp.window.close())
+        hl.bind("SUPER + V", hl.dsp.window.float({ action = "toggle" }))
+        hl.bind("SUPER + SHIFT + V", hl.dsp.window.fullscreen())
+        hl.bind("SUPER + equal", bigCenter)
+        hl.bind("SUPER + L", hl.dsp.exec_cmd("noctalia msg session lock"))
+        hl.bind("SUPER + SHIFT + E", hl.dsp.exit())
 
-      -- apps
-      hl.bind("SUPER + T", hl.dsp.exec_cmd("ghostty"))
-      hl.bind("SUPER + F", hl.dsp.exec_cmd("zen"))
-      hl.bind("SUPER + E", hl.dsp.exec_cmd("hyprfm"))
-      hl.bind("SUPER + S", scratchpad("slack", function(w) return w.class:lower() == "slack" end, "slack"))
-      hl.bind("SUPER + G", scratchpad("telegram", function(w) return w.class == "org.telegram.desktop" end, "Telegram"))
-      hl.bind("SUPER + M", scratchpad("tidal", function(w) return w.class == "tidal-hifi" end, "tidal-hifi"))
-      hl.bind("SUPER + D", scratchpad("filen", function(w) return w.class == "electron" and w.title == "Filen" end, "filen-desktop"))
-      hl.bind("CTRL + ALT + SPACE", hl.dsp.exec_cmd("vicinae toggle"))
+        -- focus (vim keys)
+        hl.bind("CTRL + SHIFT + H", hl.dsp.focus({ direction = "left" }))
+        hl.bind("CTRL + SHIFT + L", hl.dsp.focus({ direction = "right" }))
+        hl.bind("CTRL + SHIFT + K", hl.dsp.focus({ direction = "up" }))
+        hl.bind("CTRL + SHIFT + J", hl.dsp.focus({ direction = "down" }))
 
-      -- window management
-      hl.bind("SUPER + Q", hl.dsp.window.close())
-      hl.bind("SUPER + V", hl.dsp.window.float({ action = "toggle" }))
-      hl.bind("SUPER + SHIFT + V", hl.dsp.window.fullscreen())
-      hl.bind("SUPER + equal", bigCenter)
-      hl.bind("SUPER + L", hl.dsp.exec_cmd("noctalia msg session lock"))
-      hl.bind("SUPER + SHIFT + E", hl.dsp.exit())
+        -- workspaces
+        for i = 1, 9 do
+          hl.bind("SUPER + " .. i, hl.dsp.focus({ workspace = i }))
+          hl.bind("SUPER + SHIFT + " .. i, hl.dsp.window.move({ workspace = i }))
+        end
 
-      -- focus (vim keys)
-      hl.bind("CTRL + SHIFT + H", hl.dsp.focus({ direction = "left" }))
-      hl.bind("CTRL + SHIFT + L", hl.dsp.focus({ direction = "right" }))
-      hl.bind("CTRL + SHIFT + K", hl.dsp.focus({ direction = "up" }))
-      hl.bind("CTRL + SHIFT + J", hl.dsp.focus({ direction = "down" }))
+        -- screenshots
+        hl.bind("Print", hl.dsp.exec_cmd(${lua (screenshotCmd ''-g "$(${pkgs.slurp}/bin/slurp)"'')}))
+        hl.bind("SHIFT + Print", hl.dsp.exec_cmd(${lua (screenshotCmd "")}))
 
-      -- workspaces
-      for i = 1, 9 do
-        hl.bind("SUPER + " .. i, hl.dsp.focus({ workspace = i }))
-        hl.bind("SUPER + SHIFT + " .. i, hl.dsp.window.move({ workspace = i }))
-      end
+        -- color picker
+        hl.bind("CTRL + Print", hl.dsp.exec_cmd(${lua "${pkgs.hyprpicker}/bin/hyprpicker -a"}))
 
-      -- screenshots
-      hl.bind("Print", hl.dsp.exec_cmd(${lua (screenshotCmd ''-g "$(${pkgs.slurp}/bin/slurp)"'')}))
-      hl.bind("SHIFT + Print", hl.dsp.exec_cmd(${lua (screenshotCmd "")}))
+        -- SUPER+left moves, SUPER+right resizes (mouse), SUPER+SHIFT+left resizes
+        -- (the trackpad-friendly variant — holding right + dragging is awkward).
+        hl.bind("SUPER + mouse:272", hl.dsp.window.drag(), { mouse = true })
+        hl.bind("SUPER + mouse:273", hl.dsp.window.resize(), { mouse = true })
+        hl.bind("SUPER + SHIFT + mouse:272", hl.dsp.window.resize(), { mouse = true })
 
-      -- color picker
-      hl.bind("CTRL + Print", hl.dsp.exec_cmd(${lua "${pkgs.hyprpicker}/bin/hyprpicker -a"}))
+        -- volume / brightness — locked (work on lockscreen) + repeating
+        local lockedRepeat = { locked = true, repeating = true }
+        hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd(${lua "${pkgs.pamixer}/bin/pamixer -i 5"}), lockedRepeat)
+        hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd(${lua "${pkgs.pamixer}/bin/pamixer -d 5"}), lockedRepeat)
+        hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd(${lua "${pkgs.brightnessctl}/bin/brightnessctl set 10%+"}), lockedRepeat)
+        hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd(${lua "${pkgs.brightnessctl}/bin/brightnessctl set 10%-"}), lockedRepeat)
 
-      -- SUPER+left moves, SUPER+right resizes (mouse), SUPER+SHIFT+left resizes
-      -- (the trackpad-friendly variant — holding right + dragging is awkward).
-      hl.bind("SUPER + mouse:272", hl.dsp.window.drag(), { mouse = true })
-      hl.bind("SUPER + mouse:273", hl.dsp.window.resize(), { mouse = true })
-      hl.bind("SUPER + SHIFT + mouse:272", hl.dsp.window.resize(), { mouse = true })
+        -- Lid: turn the internal panel off on close, back on when opened.
+        -- logind treats an external monitor as "docked" (HandleLidSwitchDocked
+        -- defaults to ignore), so with a monitor connected the machine won't
+        -- suspend — this just blanks the internal panel. With no external monitor, logind
+        -- still suspends per services.logind, so the panel returns on resume.
+        -- Device name comes from `hyprctl devices` (usually "Lid Switch").
+        local locked = { locked = true }
+        hl.bind("switch:on:Lid Switch", lidClose, locked)
+        hl.bind("switch:off:Lid Switch", lidOpen, locked)
+        hl.on("hyprland.start", syncLid)     -- logging in with the lid already shut
+        hl.on("config.reloaded", syncLid)    -- undoes the hl.monitor(internalMode) above
+        hl.on("monitor.added", syncLid)      -- docking while the lid is closed
 
-      -- volume / brightness — locked (work on lockscreen) + repeating
-      local lockedRepeat = { locked = true, repeating = true }
-      hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd(${lua "${pkgs.pamixer}/bin/pamixer -i 5"}), lockedRepeat)
-      hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd(${lua "${pkgs.pamixer}/bin/pamixer -d 5"}), lockedRepeat)
-      hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd(${lua "${pkgs.brightnessctl}/bin/brightnessctl set 10%+"}), lockedRepeat)
-      hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd(${lua "${pkgs.brightnessctl}/bin/brightnessctl set 10%-"}), lockedRepeat)
+        hl.bind("XF86AudioMute", hl.dsp.exec_cmd(${lua "${pkgs.pamixer}/bin/pamixer -t"}), locked)
+        -- media keys (MPRIS via playerctl) — locked so they work on lockscreen
+        hl.bind("XF86AudioPlay", hl.dsp.exec_cmd(${lua "${pkgs.playerctl}/bin/playerctl play-pause"}), locked)
+        hl.bind("XF86AudioPause", hl.dsp.exec_cmd(${lua "${pkgs.playerctl}/bin/playerctl play-pause"}), locked)
+        hl.bind("XF86AudioNext", hl.dsp.exec_cmd(${lua "${pkgs.playerctl}/bin/playerctl next"}), locked)
+        hl.bind("XF86AudioPrev", hl.dsp.exec_cmd(${lua "${pkgs.playerctl}/bin/playerctl previous"}), locked)
 
-      -- Lid: turn the internal panel off on close, back on when opened.
-      -- logind treats an external monitor as "docked" (HandleLidSwitchDocked
-      -- defaults to ignore), so with a monitor connected the machine won't
-      -- suspend — this just blanks the internal panel. With no external monitor, logind
-      -- still suspends per services.logind, so the panel returns on resume.
-      -- Device name comes from `hyprctl devices` (usually "Lid Switch").
-      local locked = { locked = true }
-      hl.bind("switch:on:Lid Switch", lidClose, locked)
-      hl.bind("switch:off:Lid Switch", lidOpen, locked)
-      hl.on("hyprland.start", syncLid)     -- logging in with the lid already shut
-      hl.on("config.reloaded", syncLid)    -- undoes the hl.monitor(internalMode) above
-      hl.on("monitor.added", syncLid)      -- docking while the lid is closed
+        ---------------
+        ---- RULES ----
+        ---------------
 
-      hl.bind("XF86AudioMute", hl.dsp.exec_cmd(${lua "${pkgs.pamixer}/bin/pamixer -t"}), locked)
-      -- media keys (MPRIS via playerctl) — locked so they work on lockscreen
-      hl.bind("XF86AudioPlay", hl.dsp.exec_cmd(${lua "${pkgs.playerctl}/bin/playerctl play-pause"}), locked)
-      hl.bind("XF86AudioPause", hl.dsp.exec_cmd(${lua "${pkgs.playerctl}/bin/playerctl play-pause"}), locked)
-      hl.bind("XF86AudioNext", hl.dsp.exec_cmd(${lua "${pkgs.playerctl}/bin/playerctl next"}), locked)
-      hl.bind("XF86AudioPrev", hl.dsp.exec_cmd(${lua "${pkgs.playerctl}/bin/playerctl previous"}), locked)
+        ${lib.concatMapStringsSep "\n" (rule: "hl.window_rule(${lua rule})") windowRules}
 
-      ---------------
-      ---- RULES ----
-      ---------------
+        hl.layer_rule(${
+          lua {
+            name = "noctalia";
+            match.namespace = "noctalia-background-.*$";
+            ignore_alpha = 0.5;
+            blur = true;
+            blur_popups = true;
+          }
+        })
+        hl.layer_rule(${
+          lua {
+            name = "vicinae-blur";
+            match.namespace = "vicinae";
+            blur = true;
+            ignore_alpha = 0;
+          }
+        })
+        hl.layer_rule(${
+          lua {
+            name = "vicinae-no-animation";
+            match.namespace = "vicinae";
+            no_anim = true;
+          }
+        })
+      '';
 
-      ${lib.concatMapStringsSep "\n" (rule: "hl.window_rule(${lua rule})") windowRules}
-
-      hl.layer_rule(${
-        lua {
-          name = "noctalia";
-          match.namespace = "noctalia-background-.*$";
-          ignore_alpha = 0.5;
-          blur = true;
-          blur_popups = true;
-        }
-      })
-      hl.layer_rule(${
-        lua {
-          name = "vicinae-blur";
-          match.namespace = "vicinae";
-          blur = true;
-          ignore_alpha = 0;
-        }
-      })
-      hl.layer_rule(${
-        lua {
-          name = "vicinae-no-animation";
-          match.namespace = "vicinae";
-          no_anim = true;
-        }
-      })
-    '';
+    };
 
   };
 

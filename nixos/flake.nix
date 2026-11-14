@@ -40,15 +40,8 @@
       url = "github:vicinaehq/extensions";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    claude-code = {
-      url = "github:sadjow/claude-code-nix";
-    };
-    claude-desktop-nix = {
-      url = "github:tomsch/claude-desktop-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    codex-cli = {
-      url = "github:sadjow/codex-cli-nix";
+    llm-agents = {
+      url = "github:numtide/llm-agents.nix";
     };
     hyprland = {
       url = "github:hyprwm/Hyprland";
@@ -58,10 +51,6 @@
     };
     hyprland-plugins = {
       url = "github:hyprwm/hyprland-plugins";
-      inputs.hyprland.follows = "hyprland";
-    };
-    hyprexpo = {
-      url = "github:sandwichfarm/hyprexpo/hyprland-git";
       inputs.hyprland.follows = "hyprland";
     };
     pixie-sddm = {
@@ -81,7 +70,8 @@
     };
     hyprfm = {
       url = "github:soyeb-jim285/hyprfm";
-      inputs.nixpkgs.follows = "nixpkgs";
+      # no nixpkgs follows: hyprfm vendors libghostty-vt, which needs zig_0_17
+      # (nixos-unstable only); stable 26.05 lacks it.
     };
   };
 
@@ -112,31 +102,29 @@
           pkgs = import nixpkgs {
             system = "x86_64-linux";
             config.allowUnfree = true;
-            overlays = [
-              # nixpkgs#447287
-              # (
-              #   final: prev:
-              #   let
-              #     py = final.python313Packages;
-              #     openvdbWithPython = prev.openvdb.overrideAttrs (old: {
-              #       nativeBuildInputs = old.nativeBuildInputs ++ [ py.nanobind ];
-              #       cmakeFlags = old.cmakeFlags ++ [
-              #         "-DOPENVDB_BUILD_PYTHON_MODULE=ON"
-              #         "-DUSE_NUMPY=ON"
-              #         "-DOPENVDB_PYTHON_WRAP_ALL_GRID_TYPES=ON"
-              #         "-Dnanobind_DIR=${py.nanobind}/${py.python.sitePackages}/nanobind/cmake"
-              #       ];
-              #     });
-              #   in
-              #   {
-              #     blender = (prev.blender.override { openvdb = openvdbWithPython; }).overrideAttrs (old: {
-              #       pythonPath = old.pythonPath ++ [ openvdbWithPython ];
-              #     });
-              #   }
-              # )
-
-              inputs.claude-code.overlays.default
-            ];
+            # overlays = [
+            #   # nixpkgs#447287
+            #   # (
+            #   #   final: prev:
+            #   #   let
+            #   #     py = final.python313Packages;
+            #   #     openvdbWithPython = prev.openvdb.overrideAttrs (old: {
+            #   #       nativeBuildInputs = old.nativeBuildInputs ++ [ py.nanobind ];
+            #   #       cmakeFlags = old.cmakeFlags ++ [
+            #   #         "-DOPENVDB_BUILD_PYTHON_MODULE=ON"
+            #   #         "-DUSE_NUMPY=ON"
+            #   #         "-DOPENVDB_PYTHON_WRAP_ALL_GRID_TYPES=ON"
+            #   #         "-Dnanobind_DIR=${py.nanobind}/${py.python.sitePackages}/nanobind/cmake"
+            #   #       ];
+            #   #     });
+            #   #   in
+            #   #   {
+            #   #     blender = (prev.blender.override { openvdb = openvdbWithPython; }).overrideAttrs (old: {
+            #   #       pythonPath = old.pythonPath ++ [ openvdbWithPython ];
+            #   #     });
+            #   #   }
+            #   # )
+            # ];
           };
           modules = [ ./hosts/fw16 ];
         };

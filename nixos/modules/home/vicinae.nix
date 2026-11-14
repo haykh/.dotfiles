@@ -48,7 +48,6 @@ in
         power-profile
         ssh
         process-manager
-        hypr
         nerdfont-search
       ];
       package = inputs.vicinae.packages.${pkgs.stdenv.hostPlatform.system}.default;

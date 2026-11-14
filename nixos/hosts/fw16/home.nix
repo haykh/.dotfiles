@@ -51,8 +51,7 @@ let
       wrapProgram $out/bin/blender --prefix LD_LIBRARY_PATH : ${rocmLlvmSymbolic}/lib
     '';
   };
-  codexPkgs = inputs.codex-cli.packages.${system};
-  claudeDesktopPkgs = inputs.claude-desktop-nix.packages.${system};
+  llmagentsPkgs = inputs.llm-agents.packages.${system};
   zenPkgs = inputs.zen-browser.packages.${system};
   gobrainPkgs = inputs.gobrain.packages.${system};
   toml2nixPkgs = inputs.toml2nix.packages.${system};
@@ -62,7 +61,7 @@ in
 
   imports = [
     ../../modules/home # generic programs / configs / services
-    ../../modules/home/desktops/hyprland # hyprland desktop (pulls noctalia)
+    ../../modules/home/desktops # hyprland / niri + noctalia (picked by my.desktops.* in ./default.nix)
     ../../modules/home/vicinae.nix # vicinae (pulls its own flake module)
   ];
 
@@ -169,10 +168,11 @@ in
     gource
     highlight
     glow
+    go-2fa
     gobrainPkgs.default
     toml2nixPkgs.default
-    claude-code
-    codexPkgs.default
+    llmagentsPkgs.claude-code
+    llmagentsPkgs.codex
 
     # apps
     ## graphics & media
@@ -192,7 +192,7 @@ in
     gnome-text-editor
     sniffnet
     turbovnc
-    claudeDesktopPkgs.default
+    llmagentsPkgs.claude-desktop
     (appimageTools.wrapType2 rec {
       pname = "omacal";
       version = "6.3.0";

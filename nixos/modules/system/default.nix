@@ -10,7 +10,9 @@
     ./global.nix
     ./locale.nix
     ./kvm.nix
+    ./desktop/common.nix
     ./desktop/hyprland.nix
+    ./desktop/niri.nix
     ./desktop/plasma.nix
   ];
 

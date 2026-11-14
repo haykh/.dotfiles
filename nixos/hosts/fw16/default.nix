@@ -24,7 +24,10 @@
   # system modules enabled on this host
   my.locale.enable = true;
   my.virtualisation.kvm.enable = true;
-  my.desktops.hyprland.enable = true;
+  # Desktop: enable exactly one. Each toggles both its system and home side
+  # (modules/system/desktop/*, modules/home/desktops/*).
+  my.desktops.niri.enable = true;
+  my.desktops.hyprland.enable = false;
 
   programs.craftapps = {
     enable = true;

@@ -2,10 +2,16 @@
   cfg,
   inputs,
   lib,
+  osConfig,
   ...
 }:
 
 let
+  # Shared by both desktops; the per-compositor bits below key off whichever
+  # one the host enables (hosts/*/default.nix: my.desktops.*.enable).
+  onHyprland = osConfig.my.desktops.hyprland.enable;
+  onNiri = osConfig.my.desktops.niri.enable;
+
   # Internal-panel lock screen widgets. The panel's connector name flips
   # between eDP-1 and eDP-2 depending on GPU enumeration order, so emit a
   # copy for each.
@@ -106,6 +112,7 @@ in
           ];
           end = [
             "tray"
+            "vpn"
             "network"
             "bluetooth"
             "volume"
@@ -118,8 +125,13 @@ in
           margin_ends = 5;
           scale = 1.2;
           start = [
-            "workspaces"
-            "minimized"
+            # On niri, a community widget that can leave the scratchpad
+            # `stash` workspace out of the bar (the built-in one can't).
+            (if onNiri then "niri-workspaces" else "workspaces")
+          ]
+          # minimize exists only on Hyprland (./hyprland/minimize.nix)
+          ++ lib.optional onHyprland "minimized"
+          ++ [
             "media"
             "audio_visualizer"
           ];
@@ -219,11 +231,16 @@ in
       plugins = {
         enabled = [
           "noctalia/bongocat"
-          "hayk/minimized" # local plugin, see ./minimize.nix
-        ];
+          # from the built-in `community` source (noctalia-dev/community-plugins)
+          "riversyx/noctaproton-vpn" # needs proton-vpn-cli (home.nix), nmcli, python3
+        ]
+        ++ lib.optional onHyprland "hayk/minimized" # local plugin, see ./hyprland/minimize.nix
+        ++ lib.optional onNiri "madmedicnl/niri-workspaces"; # community
       };
       shell = {
         launch_apps_as_systemd_services = true;
+        # On niri noctalia is the polkit agent; Hyprland uses hyprpolkitagent.
+        polkit_agent = onNiri;
         panel = {
           open_near_click_control_center = true;
           transparency_mode = "glass";
@@ -287,8 +304,8 @@ in
           input_devices = [ "/dev/input/by-id/*-event-kbd" ];
           type = "noctalia/bongocat:cat";
         };
-        minimized = {
-          type = "hayk/minimized:minimized";
+        vpn = {
+          type = "riversyx/noctaproton-vpn:bar";
         };
         clock = {
           format = "{:%l:%M%P @ %d %h}";
@@ -322,6 +339,51 @@ in
         weather = {
           show_condition = false;
         };
+        workspaces = {
+          # niri always keeps an empty workspace below the last one; don't
+          # show it (or any other empty one) as a pill.
+          hide_when_empty = true;
+        };
+      }
+      // lib.optionalAttrs onHyprland {
+        minimized = {
+          type = "hayk/minimized:minimized";
+        };
+      }
+      // lib.optionalAttrs onNiri {
+        niri-workspaces = {
+          type = "madmedicnl/niri-workspaces:niri-workspaces";
+          # the scratchpad stash (./niri/scratch.sh); comma-separated names
+          hidden = "stash";
+          hide_empty = true;
+        };
+      };
+    }
+    // lib.optionalAttrs onNiri {
+      # Hyprland idles via hypridle (./hyprland/hypridle.nix); on niri noctalia
+      # does it natively. It also locks before suspend (lock_before_suspend).
+      idle = {
+        behavior_order = [
+          "lock"
+          "screen-off"
+        ];
+        behavior = {
+          lock = {
+            action = "lock";
+            timeout = 300;
+            enabled = true;
+          };
+          screen-off = {
+            action = "screen_off";
+            timeout = 600;
+            enabled = true;
+          };
+        };
+      };
+      # Blurred wallpaper behind niri's overview; placed there by the
+      # `noctalia-backdrop` layer rule in ./niri/default.nix.
+      backdrop = {
+        enabled = true;
       };
     };
   };
