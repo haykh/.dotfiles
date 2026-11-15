@@ -8,35 +8,40 @@ vim.keymap.set(
 	{ desc = "show lsp message in floating window" }
 )
 
-local filetype_to_lsp = {
-	lua = "lua_ls",
-	c = "clangd",
-	cpp = "clangd",
-	python = "basedpyright",
-	go = "gopls",
-}
-
 vim.keymap.set("n", "<leader>le", function()
 	local ft = vim.bo.filetype
-	local lsp_name = filetype_to_lsp[ft]
 
-	if not lsp_name then
-		vim.notify("No LSP configured for filetype: " .. ft, vim.log.levels.WARN)
-		return
-	end
-
-	-- Check if LSP is already attached to this buffer
-	local clients = vim.lsp.get_clients({ bufnr = 0 })
-	for _, client in ipairs(clients) do
-		if client.name == lsp_name then
-			vim.notify("LSP " .. lsp_name .. " already running", vim.log.levels.INFO)
-			return
+	-- clients still attached (a just-stopped client lingers until it exits)
+	local running = {}
+	for _, client in ipairs(vim.lsp.get_clients({ bufnr = 0 })) do
+		if not client:is_stopped() then
+			running[client.name] = true
 		end
 	end
 
-	-- Start the LSP
-	vim.cmd("LspStart " .. lsp_name)
-end, { desc = "Start appropriate LSP" })
+	-- every configured server for this filetype that isn't already attached
+	local names = vim.iter(vim.lsp.get_configs({ enabled = true, filetype = ft }))
+		:map(function(config)
+			return config.name
+		end)
+		:filter(function(name)
+			return name ~= "copilot" and not running[name]
+		end)
+		:totable()
+
+	if #names == 0 then
+		vim.notify(
+			next(running) and "LSP already running" or ("No LSP configured for filetype: " .. ft),
+			vim.log.levels.INFO
+		)
+		return
+	end
+
+	-- re-enabling re-fires the FileType hook, which starts the client from the full
+	-- vim.lsp.config (real cmd, root_dir, settings) — unlike a bare vim.lsp.start()
+	vim.lsp.enable(names)
+	vim.notify("Started " .. table.concat(names, ", "), vim.log.levels.INFO)
+end, { desc = "Start LSPs for this filetype" })
 
 vim.keymap.set("n", "<leader>ld", function()
 	local bufnr = vim.api.nvim_get_current_buf()
@@ -45,7 +50,7 @@ vim.keymap.set("n", "<leader>ld", function()
 	local stopped_any = false
 	for _, client in ipairs(clients) do
 		if client.name ~= "copilot" then
-			vim.lsp.stop_client(client.id)
+			client:stop(true)
 			stopped_any = true
 		end
 	end

@@ -21,8 +21,8 @@ return {
 				-- fortran
 				fortls = {},
 				-- cpp & cmake
-				clangd = { autostart = false },
-				neocmake = { autostart = false },
+				clangd = {},
+				neocmake = {},
 				-- glsl
 				glsl_analyzer = {},
 				glslls = { mason = false },
@@ -76,9 +76,7 @@ return {
 		"stevearc/conform.nvim",
 		opts = {
 			-- ktlint is a JVM tool: ~2.4s cold start per format. Raise the ceiling
-			-- so format-on-save doesn't abort. This is a MAX wait, not a fixed one —
-			-- fast formatters (stylua, ruff, …) still return in ms. Deep-merges with
-			-- LazyVim's default, keeping lsp_format = "fallback".
+			-- so format-on-save doesn't abort.
 			default_format_opts = { timeout_ms = 5000 },
 			formatters_by_ft = {
 				fortran = { "fprettify" },
@@ -95,7 +93,6 @@ return {
 				toml = { "tombi" },
 				json = { "eslint_d", "prettierd" },
 				yaml = { "prettierd" },
-				-- markdown = { "mdformat" },
 				go = { "goimports", "gofmt" },
 				rust = { "rustfmt" },
 				lua = { "stylua" },
@@ -113,23 +110,23 @@ return {
 					mason = false,
 				},
 				fprettify = {
-	           -- stylua: ignore
-	           prepend_args = {
-	             "-i", "2",
-	             "-w", "4",
-	             "--whitespace-assignment", "true",
-	             "--enable-decl",
-	             "--whitespace-decl", "true",
-	             "--whitespace-relational", "true",
-	             "--whitespace-logical", "true",
-	             "--whitespace-plusminus", "true",
-	             "--whitespace-multdiv", "true",
-	             "--whitespace-print", "true",
-	             "--whitespace-type", "true",
-	             "--whitespace-intrinsics", "true",
-	             "--enable-replacements",
-	             "-l", "1000",
-	           },
+          -- stylua: ignore
+          prepend_args = {
+            "-i", "2",
+            "-w", "4",
+            "--whitespace-assignment", "true",
+            "--enable-decl",
+            "--whitespace-decl", "true",
+            "--whitespace-relational", "true",
+            "--whitespace-logical", "true",
+            "--whitespace-plusminus", "true",
+            "--whitespace-multdiv", "true",
+            "--whitespace-print", "true",
+            "--whitespace-type", "true",
+            "--whitespace-intrinsics", "true",
+            "--enable-replacements",
+            "-l", "1000",
+          },
 				},
 			},
 		},
