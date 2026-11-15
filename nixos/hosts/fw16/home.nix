@@ -169,6 +169,7 @@ in
     highlight
     glow
     go-2fa
+    gh
     gobrainPkgs.default
     toml2nixPkgs.default
     llmagentsPkgs.claude-code
